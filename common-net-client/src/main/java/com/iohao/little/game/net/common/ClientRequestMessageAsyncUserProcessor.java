@@ -3,6 +3,7 @@ package com.iohao.little.game.net.common;
 import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
+import com.iohao.little.game.action.skeleton.core.BarSkeleton;
 import com.iohao.little.game.action.skeleton.core.DefaultParamContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.net.BoltClientServerSetting;
@@ -21,7 +22,8 @@ public class ClientRequestMessageAsyncUserProcessor extends AsyncUserProcessor<R
         paramContext.setAsyncCtx(asyncCtx);
 
         // TODO: 2021/12/14 这里可以使用领域事件
-        boltClientServerSetting.getBarSkeleton().handle(paramContext, request);
+        BarSkeleton barSkeleton = boltClientServerSetting.getBarSkeleton();
+        barSkeleton.handle(paramContext, request);
     }
 
     /**

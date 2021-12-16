@@ -86,7 +86,7 @@ public class BarSkeletonBuilder {
     public BarSkeleton build() {
 
         // 参数设置
-        BarSkeleton barSkeleton = new BarSkeleton()
+        var barSkeleton = new BarSkeleton()
                 .setOpenOut(this.openOut)
                 .setOpenIn(this.openIn)
                 // action command 命令执行器流程
@@ -119,10 +119,11 @@ public class BarSkeletonBuilder {
     }
 
     private void extractedActionCommand(BarSkeleton barSkeleton) {
-        ActionCommandInfoBuilder behaviorInfoBuilder = new ActionCommandInfoBuilder(barSkeletonSetting)
+        // 命令信息构建器
+        var actionCommandInfoBuilder = new ActionCommandInfoBuilder(barSkeletonSetting)
                 .buildAction(this.controllers);
 
-        Map<Integer, Map<Integer, ActionCommand>> map = behaviorInfoBuilder.getMap();
+        var map = actionCommandInfoBuilder.getMap();
 
         var actionCommandManager = barSkeleton.actionCommandManager;
         // map 转数组

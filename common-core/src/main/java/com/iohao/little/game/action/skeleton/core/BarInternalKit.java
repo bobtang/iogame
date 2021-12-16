@@ -74,10 +74,10 @@ public class BarInternalKit {
         // 获取主路由最大值
         int max = getMaxCmd(map, barSkeletonSetting);
 
-        ActionCommand[][] behaviors = new ActionCommand[max][1];
+        var behaviors = new ActionCommand[max][1];
 
         map.keySet().forEach(cmd -> {
-            Map<Integer, ActionCommand> subActionMap = map.get(cmd);
+            var subActionMap = map.get(cmd);
             // 子路由最大值
             int subCmdMax = (subActionMap.keySet().stream().max(Integer::compareTo).orElse(0)) + 1;
             ActionCommand[] subBehaviors = new ActionCommand[subCmdMax];

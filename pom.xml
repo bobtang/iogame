@@ -67,8 +67,10 @@
         <lettuce-core.version>6.1.5.RELEASE</lettuce-core.version>
         <!-- json 解析器 : https://mvnrepository.com/artifact/com.alibaba/fastjson -->
         <fastjson.version>1.2.78</fastjson.version>
-        <!-- 对象池 : https://mvnrepository.com/artifact/org.apache.commons/commons-pool2 -->
-        <commons-pool2.version>2.11.1</commons-pool2.version>
+        <!-- 对象池 : https://www.oschina.net/p/beeop https://mvnrepository.com/artifact/com.github.chris2018998/beeop -->
+        <beeop.version>1.1.0</beeop.version>
+        <!-- 对象池 :  https://mvnrepository.com/artifact/org.apache.commons/commons-pool2 -->
+        <commons-pool.version>2.11.1</commons-pool.version>
         <!--  JSR-107 高性能缓存库 https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine -->
         <caffeine.version>3.0.4</caffeine.version>
         <!--  Java 实体映射工具 https://mvnrepository.com/artifact/org.mapstruct/mapstruct  -->

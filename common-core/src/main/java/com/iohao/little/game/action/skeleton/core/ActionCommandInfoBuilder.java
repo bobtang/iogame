@@ -36,7 +36,7 @@ public final class ActionCommandInfoBuilder {
     }
 
     private Map<Integer, ActionCommand> getSubCmdMap(int cmd) {
-        Map<Integer, ActionCommand> subActionMap = map.get(cmd);
+        var subActionMap = map.get(cmd);
 
         if (Objects.isNull(subActionMap)) {
             subActionMap = Kit.newHashMap();
@@ -54,19 +54,19 @@ public final class ActionCommandInfoBuilder {
     ActionCommandInfoBuilder buildAction(List<Class<?>> controllerList) {
         Set<Class<?>> controllerSet = new HashSet<>(controllerList);
 
-        // 条件: 类上配置了 BarIntAction 注解
+        // 条件: 类上配置了 ActionController 注解
         Predicate<Class<?>> controllerPredicate = controller -> Objects.nonNull(controller.getAnnotation(ActionController.class));
         controllerSet.stream().filter(controllerPredicate).forEach(controllerClazz -> {
             // 方法访问器: 获取类中自己定义的方法
-            MethodAccess methodAccess = MethodAccess.get(controllerClazz);
-            ConstructorAccess<?> constructorAccess = ConstructorAccess.get(controllerClazz);
+            var methodAccess = MethodAccess.get(controllerClazz);
+            var constructorAccess = ConstructorAccess.get(controllerClazz);
 
             // 主路由 (类上的路由)
             int cmd = controllerClazz.getAnnotation(ActionController.class).value();
             // 子路由
-            Map<Integer, ActionCommand> subActionMap = getSubCmdMap(cmd);
+            var subActionMap = getSubCmdMap(cmd);
 
-            // 遍历所有方法上有 IntAction 注解的方法对象
+            // 遍历所有方法上有 ActionMethod 注解的方法对象
             BarInternalKit.getMethodStream(controllerClazz).forEach(method -> {
                 // 目标子路由 (方法上的路由)
                 int subCmd = method.getAnnotation(ActionMethod.class).value();
@@ -76,7 +76,7 @@ public final class ActionCommandInfoBuilder {
                 Class<?> returnType = methodAccess.getReturnTypes()[methodIndex];
 
                 // 新建一个命令构建器
-                ActionCommand.Builder builder = new ActionCommand.Builder()
+                var builder = new ActionCommand.Builder()
                         .setCmd(cmd)
                         .setSubCmd(subCmd)
                         .setActionControllerClazz(controllerClazz)
@@ -97,7 +97,7 @@ public final class ActionCommandInfoBuilder {
                 路由key，根据这个路由可以找到对应的 command（命令对象）
                 将映射类的方法，保存在 command 中。每个command封装成一个命令对象。
                  */
-                ActionCommand command = builder.build(this.barSkeletonSetting);
+                var command = builder.build(this.barSkeletonSetting);
 
                 // 子路由
                 subActionMap.put(subCmd, command);
@@ -111,27 +111,24 @@ public final class ActionCommandInfoBuilder {
 
     private void paramInfo(Method method, ActionCommand.Builder builder) {
 
-        Parameter[] parameters = method.getParameters();
+        var parameters = method.getParameters();
         if (Objects.isNull(parameters)) {
             return;
         }
 
-        int len = parameters.length;
-        ActionCommand.ParamInfo[] paramInfos = new ActionCommand.ParamInfo[len];
+        var len = parameters.length;
+        var paramInfos = new ActionCommand.ParamInfo[len];
         builder.setParamInfos(paramInfos);
 
-        Map<Class<?>, Integer> map = new HashMap<>(len);
         String name;
         for (int i = 0; i < len; i++) {
             // 构建参数信息
-            ActionCommand.ParamInfo paramInfo = new ActionCommand.ParamInfo();
+            var paramInfo = new ActionCommand.ParamInfo();
             paramInfos[i] = paramInfo;
             Parameter p = parameters[i];
             Class<?> type = p.getType();
 
             name = p.getName();
-            int val = map.getOrDefault(type, 0);
-            map.put(type, ++val);
 
             paramInfo.index = i;
             paramInfo.name = name;

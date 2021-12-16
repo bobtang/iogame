@@ -27,6 +27,7 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
         // 只将非 void 方法的值和有异常的情况, 才写入到 channel 中
         var actionMethodReturnInfo = actionCommand.getActionMethodReturnInfo();
         if (Objects.nonNull(result) || Void.TYPE != actionMethodReturnInfo.getReturnTypeClazz()) {
+            // 结果包装器
             var actionMethodResultWrap = barSkeleton.getActionMethodResultWrap();
             // 4 - wrap result
             response = actionMethodResultWrap.wrap(actionCommand, request, result);
