@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 配置项
+ * 配置项管理器
  */
 public class WidgetOptions {
 
