@@ -16,14 +16,12 @@ public class BarSkeletonTest {
         log.info("BarSkeleton");
         DefaultParamContext paramContext = new DefaultParamContext();
         RequestMessage requestMessage = new RequestMessage();
-        requestMessage.setCmd(ActionCont.BeeActionCont.CMD);
-        requestMessage.setSubCmd(ActionCont.BeeActionCont.HELLO);
 
+        CmdInfo cmdInfo = CmdInfoFlyweightFactory.me().getCmdInfo(ActionCont.BeeActionCont.CMD, ActionCont.BeeActionCont.HELLO);
+        requestMessage.setCmdInfo(cmdInfo);
 
         barSkeleton.handle(paramContext, requestMessage);
-
         System.out.println();
-
     }
 
 }

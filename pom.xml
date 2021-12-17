@@ -46,7 +46,7 @@
         <maven.compiler.target>17</maven.compiler.target>
 
         <!-- 网络库 : https://mvnrepository.com/artifact/io.netty/netty-all -->
-        <netty.version>4.1.70.Final</netty.version>
+        <netty.version>4.1.72.Final</netty.version>
         <!--  bolt https://mvnrepository.com/artifact/com.alipay.sofa/bolt  -->
         <bolt.version>1.6.4</bolt.version>
         <!-- pb 数据描述语言 : https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
@@ -95,6 +95,20 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.32</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.8</version>
+            <scope>compile</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/junit/junit -->
