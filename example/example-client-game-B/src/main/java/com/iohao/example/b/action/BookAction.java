@@ -40,13 +40,13 @@ public class BookAction {
     }
 
     @ActionMethod(ActionCont.BookModule.message_queue)
-    public void messageQueue(String message, RequestMessage requestMessage, ServerContext serverContext) {
+    public boolean messageQueue(String message, RequestMessage requestMessage, ServerContext serverContext) {
 
         long userId = requestMessage.getUserId();
 
         BoltClientProxy boltClientProxy = (BoltClientProxy) serverContext;
-        boltClientProxy.broadcast(null);
+        boltClientProxy.broadcast(userId, message);
 
-
+        return true;
     }
 }

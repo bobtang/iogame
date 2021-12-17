@@ -5,9 +5,11 @@ import com.alipay.remoting.exception.RemotingException;
 import com.alipay.remoting.rpc.RpcClient;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
+import com.iohao.little.game.action.skeleton.core.CmdInfoFlyweightFactory;
 import com.iohao.little.game.action.skeleton.core.ServerContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
+import com.iohao.little.game.net.core.ServerSender;
 import com.iohao.little.game.net.message.common.BroadcastMessage;
 import com.iohao.little.game.net.message.common.InnerModuleMessage;
 import com.iohao.little.game.widget.config.WidgetComponents;
@@ -28,7 +30,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class BoltClientProxy implements ServerContext {
+public class BoltClientProxy implements ServerContext, ServerSender {
     RpcClient rpcClient;
     Connection connection;
     BarSkeleton barSkeleton;
@@ -43,13 +45,26 @@ public class BoltClientProxy implements ServerContext {
         return invokeSync(request, timeoutMillis);
     }
 
+    public void oneway(final Object request) throws RemotingException {
+        this.rpcClient.oneway(connection,request);
+    }
+
     public void broadcast(Object data) {
         broadcast(0, data);
     }
 
     public void broadcast(long userId, Object data) {
+        CmdInfo cmdInfo = CmdInfoFlyweightFactory.me().getCmdInfo(0, 0);
+        ResponseMessage responseMessage = new ResponseMessage();
+        responseMessage.setUserId(userId);
+        responseMessage.setData(data);
+        responseMessage.setCmdInfo(cmdInfo);
+
         // TODO: 2021/12/14 广播
         BroadcastMessage broadcastMessage = new BroadcastMessage();
+        broadcastMessage.setChannel("internal_channel");
+        broadcastMessage.setResponseMessage(responseMessage);
+
 
         MessageQueueWidget messageQueueWidget = widgetComponents.get(MessageQueueWidget.class);
 

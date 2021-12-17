@@ -10,6 +10,7 @@ import java.io.Serializable;
  */
 @Data
 public class BroadcastMessage implements Serializable {
+    String channel;
     // 广播的消息
-    ResponseMessage message;
+    ResponseMessage responseMessage;
 }

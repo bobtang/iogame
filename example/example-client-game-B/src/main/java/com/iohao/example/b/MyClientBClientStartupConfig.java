@@ -17,14 +17,14 @@ import com.iohao.little.game.widget.mq.internal.InternalMessageQueueWidget;
 
 public class MyClientBClientStartupConfig implements ClientStartupConfig {
     @Override
-    public RemoteAddress remoteAddress() {
+    public RemoteAddress createRemoteAddress() {
         String ip = ExampleCont.ip;
         int port = ExampleCont.port;
         return new RemoteAddress(ip, port);
     }
 
     @Override
-    public BarSkeleton iniBarSkeleton() {
+    public BarSkeleton createBarSkeleton() {
         // 扫描 BookAction.class 所在包
         BarSkeleton barSkeleton = ClientBarSkeleton.newBarSkeleton(BookAction.class);
 
@@ -52,8 +52,14 @@ public class MyClientBClientStartupConfig implements ClientStartupConfig {
 
     @Override
     public void widgetComponents(WidgetComponents widgetComponents) {
+        // 消息队列配置项
         MessageQueueConfigWidget messageQueueConfigWidget = new MessageQueueConfigWidget();
-        MessageQueueWidget messageQueueWidget = new InternalMessageQueueWidget(messageQueueConfigWidget);
+        // 消息队列小部件
+        MessageQueueWidget messageQueueWidget = null;
+        // 使用内网的实现
+        messageQueueWidget = new InternalMessageQueueWidget(messageQueueConfigWidget);
+
+        // 添加到部件管理中
         widgetComponents.option(MessageQueueWidget.class, messageQueueWidget);
     }
 }

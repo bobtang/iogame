@@ -5,10 +5,11 @@ import com.iohao.little.game.action.skeleton.core.CmdInfoFlyweightFactory;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
-
+@ToString
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PROTECTED)

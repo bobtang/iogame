@@ -21,14 +21,14 @@ public interface ClientStartupConfig {
      *
      * @return 远程连接地址
      */
-    RemoteAddress remoteAddress();
+    RemoteAddress createRemoteAddress();
 
     /**
      * 初始化 业务框架
      *
      * @return 业务框架
      */
-    BarSkeleton iniBarSkeleton();
+    BarSkeleton createBarSkeleton();
 
     /**
      * 初始化 模块信息
@@ -56,7 +56,7 @@ public interface ClientStartupConfig {
      */
     default void startup() {
         // 业务框架
-        BarSkeleton barSkeleton = iniBarSkeleton();
+        BarSkeleton barSkeleton = createBarSkeleton();
 
         // 创建模块信息
         ActionCommandManager actionCommandManager = barSkeleton.getActionCommandManager();
@@ -67,7 +67,7 @@ public interface ClientStartupConfig {
         System.out.println(moduleMessage);
 
         // 远程连接地址
-        RemoteAddress remoteAddress = remoteAddress();
+        RemoteAddress remoteAddress = createRemoteAddress();
 
         // 服务器设置
         BoltClientServerSetting setting = new BoltClientServerSetting(barSkeleton, moduleMessage, remoteAddress);

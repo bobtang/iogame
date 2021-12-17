@@ -17,5 +17,7 @@ public interface MessageQueueWidget extends WidgetComponent {
 
     void addMessageListener(MessageListenerWidget listener);
 
+    MessageListenerWidget getByChannel(String channel);
+
     void startup();
 }
