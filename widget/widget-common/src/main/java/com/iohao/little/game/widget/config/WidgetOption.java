@@ -1,5 +1,7 @@
 package com.iohao.little.game.widget.config;
 
+import lombok.ToString;
+
 import java.util.Objects;
 
 /**
@@ -8,6 +10,7 @@ import java.util.Objects;
  * @author 洛朱
  * @date 2021/12/16
  */
+@ToString
 public class WidgetOption<T> {
     private final String name;
     private final T defaultValue;

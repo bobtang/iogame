@@ -2,7 +2,7 @@ package com.iohao.little.game.action.skeleton.core;
 
 import java.util.*;
 
-public class ActionCommandManager {
+public final class ActionCommandManager {
     /**
      * action map
      * <pre>
@@ -43,6 +43,11 @@ public class ActionCommandManager {
         return actionCommands[cmd][subCmd];
     }
 
+    /**
+     * 命令列表
+     *
+     * @return list
+     */
     public List<ActionCommand> listActionCommand() {
         List<ActionCommand> actionCommandList = new LinkedList<>();
         for (Map<Integer, ActionCommand> value : this.actionCommandMap.values()) {
@@ -51,6 +56,11 @@ public class ActionCommandManager {
         return actionCommandList;
     }
 
+    /**
+     * 命令列表
+     *
+     * @return array
+     */
     public int[] arrayCmdMerge() {
         var actionCommands = this.listActionCommand();
         var cmdMergeArray = new int[actionCommands.size()];

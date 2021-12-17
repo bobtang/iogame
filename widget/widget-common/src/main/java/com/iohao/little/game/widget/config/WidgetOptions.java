@@ -1,9 +1,15 @@
 package com.iohao.little.game.widget.config;
 
+import lombok.Getter;
+
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 配置项
+ */
 public class WidgetOptions {
 
+    @Getter
     private final ConcurrentHashMap<WidgetOption<?>, Object> options = new ConcurrentHashMap<>();
 
     @SuppressWarnings("unchecked")

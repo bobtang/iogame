@@ -38,7 +38,7 @@ public class GatewayApplication {
         log.info("apple: {}", name);
 
         CmdInfoFlyweightFactory factory = CmdInfoFlyweightFactory.me();
-        CmdInfo cmdInfo = factory.getCmdInfo(ActionCont.AppleModule.CMD, ActionCont.AppleModule.NAME);
+        CmdInfo cmdInfo = factory.getCmdInfo(ActionCont.AppleModule.cmd, ActionCont.AppleModule.name);
 
         Apple apple = new Apple();
         apple.setAge(name.hashCode());
@@ -57,7 +57,7 @@ public class GatewayApplication {
         log.info("book: {}", name);
 
         CmdInfoFlyweightFactory factory = CmdInfoFlyweightFactory.me();
-        CmdInfo cmdInfo = factory.getCmdInfo(ActionCont.BookModule.CMD, ActionCont.BookModule.NAME);
+        CmdInfo cmdInfo = factory.getCmdInfo(ActionCont.BookModule.cmd, ActionCont.BookModule.name);
 
         Book book = new Book();
         book.setName(name);
@@ -75,9 +75,35 @@ public class GatewayApplication {
     public String bookVisitApple(@PathVariable Integer age) {
         log.info("book_age: {}", age);
 
-        CmdInfo cmdInfo = ActionCont.BookModule.info.cmdInfo(ActionCont.BookModule.GET_APPLE_AGE);
+        CmdInfo cmdInfo = ActionCont.BookModule.info.cmdInfo(ActionCont.BookModule.get_apple_age);
 
         String data = (String) invokeSync(cmdInfo, age);
+
+        return data;
+    }
+
+    /**
+     * 请求 B 服务器的方法
+     * <pre>
+     *     B 服务器方法中会发布一个广播（发布订阅）
+     *     这个（发布订阅）由网关来消费
+     * </pre>
+     *
+     * @param message
+     * @return
+     */
+    @GetMapping("/messageQueue/{message}")
+    public String messageQueue(@PathVariable String message) {
+
+        CmdInfo cmdInfo = ActionCont.BookModule.info.cmdInfo(ActionCont.BookModule.message_queue);
+        RequestMessage requestMessage = new RequestMessage();
+        requestMessage.setCmdInfo(cmdInfo);
+
+        requestMessage.setData(message);
+        requestMessage.setUserId(100);
+
+        String data = (String) invokeSync(requestMessage);
+        log.info("messageQueue : {}", data);
 
         return data;
     }
@@ -91,7 +117,11 @@ public class GatewayApplication {
         RequestMessage requestMessage = new RequestMessage();
         requestMessage.setCmdInfo(cmdInfo);
         requestMessage.setData(data);
+        return this.invokeSync(requestMessage);
+    }
 
+    private Object invokeSync(RequestMessage requestMessage) {
+        CmdInfo cmdInfo = requestMessage.getCmdInfo();
         ModuleInfoManager me = ModuleInfoManager.me();
         ModuleInfoProxy moduleInfo = me.getModuleInfo(cmdInfo.getCmdMerge());
 

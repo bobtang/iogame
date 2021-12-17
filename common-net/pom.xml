@@ -13,9 +13,22 @@
     <artifactId>common-net</artifactId>
 
     <dependencies>
+
         <dependency>
             <groupId>com.iohao.game</groupId>
             <artifactId>common-core</artifactId>
+            <version>${project-revision.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.iohao.game</groupId>
+            <artifactId>common-message</artifactId>
+            <version>${project-revision.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.iohao.game</groupId>
+            <artifactId>widget-mq</artifactId>
             <version>${project-revision.version}</version>
         </dependency>
 

@@ -5,21 +5,35 @@ import com.alipay.remoting.exception.RemotingException;
 import com.alipay.remoting.rpc.RpcClient;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
+import com.iohao.little.game.action.skeleton.core.ServerContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
+import com.iohao.little.game.net.message.common.BroadcastMessage;
 import com.iohao.little.game.net.message.common.InnerModuleMessage;
+import com.iohao.little.game.widget.config.WidgetComponents;
+import com.iohao.little.game.widget.mq.MessageQueueWidget;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+/**
+ * 客户端服务器代理, 持有一些属性
+ * <pre>
+ *     负责与网关通信
+ * </pre>
+ *
+ * @author 洛朱
+ * @date 2021/12/17
+ */
 @Getter
 @Setter
 @Accessors(chain = true)
-public class BoltClientProxy {
+public class BoltClientProxy implements ServerContext {
     RpcClient rpcClient;
     Connection connection;
     BarSkeleton barSkeleton;
     int timeoutMillis = 1000;
+    final WidgetComponents widgetComponents = new WidgetComponents();
 
     public Object invokeSync(final Object request, final int timeoutMillis) throws RemotingException, InterruptedException {
         return rpcClient.invokeSync(connection, request, timeoutMillis);
@@ -29,8 +43,17 @@ public class BoltClientProxy {
         return invokeSync(request, timeoutMillis);
     }
 
-    public void broadcast(ResponseMessage responseCommand) {
+    public void broadcast(Object data) {
+        broadcast(0, data);
+    }
+
+    public void broadcast(long userId, Object data) {
         // TODO: 2021/12/14 广播
+        BroadcastMessage broadcastMessage = new BroadcastMessage();
+
+        MessageQueueWidget messageQueueWidget = widgetComponents.get(MessageQueueWidget.class);
+
+        messageQueueWidget.publish(broadcastMessage);
     }
 
     /**
@@ -72,9 +95,6 @@ public class BoltClientProxy {
 
         ResponseMessage o = null;
 
-        int cmdMerge = requestMessage.getCmdMerge();
-//        var boltClientProxy = getBoltClientProxy(cmdMerge);
-
         try {
             o = (ResponseMessage) this.invokeSync(moduleMessage);
         } catch (RemotingException | InterruptedException e) {
@@ -84,8 +104,4 @@ public class BoltClientProxy {
         return o;
     }
 
-//    private BoltClientProxy getBoltClientProxy(int cmdMerge) {
-//        var moduleKey = ModuleKeyManager.me().getModuleKeyByCmdMerge(cmdMerge);
-//        return BoltClientProxyManager.me().getBoltClientProxy(moduleKey);
-//    }
 }

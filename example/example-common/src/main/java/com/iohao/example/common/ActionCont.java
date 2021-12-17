@@ -7,6 +7,7 @@ public interface ActionCont {
 
     interface TheInfo {
         int cmd();
+
         default CmdInfo cmdInfo(int subCmd) {
             return CmdInfoFlyweightFactory.me().getCmdInfo(cmd(), subCmd);
         }
@@ -19,19 +20,20 @@ public interface ActionCont {
         /**
          * 模块A - 主 cmd
          */
-        int CMD = 2;
+        int cmd = 2;
 
-        TheInfo info = () -> CMD;
+        TheInfo info = () -> cmd;
 
-        int NAME = 0;
-        int AGE = 1;
+        int name = 0;
+        int age = 1;
     }
 
     interface BookModule extends TheInfo {
-        int CMD = 3;
-        TheInfo info = () -> CMD;
-        int NAME = 0;
-        int GET_APPLE_AGE = 1;
+        int cmd = 3;
+        TheInfo info = () -> cmd;
+        int name = 0;
+        int get_apple_age = 1;
+        int message_queue = 2;
     }
 
 }

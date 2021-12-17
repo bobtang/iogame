@@ -6,7 +6,7 @@ package com.iohao.little.game.action.skeleton.core;
  * @author 洛朱
  * @date 2021/12/12
  */
-public class DefaultActionControllerFactoryBean<T> implements ActionControllerFactoryBean<T> {
+public final class DefaultActionControllerFactoryBean<T> implements ActionControllerFactoryBean<T> {
     @Override
     @SuppressWarnings("unchecked")
     public T getBean(ActionCommand actionCommand) {

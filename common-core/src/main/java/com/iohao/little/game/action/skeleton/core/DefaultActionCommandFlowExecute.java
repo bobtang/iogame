@@ -6,6 +6,12 @@ import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 
 import java.util.Objects;
 
+/**
+ * 默认的 action 命令流程执行器
+ *
+ * @author 洛朱
+ * @date 2021/12/17
+ */
 public final class DefaultActionCommandFlowExecute implements ActionCommandFlowExecute {
 
     public void execute(final ParamContext paramContext, final ActionCommand actionCommand, final RequestMessage request, final BarSkeleton barSkeleton) {
@@ -26,6 +32,7 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
         ResponseMessage response = null;
         // 只将非 void 方法的值和有异常的情况, 才写入到 channel 中
         var actionMethodReturnInfo = actionCommand.getActionMethodReturnInfo();
+
         if (Objects.nonNull(result) || Void.TYPE != actionMethodReturnInfo.getReturnTypeClazz()) {
             // 结果包装器
             var actionMethodResultWrap = barSkeleton.getActionMethodResultWrap();

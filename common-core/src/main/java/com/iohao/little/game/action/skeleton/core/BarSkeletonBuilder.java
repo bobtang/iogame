@@ -18,7 +18,7 @@ import java.util.*;
  */
 @Accessors(chain = true)
 @Setter
-public class BarSkeletonBuilder {
+public final class BarSkeletonBuilder {
     /**
      * 默认tcp对象是single. 如果设置为false, 每次创建新的tcp对象. 默认:true
      */
@@ -36,13 +36,13 @@ public class BarSkeletonBuilder {
     /**
      * action class
      */
-    final List<Class<?>> controllers = new LinkedList<>();
+    final List<Class<?>> controllerClazzList = new LinkedList<>();
 
     /**
      * BarSkeletonSetting
      */
     @Getter
-    BarSkeletonSetting barSkeletonSetting = new BarSkeletonSetting();
+    final BarSkeletonSetting barSkeletonSetting = new BarSkeletonSetting();
     /**
      * 命令执行器
      */
@@ -110,7 +110,7 @@ public class BarSkeletonBuilder {
         // inout
         extractedInout(barSkeleton);
 
-        // 构建actionMapping
+        // 构建 actionMapping
         extractedActionCommand(barSkeleton);
 
         log(barSkeleton);
@@ -121,7 +121,7 @@ public class BarSkeletonBuilder {
     private void extractedActionCommand(BarSkeleton barSkeleton) {
         // 命令信息构建器
         var actionCommandInfoBuilder = new ActionCommandInfoBuilder(barSkeletonSetting)
-                .buildAction(this.controllers);
+                .buildAction(this.controllerClazzList);
 
         var map = actionCommandInfoBuilder.getMap();
 
@@ -180,7 +180,7 @@ public class BarSkeletonBuilder {
 
     public BarSkeletonBuilder addActionController(Class<?> controller) {
         n(controller);
-        this.controllers.add(controller);
+        this.controllerClazzList.add(controller);
         return this;
     }
 

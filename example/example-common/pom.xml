@@ -29,5 +29,11 @@
             <version>${project-revision.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.iohao.game</groupId>
+            <artifactId>widget-mq</artifactId>
+            <version>${project-revision.version}</version>
+        </dependency>
+
     </dependencies>
 </project>

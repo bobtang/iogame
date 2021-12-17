@@ -17,8 +17,8 @@ import java.util.function.Predicate;
 /**
  * action命令对象的映射管理, 目前并没有做重复映射检测
  * <pre>
- * 实现方式是获取需要对外公开的 tcpActionController
- * 然后获取public void的方法,将这类型的方法封装成独立命令, 在与map进行一个简单的映射关系
+ *     实现方式是获取需要对外公开的 tcpActionController
+ *     然后获取public void的方法,将这类型的方法封装成独立命令, 在与map进行一个简单的映射关系
  * </pre>
  *
  * @author 洛朱
@@ -55,7 +55,8 @@ public final class ActionCommandInfoBuilder {
         Set<Class<?>> controllerSet = new HashSet<>(controllerList);
 
         // 条件: 类上配置了 ActionController 注解
-        Predicate<Class<?>> controllerPredicate = controller -> Objects.nonNull(controller.getAnnotation(ActionController.class));
+        Predicate<Class<?>> controllerPredicate = controllerClazz -> Objects.nonNull(controllerClazz.getAnnotation(ActionController.class));
+
         controllerSet.stream().filter(controllerPredicate).forEach(controllerClazz -> {
             // 方法访问器: 获取类中自己定义的方法
             var methodAccess = MethodAccess.get(controllerClazz);
@@ -63,16 +64,18 @@ public final class ActionCommandInfoBuilder {
 
             // 主路由 (类上的路由)
             int cmd = controllerClazz.getAnnotation(ActionController.class).value();
-            // 子路由
+            // 子路由 map
             var subActionMap = getSubCmdMap(cmd);
 
             // 遍历所有方法上有 ActionMethod 注解的方法对象
             BarInternalKit.getMethodStream(controllerClazz).forEach(method -> {
                 // 目标子路由 (方法上的路由)
                 int subCmd = method.getAnnotation(ActionMethod.class).value();
-
+                // 方法名
                 String methodName = method.getName();
+                // 方法下标
                 int methodIndex = methodAccess.getIndex(methodName);
+                // 方法返回值类型
                 Class<?> returnType = methodAccess.getReturnTypes()[methodIndex];
 
                 // 新建一个命令构建器
@@ -99,7 +102,7 @@ public final class ActionCommandInfoBuilder {
                  */
                 var command = builder.build(this.barSkeletonSetting);
 
-                // 子路由
+                // 子路由映射
                 subActionMap.put(subCmd, command);
             });
 
@@ -111,6 +114,7 @@ public final class ActionCommandInfoBuilder {
 
     private void paramInfo(Method method, ActionCommand.Builder builder) {
 
+        // 方法参数列表
         var parameters = method.getParameters();
         if (Objects.isNull(parameters)) {
             return;
@@ -125,9 +129,12 @@ public final class ActionCommandInfoBuilder {
             // 构建参数信息
             var paramInfo = new ActionCommand.ParamInfo();
             paramInfos[i] = paramInfo;
-            Parameter p = parameters[i];
-            Class<?> type = p.getType();
 
+            // 方法的参数对象
+            Parameter p = parameters[i];
+            // 方法的参数类型
+            Class<?> type = p.getType();
+            // 方法名
             name = p.getName();
 
             paramInfo.index = i;
@@ -138,7 +145,6 @@ public final class ActionCommandInfoBuilder {
     }
 
     private void checkExistSubCmd(Class<?> controllerClass, int subCmd, Map<Integer, ActionCommand> subActionMap) {
-
         if (subActionMap.containsKey(subCmd)) {
             String message = StrUtil.format("已经存在方法编号:{} : {} .请查看: {}", subCmd, controllerClass);
             throw new RuntimeException(message);

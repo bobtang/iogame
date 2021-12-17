@@ -91,7 +91,7 @@ public class GateConnectEventProcessor implements ConnectionEventProcessor {
             apple.setAge(188);
 
             CmdInfoFlyweightFactory factory = CmdInfoFlyweightFactory.me();
-            CmdInfo cmdInfo = factory.getCmdInfo(ActionCont.AppleModule.CMD, ActionCont.AppleModule.NAME);
+            CmdInfo cmdInfo = factory.getCmdInfo(ActionCont.AppleModule.cmd, ActionCont.AppleModule.name);
 
             RequestMessage requestMessage = new RequestMessage();
             requestMessage.setCmdInfo(cmdInfo);

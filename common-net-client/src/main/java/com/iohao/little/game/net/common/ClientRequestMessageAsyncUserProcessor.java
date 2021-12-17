@@ -20,6 +20,7 @@ public class ClientRequestMessageAsyncUserProcessor extends AsyncUserProcessor<R
         DefaultParamContext paramContext = new DefaultParamContext();
         paramContext.setBizCtx(bizCtx);
         paramContext.setAsyncCtx(asyncCtx);
+        paramContext.setServerContext(boltClientServerSetting.getBoltClientProxy());
 
         // TODO: 2021/12/14 这里可以使用领域事件
         BarSkeleton barSkeleton = boltClientServerSetting.getBarSkeleton();

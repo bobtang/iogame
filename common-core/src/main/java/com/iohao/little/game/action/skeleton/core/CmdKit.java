@@ -1,5 +1,7 @@
 package com.iohao.little.game.action.skeleton.core;
 
+import cn.hutool.core.util.StrUtil;
+
 public class CmdKit {
     /**
      * 从 merge 中获取 [高16位] 的数值
@@ -42,14 +44,7 @@ public class CmdKit {
     public static String mergeToString(int merge) {
         int cmd = getCmd(merge);
         int subCmd = getSubCmd(merge);
-        final StringBuffer sb = new StringBuffer(20);
-
-        sb.append("[")
-                .append(cmd).append("-")
-                .append(subCmd).append("-")
-                .append(merge)
-                .append("]");
-
-        return sb.toString();
+        String template = "[{}-{}-{}]";
+        return StrUtil.format(template, cmd, subCmd, merge);
     }
 }

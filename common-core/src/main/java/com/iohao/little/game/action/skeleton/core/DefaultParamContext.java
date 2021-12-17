@@ -11,4 +11,5 @@ import lombok.Data;
 public class DefaultParamContext implements ParamContext {
     BizContext bizCtx;
     AsyncContext asyncCtx;
+    ServerContext serverContext;
 }

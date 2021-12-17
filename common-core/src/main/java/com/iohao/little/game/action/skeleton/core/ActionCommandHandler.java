@@ -10,7 +10,7 @@ import lombok.Setter;
  * @author 洛朱
  * @date 2021/12/12
  */
-public class ActionCommandHandler implements Handler<RequestMessage> {
+public final class ActionCommandHandler implements Handler<RequestMessage> {
 
     @Setter
     BarSkeleton barSkeleton;
@@ -22,6 +22,7 @@ public class ActionCommandHandler implements Handler<RequestMessage> {
         根据客户端的请求信息,获取对应的命令对象来处理这个请求
          */
         var actionCommandManager = barSkeleton.actionCommandManager;
+        // 通过路由获取处理请求的 action
         var cmd = request.getCmd();
         var subCmd = request.getSubCmd();
         var actionCommand = actionCommandManager.getActionCommand(cmd, subCmd);

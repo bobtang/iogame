@@ -40,7 +40,7 @@ import java.util.List;
  * @date 2021/12/12
  */
 @Getter
-public class ActionCommand {
+public final class ActionCommand {
     /**
      * cmdInfo
      */
