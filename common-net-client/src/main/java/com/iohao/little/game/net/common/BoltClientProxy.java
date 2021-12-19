@@ -5,7 +5,6 @@ import com.alipay.remoting.exception.RemotingException;
 import com.alipay.remoting.rpc.RpcClient;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
-import com.iohao.little.game.action.skeleton.core.CmdInfoFlyweightFactory;
 import com.iohao.little.game.action.skeleton.core.ServerContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
@@ -46,33 +45,28 @@ public class BoltClientProxy implements ServerContext, ServerSender {
     }
 
     public void oneway(final Object request) throws RemotingException {
-        this.rpcClient.oneway(connection,request);
+        this.rpcClient.oneway(connection, request);
     }
 
     public void invokeWithCallback(Object request) throws RemotingException {
-        this.rpcClient.invokeWithCallback(connection,request,null,timeoutMillis);
+        this.rpcClient.invokeWithCallback(connection, request, null, timeoutMillis);
     }
 
-    public void broadcast(Object data) {
-        broadcast(0, data);
+    public void broadcast(ResponseMessage data) {
+        broadcast(data.getUserId(), data);
     }
 
-    public void broadcast(long userId, Object data) {
-        CmdInfo cmdInfo = CmdInfoFlyweightFactory.me().getCmdInfo(0, 0);
-        ResponseMessage responseMessage = new ResponseMessage();
+    public void broadcast(long userId, ResponseMessage responseMessage) {
         responseMessage.setUserId(userId);
-        responseMessage.setData(data);
-        responseMessage.setCmdInfo(cmdInfo);
 
         // TODO: 2021/12/14 广播
+        String channel = "internal_channel";
         BroadcastMessage broadcastMessage = new BroadcastMessage();
-        broadcastMessage.setChannel("internal_channel");
+        broadcastMessage.setChannel(channel);
         broadcastMessage.setResponseMessage(responseMessage);
 
-
         MessageQueueWidget messageQueueWidget = widgetComponents.option(MessageQueueWidget.class);
-
-        messageQueueWidget.publish(broadcastMessage);
+        messageQueueWidget.publish(channel, broadcastMessage);
     }
 
     /**

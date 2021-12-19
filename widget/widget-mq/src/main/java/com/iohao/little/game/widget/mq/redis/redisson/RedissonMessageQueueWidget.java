@@ -1,8 +1,8 @@
 package com.iohao.little.game.widget.mq.redis.redisson;
 
+import com.iohao.little.game.net.message.common.BroadcastMessage;
 import com.iohao.little.game.widget.config.WidgetOptions;
 import com.iohao.little.game.widget.mq.AbstractMessageQueueWidget;
-import com.iohao.little.game.widget.mq.MessageExtWidget;
 import com.iohao.little.game.widget.mq.MessageListenerWidget;
 import com.iohao.little.game.widget.mq.MessageQueueConfigWidget;
 import lombok.extern.slf4j.Slf4j;
@@ -26,14 +26,11 @@ public class RedissonMessageQueueWidget extends AbstractMessageQueueWidget {
     }
 
     @Override
-    public void publish(String channel, Object message) {
-        System.out.println("publish");
+    public void publish(String channel, BroadcastMessage message) {
         log.info("publish: {} - {}", channel, message);
-        var widgetMessageExt = new MessageExtWidget();
-        widgetMessageExt.setData(message);
 
         var topic = redisson.getTopic(channel);
-        topic.publish(widgetMessageExt);
+        topic.publish(message);
     }
 
     @Override
@@ -41,8 +38,8 @@ public class RedissonMessageQueueWidget extends AbstractMessageQueueWidget {
         CharSequence channel = listener.channel();
         RTopic topic = redisson.getTopic(channel.toString());
         // 数据适配
-        MessageListenerProxy messageListenerProxy = new MessageListenerProxy(listener);
-        topic.addListener(MessageExtWidget.class, messageListenerProxy);
+        BroadcastMessageListenerProxy broadcastMessageListenerProxy = new BroadcastMessageListenerProxy(listener);
+        topic.addListener(BroadcastMessage.class, broadcastMessageListenerProxy);
     }
 
 

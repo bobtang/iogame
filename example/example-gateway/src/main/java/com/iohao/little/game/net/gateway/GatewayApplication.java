@@ -92,7 +92,7 @@ public class GatewayApplication {
      * @param message
      * @return
      */
-    @GetMapping("/messageQueue/{message}")
+    @GetMapping("/message_queue/{message}")
     public String messageQueue(@PathVariable String message) {
 
         CmdInfo cmdInfo = ActionCont.BookModule.info.cmdInfo(ActionCont.BookModule.message_queue);

@@ -34,6 +34,17 @@ public interface ActionCont {
         int name = 0;
         int get_apple_age = 1;
         int message_queue = 2;
+
+        int broadcast_user_info = 3;
+    }
+
+    /** 用于推送 */
+    interface BroadcastModule {
+        /** 推送模块 主cmd */
+        int cmd = 1;
+        TheInfo info = () -> cmd;
+        /** 用户账户信息 */
+        int user_account = 0;
     }
 
 }

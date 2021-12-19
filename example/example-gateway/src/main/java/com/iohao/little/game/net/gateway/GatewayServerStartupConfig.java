@@ -57,8 +57,13 @@ public class GatewayServerStartupConfig implements ServerStartupConfig {
         MessageQueueConfigWidget messageQueueConfigWidget = new MessageQueueConfigWidget();
         // 消息队列小部件
         MessageQueueWidget messageQueueWidget = null;
-        //  消息队列小部件 - 使用内网的实现 (也可以换成 redis[Redisson， Lettuce], MQ[Apache Pulsar, RocketMQ]等)
+        // 消息队列小部件 - 使用内网的实现 (也可以换成 redis[Redisson， Lettuce], MQ[Apache Pulsar, RocketMQ]等)
+
+        // 消息队列小部件 - 使用实现 内网
         messageQueueWidget = new InternalMessageQueueWidget(messageQueueConfigWidget);
+
+        // 消息队列小部件 - 使用实现 redis[Redisson]
+//        messageQueueWidget = new RedissonMessageQueueWidget(messageQueueConfigWidget);
 
         // 添加发布订阅消息处理类
         messageQueueWidget.addMessageListener(new BroadcastMessageListenerWidget());

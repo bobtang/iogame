@@ -7,6 +7,7 @@ import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.action.skeleton.core.ServerContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
+import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.common.BoltClientProxy;
 import com.iohao.little.game.net.common.BoltClientProxyManager;
 import lombok.extern.slf4j.Slf4j;
@@ -44,8 +45,14 @@ public class BookAction {
 
         long userId = requestMessage.getUserId();
 
+
+        CmdInfo cmdInfo = ActionCont.BroadcastModule.info.cmdInfo(ActionCont.BroadcastModule.user_account);
+        ResponseMessage responseMessage = new ResponseMessage();
+        responseMessage.setCmdInfo(cmdInfo);
+
+
         BoltClientProxy boltClientProxy = (BoltClientProxy) serverContext;
-        boltClientProxy.broadcast(userId, message);
+        boltClientProxy.broadcast(responseMessage);
 
         return true;
     }

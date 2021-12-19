@@ -1,6 +1,7 @@
 package com.iohao.example.a;
 
 import com.iohao.example.a.action.AppleAction;
+import com.iohao.example.client.ClientWidgetComponentsInit;
 import com.iohao.example.common.ExampleCont;
 import com.iohao.example.common.ModuleKeyCont;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
@@ -11,9 +12,6 @@ import com.iohao.little.game.net.core.RemoteAddress;
 import com.iohao.little.game.net.message.common.ModuleKeyManager;
 import com.iohao.little.game.net.message.common.ModuleMessage;
 import com.iohao.little.game.widget.config.WidgetComponents;
-import com.iohao.little.game.widget.mq.MessageQueueConfigWidget;
-import com.iohao.little.game.widget.mq.MessageQueueWidget;
-import com.iohao.little.game.widget.mq.internal.InternalMessageQueueWidget;
 
 public class MyClientAClientStartupConfig implements ClientStartupConfig {
     @Override
@@ -52,14 +50,7 @@ public class MyClientAClientStartupConfig implements ClientStartupConfig {
 
     @Override
     public void widgetComponents(WidgetComponents widgetComponents) {
-        // 消息队列配置项
-        MessageQueueConfigWidget messageQueueConfigWidget = new MessageQueueConfigWidget();
-        // 消息队列小部件
-        MessageQueueWidget messageQueueWidget = null;
-        // 消息队列小部件 - 使用内网的实现 (也可以换成 redis[Redisson， Lettuce], MQ[Apache Pulsar, RocketMQ]等)
-        messageQueueWidget = new InternalMessageQueueWidget(messageQueueConfigWidget);
-
-        // 添加到部件管理中
-        widgetComponents.option(MessageQueueWidget.class, messageQueueWidget);
+        // 初始化小部件
+        new ClientWidgetComponentsInit().widgetComponents(widgetComponents);
     }
 }

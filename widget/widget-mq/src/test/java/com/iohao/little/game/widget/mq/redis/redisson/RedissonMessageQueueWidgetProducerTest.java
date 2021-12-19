@@ -1,5 +1,7 @@
 package com.iohao.little.game.widget.mq.redis.redisson;
 
+import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
+import com.iohao.little.game.net.message.common.BroadcastMessage;
 import com.iohao.little.game.widget.mq.MessageQueueWidget;
 import com.iohao.little.game.widget.mq.MessageQueueConfigWidget;
 import com.iohao.little.game.widget.mq.dto.Lion;
@@ -15,13 +17,22 @@ public class RedissonMessageQueueWidgetProducerTest {
         MessageQueueWidget messageQueueWidget = new RedissonMessageQueueWidget(widgetMessageQueueConfig);
         log.info("MessageQueueProducer - start ok!");
         int i = 0;
+        String channel = "internal_channel";
         while (true) {
+
             Lion lion = new Lion();
             lion.setId(i++);
             lion.setName("name is : " + i);
 
-            String channel = "lionChannel";
-            messageQueueWidget.publish(channel, lion);
+            ResponseMessage responseMessage = new ResponseMessage();
+            responseMessage.setData(lion);
+
+            BroadcastMessage broadcastMessage = new BroadcastMessage();
+            broadcastMessage.setChannel(channel);
+            broadcastMessage.setResponseMessage(responseMessage);
+
+            // 消息发布
+            messageQueueWidget.publish(channel, broadcastMessage);
             Thread.sleep(2000);
         }
     }

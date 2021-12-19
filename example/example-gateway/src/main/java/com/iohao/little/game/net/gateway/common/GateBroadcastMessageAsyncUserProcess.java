@@ -3,6 +3,7 @@ package com.iohao.little.game.net.gateway.common;
 import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
+import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.message.common.BroadcastMessage;
 import com.iohao.little.game.widget.config.WidgetComponents;
 import com.iohao.little.game.widget.mq.MessageListenerWidget;
@@ -20,9 +21,11 @@ public class GateBroadcastMessageAsyncUserProcess extends AsyncUserProcessor<Bro
         // 模块之间的请求处理
         MessageQueueWidget messageQueueWidget = widgetComponents.option(MessageQueueWidget.class);
 
+        // 逻辑服推送的消息
+        ResponseMessage responseMessage = broadcastMessage.getResponseMessage();
         String channel = broadcastMessage.getChannel();
         MessageListenerWidget messageListenerWidget = messageQueueWidget.getByChannel(channel);
-        messageListenerWidget.onMessage(channel, broadcastMessage);
+        messageListenerWidget.onMessage(responseMessage, channel, broadcastMessage);
     }
 
     /**

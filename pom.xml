@@ -31,6 +31,7 @@
         <module>widget/widget-mq</module>
         <module>widget/widget-common</module>
         <module>common-message</module>
+        <module>example/example-client-common</module>
     </modules>
     <!--统一管理版本 的一个父 pom-->
     <properties>

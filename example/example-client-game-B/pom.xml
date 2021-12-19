@@ -17,16 +17,11 @@
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>com.iohao.game</groupId>
-            <artifactId>common-net-client</artifactId>
-            <version>${project-revision.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>com.iohao.game</groupId>
-            <artifactId>example-common</artifactId>
-            <version>${project-revision.version}</version>
+            <artifactId>example-client-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
     </dependencies>

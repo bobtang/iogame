@@ -1,5 +1,6 @@
 package com.iohao.little.game.widget.mq;
 
+import com.iohao.little.game.net.message.common.BroadcastMessage;
 import com.iohao.little.game.widget.config.WidgetComponent;
 
 /**
@@ -9,7 +10,7 @@ import com.iohao.little.game.widget.config.WidgetComponent;
  * @date 2021/12/17
  */
 public interface MessageQueueWidget extends WidgetComponent {
-    default void publish(Object message) {
+    default void publish(BroadcastMessage message) {
         this.publish("internal_channel", message);
     }
 
@@ -19,7 +20,7 @@ public interface MessageQueueWidget extends WidgetComponent {
      * @param channel (mq 中的 topic; redis 中的 channel)
      * @param message message
      */
-    void publish(String channel, Object message);
+    void publish(String channel, BroadcastMessage message);
 
     /**
      * 添加监听者（消息订阅者）

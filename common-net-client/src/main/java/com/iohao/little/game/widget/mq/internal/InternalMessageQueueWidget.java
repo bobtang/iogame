@@ -29,7 +29,7 @@ public class InternalMessageQueueWidget extends AbstractMessageQueueWidget {
     }
 
     @Override
-    public void publish(String channel, Object message) {
+    public void publish(String channel, BroadcastMessage message) {
         BroadcastMessage broadcastMessage = (BroadcastMessage) message;
         ResponseMessage responseMessage = broadcastMessage.getResponseMessage();
         CmdInfo cmdInfo = responseMessage.getCmdInfo();
