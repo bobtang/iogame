@@ -56,7 +56,7 @@ public class MyClientBClientStartupConfig implements ClientStartupConfig {
         MessageQueueConfigWidget messageQueueConfigWidget = new MessageQueueConfigWidget();
         // 消息队列小部件
         MessageQueueWidget messageQueueWidget = null;
-        // 使用内网的实现
+        // 消息队列小部件 - 使用内网的实现 (也可以换成 redis[Redisson， Lettuce], MQ[Apache Pulsar, RocketMQ]等)
         messageQueueWidget = new InternalMessageQueueWidget(messageQueueConfigWidget);
 
         // 添加到部件管理中

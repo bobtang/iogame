@@ -1,0 +1,74 @@
+package com.iohao.little.game.net.gateway.core;
+
+import com.iohao.little.game.net.BoltServer;
+import com.iohao.little.game.net.gateway.GateKit;
+import com.iohao.little.game.widget.config.WidgetComponents;
+
+public interface ServerStartupConfig {
+
+    /**
+     * 创建 BoltServer
+     *
+     * @return BoltServer
+     */
+    BoltServer createBoltServer();
+
+    /**
+     * 添加连接处理器
+     * <pre>
+     *     see:
+     *     {@link com.alipay.remoting.ConnectionEventType#CLOSE}
+     *     {@link com.alipay.remoting.ConnectionEventType#CONNECT}
+     * </pre>
+     *
+     * @param boltServer boltServer
+     */
+    void connectionEventProcessor(BoltServer boltServer);
+
+    /**
+     * 注册用户处理器
+     *
+     * @param boltServer boltServer
+     */
+    void registerUserProcessor(BoltServer boltServer);
+
+    /**
+     * 部件扩展 可以通过部件的方式来扩展
+     *
+     * @param widgetComponents 部件
+     */
+    void widgetComponents(WidgetComponents widgetComponents);
+
+    /**
+     * 服务器启动前的钩子方法
+     *
+     * @param boltServer boltServer
+     */
+    default void startBefore(BoltServer boltServer) {
+
+    }
+
+
+    /** 启动 */
+    default void startup() {
+        // 创建 BoltServer
+        BoltServer boltServer = createBoltServer();
+        GateKit.boltServer = boltServer;
+
+        // 部件扩展 可以通过部件的方式来扩展
+        WidgetComponents widgetComponents = boltServer.getWidgetComponents();
+        widgetComponents(widgetComponents);
+
+        // 添加连接处理器
+        connectionEventProcessor(boltServer);
+
+        // 注册用户处理器
+        registerUserProcessor(boltServer);
+
+        // 服务器启动前的钩子方法
+        startBefore(boltServer);
+
+        // 启动服务端
+        boltServer.start();
+    }
+}

@@ -20,19 +20,23 @@ import com.alipay.remoting.ConnectionEventProcessor;
 import com.alipay.remoting.ConnectionEventType;
 import com.alipay.remoting.rpc.RpcServer;
 import com.alipay.remoting.rpc.protocol.UserProcessor;
+import com.iohao.little.game.widget.config.WidgetComponents;
+import lombok.Getter;
 
 /**
  * Demo for bolt server
- * 
+ *
  * @author 洛朱
  * @date 2021/12/12
  */
 public class BoltServer {
     /** port */
-    private final int       port;
+    private final int port;
 
     /** rpc server */
     private final RpcServer server;
+    @Getter
+    private final WidgetComponents widgetComponents = new WidgetComponents();
 
     // ~~~ constructors
     public BoltServer(int port) {

@@ -6,9 +6,4 @@ public abstract class AbstractMessageQueueWidget implements MessageQueueWidget {
     public AbstractMessageQueueWidget(MessageQueueConfigWidget messageQueueConfigWidget) {
         this.messageQueueConfigWidget = messageQueueConfigWidget;
     }
-
-    @Override
-    public MessageListenerWidget getByChannel(String channel) {
-        return null;
-    }
 }

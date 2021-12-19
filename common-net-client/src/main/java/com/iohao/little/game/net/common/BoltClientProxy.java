@@ -49,6 +49,10 @@ public class BoltClientProxy implements ServerContext, ServerSender {
         this.rpcClient.oneway(connection,request);
     }
 
+    public void invokeWithCallback(Object request) throws RemotingException {
+        this.rpcClient.invokeWithCallback(connection,request,null,timeoutMillis);
+    }
+
     public void broadcast(Object data) {
         broadcast(0, data);
     }
@@ -66,7 +70,7 @@ public class BoltClientProxy implements ServerContext, ServerSender {
         broadcastMessage.setResponseMessage(responseMessage);
 
 
-        MessageQueueWidget messageQueueWidget = widgetComponents.get(MessageQueueWidget.class);
+        MessageQueueWidget messageQueueWidget = widgetComponents.option(MessageQueueWidget.class);
 
         messageQueueWidget.publish(broadcastMessage);
     }

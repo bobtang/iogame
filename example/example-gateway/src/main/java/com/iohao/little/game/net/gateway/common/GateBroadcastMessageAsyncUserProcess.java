@@ -18,7 +18,7 @@ public class GateBroadcastMessageAsyncUserProcess extends AsyncUserProcessor<Bro
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, BroadcastMessage broadcastMessage) {
         // 模块之间的请求处理
-        MessageQueueWidget messageQueueWidget = widgetComponents.get(MessageQueueWidget.class);
+        MessageQueueWidget messageQueueWidget = widgetComponents.option(MessageQueueWidget.class);
 
         String channel = broadcastMessage.getChannel();
         MessageListenerWidget messageListenerWidget = messageQueueWidget.getByChannel(channel);

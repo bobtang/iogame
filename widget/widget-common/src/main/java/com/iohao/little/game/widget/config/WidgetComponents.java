@@ -9,14 +9,35 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2021/12/17
  */
 public class WidgetComponents {
-    private final ConcurrentHashMap<Class<?>, WidgetComponent> componentMap = new ConcurrentHashMap<>();
 
-    public void option(Class<?> name, WidgetComponent widgetComponent) {
+    /**
+     * map
+     * <pre>
+     *     key : WidgetComponent class
+     *     value : WidgetComponent
+     * </pre>
+     */
+    private final ConcurrentHashMap<Class<? extends WidgetComponent>, WidgetComponent> componentMap = new ConcurrentHashMap<>();
+
+    /**
+     * 添加部件
+     *
+     * @param name            部件名
+     * @param widgetComponent 部件
+     */
+    public void option(Class<? extends WidgetComponent> name, WidgetComponent widgetComponent) {
         componentMap.put(name, widgetComponent);
     }
 
+    /**
+     * 获取部件 通过名字
+     *
+     * @param name 部件名
+     * @param <T>  t
+     * @return 部件
+     */
     @SuppressWarnings("unchecked")
-    public <T> T get(Class<T> name) {
+    public <T extends WidgetComponent> T option(Class<T> name) {
         return (T) componentMap.get(name);
     }
 }
