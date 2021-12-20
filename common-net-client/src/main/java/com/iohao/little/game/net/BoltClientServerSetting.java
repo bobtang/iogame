@@ -36,9 +36,4 @@ public class BoltClientServerSetting implements ServerSetting {
         this.moduleKey = moduleMessage.getModuleKey();
         this.address = remoteAddress.ip() + ":" + remoteAddress.port();
     }
-
-    public BoltClientServer build() {
-        return new BoltClientServer(this);
-    }
-
 }

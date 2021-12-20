@@ -11,12 +11,27 @@ public class ModuleKeyManager {
      */
     Map<Integer, ModuleKey> cmdMergeModuleKeyMap = new ConcurrentHashMap<>();
 
+    /**
+     * cmdMerge 与 moduleKey 关联
+     * <pre>
+     *     之后可以通过 cmdMerge 查找 moduleKey
+     * </pre>
+     *
+     * @param cmdMergeArray cmdMergeArray
+     * @param moduleKey     moduleKey
+     */
     public void relation(int[] cmdMergeArray, ModuleKey moduleKey) {
         for (int cmdMerge : cmdMergeArray) {
             cmdMergeModuleKeyMap.put(cmdMerge, moduleKey);
         }
     }
 
+    /**
+     * 通过 cmdMerge 查找 moduleKey
+     *
+     * @param cmdMerge cmdMerge
+     * @return moduleKey
+     */
     public ModuleKey getModuleKeyByCmdMerge(int cmdMerge) {
         return cmdMergeModuleKeyMap.get(cmdMerge);
     }
