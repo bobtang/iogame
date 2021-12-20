@@ -15,8 +15,10 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 /**
+ * class 扫描
+ *
  * @author 洛朱
- * @date 2021/12/12
+ * @Date 2021-12-12
  */
 @Data
 public class ClassScanner {

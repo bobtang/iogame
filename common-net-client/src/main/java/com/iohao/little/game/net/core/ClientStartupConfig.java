@@ -13,7 +13,7 @@ import com.iohao.little.game.widget.config.WidgetComponents;
  * client server 启动流程
  *
  * @author 洛朱
- * @date 2021/12/17
+ * @Date 2021-12-17
  */
 public interface ClientStartupConfig {
     /**
@@ -72,25 +72,28 @@ public interface ClientStartupConfig {
 
     /**
      * 启动
+     * <pre>
+     *     模板方法模式
+     * </pre>
      */
     default void startup() {
         // 业务框架
         BarSkeleton barSkeleton = createBarSkeleton();
 
         // 创建模块信息
-        ModuleMessage moduleMessage = createModuleMessage();
+        ModuleMessage moduleMessage = this.createModuleMessage();
         // 设置模块包含的 cmd 列表
         ActionCommandManager actionCommandManager = barSkeleton.getActionCommandManager();
         int[] cmdMergeArray = actionCommandManager.arrayCmdMerge();
         moduleMessage.setCmdMergeArray(cmdMergeArray);
 
         // 远程连接地址
-        RemoteAddress remoteAddress = createRemoteAddress();
+        RemoteAddress remoteAddress = this.createRemoteAddress();
 
         // 服务器设置
         BoltClientServerSetting setting = new BoltClientServerSetting(barSkeleton, moduleMessage, remoteAddress);
         // 构建配置项
-        serverSetting(setting);
+        this.serverSetting(setting);
 
         // 构建客户端服务器
         BoltClientServer boltClientServer = new BoltClientServer(setting);

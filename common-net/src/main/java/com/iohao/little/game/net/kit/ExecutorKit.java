@@ -4,6 +4,12 @@ import cn.hutool.core.thread.ThreadFactoryBuilder;
 
 import java.util.concurrent.*;
 
+/**
+ * 线程执行器工具
+ *
+ * @author 洛朱
+ * @Date 2021-12-20
+ */
 public class ExecutorKit {
     /**
      * 创建单个线程执行器

@@ -40,7 +40,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * ConnectionEventProcessor for ConnectionEventType.CONNECT
  *
  * @author 洛朱
- * @date 2021/12/12
+ * @Date 2021-12-12
  */
 @Slf4j
 public class GateConnectEventProcessor implements ConnectionEventProcessor {

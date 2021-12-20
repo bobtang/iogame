@@ -2,6 +2,12 @@ package com.iohao.little.game.action.skeleton.core;
 
 import cn.hutool.core.util.StrUtil;
 
+/**
+ * Cmd 工具
+ *
+ * @author 洛朱
+ * @Date 2021-12-20
+ */
 public class CmdKit {
     /**
      * 从 merge 中获取 [高16位] 的数值

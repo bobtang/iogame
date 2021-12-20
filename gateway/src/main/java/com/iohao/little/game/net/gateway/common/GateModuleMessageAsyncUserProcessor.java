@@ -7,6 +7,12 @@ import com.iohao.little.game.net.gateway.module.ModuleInfoManager;
 import com.iohao.little.game.net.message.common.ModuleMessage;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * 模块注册
+ *
+ * @author 洛朱
+ * @Date 2021-12-20
+ */
 @Slf4j
 public class GateModuleMessageAsyncUserProcessor extends AsyncUserProcessor<ModuleMessage> {
     @Override

@@ -4,6 +4,15 @@ import com.iohao.little.game.net.BoltServer;
 import com.iohao.little.game.net.gateway.GateKit;
 import com.iohao.little.game.widget.config.WidgetComponents;
 
+/**
+ * 服务端启动配置
+ * <pre>
+ *     一般指网关服
+ * </pre>
+ *
+ * @author 洛朱
+ * @Date 2021-12-20
+ */
 public interface ServerStartupConfig {
 
     /**
@@ -12,6 +21,13 @@ public interface ServerStartupConfig {
      * @return BoltServer
      */
     BoltServer createBoltServer();
+
+    /**
+     * 部件扩展 可以通过部件的方式来扩展
+     *
+     * @param widgetComponents 部件
+     */
+    void widgetComponents(WidgetComponents widgetComponents);
 
     /**
      * 添加连接处理器
@@ -33,13 +49,6 @@ public interface ServerStartupConfig {
     void registerUserProcessor(BoltServer boltServer);
 
     /**
-     * 部件扩展 可以通过部件的方式来扩展
-     *
-     * @param widgetComponents 部件
-     */
-    void widgetComponents(WidgetComponents widgetComponents);
-
-    /**
      * 服务器启动前的钩子方法
      *
      * @param boltServer boltServer
@@ -48,8 +57,12 @@ public interface ServerStartupConfig {
 
     }
 
-
-    /** 启动 */
+    /**
+     * 启动
+     * <pre>
+     *     模板方法模式
+     * </pre>
+     */
     default void startup() {
         // 创建 BoltServer
         BoltServer boltServer = createBoltServer();

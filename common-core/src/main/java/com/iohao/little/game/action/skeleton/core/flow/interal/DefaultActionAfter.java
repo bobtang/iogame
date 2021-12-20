@@ -10,6 +10,12 @@ import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 
 import java.util.Objects;
 
+/**
+ * 默认的ActionAfter
+ *
+ * @author 洛朱
+ * @Date 2021-12-20
+ */
 public class DefaultActionAfter implements ActionAfter<RequestMessage, ResponseMessage> {
     @Override
     public void execute(final ParamContext paramContext1, final ActionCommand actionCommand, final RequestMessage requestMessage, final ResponseMessage responseMessage) {

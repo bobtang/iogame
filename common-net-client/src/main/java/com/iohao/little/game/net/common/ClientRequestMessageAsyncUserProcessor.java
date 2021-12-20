@@ -9,6 +9,15 @@ import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.net.BoltClientServerSetting;
 import lombok.Setter;
 
+/**
+ * 客户端请求处理器
+ * <pre>
+ *     通过业务框架把请求派发给指定的业务类来处理
+ * </pre>
+ *
+ * @author 洛朱
+ * @Date 2021-12-20
+ */
 public class ClientRequestMessageAsyncUserProcessor extends AsyncUserProcessor<RequestMessage> {
 
     @Setter
@@ -16,14 +25,15 @@ public class ClientRequestMessageAsyncUserProcessor extends AsyncUserProcessor<R
 
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, RequestMessage request) {
-        // TODO: 2021/12/14 这里可以使用对象池技术
+        // TODO: 2021-12-14 这里可以使用对象池技术
         DefaultParamContext paramContext = new DefaultParamContext();
         paramContext.setBizCtx(bizCtx);
         paramContext.setAsyncCtx(asyncCtx);
         paramContext.setServerContext(boltClientServerSetting.getBoltClientProxy());
 
-        // TODO: 2021/12/14 这里可以使用领域事件
+        // TODO: 2021-12-14 这里可以使用领域事件
         BarSkeleton barSkeleton = boltClientServerSetting.getBarSkeleton();
+        // 通过业务框架把请求派发给指定的业务类来处理
         barSkeleton.handle(paramContext, request);
     }
 

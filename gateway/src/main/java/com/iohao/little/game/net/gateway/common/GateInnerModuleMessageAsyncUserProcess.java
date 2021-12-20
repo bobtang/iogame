@@ -8,6 +8,12 @@ import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.gateway.module.ModuleInfoManager;
 import com.iohao.little.game.net.message.common.InnerModuleMessage;
 
+/**
+ * 网关转发到其它逻辑服
+ *
+ * @author 洛朱
+ * @Date 2021-12-20
+ */
 public class GateInnerModuleMessageAsyncUserProcess extends AsyncUserProcessor<InnerModuleMessage> {
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, InnerModuleMessage innerModuleMessage) {

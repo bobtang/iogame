@@ -2,6 +2,12 @@ package com.iohao.little.game.action.skeleton.core;
 
 import java.util.*;
 
+/**
+ * 命令管理器
+ *
+ * @author 洛朱
+ * @Date 2021-12-20
+ */
 public final class ActionCommandManager {
     /**
      * action map

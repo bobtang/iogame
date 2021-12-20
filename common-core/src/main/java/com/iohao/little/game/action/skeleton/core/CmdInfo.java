@@ -9,6 +9,9 @@ import lombok.Getter;
  *     平常大部分框架使用一个 cmd 来约定协议
  *     这里使用cmd,subCmd是为了模块的划分清晰, 当然这样规划还有更多好处. 但目前不是讨论的重点
  * </pre>
+ *
+ * @author 洛朱
+ * @Date 2021-12-20
  */
 @Getter
 public final class CmdInfo {

@@ -9,6 +9,12 @@ import lombok.experimental.UtilityClass;
 import java.util.List;
 import java.util.function.Predicate;
 
+/**
+ * 客户端业务框架
+ *
+ * @author 洛朱
+ * @Date 2021-12-20
+ */
 @UtilityClass
 public class ClientBarSkeleton {
     public BarSkeleton newBarSkeleton(Class<?>... actionClazz) {

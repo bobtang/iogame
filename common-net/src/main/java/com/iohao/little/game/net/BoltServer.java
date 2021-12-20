@@ -27,7 +27,7 @@ import lombok.Getter;
  * Demo for bolt server
  *
  * @author 洛朱
- * @date 2021/12/12
+ * @Date 2021-12-12
  */
 public class BoltServer {
     /** port */

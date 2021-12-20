@@ -25,33 +25,6 @@ public class GatewayServerStartupConfig implements ServerStartupConfig {
     }
 
     @Override
-    public void connectionEventProcessor(BoltServer boltServer) {
-        GateConnectEventProcessor serverConnectProcessor = new GateConnectEventProcessor();
-        GateDisConnectEventProcessor serverDisConnectProcessor = new GateDisConnectEventProcessor();
-
-        serverConnectProcessor.setServer(boltServer);
-        boltServer.addConnectionEventProcessor(ConnectionEventType.CONNECT, serverConnectProcessor);
-        boltServer.addConnectionEventProcessor(ConnectionEventType.CLOSE, serverDisConnectProcessor);
-
-    }
-
-    @Override
-    public void registerUserProcessor(BoltServer boltServer) {
-        // 处理 - 模块注册
-        var registerAsyncUserProcessor = new GateModuleMessageAsyncUserProcessor();
-        boltServer.registerUserProcessor(registerAsyncUserProcessor);
-
-        // 处理 - 内部模块转发
-        var innerModuleMessageAsyncUserProcess = new GateInnerModuleMessageAsyncUserProcess();
-        boltServer.registerUserProcessor(innerModuleMessageAsyncUserProcess);
-
-        // 处理 - 发布订阅
-        WidgetComponents widgetComponents = boltServer.getWidgetComponents();
-        var gateBroadcastMessageAsyncUserProcess = new GateBroadcastMessageAsyncUserProcess(widgetComponents);
-        boltServer.registerUserProcessor(gateBroadcastMessageAsyncUserProcess);
-    }
-
-    @Override
     public void widgetComponents(WidgetComponents widgetComponents) {
         // 消息队列配置项
         MessageQueueConfigWidget messageQueueConfigWidget = new MessageQueueConfigWidget();
@@ -71,4 +44,31 @@ public class GatewayServerStartupConfig implements ServerStartupConfig {
         // 添加到部件管理中
         widgetComponents.option(MessageQueueWidget.class, messageQueueWidget);
     }
+
+    @Override
+    public void connectionEventProcessor(BoltServer boltServer) {
+        GateConnectEventProcessor serverConnectProcessor = new GateConnectEventProcessor();
+        GateDisConnectEventProcessor serverDisConnectProcessor = new GateDisConnectEventProcessor();
+
+        serverConnectProcessor.setServer(boltServer);
+        boltServer.addConnectionEventProcessor(ConnectionEventType.CONNECT, serverConnectProcessor);
+        boltServer.addConnectionEventProcessor(ConnectionEventType.CLOSE, serverDisConnectProcessor);
+    }
+
+    @Override
+    public void registerUserProcessor(BoltServer boltServer) {
+        // 处理 - 模块注册
+        var registerAsyncUserProcessor = new GateModuleMessageAsyncUserProcessor();
+        boltServer.registerUserProcessor(registerAsyncUserProcessor);
+
+        // 处理 - 内部模块转发
+        var innerModuleMessageAsyncUserProcess = new GateInnerModuleMessageAsyncUserProcess();
+        boltServer.registerUserProcessor(innerModuleMessageAsyncUserProcess);
+
+        // 处理 - 发布订阅
+        WidgetComponents widgetComponents = boltServer.getWidgetComponents();
+        var gateBroadcastMessageAsyncUserProcess = new GateBroadcastMessageAsyncUserProcess(widgetComponents);
+        boltServer.registerUserProcessor(gateBroadcastMessageAsyncUserProcess);
+    }
+
 }

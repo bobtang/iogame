@@ -8,6 +8,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 客户端代理管理器
+ *
+ * @author 洛朱
+ * @Date 2021-12-20
+ */
 public class BoltClientProxyManager {
     private final Map<ModuleKey, BoltClientProxy> boltClientMap = new ConcurrentHashMap<>();
     private BoltClientProxy gateProxy;

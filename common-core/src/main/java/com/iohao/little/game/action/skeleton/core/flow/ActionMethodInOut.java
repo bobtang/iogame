@@ -9,17 +9,21 @@ import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 /**
  * inout 接口
  * <pre>
- * {@link ActionCommand} 执行前,后的逻辑钩子类
+ *     {@link ActionCommand} 执行前,后的逻辑钩子类
  *
- * 毫无疑问的是这个类的方法名过于刺激,但并不会影响我们的发挥
+ *     毫无疑问的是这个类的方法名过于刺激,但并不会影响我们的发挥
  *
- * 通过这个接口,你可以做很多事情, 当然这要看你的想象力有多丰富了
+ *     通过这个接口,你可以做很多事情, 当然这要看你的想象力有多丰富了
+ *
  *     例如: 日志记录, 执行时间打印. 等等 (可参考框架内置的实现类)
  * </pre>
  *
+ * @param <Request>  请求
+ * @param <Response> 响应
  * @author 洛朱
- * @date 2021/12/12
+ * @Date 2021-12-12
  */
+
 public interface ActionMethodInOut<Request extends RequestMessage, Response extends ResponseMessage> {
 
     /**

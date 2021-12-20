@@ -6,6 +6,8 @@ import com.iohao.little.game.action.skeleton.annotation.ActionController;
  * ActionController 工厂
  *
  * @param <T> t
+ * @author 洛朱
+ * @Date 2021-12-20
  */
 public interface ActionControllerFactoryBean<T> {
     /**

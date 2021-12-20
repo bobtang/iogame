@@ -6,6 +6,15 @@ import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.net.gateway.GateKit;
 import com.iohao.little.game.net.message.common.ModuleMessage;
 
+/**
+ * 模块信息代理
+ * <pre>
+ *     这里的模块指的是逻辑服信息
+ * </pre>
+ *
+ * @author 洛朱
+ * @Date 2021-12-20
+ */
 public class ModuleInfoProxy {
 
     final ModuleMessage moduleMessage;

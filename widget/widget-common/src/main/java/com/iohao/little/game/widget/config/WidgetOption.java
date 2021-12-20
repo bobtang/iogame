@@ -8,7 +8,7 @@ import java.util.Objects;
  * 配置项
  *
  * @author 洛朱
- * @date 2021/12/16
+ * @Date 2021-12-16
  */
 @ToString
 public class WidgetOption<T> {

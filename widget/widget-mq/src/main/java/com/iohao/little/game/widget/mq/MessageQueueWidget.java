@@ -7,7 +7,7 @@ import com.iohao.little.game.widget.config.WidgetComponent;
  * 消息队列部件
  *
  * @author 洛朱
- * @date 2021/12/17
+ * @Date 2021-12-17
  */
 public interface MessageQueueWidget extends WidgetComponent {
     default void publish(BroadcastMessage message) {

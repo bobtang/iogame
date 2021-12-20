@@ -11,6 +11,15 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 
+/**
+ * 客户端服务器
+ * <pre>
+ *     这里指逻辑服
+ * </pre>
+ *
+ * @author 洛朱
+ * @Date 2021-12-20
+ */
 @Slf4j
 public class BoltClientServer {
 

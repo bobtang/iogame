@@ -24,7 +24,7 @@ import lombok.experimental.Accessors;
  * </pre>
  *
  * @author 洛朱
- * @date 2021/12/17
+ * @Date 2021-12-17
  */
 @Getter
 @Setter
@@ -59,7 +59,7 @@ public class BoltClientProxy implements ServerContext, ServerSender {
     public void broadcast(long userId, ResponseMessage responseMessage) {
         responseMessage.setUserId(userId);
 
-        // TODO: 2021/12/14 广播
+        // TODO: 2021-12-14 广播
         String channel = "internal_channel";
         BroadcastMessage broadcastMessage = new BroadcastMessage();
         broadcastMessage.setChannel(channel);

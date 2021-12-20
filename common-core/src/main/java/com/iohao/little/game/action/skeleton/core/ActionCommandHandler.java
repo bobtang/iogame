@@ -5,10 +5,9 @@ import lombok.Setter;
 
 /**
  * 该handler用于执行 {@link ActionCommand} 对象
- * <BR>
  *
  * @author 洛朱
- * @date 2021/12/12
+ * @Date 2021-12-12
  */
 public final class ActionCommandHandler implements Handler<RequestMessage> {
 

@@ -9,6 +9,13 @@ import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
+
+/**
+ * 消息基类
+ *
+ * @author 洛朱
+ * @Date 2021-12-20
+ */
 @ToString
 @Getter
 @Setter

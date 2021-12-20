@@ -4,7 +4,9 @@ import java.util.Objects;
 
 /**
  * 获取安全的值, 保证返回的不是 null
- * <BR>
+ *
+ * @author 洛朱
+ * @Date 2021-12-20
  */
 public class SafeKit {
     public static int getInt(Integer value) {

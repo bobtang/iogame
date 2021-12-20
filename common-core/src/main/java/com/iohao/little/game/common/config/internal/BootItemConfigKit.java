@@ -4,6 +4,11 @@ import com.iohao.core.config.scan.ScanClass;
 
 import java.util.Set;
 
+/**
+ * BootItem 配置项工具
+ * @author 洛朱
+ * @Date 2021-12-20
+ */
 public class BootItemConfigKit {
     /**
      * 加载配置

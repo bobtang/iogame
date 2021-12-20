@@ -6,6 +6,12 @@ import com.iohao.little.game.action.skeleton.core.flow.ActionMethodResultWrap;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 
+/**
+ * Default ActionMethod 结果包装器
+ *
+ * @author 洛朱
+ * @Date 2021-12-20
+ */
 public class DefaultActionMethodResultWrap implements ActionMethodResultWrap<RequestMessage, ResponseMessage> {
     @Override
     public ResponseMessage wrap(final ActionCommand actionCommand, final RequestMessage requestMessage, final Object result) {

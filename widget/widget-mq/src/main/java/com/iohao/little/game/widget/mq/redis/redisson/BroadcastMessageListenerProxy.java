@@ -11,7 +11,7 @@ import org.redisson.api.listener.MessageListener;
  * </pre>
  *
  * @author 洛朱
- * @date 2021/12/17
+ * @Date 2021-12-17
  */
 public class BroadcastMessageListenerProxy implements MessageListener<BroadcastMessage> {
     MessageListenerWidget<Object> messageListenerWidget;

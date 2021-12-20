@@ -8,7 +8,7 @@ import com.iohao.little.game.net.message.common.BroadcastMessage;
  *
  * @param <T> t 先做个预留，暂时没什么鸟用
  * @author 洛朱
- * @date 2021/12/16
+ * @Date 2021-12-16
  */
 public interface MessageListenerWidget<T> {
     /**

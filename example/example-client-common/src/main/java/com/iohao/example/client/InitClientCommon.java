@@ -37,7 +37,7 @@ public class InitClientCommon {
         // 消息队列小部件 - 使用实现 redis[Redisson]
 //        messageQueueWidget = new RedissonMessageQueueWidget(messageQueueConfigWidget);
 
-        // TODO: 2021/12/19 注意 发布订阅的内核 需要逻辑服与网关一致
+        // TODO: 2021-12-19 注意 发布订阅的内核 需要逻辑服与网关一致
 
         // 添加到部件管理中
         widgetComponents.option(MessageQueueWidget.class, messageQueueWidget);

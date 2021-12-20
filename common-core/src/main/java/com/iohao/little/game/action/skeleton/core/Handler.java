@@ -2,6 +2,12 @@ package com.iohao.little.game.action.skeleton.core;
 
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 
+/**
+ * 业务框架处理器
+ *
+ * @author 洛朱
+ * @Date 2021-12-20
+ */
 public interface Handler<Request extends RequestMessage> {
     /**
      * 处理一个action请求
