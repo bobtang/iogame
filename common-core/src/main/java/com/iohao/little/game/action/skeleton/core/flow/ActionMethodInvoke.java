@@ -17,6 +17,11 @@ import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 public interface ActionMethodInvoke {
     /**
      * 具体的业务方法掉用
+     * <pre>
+     *     类有上有注解 {@link com.iohao.little.game.action.skeleton.annotation.ActionController}
+     *     方法有注解 {@link com.iohao.little.game.action.skeleton.annotation.ActionMethod}
+     *     只要有这两个注解的，就是业务类
+     * </pre>
      *
      * @param paramContext  参数上下方
      * @param actionCommand actionCommand

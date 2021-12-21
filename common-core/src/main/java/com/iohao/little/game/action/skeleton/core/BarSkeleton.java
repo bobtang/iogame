@@ -11,7 +11,7 @@ import java.util.*;
 
 
 /**
- * 整个核心的骨架.积木骷髅
+ * 整个核心的骨架.积木骷髅 (业务框架)
  * <p>
  * 其实这就是一个积木骷髅的游戏.
  * <pre>
@@ -28,47 +28,32 @@ import java.util.*;
 @Getter
 public class BarSkeleton {
 
-    /**
-     * ActionCommandManager
-     */
+    /** ActionCommandManager */
     final ActionCommandManager actionCommandManager = new ActionCommandManager();
-    final List<Handler<RequestMessage>> handlers = new LinkedList<>();
-    final List<ActionMethodInOut> inOuts = new LinkedList<>();
+    /** handlerList */
+    final List<Handler<RequestMessage>> handlers = new ArrayList<>();
+    /** inoutList */
+    final List<ActionMethodInOut> inOuts = new ArrayList<>();
 
-    /**
-     * true : 开放拦截 in
-     */
-    boolean openIn = true;
-    /**
-     * true : 开放拦截 out
-     */
-    boolean openOut = true;
+    /** true : 开放拦截 in */
+    boolean openIn;
+    /** true : 开放拦截 out */
+    boolean openOut;
 
     /** 命令执行器 */
     ActionCommandFlowExecute actionCommandFlowExecute;
-
-    /**
-     * 方法参数解析器
-     */
-    ActionMethodParamParser actionMethodParamParser;
-
-    /**
-     * InvokeActionMethod
-     */
-    ActionMethodInvoke actionMethodInvoke;
-
-    /**
-     * tcp 对象创建工厂
-     */
+    /** tcp action 对象创建工厂 */
     ActionControllerFactoryBean<Object> actionControllerFactoryBean;
-    /**
-     * 结果包装器
-     */
-    ActionMethodResultWrap<RequestMessage, ResponseMessage> actionMethodResultWrap;
-    /**
-     * 异常处理
-     */
+    /** InvokeActionMethod */
+    ActionMethodInvoke actionMethodInvoke;
+    /** 方法参数解析器 */
+    ActionMethodParamParser actionMethodParamParser;
+    /** 异常处理 */
     ActionMethodExceptionProcess actionMethodExceptionProcess;
+    /** 结果包装器 */
+    ActionMethodResultWrap<RequestMessage, ResponseMessage> actionMethodResultWrap;
+    /** 框架执行完后, 最后需要做的事. 一般用于write数据到客户端 */
+    ActionAfter<RequestMessage, ResponseMessage> actionAfter;
 
     /**
      * true 只有一个 handler
@@ -77,10 +62,6 @@ public class BarSkeleton {
      */
     boolean singleHandler;
     Handler<RequestMessage> handler;
-    /**
-     * 框架执行完后, 最后需要做的事. 一般用于write数据到客户端
-     */
-    ActionAfter<RequestMessage, ResponseMessage> actionAfter;
 
     BarSkeleton() {
 

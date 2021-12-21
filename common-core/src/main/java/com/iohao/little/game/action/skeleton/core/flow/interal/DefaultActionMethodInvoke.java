@@ -19,18 +19,19 @@ public class DefaultActionMethodInvoke implements ActionMethodInvoke {
 
     @Override
     public Object invoke(ParamContext paramContext, ActionCommand actionCommand, Object controller, RequestMessage request, BarSkeleton barSkeleton) {
-        // 解析参数
+        // 解析参数器
         ActionMethodParamParser paramParser = barSkeleton.getActionMethodParamParser();
+        // 方法参数列表
         var pars = paramParser.listParam(paramContext, actionCommand, request);
-
-        StackTraceElement[] steArray1 = Thread.currentThread().getStackTrace();
+        // 方法下标
+        var actionMethodIndex = actionCommand.getActionMethodIndex();
+        // 方法访问器
+        MethodAccess actionMethodAccess = actionCommand.getActionMethodAccess();
 
         // 方法声明了异常的处理方式
         if (actionCommand.isHasThrowException()) {
             try {
-                MethodAccess actionMethodAccess = actionCommand.getActionMethodAccess();
-                Object result = actionMethodAccess.invoke(controller, actionCommand.getActionMethodIndex(), pars);
-                return result;
+                return actionMethodAccess.invoke(controller, actionMethodIndex, pars);
             } catch (Throwable e) {
                 e.printStackTrace();
                 // 异常处理
@@ -40,11 +41,7 @@ public class DefaultActionMethodInvoke implements ActionMethodInvoke {
             }
         } else {
             // 方法没有声明会抛异常，走这里的逻辑, 少 try 一次
-            MethodAccess actionMethodAccess = actionCommand.getActionMethodAccess();
-            Object result = actionMethodAccess.invoke(controller, actionCommand.getActionMethodIndex(), pars);
-            StackTraceElement[] steArray2 = Thread.currentThread().getStackTrace();
-
-            return result;
+            return actionMethodAccess.invoke(controller, actionMethodIndex, pars);
         }
     }
 }

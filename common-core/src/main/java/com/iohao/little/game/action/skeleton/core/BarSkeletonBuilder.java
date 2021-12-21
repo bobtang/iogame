@@ -47,11 +47,6 @@ public final class BarSkeletonBuilder {
     /** ActionMethod 方法参数解析器 */
     ActionMethodParamParser actionMethodParamParser = new DefaultActionMethodParamParser();
 
-//    /** aware 注入 */
-//    AwareExecute awareExecute = new AwareExecute() {
-//    };
-
-
     BarSkeletonBuilder() {
     }
 
@@ -62,8 +57,8 @@ public final class BarSkeletonBuilder {
 
         // 参数设置
         var barSkeleton = new BarSkeleton()
-                .setOpenOut(this.openOut)
                 .setOpenIn(this.openIn)
+                .setOpenOut(this.openOut)
                 // action command 命令执行器流程
                 .setActionCommandFlowExecute(this.actionCommandFlowExecute)
                 // action 工厂
