@@ -19,57 +19,32 @@ import java.util.*;
 @Accessors(chain = true)
 @Setter
 public final class BarSkeletonBuilder {
-    /**
-     * 默认tcp对象是single. 如果设置为false, 每次创建新的tcp对象. 默认:true
-     */
+    /** 默认tcp对象是single. 如果设置为false, 每次创建新的tcp对象. 默认:true */
     boolean createSingleActionCommandController = true;
     boolean openIn = true;
     boolean openOut = true;
-    /**
-     * handler 列表
-     */
+    /** handler 列表 */
     final List<Handler<RequestMessage>> handlers = new LinkedList<>();
-    /**
-     * inout 列表
-     */
-    final List<ActionMethodInOut<RequestMessage, ResponseMessage>> inOuts = new LinkedList<>();
-    /**
-     * action class
-     */
+    /** inout 列表 */
+    final List<ActionMethodInOut> inOuts = new LinkedList<>();
+    /** action class */
     final List<Class<?>> controllerClazzList = new LinkedList<>();
-
-    /**
-     * BarSkeletonSetting
-     */
+    /** BarSkeletonSetting */
     @Getter
     final BarSkeletonSetting barSkeletonSetting = new BarSkeletonSetting();
-    /**
-     * 命令执行器
-     */
+    /** 命令执行器 */
     ActionCommandFlowExecute actionCommandFlowExecute = new DefaultActionCommandFlowExecute();
-    /**
-     * action工厂
-     */
+    /** action工厂 */
     ActionControllerFactoryBean<Object> actionControllerFactoryBean = new DefaultActionControllerFactoryBean<>();
-    /**
-     * 框架执行完后, 最后需要做的事. 一般用于write数据到掉用端端
-     */
+    /** 框架执行完后, 最后需要做的事. 一般用于write数据到掉用端端 */
     ActionAfter<RequestMessage, ResponseMessage> actionAfter = new DefaultActionAfter();
-    /**
-     * 结果包装器
-     */
+    /** 结果包装器 */
     ActionMethodResultWrap<RequestMessage, ResponseMessage> actionMethodResultWrap = new DefaultActionMethodResultWrap();
-    /**
-     * 异常处理
-     */
+    /** 异常处理 */
     ActionMethodExceptionProcess actionMethodExceptionProcess = new DefaultActionMethodExceptionProcess();
-    /**
-     * InvokeActionMethod
-     */
+    /** InvokeActionMethod */
     ActionMethodInvoke actionMethodInvoke = new DefaultActionMethodInvoke();
-    /**
-     * ActionMethod 方法参数解析器
-     */
+    /** ActionMethod 方法参数解析器 */
     ActionMethodParamParser actionMethodParamParser = new DefaultActionMethodParamParser();
 
 //    /** aware 注入 */
@@ -138,7 +113,7 @@ public final class BarSkeletonBuilder {
 
     private void extractedInout(BarSkeleton barSkeleton) {
         if (this.inOuts.isEmpty()) {
-            barSkeleton.inOuts.add(new ExecuteTimeInOut());
+            barSkeleton.inOuts.add(new DebugInOut());
         } else {
             barSkeleton.inOuts.addAll(this.inOuts);
         }

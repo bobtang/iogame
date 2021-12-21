@@ -48,6 +48,11 @@ public final class ActionCommandInfoBuilder {
 
     /**
      * 构建映射
+     * <pre>
+     *     这个方法可以做一个抽象接口
+     *     让接口子类来处理如何生成 Map<Integer, Map<Integer, ActionCommand>> 的数据
+     *     但现在不着急; 2021-12-21
+     * </pre>
      *
      * @param controllerList action 类列表
      */

@@ -1,6 +1,7 @@
 package com.iohao.little.game.action.skeleton.core;
 
 import com.iohao.little.game.action.skeleton.core.flow.ActionAfter;
+import com.iohao.little.game.action.skeleton.core.flow.InOutContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 
@@ -14,13 +15,20 @@ import java.util.Objects;
  */
 public final class DefaultActionCommandFlowExecute implements ActionCommandFlowExecute {
 
-    public void execute(final ParamContext paramContext, final ActionCommand actionCommand, final RequestMessage request, final BarSkeleton barSkeleton) {
+
+    public void execute(final ParamContext paramContext
+            , final ActionCommand actionCommand
+            , final RequestMessage request
+            , final BarSkeleton barSkeleton) {
+
         // 1 - ActionController 工厂
         var factoryBean = barSkeleton.getActionControllerFactoryBean();
         var controller = factoryBean.getBean(actionCommand);
 
+        // inout 上下文
+        InOutContext inOutContext = getInOutContext(paramContext, actionCommand, controller, request, barSkeleton);
         // 2 - fuck前 在调用控制器对应处理方法前, 执行inout的in.
-        fuckIn(paramContext, actionCommand, controller, request, barSkeleton);
+        fuckIn(inOutContext, barSkeleton);
 
         // aware 注入
 //        barSkeleton.getAwareExecute().executeAware(controller, channelContext, request, actionCommand, barSkeleton);
@@ -45,31 +53,42 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
         }
 
         // 6 - fuck后 在调用控制器对应处理方法结束后, 执行inout的out.
-        fuckOut(paramContext, actionCommand, controller, request, response, barSkeleton);
+        fuckOut(inOutContext, response, barSkeleton);
     }
 
-    private void fuckIn(ParamContext paramContext
-            , ActionCommand actionCommand
-            , Object controller
-            , RequestMessage request
-            , BarSkeleton barSkeleton) {
+    private void fuckIn(InOutContext inOutContext, BarSkeleton barSkeleton) {
 
         if (barSkeleton.isOpenIn()) {
-            barSkeleton.getInOuts().forEach(inOut -> inOut.fuckIn(paramContext, actionCommand, controller, request));
+            barSkeleton.getInOuts().forEach(inOut -> inOut.fuckIn(inOutContext));
         }
     }
 
 
-    private void fuckOut(ParamContext paramContext
-            , ActionCommand actionCommand
-            , Object controller
-            , RequestMessage request
+    private void fuckOut(InOutContext inOutContext
             , ResponseMessage response
             , BarSkeleton barSkeleton) {
 
         if (barSkeleton.isOpenOut()) {
-            barSkeleton.getInOuts().forEach(inOut -> inOut.fuckOut(paramContext, actionCommand, controller, request, response));
+            inOutContext.setResponseMessage(response);
+
+            barSkeleton.getInOuts().forEach(inOut -> inOut.fuckOut(inOutContext));
         }
+    }
+
+    private InOutContext getInOutContext(ParamContext paramContext
+            , ActionCommand actionCommand
+            , Object controller
+            , RequestMessage request
+            , BarSkeleton barSkeleton) {
+
+        if (barSkeleton.isOpenIn() || barSkeleton.isOpenOut()) {
+            return new InOutContext()
+                    .setParamContext(paramContext)
+                    .setActionCommand(actionCommand)
+                    .setActionController(controller)
+                    .setRequestMessage(request);
+        }
+        return null;
     }
 
 }

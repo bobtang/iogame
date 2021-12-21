@@ -33,7 +33,7 @@ public class BarSkeleton {
      */
     final ActionCommandManager actionCommandManager = new ActionCommandManager();
     final List<Handler<RequestMessage>> handlers = new LinkedList<>();
-    final List<ActionMethodInOut<RequestMessage, ResponseMessage>> inOuts = new LinkedList<>();
+    final List<ActionMethodInOut> inOuts = new LinkedList<>();
 
     /**
      * true : 开放拦截 in

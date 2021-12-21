@@ -4,7 +4,6 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.iohao.little.game.action.skeleton.core.flow.ActionMethodInOut;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
-import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import lombok.experimental.UtilityClass;
 import org.fusesource.jansi.Ansi;
 
@@ -24,11 +23,11 @@ public class PrintActionKit {
      *
      * @param inOuts inOuts
      */
-    public void printInout(List<ActionMethodInOut<RequestMessage, ResponseMessage>> inOuts) {
+    public void printInout(List<ActionMethodInOut> inOuts) {
         String title = "@|CYAN ======================== InOut ========================= |@";
         System.out.println(Ansi.ansi().eraseScreen().render(title));
         System.out.println("如果需要关闭日志, 查看 BehaviorConfig#setPrintInout");
-        for (ActionMethodInOut<RequestMessage, ResponseMessage> inOut : inOuts) {
+        for (ActionMethodInOut inOut : inOuts) {
             String info = String.format("@|BLUE %s |@", inOut.getClass());
             System.out.println(Ansi.ansi().eraseScreen().render(info));
         }

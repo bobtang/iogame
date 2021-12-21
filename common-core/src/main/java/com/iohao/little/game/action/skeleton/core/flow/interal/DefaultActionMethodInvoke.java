@@ -1,5 +1,6 @@
 package com.iohao.little.game.action.skeleton.core.flow.interal;
 
+import com.esotericsoftware.reflectasm.MethodAccess;
 import com.iohao.little.game.action.skeleton.core.ActionCommand;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
 import com.iohao.little.game.action.skeleton.core.ParamContext;
@@ -22,11 +23,14 @@ public class DefaultActionMethodInvoke implements ActionMethodInvoke {
         ActionMethodParamParser paramParser = barSkeleton.getActionMethodParamParser();
         var pars = paramParser.listParam(paramContext, actionCommand, request);
 
+        StackTraceElement[] steArray1 = Thread.currentThread().getStackTrace();
 
         // 方法声明了异常的处理方式
         if (actionCommand.isHasThrowException()) {
             try {
-                return actionCommand.getActionMethodAccess().invoke(controller, actionCommand.getActionMethodIndex(), pars);
+                MethodAccess actionMethodAccess = actionCommand.getActionMethodAccess();
+                Object result = actionMethodAccess.invoke(controller, actionCommand.getActionMethodIndex(), pars);
+                return result;
             } catch (Throwable e) {
                 e.printStackTrace();
                 // 异常处理
@@ -36,7 +40,11 @@ public class DefaultActionMethodInvoke implements ActionMethodInvoke {
             }
         } else {
             // 方法没有声明会抛异常，走这里的逻辑, 少 try 一次
-            return actionCommand.getActionMethodAccess().invoke(controller, actionCommand.getActionMethodIndex(), pars);
+            MethodAccess actionMethodAccess = actionCommand.getActionMethodAccess();
+            Object result = actionMethodAccess.invoke(controller, actionCommand.getActionMethodIndex(), pars);
+            StackTraceElement[] steArray2 = Thread.currentThread().getStackTrace();
+
+            return result;
         }
     }
 }

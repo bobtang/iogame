@@ -2,9 +2,6 @@ package com.iohao.little.game.action.skeleton.core.flow;
 
 
 import com.iohao.little.game.action.skeleton.core.ActionCommand;
-import com.iohao.little.game.action.skeleton.core.ParamContext;
-import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
-import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 
 /**
  * inout 接口
@@ -18,40 +15,31 @@ import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
  *     例如: 日志记录, 执行时间打印. 等等 (可参考框架内置的实现类)
  * </pre>
  *
- * @param <Request>  请求
- * @param <Response> 响应
  * @author 洛朱
  * @Date 2021-12-12
  */
 
-public interface ActionMethodInOut<Request extends RequestMessage, Response extends ResponseMessage> {
+public interface ActionMethodInOut {
 
     /**
-     * <pre>
      * fuck前
+     * <pre>
      * 这个方法不要做耗时计算, 因为是在执行你的业务方法前运行的.
      * 建议做一些时间记录等非耗时运算
      * </pre>
      *
-     * @param paramContext     参数上下文
-     * @param actionCommand    command
-     * @param actionController 控制器类对象
-     * @param request          请求对象
+     * @param inOutContext inout 上下文
      */
-    void fuckIn(ParamContext paramContext, ActionCommand actionCommand, Object actionController, Request request);
+    void fuckIn(InOutContext inOutContext);
 
     /**
-     * <pre>
      * fuck后
+     * <pre>
      * 当执行这个方法时, 已经把响应数据发送到客户端了
      * </pre>
      *
-     * @param paramContext     参数上下文
-     * @param actionCommand    command
-     * @param actionController 控制器类对象
-     * @param request          请求对象
-     * @param response         响应对象
+     * @param inOutContext inout 上下文
      */
-    void fuckOut(ParamContext paramContext, ActionCommand actionCommand, Object actionController, Request request, Response response);
+    void fuckOut(InOutContext inOutContext);
 
 }
