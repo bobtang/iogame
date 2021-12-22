@@ -22,7 +22,7 @@ public class BarSkeletonTest {
 
         // 模拟请求数据 （一般由前端传入）
         BeeApple beeApple = new BeeApple();
-        beeApple.setContent(" jackson ");
+        beeApple.setContent("hello 塔姆!");
         beeApple.setId(101);
         // 把模拟请求的数据,放入请求对象中
         requestMessage.setData(beeApple);

@@ -1,11 +1,9 @@
 package com.iohao.example.common.md;
 
-import cn.hutool.core.util.RandomUtil;
 import com.iohao.little.game.action.skeleton.annotation.ActionController;
 import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
 
 /**
- *
  * @author 洛朱
  * @Date 2021-12-12
  */
@@ -22,11 +20,8 @@ public class ActivityAction {
      * @return 响应 （对象）
      */
     @ActionMethod(ActivityModule.hello)
-    public Active hello(Active active) {
-        Active joker = new Active();
-        joker.setName("say: hello, " + active.getName());
-        joker.setAge(RandomUtil.randomInt(200, 300));
-        return joker;
+    public String hello(Active active) {
+        return active.getName() + ", I'm here ";
     }
 
     /**

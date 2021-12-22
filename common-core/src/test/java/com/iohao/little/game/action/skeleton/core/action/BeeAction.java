@@ -20,9 +20,9 @@ public class BeeAction {
      */
     @ActionMethod(ActionCont.BeeActionCont.HELLO)
     public String hello(BeeApple beeApple) {
-        log.debug("beeApple: {}", beeApple);
+//        log.debug("beeApple: {}", beeApple);
         // 响应给客户端的数据 string 类型. 框架可根据返回参数类型将返回结果装到响应体中
-        return " : hello: ";
+        return "I'm here";
     }
 
     @ActionMethod(ActionCont.BeeActionCont.NAME)

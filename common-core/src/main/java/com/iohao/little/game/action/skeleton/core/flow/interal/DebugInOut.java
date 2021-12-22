@@ -43,10 +43,9 @@ public class DebugInOut implements ActionMethodInOut {
 
         String template = """
                 ┏━━━━━ Debug [{className}.java] ━━━ [.({className}.java:1).{actionMethodName}]
-                ┣ 参数  : {paramName} : {paramData}
-                ┣ 返回值: {returnData}
-                ┣ 方法名: {actionMethodName}
-                ┣ 时间  : {time} ms (业务方法总耗时)
+                ┣ 参数: {paramName} : {paramData}
+                ┣ 响应: {returnData}
+                ┣ 时间: {time} ms (业务方法总耗时)
                 ┗━━━━━ Debug [{className}.java] ━━━
                 """;
 

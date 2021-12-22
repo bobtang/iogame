@@ -8,6 +8,4 @@ import java.io.Serializable;
 public class Active implements Serializable {
     int id;
     String name;
-    int age;
-
 }
