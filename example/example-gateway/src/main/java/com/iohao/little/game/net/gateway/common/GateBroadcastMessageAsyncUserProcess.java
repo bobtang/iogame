@@ -6,8 +6,8 @@ import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.message.common.BroadcastMessage;
 import com.iohao.little.game.widget.config.WidgetComponents;
-import com.iohao.little.game.widget.mq.MessageListenerWidget;
-import com.iohao.little.game.widget.mq.MessageQueueWidget;
+import com.iohao.little.game.widget.broadcast.MessageListenerWidget;
+import com.iohao.little.game.widget.broadcast.MessageQueueWidget;
 
 public class GateBroadcastMessageAsyncUserProcess extends AsyncUserProcessor<BroadcastMessage> {
     final WidgetComponents widgetComponents;

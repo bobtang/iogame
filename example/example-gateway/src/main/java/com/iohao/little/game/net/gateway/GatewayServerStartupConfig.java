@@ -6,11 +6,11 @@ import com.iohao.example.common.ExampleCont;
 import com.iohao.little.game.net.BoltServer;
 import com.iohao.little.game.net.gateway.common.*;
 import com.iohao.little.game.net.gateway.core.ServerStartupConfig;
-import com.iohao.little.game.net.gateway.widget.mq.BroadcastMessageListenerWidget;
+import com.iohao.little.game.net.gateway.widget.broadcast.BroadcastMessageListenerWidget;
 import com.iohao.little.game.widget.config.WidgetComponents;
-import com.iohao.little.game.widget.mq.MessageQueueConfigWidget;
-import com.iohao.little.game.widget.mq.MessageQueueWidget;
-import com.iohao.little.game.widget.mq.internal.InternalMessageQueueWidget;
+import com.iohao.little.game.widget.broadcast.MessageQueueConfigWidget;
+import com.iohao.little.game.widget.broadcast.MessageQueueWidget;
+import com.iohao.little.game.widget.broadcast.internal.InternalMessageQueueWidget;
 
 public class GatewayServerStartupConfig implements ServerStartupConfig {
     @Override

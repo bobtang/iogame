@@ -19,11 +19,24 @@ public final class CmdInfoFlyweightFactory {
      */
     final Map<Integer, CmdInfo> cmdInfoMap = new ConcurrentHashMap<>();
 
+    /**
+     * 获取路由信息
+     *
+     * @param cmd    主路由
+     * @param subCmd 子路由
+     * @return 路由信息
+     */
     public CmdInfo getCmdInfo(int cmd, int subCmd) {
         int cmdMerge = CmdKit.merge(cmd, subCmd);
         return getCmdInfo(cmd, subCmd, cmdMerge);
     }
 
+    /**
+     * 获取路由信息
+     *
+     * @param cmdMerge 主路由(高16) + 子路由(低16)
+     * @return 路由信息
+     */
     public CmdInfo getCmdInfo(int cmdMerge) {
         int cmd = CmdKit.getCmd(cmdMerge);
         int subCmd = CmdKit.getSubCmd(cmdMerge);
@@ -32,6 +45,7 @@ public final class CmdInfoFlyweightFactory {
 
     private CmdInfo getCmdInfo(int cmd, int subCmd, int cmdMerge) {
         CmdInfo cmdInfo = cmdInfoMap.get(cmdMerge);
+        // 无锁理念
         if (Objects.isNull(cmdInfo)) {
             cmdInfo = new CmdInfo(cmd, subCmd);
             cmdInfo = cmdInfoMap.putIfAbsent(cmdMerge, cmdInfo);

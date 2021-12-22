@@ -23,6 +23,7 @@
             <artifactId>common-net</artifactId>
             <version>${project-revision.version}</version>
         </dependency>
+
     </dependencies>
 
 </project>

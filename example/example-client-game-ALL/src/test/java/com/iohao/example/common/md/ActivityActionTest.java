@@ -21,8 +21,10 @@ public class ActivityActionTest {
 
     @Test
     public void hello() {
+        CmdInfoFlyweightFactory me = CmdInfoFlyweightFactory.me();
         // 模拟路由信息
-        CmdInfo cmdInfo = CmdInfoFlyweightFactory.me().getCmdInfo(ActivityModule.cmd, ActivityModule.hello);
+        // 通过路由信息可以访问到 ActivityAction.hello 方法 ; cmd=1, subCmd=0;
+        CmdInfo cmdInfo = me.getCmdInfo(ActivityModule.cmd, ActivityModule.hello);
 
         // 模拟前端请求
         RequestMessage requestMessage =  new RequestMessage();

@@ -31,7 +31,7 @@
 
         <dependency>
             <groupId>com.iohao.game</groupId>
-            <artifactId>widget-mq</artifactId>
+            <artifactId>widget-broadcast</artifactId>
             <version>${project-revision.version}</version>
         </dependency>
 

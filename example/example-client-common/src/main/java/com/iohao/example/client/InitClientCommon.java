@@ -10,9 +10,9 @@ import com.iohao.little.game.net.common.ClientDisConnectEventProcessor;
 import com.iohao.little.game.net.common.ClientRequestMessageAsyncUserProcessor;
 import com.iohao.little.game.net.core.RemoteAddress;
 import com.iohao.little.game.widget.config.WidgetComponents;
-import com.iohao.little.game.widget.mq.MessageQueueConfigWidget;
-import com.iohao.little.game.widget.mq.MessageQueueWidget;
-import com.iohao.little.game.widget.mq.internal.InternalMessageQueueWidget;
+import com.iohao.little.game.widget.broadcast.MessageQueueConfigWidget;
+import com.iohao.little.game.widget.broadcast.MessageQueueWidget;
+import com.iohao.little.game.widget.broadcast.internal.InternalMessageQueueWidget;
 
 /**
  * 示例， 抽出一些公共的 clientServer 配置代码

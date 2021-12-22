@@ -10,6 +10,28 @@
     <name>bolt-game-sun</name>
     <description>the little game sum</description>
 
+    <modules>
+        <module>gateway</module>
+        <module>common-net</module>
+        <module>common-core</module>
+        <module>common-net-client</module>
+        <module>common-message</module>
+
+        <!-- 小部件  -->
+        <module>widget/widget-common</module>
+
+        <module>widget/widget-broadcast</module>
+
+        <!-- 示例  -->
+        <module>example/example-common</module>
+        <module>example/example-client-common</module>
+
+        <module>example/example-client-game-A</module>
+        <module>example/example-client-game-B</module>
+        <module>example/example-gateway</module>
+        <module>example/example-client-game-ALL</module>
+    </modules>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -17,22 +39,6 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <modules>
-        <module>gateway</module>
-        <module>common-net</module>
-        <module>common-core</module>
-        <module>common-net-client</module>
-
-        <module>example/example-common</module>
-        <module>example/example-client-game-A</module>
-        <module>example/example-client-game-B</module>
-        <module>example/example-gateway</module>
-        <module>example/example-client-game-ALL</module>
-        <module>widget/widget-mq</module>
-        <module>widget/widget-common</module>
-        <module>common-message</module>
-        <module>example/example-client-common</module>
-    </modules>
     <!--统一管理版本 的一个父 pom-->
     <properties>
         <!-- 项目版本 -->

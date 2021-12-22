@@ -1,6 +1,6 @@
 ### 小部件集合
 
-- 消息发布订阅 (widget-mq)
+- 消息发布订阅 (widget-broadcast)
 
 
 
