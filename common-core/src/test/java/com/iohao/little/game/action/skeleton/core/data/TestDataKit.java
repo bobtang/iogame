@@ -14,7 +14,11 @@ import java.util.function.Predicate;
 public class TestDataKit {
 
     public BarSkeleton newBarSkeleton() {
-        return createBuilder().build();
+        BarSkeletonBuilder builder = createBuilder();
+
+        BarSkeleton barSkeleton = builder.build();
+
+        return barSkeleton;
     }
 
     public BarSkeletonBuilder createBuilder() {
@@ -34,8 +38,10 @@ public class TestDataKit {
         };
 
         String packagePath = BeeAction.class.getPackageName();
+
         ClassScanner classScanner = new ClassScanner(packagePath, predicateFilter);
         List<Class<?>> classList = classScanner.listScan();
+
         classList.forEach(builder::addActionController);
 
         return builder;

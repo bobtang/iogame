@@ -28,7 +28,7 @@ public class BarInternalKit {
     /**
      * 查找类的所有方法
      * <pre>
-     *     返回方法上带有 IntAction 的方法对象
+     *     返回方法上带有 ActionMethod 的方法对象
      *
      *     不返回: 静态方法, 私有方法
      * </pre>

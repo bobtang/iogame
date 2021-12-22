@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @ActionController(ActionCont.BeeActionCont.CMD)
 public class BeeAction {
+
     /**
      * <pre>
      *     打招呼

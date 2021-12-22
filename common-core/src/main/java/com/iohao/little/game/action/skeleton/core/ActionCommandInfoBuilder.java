@@ -4,7 +4,6 @@ package com.iohao.little.game.action.skeleton.core;
 import cn.hutool.core.util.StrUtil;
 import com.esotericsoftware.reflectasm.ConstructorAccess;
 import com.esotericsoftware.reflectasm.MethodAccess;
-import com.iohao.core.kit.Kit;
 import com.iohao.little.game.action.skeleton.annotation.ActionController;
 import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
 import lombok.Getter;
@@ -12,6 +11,7 @@ import lombok.Getter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
 /**
@@ -27,7 +27,7 @@ import java.util.function.Predicate;
 public final class ActionCommandInfoBuilder {
 
     @Getter
-    private final Map<Integer, Map<Integer, ActionCommand>> map = new HashMap<>();
+    private final ConcurrentHashMap<Integer, Map<Integer, ActionCommand>> map = new ConcurrentHashMap<>();
 
     private final BarSkeletonSetting barSkeletonSetting;
 
@@ -38,9 +38,13 @@ public final class ActionCommandInfoBuilder {
     private Map<Integer, ActionCommand> getSubCmdMap(int cmd) {
         var subActionMap = map.get(cmd);
 
+        // 无锁理念
         if (Objects.isNull(subActionMap)) {
-            subActionMap = Kit.newHashMap();
-            map.put(cmd, subActionMap);
+            subActionMap = new ConcurrentHashMap<>();
+            subActionMap = map.putIfAbsent(cmd, subActionMap);
+            if (Objects.isNull(subActionMap)) {
+                subActionMap = map.get(cmd);
+            }
         }
 
         return subActionMap;
