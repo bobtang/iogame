@@ -26,16 +26,16 @@ public class GatewayServerStartupConfig implements ServerStartupConfig {
 
     @Override
     public void widgetComponents(WidgetComponents widgetComponents) {
-        // 消息队列配置项
+        // 消息广播-配置项
         MessageQueueConfigWidget messageQueueConfigWidget = new MessageQueueConfigWidget();
-        // 消息队列小部件
+        // 消息广播-小部件
         MessageQueueWidget messageQueueWidget = null;
-        // 消息队列小部件 - 使用内网的实现 (也可以换成 redis[Redisson， Lettuce], MQ[Apache Pulsar, RocketMQ]等)
+        // 消息广播-小部件 - 使用内网的实现 (也可以换成 redis[Redisson， Lettuce], MQ[Apache Pulsar, RocketMQ]等)
 
-        // 消息队列小部件 - 使用实现 内网
+        // 消息广播-小部件 - 使用实现 内网
         messageQueueWidget = new InternalMessageQueueWidget(messageQueueConfigWidget);
 
-        // 消息队列小部件 - 使用实现 redis[Redisson]
+        // 消息广播-小部件 - 使用实现 redis[Redisson]
 //        messageQueueWidget = new RedissonMessageQueueWidget(messageQueueConfigWidget);
 
         // 添加发布订阅消息处理类
