@@ -1,14 +1,14 @@
-详细文档 [语雀在线文档]( https://www.yuque.com/doublejoker/game)
-
 ![img](https://img.shields.io/badge/JDK-17-green.svg)
 
 ### 愿景
 
-让游戏服务端的编程变得简单！
+​	让游戏服务端的编程变得简单！
 
 
 
 开源地址: https://gitee.com/iohao/bolt-game-sun
+
+在线文档: https://www.yuque.com/iohao/game
 
 
 
@@ -92,3 +92,51 @@ Bolt 名字取自迪士尼动画-闪电狗，是一个基于 Netty 最佳实践�
 - 使程序员能快速开始编写业务
 - 同时对于任意MVC框架有了解的都可以很快上手.
 
+
+
+#### 快速入门-业务代码
+
+下面定义一个普通的 java类，并在这个类中定义了一个方法.
+
+
+
+类中使用了两个注解，分别是
+
+
+
+@ActionController 主路由 （作用在业务类上）
+
+@ActionMethod 子路由（作用在业务方法上）
+
+
+
+```java
+@ActionController(1)
+public class DemoAction {
+    @ActionMethod(0)
+    public String hello(String name) {
+        return name + ", I'm here ";
+    }
+
+}
+```
+
+
+
+这样就完成了一个对外开放的访问方法了
+
+一个方法在业务框架中表示一个 Action（既一个业务动作）。
+
+
+
+如果只负责编写游戏业务，那么对于业务框架的学习可以到此为止了。
+
+
+
+可以看出游戏编程就是如此简单！
+
+
+
+关于路由的解释可以参考
+
+[路由文档](https://www.yuque.com/iohao/game/soxp4u)https://www.yuque.com/iohao/game/soxp4u)
