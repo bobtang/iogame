@@ -14,7 +14,7 @@ public class BarSkeletonTest {
     public void newBuilder() {
 
         // 模拟路由信息
-        CmdInfo cmdInfo = CmdInfoFlyweightFactory.me().getCmdInfo(ActionCont.BeeActionCont.CMD, ActionCont.BeeActionCont.HELLO);
+        CmdInfo cmdInfo = CmdInfoFlyweightFactory.me().getCmdInfo(ActionCont.BeeActionCont.cmd, ActionCont.BeeActionCont.hello);
 
         // 模拟请求
         RequestMessage requestMessage = new RequestMessage();

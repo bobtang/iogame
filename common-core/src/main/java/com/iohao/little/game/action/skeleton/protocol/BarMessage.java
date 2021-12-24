@@ -21,13 +21,9 @@ import java.io.Serializable;
 @Setter
 @FieldDefaults(level = AccessLevel.PROTECTED)
 public abstract class BarMessage implements Serializable {
-    /**
-     * 目标路由
-     */
+    /** 目标路由 */
     int cmd;
-    /**
-     * 目标子路由
-     */
+    /** 目标子路由 */
     int subCmd;
     /**
      * 合并两个参数,分别存放在 [高16 和 低16]
@@ -44,12 +40,11 @@ public abstract class BarMessage implements Serializable {
     int errorCode;
     long userId;
 
-    String dataClazzName;
+    /** 实际请求的业务参数 */
     Object data;
 
     public void setData(Object data) {
         this.data = data;
-        this.dataClazzName = data.getClass().getName();
     }
 
     public void setCmdInfo(CmdInfo cmdInfo) {
