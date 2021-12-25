@@ -30,6 +30,7 @@
         <module>example/example-client-game-B</module>
         <module>example/example-gateway</module>
         <module>example/example-client-game-ALL</module>
+        <module>widget/light-timer-task</module>
     </modules>
 
     <!--统一管理版本 的一个父 pom-->
@@ -87,6 +88,9 @@
         <jansi.version>2.4.0</jansi.version>
         <!--  junit https://mvnrepository.com/artifact/junit/junit  -->
         <junit.version>4.13.2</junit.version>
+
+        <!--  cache2k https://mvnrepository.com/artifact/org.cache2k -->
+        <cache2k.version>2.4.1.Final</cache2k.version>
 
         <!-- temp spring boot -->
         <springboot.version>2.6.1</springboot.version>
