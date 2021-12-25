@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -40,7 +41,7 @@ public abstract class AbstractTimerTask implements TimerTask {
     String cacheKey;
 
     /** 任务启动时间 */
-    volatile long startTimeMillis;
+    long startTimeMillis;
 
     /**
      * 子类提供的 定时任务存储器
@@ -119,6 +120,8 @@ public abstract class AbstractTimerTask implements TimerTask {
         long currentTimeMillis = System.currentTimeMillis();
         // 过期时间 = 当前时间 + 延迟时间
         this.startTimeMillis = currentTimeMillis + this.delayExecutionTime;
+        System.out.println(LocalDateTime.now() + " _ " + this.delayExecutionTime);
+        System.out.println(startTimeMillis - currentTimeMillis);
         return this.startTimeMillis;
     }
 }

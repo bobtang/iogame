@@ -14,19 +14,20 @@ public class TimerTaskTest {
 
     @Test
     public void demoTimerTask() throws InterruptedException {
+        // 设置缓存key。
         String cacheKey = "1";
 
         new HelloTask()
                 // 设置业务内容
-                .setSayContent("卡莉斯塔去哪儿了!")
-                // 2秒后触发
-                .setDelayExecutionTime(2000)
-                // 设置缓存key。
+                .setSayContent("卡莉斯塔去哪儿了!!")
+                // 1秒后触发
+                .setDelayExecutionTime(1000)
                 // 如果不指定key, 会默认给个 uuid
                 .setCacheKey(cacheKey)
                 //启动定时器任务
                 .task();
 
+        log.info("----start");
         Thread.sleep(3000);
     }
 
