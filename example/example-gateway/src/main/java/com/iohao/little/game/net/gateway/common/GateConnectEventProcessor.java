@@ -20,14 +20,14 @@ import com.iohao.example.common.*;
 import com.alipay.remoting.Connection;
 import com.alipay.remoting.ConnectionEventProcessor;
 import com.alipay.remoting.exception.RemotingException;
-import com.iohao.little.game.net.BoltServer;
+import com.iohao.little.game.net.common.BoltServer;
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.action.skeleton.core.CmdInfoFlyweightFactory;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
-import com.iohao.little.game.net.gateway.module.ModuleInfoManager;
-import com.iohao.little.game.net.gateway.module.ModuleInfoProxy;
-import com.iohao.little.game.net.kit.ExecutorKit;
+import com.iohao.little.game.net.server.module.ModuleInfoManager;
+import com.iohao.little.game.net.server.module.ModuleInfoProxy;
+import com.iohao.little.game.kit.ExecutorKit;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 

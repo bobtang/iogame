@@ -8,8 +8,8 @@ import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.action.skeleton.core.ServerContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
-import com.iohao.little.game.net.common.BoltClientProxy;
-import com.iohao.little.game.net.common.BoltClientProxyManager;
+import com.iohao.little.game.net.client.common.BoltClientProxy;
+import com.iohao.little.game.net.client.common.BoltClientProxyManager;
 import lombok.extern.slf4j.Slf4j;
 
 

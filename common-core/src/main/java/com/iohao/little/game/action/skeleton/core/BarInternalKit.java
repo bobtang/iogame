@@ -1,7 +1,6 @@
 package com.iohao.little.game.action.skeleton.core;
 
 
-import com.iohao.core.kit.BoolKit;
 import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
 import lombok.experimental.UtilityClass;
 
@@ -67,7 +66,7 @@ public class BarInternalKit {
      */
     ActionCommand[][] convertArray(Map<Integer, Map<Integer, ActionCommand>> map, BarSkeletonSetting barSkeletonSetting) {
 
-        if (BoolKit.isEmpty(map)) {
+        if (Objects.isNull(map) || map.isEmpty()) {
             return EMPTY;
         }
 

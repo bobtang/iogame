@@ -34,6 +34,12 @@ public class ClassScanner {
 
     ClassLoader classLoader;
 
+    /**
+     * 扫描
+     *
+     * @param packagePath     扫描路径
+     * @param predicateFilter 过滤条件
+     */
     public ClassScanner(String packagePath, Predicate<Class<?>> predicateFilter) {
         this.predicateFilter = predicateFilter;
 

@@ -1,11 +1,14 @@
 package com.iohao.little.game.common.config.internal;
 
-import com.iohao.core.config.scan.ScanClass;
 
-import java.util.Set;
+import com.iohao.little.game.common.kit.ClassScanner;
+
+import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * BootItem 配置项工具
+ *
  * @author 洛朱
  * @Date 2021-12-20
  */
@@ -21,10 +24,14 @@ public class BootItemConfigKit {
      * @param packClazz 任意 class 都可以, 会扫描该 class 包下面的所有 class, 并加载
      */
     public static void loadBootItemConfig(Class<? extends BootItemConfig> packClazz) {
-        ScanClass bootItemConfigScan = ScanClass.createScanClass(BootItemConfig.class::isAssignableFrom);
-        bootItemConfigScan.add(packClazz);
-        Set<Class<?>> set = bootItemConfigScan.listScan();
-        for (Class<?> clazz : set) {
+        // 过滤条件
+        Predicate<Class<?>> predicate = BootItemConfig.class::isAssignableFrom;
+        // 扫描路径
+        String packagePath = packClazz.getPackageName();
+        ClassScanner classScanner = new ClassScanner(packagePath, predicate);
+
+        List<Class<?>> classList = classScanner.listScan();
+        for (Class<?> clazz : classList) {
             try {
                 BootItemConfig itemConfig = (BootItemConfig) clazz.getDeclaredConstructor().newInstance();
                 itemConfig.config();

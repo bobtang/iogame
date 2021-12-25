@@ -1,11 +1,11 @@
 package com.iohao.little.game.net.gateway.widget.broadcast;
 
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
-import com.iohao.little.game.net.gateway.GateKit;
 import com.iohao.little.game.net.message.common.BroadcastMessage;
-import com.iohao.little.game.widget.config.WidgetComponents;
+import com.iohao.little.game.net.server.GateKit;
 import com.iohao.little.game.widget.broadcast.MessageListenerWidget;
 import com.iohao.little.game.widget.broadcast.MessageQueueWidget;
+import com.iohao.little.game.widget.config.WidgetComponents;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

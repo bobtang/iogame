@@ -12,36 +12,16 @@
     <artifactId>common-core</artifactId>
 
     <properties>
-        <maven.compiler.source>16</maven.compiler.source>
-        <maven.compiler.target>16</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.iohao.widget/iohao-domain -->
-        <dependency>
-            <groupId>com.iohao.widget</groupId>
-            <artifactId>iohao-domain</artifactId>
-            <version>${iohao-widget.version}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.iohao.widget/iohao-kit -->
-        <dependency>
-            <groupId>com.iohao.widget</groupId>
-            <artifactId>iohao-kit</artifactId>
-            <version>${iohao-widget.version}</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.iohao.widget/iohao-timer-task -->
-        <dependency>
-            <groupId>com.iohao.widget</groupId>
-            <artifactId>iohao-timer-task</artifactId>
-            <version>${iohao-widget.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.projectlombok</groupId>-->
+<!--            <artifactId>lombok</artifactId>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/com.alipay.sofa/bolt -->
         <dependency>
