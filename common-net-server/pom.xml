@@ -11,17 +11,12 @@
 
     <artifactId>common-net-server</artifactId>
 
-
     <dependencies>
-
         <dependency>
             <groupId>com.iohao.game</groupId>
             <artifactId>common-net</artifactId>
             <version>${project-revision.version}</version>
         </dependency>
-
-
-
     </dependencies>
 
 </project>

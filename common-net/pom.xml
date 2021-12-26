@@ -6,7 +6,6 @@
         <artifactId>bolt-game-sun</artifactId>
         <groupId>com.iohao.game</groupId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -32,27 +31,6 @@
             <version>${project-revision.version}</version>
         </dependency>
 
-
-        <!-- https://mvnrepository.com/artifact/com.iohao.widget/iohao-domain -->
-        <!--        <dependency>-->
-        <!--            <groupId>com.iohao.widget</groupId>-->
-        <!--            <artifactId>iohao-domain</artifactId>-->
-        <!--            <version>${iohao-widget.version}</version>-->
-        <!--        </dependency>-->
-        <!-- https://mvnrepository.com/artifact/com.iohao.widget/iohao-kit -->
-        <!--        <dependency>-->
-        <!--            <groupId>com.iohao.widget</groupId>-->
-        <!--            <artifactId>iohao-kit</artifactId>-->
-        <!--            <version>${iohao-widget.version}</version>-->
-        <!--        </dependency>-->
-
-        <!-- https://mvnrepository.com/artifact/com.iohao.widget/iohao-timer-task -->
-        <!--        <dependency>-->
-        <!--            <groupId>com.iohao.widget</groupId>-->
-        <!--            <artifactId>iohao-timer-task</artifactId>-->
-        <!--            <version>${iohao-widget.version}</version>-->
-        <!--        </dependency>-->
-
         <!-- https://mvnrepository.com/artifact/com.alipay.sofa/bolt -->
         <dependency>
             <groupId>com.alipay.sofa</groupId>
@@ -64,14 +42,6 @@
             <groupId>com.caucho</groupId>
             <artifactId>hessian</artifactId>
             <version>${hessian.version}</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/junit/junit -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>compile</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-pool2 -->

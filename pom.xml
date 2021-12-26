@@ -13,7 +13,7 @@
     <modules>
         <module>common-core</module>
         <module>common-message</module>
-        <!-- 服务器与客户端 -->
+        <!-- 服务器、客户端 -->
         <module>common-net</module>
         <module>common-net-server</module>
         <module>common-net-client</module>
@@ -21,6 +21,8 @@
         <!-- 小部件  -->
         <module>widget/widget-common</module>
         <module>widget/widget-broadcast</module>
+        <module>widget/light-timer-task</module>
+        <module>widget/light-domain-event</module>
 
         <!-- 示例  -->
         <module>example/example-common</module>
@@ -30,9 +32,15 @@
         <module>example/example-client-game-B</module>
         <module>example/example-gateway</module>
         <module>example/example-client-game-ALL</module>
-        <module>widget/light-timer-task</module>
-        <module>widget/light-domain-event</module>
+
     </modules>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.6.2</version>
+        <relativePath/>
+    </parent>
 
     <!--统一管理版本 的一个父 pom-->
     <properties>
@@ -88,13 +96,13 @@
 
         <!-- ==============轻量小部件============== -->
         <!--  cache2k https://mvnrepository.com/artifact/org.cache2k -->
-<!--        <cache2k.version>2.4.1.Final</cache2k.version>-->
+        <!--        <cache2k.version>2.4.1.Final</cache2k.version>-->
         <cache2k.version>1.2.4.Final</cache2k.version>
         <!--  disruptor https://mvnrepository.com/artifact/com.lmax/disruptor -->
         <disruptor.version>3.4.4</disruptor.version>
 
         <!-- temp spring boot -->
-        <springboot.version>2.6.1</springboot.version>
+        <springboot.version>2.6.2</springboot.version>
         <!--  junit https://mvnrepository.com/artifact/junit/junit  -->
         <junit.version>4.13.2</junit.version>
 
@@ -136,10 +144,22 @@
 
     <build>
         <plugins>
-            <!-- 编译插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin>
+
+            <!--
+            编译插件
+            mvn compile
+            To compile your test sources, you'll do:
+            mvn test-compile
+            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
                     <compilerVersion>${java.version}</compilerVersion>
                     <source>${java.version}</source>

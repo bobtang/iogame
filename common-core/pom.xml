@@ -17,17 +17,18 @@
     </properties>
 
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>org.projectlombok</groupId>-->
-<!--            <artifactId>lombok</artifactId>-->
-<!--            <optional>true</optional>-->
-<!--        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/com.alipay.sofa/bolt -->
         <dependency>
             <groupId>com.alipay.sofa</groupId>
             <artifactId>bolt</artifactId>
             <version>${bolt.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.ibeetl/beetl -->
