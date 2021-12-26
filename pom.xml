@@ -31,6 +31,7 @@
         <module>example/example-gateway</module>
         <module>example/example-client-game-ALL</module>
         <module>widget/light-timer-task</module>
+        <module>widget/light-domain-event</module>
     </modules>
 
     <!--统一管理版本 的一个父 pom-->
@@ -56,6 +57,8 @@
         <protobuf-java-format.version>1.4</protobuf-java-format.version>
         <!-- hessian 格式化 https://mvnrepository.com/artifact/com.caucho/hessian -->
         <hessian.version>4.0.65</hessian.version>
+        <!--  Jansi 控制台输出彩色文字 https://www.oschina.net/p/jansi https://mvnrepository.com/artifact/org.fusesource.jansi/jansi  -->
+        <jansi.version>2.4.0</jansi.version>
 
         <!-- iohao widget https://mvnrepository.com/artifact/com.iohao.widget -->
         <iohao-widget.version>0.5.5</iohao-widget.version>
@@ -68,9 +71,7 @@
         <!-- lombok 消除冗长的 Java 代码 https://www.oschina.net/p/lombok https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <lombok.version>1.18.22</lombok.version>
 
-        <!-- reids internal : https://mvnrepository.com/artifact/io.lettuce/lettuce-core -->
-        <lettuce-core.version>6.1.5.RELEASE</lettuce-core.version>
-        <!-- reids internal : https://www.oschina.net/p/redisson https://mvnrepository.com/artifact/org.redisson/redisson -->
+        <!-- redis internal : https://www.oschina.net/p/redisson https://mvnrepository.com/artifact/org.redisson/redisson -->
         <redisson.version>3.16.6</redisson.version>
         <!-- json 解析器 : https://mvnrepository.com/artifact/com.alibaba/fastjson -->
         <fastjson.version>1.2.78</fastjson.version>
@@ -84,17 +85,19 @@
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <!--  reflectasm 高性能的反射处理 https://www.oschina.net/p/reflectasm https://mvnrepository.com/artifact/com.esotericsoftware/reflectasm  -->
         <reflectasm.version>1.11.9</reflectasm.version>
-        <!--  Jansi 控制台输出彩色文字 https://www.oschina.net/p/jansi https://mvnrepository.com/artifact/org.fusesource.jansi/jansi  -->
-        <jansi.version>2.4.0</jansi.version>
-        <!--  junit https://mvnrepository.com/artifact/junit/junit  -->
-        <junit.version>4.13.2</junit.version>
 
+        <!-- ==============轻量小部件============== -->
         <!--  cache2k https://mvnrepository.com/artifact/org.cache2k -->
 <!--        <cache2k.version>2.4.1.Final</cache2k.version>-->
         <cache2k.version>1.2.4.Final</cache2k.version>
+        <!--  disruptor https://mvnrepository.com/artifact/com.lmax/disruptor -->
+        <disruptor.version>3.4.4</disruptor.version>
 
         <!-- temp spring boot -->
         <springboot.version>2.6.1</springboot.version>
+        <!--  junit https://mvnrepository.com/artifact/junit/junit  -->
+        <junit.version>4.13.2</junit.version>
+
     </properties>
 
 

@@ -33,6 +33,7 @@ public class TimerTaskTest {
 
     @Test
     public void pause() throws InterruptedException {
+        log.info("----暂停任务");
         TimerTask task = new HelloTask()
                 // 设置业务内容
                 .setSayContent("塔姆哪儿了!")

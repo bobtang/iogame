@@ -48,14 +48,14 @@ public abstract class AbstractTimerTask implements TimerTask {
      *
      * @return 定时任务存储器
      */
-    abstract protected TimerTaskRegion getTimerTaskStore();
+    abstract protected TimerTaskRegion getTimerTaskRegion();
 
     /**
      * 取消定时任务
      */
     @Override
     public void cancel() {
-        TimerTaskRegion timerTaskRegion = this.getTimerTaskStore();
+        TimerTaskRegion timerTaskRegion = this.getTimerTaskRegion();
         timerTaskRegion.removeTimerTask(this.cacheKey);
     }
 
@@ -83,7 +83,7 @@ public abstract class AbstractTimerTask implements TimerTask {
         // 任务启动时间 = 当前时间 + 预期延后执行时间
 //        this.startTimeMillis = System.currentTimeMillis() + delayExecutionTime;
 
-        TimerTaskRegion timerTaskRegion = this.getTimerTaskStore();
+        TimerTaskRegion timerTaskRegion = this.getTimerTaskRegion();
         timerTaskRegion.put(cacheKey, this);
 
         return (T) this;

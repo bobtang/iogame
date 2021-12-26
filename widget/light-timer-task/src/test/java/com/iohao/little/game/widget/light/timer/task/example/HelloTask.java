@@ -7,6 +7,8 @@ import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
 /**
+ * 定时任务示例 业务类
+ *
  * @author 洛朱
  * @date 2021-12-25
  */
@@ -25,7 +27,7 @@ public class HelloTask extends AbstractTimerTask {
 
 
     @Override
-    protected TimerTaskRegion getTimerTaskStore() {
+    protected TimerTaskRegion getTimerTaskRegion() {
         return TimerTaskEnum.HELLO;
     }
 }

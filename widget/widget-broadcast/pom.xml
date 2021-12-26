@@ -46,13 +46,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>io.lettuce</groupId>
-            <artifactId>lettuce-core</artifactId>
-            <version>${lettuce-core.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
         <dependency>
             <groupId>io.netty</groupId>
