@@ -14,11 +14,16 @@ public class ProfileManagerTest {
 
     @Test
     public void profile() {
+        // 加载环境配置
         String profileConfigName = "local";
         ProfileManager.loadMainProfile(profileConfigName);
 
         Profile profile = ProfileManager.profile();
+        // 掉用配置文件中的配置
+        String jdbcDriver = profile.get("jdbcDriver");
+        boolean devMode = profile.getBool("devMode");
+        int maxVip = profile.getInt("maxVip");
 
-        log.info("profile::: {}", profile);
+        log.info("profile::: {} {} {}", jdbcDriver, devMode, maxVip);
     }
 }
