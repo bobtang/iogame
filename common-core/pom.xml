@@ -18,6 +18,12 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>com.iohao.game</groupId>
+            <artifactId>common-kit</artifactId>
+            <version>${project-revision.version}</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/com.alipay.sofa/bolt -->
         <dependency>
             <groupId>com.alipay.sofa</groupId>
@@ -38,19 +44,9 @@
             <version>${beetl.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-            <version>${hutool.version}</version>
-        </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.esotericsoftware/reflectasm -->
-        <dependency>
-            <groupId>com.esotericsoftware</groupId>
-            <artifactId>reflectasm</artifactId>
-            <version>${reflectasm.version}</version>
-        </dependency>
+
+
 
         <!-- https://mvnrepository.com/artifact/org.fusesource.jansi/jansi -->
         <dependency>

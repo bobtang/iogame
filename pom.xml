@@ -32,6 +32,8 @@
         <module>example/example-client-game-B</module>
         <module>example/example-gateway</module>
         <module>example/example-client-game-ALL</module>
+        <module>common-kit</module>
+        <module>widget/light-profile</module>
 
     </modules>
 
@@ -102,6 +104,7 @@
         <disruptor.version>3.4.4</disruptor.version>
 
         <!-- temp spring boot -->
+        <spring.version>5.3.14</spring.version>
         <springboot.version>2.6.2</springboot.version>
         <!--  junit https://mvnrepository.com/artifact/junit/junit  -->
         <junit.version>4.13.2</junit.version>
