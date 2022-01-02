@@ -2,7 +2,7 @@ package com.iohao.little.game.net.client.common;
 
 import com.alipay.remoting.Connection;
 import com.alipay.remoting.ConnectionEventProcessor;
-import com.iohao.little.game.kit.ExecutorKit;
+import com.iohao.little.game.common.kit.ExecutorKit;
 import com.iohao.little.game.net.message.common.ModuleKey;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

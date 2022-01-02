@@ -27,7 +27,7 @@ import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.server.module.ModuleInfoManager;
 import com.iohao.little.game.net.server.module.ModuleInfoProxy;
-import com.iohao.little.game.kit.ExecutorKit;
+import com.iohao.little.game.common.kit.ExecutorKit;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 
