@@ -95,7 +95,8 @@
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <!--  reflectasm 高性能的反射处理 https://www.oschina.net/p/reflectasm https://mvnrepository.com/artifact/com.esotericsoftware/reflectasm  -->
         <reflectasm.version>1.11.9</reflectasm.version>
-
+        <!-- jprotobuf是针对Java程序开发一套简易类库，目的是简化java语言对protobuf类库的使用 https://github.com/jhunters/jprotobuf/ https://mvnrepository.com/artifact/com.baidu/jprotobuf -->
+        <jprotobuf.version>2.4.13</jprotobuf.version>
         <!-- ==============轻量小部件============== -->
         <!--  cache2k https://mvnrepository.com/artifact/org.cache2k -->
         <!--        <cache2k.version>2.4.1.Final</cache2k.version>-->

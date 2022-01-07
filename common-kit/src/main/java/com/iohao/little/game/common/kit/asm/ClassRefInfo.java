@@ -29,7 +29,6 @@ public final class ClassRefInfo implements Serializable {
     /** 类信息 */
     Class<?> clazz;
     /** 以属性名作为key */
-    @Getter
     Map<String, FieldRefInfo> filedRefInfoMap;
     /** 构造 访问器 */
     ConstructorAccess<?> constructorAccess;

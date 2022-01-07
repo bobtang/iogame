@@ -19,6 +19,12 @@ import java.util.stream.Collectors;
 public final class ProfileManager {
     /** 主配置key */
     final String MAIN_CONFIG = "main_config";
+    /**
+     * <pre>
+     *     key : profileName
+     *     value : profile
+     * </pre>
+     */
     private final Map<String, Profile> profileMap = new ConcurrentHashMap<>();
 
 
@@ -29,6 +35,7 @@ public final class ProfileManager {
     public Profile profile(final String key) {
         Profile profile = profileMap.get(key);
 
+        // 无锁化
         if (Objects.isNull(profile)) {
             profile = new Profile();
             profile.key = key;
@@ -57,7 +64,7 @@ public final class ProfileManager {
     public void loadMainProfile(String profileConfigName) {
         Optional<String> name = Optional.ofNullable(profileConfigName);
 
-        String separator = ",";
+        final String separator = ",";
         List<String> configNameList = Arrays.stream(name.orElse("")
                 .split(separator))
                 .filter(Objects::nonNull)

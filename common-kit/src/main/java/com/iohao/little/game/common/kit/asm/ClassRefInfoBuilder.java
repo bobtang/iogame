@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 class ClassRefInfoBuilder {
-    @Accessors(chain = true)
     Class<?> clazz;
     /** 构造 访问器 */
     ConstructorAccess<?> constructorAccess;

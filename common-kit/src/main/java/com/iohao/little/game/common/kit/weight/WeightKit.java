@@ -10,7 +10,7 @@ import java.util.Objects;
  *
  * @author 洛朱
  * @date 2022-01-02
- * @see WeightKit
+ * @see Weight
  */
 public class WeightKit {
     /**

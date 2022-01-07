@@ -29,10 +29,20 @@ class ResourcePatternResolverProfile {
     /** 需要加载的目录列表 */
     private LinkedList<String> dirNameList = new LinkedList<>();
 
+    /**
+     * 添加需要加载的目录
+     *
+     * @param dir 目录路径
+     */
     public void addDir(String dir) {
         dirNameList.add(dir);
     }
 
+    /**
+     * 资源url
+     *
+     * @return 一定不为null
+     */
     public List<URL> toUrls() {
 
         // 优先加载 common 目录

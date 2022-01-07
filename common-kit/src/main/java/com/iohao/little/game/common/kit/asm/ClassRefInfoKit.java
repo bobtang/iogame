@@ -34,9 +34,13 @@ public class ClassRefInfoKit {
     public ClassRefInfo getClassRefInfo(Class<?> clazz) {
         ClassRefInfo classRefInfo = classRefInfoMap.get(clazz);
 
+        // 无锁化
         if (Objects.isNull(classRefInfo)) {
             classRefInfo = createClassRefInfo(clazz);
-            classRefInfoMap.putIfAbsent(clazz, classRefInfo);
+            classRefInfo = classRefInfoMap.putIfAbsent(clazz, classRefInfo);
+            if (Objects.isNull(classRefInfo)) {
+                classRefInfo = classRefInfoMap.get(clazz);
+            }
         }
 
         return classRefInfo;

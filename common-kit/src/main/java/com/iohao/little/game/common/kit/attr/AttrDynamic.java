@@ -28,6 +28,8 @@ import java.util.function.Supplier;
  * <pre>
  *     如果你使用了lombok, 推荐这种方式. 只需要在对象中新增此行代码
  *     final Map<String, Object> attr = new HashMap<>();
+ *     or
+ *     final Map<String, Object> attr = new ConcurrentHashMap<>();
  * </pre>
  *
  * @author 洛朱
@@ -59,14 +61,16 @@ public interface AttrDynamic {
      * @return val
      */
     default <T> T getAttr(String attrName, Supplier<T> supplier) {
-        T prop = (T) getAttr().get(attrName);
+        Map<String, Object> map = getAttr();
+        T prop = (T) map.get(attrName);
 
-        if (Objects.nonNull(prop)) {
-            return prop;
-        } else {
+        // 无锁化
+        if (Objects.isNull(prop)) {
             prop = supplier.get();
-            getAttr().putIfAbsent(attrName, prop);
-            prop = (T) getAttr().get(attrName);
+            prop = (T) map.putIfAbsent(attrName, prop);
+            if (Objects.isNull(prop)) {
+                prop = (T) map.get(attrName);
+            }
         }
 
         return prop;
@@ -117,20 +121,23 @@ public interface AttrDynamic {
     default <T> T getAttr(Class<T> attrNameClazz) {
         String attrName = attrNameClazz.getSimpleName();
 
-        T prop = (T) getAttr().get(attrName);
+        Map<String, Object> attrMap = getAttr();
+        T prop = (T) attrMap.get(attrName);
 
-        if (Objects.nonNull(prop)) {
-            return prop;
-        } else {
+        // 无锁化
+        if (Objects.isNull(prop)) {
             try {
                 // 没有属性 则创建该类型的对象
                 prop = attrNameClazz.getDeclaredConstructor().newInstance();
+                prop = (T) attrMap.putIfAbsent(attrName, prop);
+                if (Objects.isNull(prop)) {
+                    prop = getAttr(attrName);
+                }
             } catch (InstantiationException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
                 e.printStackTrace();
             }
 
-            getAttr().putIfAbsent(attrName, prop);
-            prop = getAttr(attrName);
+
         }
 
         return prop;

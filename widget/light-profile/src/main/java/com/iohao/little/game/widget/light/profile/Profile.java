@@ -22,6 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @ToString
 public class Profile {
+    /** key */
     String key;
 
     Map<String, Object> map = new ConcurrentHashMap<>();
