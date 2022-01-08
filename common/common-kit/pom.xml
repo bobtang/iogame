@@ -6,10 +6,11 @@
         <artifactId>bolt-game-sun</artifactId>
         <groupId>com.iohao.game</groupId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>common-net-client</artifactId>
+    <artifactId>common-kit</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -17,12 +18,21 @@
     </properties>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
         <dependency>
-            <groupId>com.iohao.game</groupId>
-            <artifactId>common-net</artifactId>
-            <version>${project-revision.version}</version>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
         </dependency>
 
-    </dependencies>
+        <!-- https://mvnrepository.com/artifact/com.esotericsoftware/reflectasm -->
+        <dependency>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>reflectasm</artifactId>
+            <version>${reflectasm.version}</version>
+        </dependency>
 
+
+
+    </dependencies>
 </project>
