@@ -11,6 +11,7 @@
     <description>the little game sum</description>
 
     <modules>
+        <module>common-kit</module>
         <module>common-core</module>
         <module>common-message</module>
         <!-- 服务器、客户端 -->
@@ -23,17 +24,20 @@
         <module>widget/widget-broadcast</module>
         <module>widget/light-timer-task</module>
         <module>widget/light-domain-event</module>
+        <module>widget/light-profile</module>
 
         <!-- 示例  -->
         <module>example/example-common</module>
         <module>example/example-client-common</module>
-
         <module>example/example-client-game-A</module>
         <module>example/example-client-game-B</module>
         <module>example/example-gateway</module>
         <module>example/example-client-game-ALL</module>
-        <module>common-kit</module>
-        <module>widget/light-profile</module>
+
+        <!-- 实践案例  -->
+        <module>game-collect/game-common-proto</module>
+        <module>game-collect/game-common</module>
+
 
     </modules>
 
@@ -103,6 +107,8 @@
         <cache2k.version>1.2.4.Final</cache2k.version>
         <!--  disruptor https://mvnrepository.com/artifact/com.lmax/disruptor -->
         <disruptor.version>3.4.4</disruptor.version>
+        <!-- bean 验证框架 https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+        <hibernate-validator.version>7.0.2.Final</hibernate-validator.version>
 
         <!-- temp spring boot -->
         <spring.version>5.3.14</spring.version>
@@ -144,6 +150,12 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.baidu</groupId>
+            <artifactId>jprotobuf</artifactId>
+            <version>${jprotobuf.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -171,14 +183,14 @@
                 </configuration>
             </plugin>
 
-            <!-- 打包时跳过单元测试 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <skipTests>true</skipTests>
-                </configuration>
-            </plugin>
+            <!--            &lt;!&ndash; 打包时跳过单元测试 &ndash;&gt;-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-surefire-plugin</artifactId>-->
+            <!--                <configuration>-->
+            <!--                    <skipTests>true</skipTests>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
 
             <!-- 打包源码 -->
             <plugin>
@@ -197,6 +209,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -206,6 +219,29 @@
                 </configuration>
             </plugin>
 
+            <!--
+            mvn jprotobuf:precompile
+            or
+            mvn package
+            -->
+            <plugin>
+                <groupId>com.baidu</groupId>
+                <artifactId>jprotobuf-precompile-plugin</artifactId>
+                <version>2.2.6</version>
+                <configuration>
+                    <filterClassPackage>com.iohao</filterClassPackage>
+                    <generateProtoFile>true</generateProtoFile>
+                    <compileDependencies>true</compileDependencies>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>precompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
