@@ -78,7 +78,7 @@ public interface ClientStartupConfig {
      */
     default void startup() {
         // 业务框架
-        BarSkeleton barSkeleton = createBarSkeleton();
+        BarSkeleton barSkeleton = this.createBarSkeleton();
 
         // 创建模块信息
         ModuleMessage moduleMessage = this.createModuleMessage();

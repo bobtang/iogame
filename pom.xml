@@ -19,9 +19,14 @@
         <module>common/common-net-server</module>
         <module>common/common-net-client</module>
 
+        <!-- 对外的服务器 （面向真实用户） -->
+        <module>common/common-net-external</module>
+
         <!-- 小部件  -->
         <module>widget/widget-common</module>
         <module>widget/widget-broadcast</module>
+
+        <!-- 轻量小部件  -->
         <module>widget/light-timer-task</module>
         <module>widget/light-domain-event</module>
         <module>widget/light-profile</module>
@@ -66,7 +71,7 @@
         <!--  bolt https://mvnrepository.com/artifact/com.alipay.sofa/bolt  -->
         <bolt.version>1.6.4</bolt.version>
         <!-- pb 数据描述语言 : https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
-        <protobuf-java.version>3.19.1</protobuf-java.version>
+        <protobuf-java.version>3.19.2</protobuf-java.version>
         <!-- pb 格式化 https://www.oschina.net/p/protobuf-java-format -->
         <protobuf-java-format.version>1.4</protobuf-java-format.version>
         <!-- hessian 格式化 https://mvnrepository.com/artifact/com.caucho/hessian -->
@@ -74,8 +79,6 @@
         <!--  Jansi 控制台输出彩色文字 https://www.oschina.net/p/jansi https://mvnrepository.com/artifact/org.fusesource.jansi/jansi  -->
         <jansi.version>2.4.0</jansi.version>
 
-        <!-- iohao widget https://mvnrepository.com/artifact/com.iohao.widget -->
-        <iohao-widget.version>0.5.5</iohao-widget.version>
         <!-- Hutool是一个Java工具包 see https://www.hutool.cn/ https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
         <hutool.version>5.7.16</hutool.version>
         <!-- JCTools是一款对jdk并发数据结构进行增强的并发工具 see http://jctools.github.io/JCTools/ https://mvnrepository.com/artifact/org.jctools/jctools-core -->
@@ -86,15 +89,15 @@
         <lombok.version>1.18.22</lombok.version>
 
         <!-- redis internal : https://www.oschina.net/p/redisson https://mvnrepository.com/artifact/org.redisson/redisson -->
-        <redisson.version>3.16.6</redisson.version>
+        <redisson.version>3.16.7</redisson.version>
         <!-- json 解析器 : https://mvnrepository.com/artifact/com.alibaba/fastjson -->
-        <fastjson.version>1.2.78</fastjson.version>
+        <fastjson.version>1.2.79</fastjson.version>
         <!-- 对象池 : https://www.oschina.net/p/beeop https://mvnrepository.com/artifact/com.github.chris2018998/beeop -->
         <beeop.version>1.1.0</beeop.version>
         <!-- 对象池 :  https://mvnrepository.com/artifact/org.apache.commons/commons-pool2 -->
         <commons-pool.version>2.11.1</commons-pool.version>
         <!--  JSR-107 高性能缓存库 https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine -->
-        <caffeine.version>3.0.4</caffeine.version>
+        <caffeine.version>3.0.5</caffeine.version>
         <!--  Java 实体映射工具 https://mvnrepository.com/artifact/org.mapstruct/mapstruct  -->
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <!--  reflectasm 高性能的反射处理 https://www.oschina.net/p/reflectasm https://mvnrepository.com/artifact/com.esotericsoftware/reflectasm  -->
@@ -219,29 +222,29 @@
                 </configuration>
             </plugin>
 
-<!--            &lt;!&ndash;-->
-<!--            mvn jprotobuf:precompile-->
-<!--            or-->
-<!--            mvn package-->
-<!--            &ndash;&gt;-->
-<!--            <plugin>-->
-<!--                <groupId>com.baidu</groupId>-->
-<!--                <artifactId>jprotobuf-precompile-plugin</artifactId>-->
-<!--                <version>2.2.6</version>-->
-<!--                <configuration>-->
-<!--                    <filterClassPackage>com.iohao</filterClassPackage>-->
-<!--                    <generateProtoFile>true</generateProtoFile>-->
-<!--                    <compileDependencies>true</compileDependencies>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <phase>compile</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>precompile</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <!--            &lt;!&ndash;-->
+            <!--            mvn jprotobuf:precompile-->
+            <!--            or-->
+            <!--            mvn package-->
+            <!--            &ndash;&gt;-->
+            <!--            <plugin>-->
+            <!--                <groupId>com.baidu</groupId>-->
+            <!--                <artifactId>jprotobuf-precompile-plugin</artifactId>-->
+            <!--                <version>2.2.6</version>-->
+            <!--                <configuration>-->
+            <!--                    <filterClassPackage>com.iohao</filterClassPackage>-->
+            <!--                    <generateProtoFile>true</generateProtoFile>-->
+            <!--                    <compileDependencies>true</compileDependencies>-->
+            <!--                </configuration>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <phase>compile</phase>-->
+            <!--                        <goals>-->
+            <!--                            <goal>precompile</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
         </plugins>
     </build>
 

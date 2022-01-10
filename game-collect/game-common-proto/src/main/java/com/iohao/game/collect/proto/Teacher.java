@@ -34,6 +34,8 @@ public class Teacher {
 
     Boolean boolF;
 
+    Object student;
+
     public static void main(String[] args) {
         Codec<Teacher> teacherCodec = ProtobufProxy.create(Teacher.class);
 
