@@ -30,10 +30,11 @@ public class BoltClientServerSetting implements ServerSetting {
 
 
     public BoltClientServerSetting(BarSkeleton barSkeleton, ModuleMessage moduleMessage, RemoteAddress remoteAddress) {
+        this.remoteAddress = remoteAddress;
+        this.address = remoteAddress.ip() + ":" + remoteAddress.port();
+
         this.barSkeleton = barSkeleton;
         this.moduleMessage = moduleMessage;
-        this.remoteAddress = remoteAddress;
         this.moduleKey = moduleMessage.getModuleKey();
-        this.address = remoteAddress.ip() + ":" + remoteAddress.port();
     }
 }

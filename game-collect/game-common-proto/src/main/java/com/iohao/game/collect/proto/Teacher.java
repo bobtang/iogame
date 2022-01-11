@@ -43,6 +43,7 @@ public class Teacher {
         teacher.id = 1;
         teacher.name = "alex";
 
+
         try {
             byte[] encode = teacherCodec.encode(teacher);
 
@@ -57,6 +58,6 @@ public class Teacher {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
+
 }

@@ -7,6 +7,7 @@ import com.iohao.little.game.common.kit.ClassScanner;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 /**
@@ -29,9 +30,9 @@ public class ClientBarSkeleton {
 //                .addActionController(DogAction.class)
         ;
 
-        Predicate<Class<?>> predicateFilter = (clazz) -> {
+        final Predicate<Class<?>> predicateFilter = (clazz) -> {
             ActionController annotation = clazz.getAnnotation(ActionController.class);
-            return annotation != null;
+            return Objects.nonNull(annotation);
         };
 
         for (Class<?> actionClazz : actionClazzArray) {

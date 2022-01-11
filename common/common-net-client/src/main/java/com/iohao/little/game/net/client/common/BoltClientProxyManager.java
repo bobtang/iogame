@@ -26,6 +26,7 @@ public class BoltClientProxyManager {
         }
 
         BoltClientProxy boltClientProxy = boltClientMap.get(moduleKey);
+        // 无锁化
         if (Objects.isNull(boltClientProxy)) {
             boltClientProxy = new BoltClientProxy();
             boltClientProxy = boltClientMap.putIfAbsent(moduleKey, boltClientProxy);
@@ -34,7 +35,7 @@ public class BoltClientProxyManager {
                 boltClientProxy = boltClientMap.get(moduleKey);
             }
 
-            // 这种情况只在全部游戏服务器都启动在一个进程时才会用得上
+            // TODO: 这种情况只在全部游戏服务器都启动在一个进程时才会用得上
             gateProxy = boltClientProxy;
         }
 

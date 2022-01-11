@@ -1,5 +1,6 @@
 package com.iohao.little.game.net.external.bootstrap;
 
+import com.iohao.little.game.net.external.bootstrap.handler.ExternalHandler;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -54,8 +55,8 @@ public class ExternalChannelInitializerCallbackDefault extends ChannelInitialize
 
         // 心跳处理
         if (Objects.nonNull(idleHandler)) {
-            pipeline.addLast("idleStateHandler", new IdleStateHandler(0, 0, idleTime,
-                    TimeUnit.MILLISECONDS));
+            pipeline.addLast("idleStateHandler",
+                    new IdleStateHandler(0, 0, idleTime, TimeUnit.MILLISECONDS));
             pipeline.addLast("idleHandler", idleHandler);
         }
 

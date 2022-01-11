@@ -1,5 +1,6 @@
 package com.iohao.little.game.net.server.module;
 
+import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.net.message.common.ModuleMessage;
 
 import java.util.Map;
@@ -20,9 +21,8 @@ public class ModuleInfoManager {
     Map<Integer, Integer> moduleIdMap = new ConcurrentHashMap<>();
     Map<Integer, ModuleInfoRegion> moduleInfoRegionMap = new ConcurrentHashMap<>();
 
-    public ModuleInfoProxy getModuleInfo(int cmdMerge) {
-        Integer moduleId = moduleIdMap.get(cmdMerge);
-
+    public ModuleInfoProxy getModuleInfo(CmdInfo cmdInfo) {
+        Integer moduleId = moduleIdMap.get(cmdInfo.getCmdMerge());
 
         ModuleInfoRegion moduleInfoRegion = moduleInfoRegionMap.get(moduleId);
 
@@ -38,6 +38,8 @@ public class ModuleInfoManager {
         var moduleId = moduleMessage.getModuleKey().moduleId;
 
         ModuleInfoRegion moduleInfoRegion = moduleInfoRegionMap.get(moduleId);
+
+        // 无锁化
         if (Objects.isNull(moduleInfoRegion)) {
             moduleInfoRegion = new ModuleInfoRegion();
             moduleInfoRegion = moduleInfoRegionMap.putIfAbsent(moduleId, moduleInfoRegion);

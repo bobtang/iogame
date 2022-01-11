@@ -115,8 +115,7 @@ public class GatewayController {
 
     private Object invokeSync(RequestMessage requestMessage) {
         CmdInfo cmdInfo = requestMessage.getCmdInfo();
-        ModuleInfoManager me = ModuleInfoManager.me();
-        ModuleInfoProxy moduleInfo = me.getModuleInfo(cmdInfo.getCmdMerge());
+        ModuleInfoProxy moduleInfo = ModuleInfoManager.me().getModuleInfo(cmdInfo);
 
         try {
             ResponseMessage responseCommand = (ResponseMessage) moduleInfo.invokeSync(requestMessage);

@@ -8,9 +8,10 @@ import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.action.skeleton.core.ServerContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
+import com.iohao.little.game.net.client.BoltClientServer;
 import com.iohao.little.game.net.common.ServerSender;
 import com.iohao.little.game.net.message.common.BroadcastMessage;
-import com.iohao.little.game.net.common.message.InnerModuleMessage;
+import com.iohao.little.game.net.message.common.InnerModuleMessage;
 import com.iohao.little.game.widget.broadcast.MessageQueueWidget;
 import com.iohao.little.game.widget.config.WidgetComponents;
 import lombok.Getter;
@@ -25,15 +26,33 @@ import lombok.experimental.Accessors;
  *
  * @author 洛朱
  * @Date 2021-12-17
+ * @see BoltClientServer#init()
  */
 @Getter
 @Setter
 @Accessors(chain = true)
 public class BoltClientProxy implements ServerContext, ServerSender {
-    RpcClient rpcClient;
     Connection connection;
+
+    /**
+     * rpcClient
+     * <pre>
+     *     {@link BoltClientServer#init()}
+     * </pre>
+     */
+    RpcClient rpcClient;
+
+    /**
+     * 业务框架
+     * <pre>
+     *     {@link BoltClientServer#init()}
+     * </pre>
+     */
     BarSkeleton barSkeleton;
+
+    /** 消息发送超时时间 */
     int timeoutMillis = 1000;
+
     final WidgetComponents widgetComponents = new WidgetComponents();
 
     public Object invokeSync(final Object request, final int timeoutMillis) throws RemotingException, InterruptedException {

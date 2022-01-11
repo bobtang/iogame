@@ -2,11 +2,9 @@ package com.iohao.little.game.net.server.common;
 
 import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
-import com.alipay.remoting.exception.RemotingException;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
-import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
-import com.iohao.little.game.net.server.module.ModuleInfoManager;
-import com.iohao.little.game.net.common.message.InnerModuleMessage;
+import com.iohao.little.game.net.message.common.InnerModuleMessage;
+import com.iohao.little.game.net.server.GateKit;
 
 /**
  * 网关转发到其它逻辑服
@@ -20,18 +18,8 @@ public class GateInnerModuleMessageAsyncUserProcess extends AsyncUserProcessor<I
         // 模块之间的请求处理
         var requestMessage = innerModuleMessage.getRequestMessage();
 
-        // 根据 cmdInfo 查找出可以处理请求的模块
-        var cmdInfo = requestMessage.getCmdInfo();
-        var moduleInfo = ModuleInfoManager.me().getModuleInfo(cmdInfo.getCmdMerge());
 
-        try {
-            // 请求方 请求其它服务器得到的响应数据
-            var responseMessage = (ResponseMessage) moduleInfo.invokeSync(requestMessage);
-            // 将响应数据给回请求方
-            asyncCtx.sendResponse(responseMessage);
-        } catch (RemotingException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        GateKit.sendToLogicServer(asyncCtx, requestMessage);
     }
 
     /**

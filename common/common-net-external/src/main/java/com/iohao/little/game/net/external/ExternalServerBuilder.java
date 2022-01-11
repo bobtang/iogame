@@ -39,8 +39,10 @@ public class ExternalServerBuilder {
     String ip;
     int port;
 
+    /** Bootstrap 优化项 */
     @Setter
     BootstrapOption bootstrapOption;
+
     /** 心跳时间 */
     int idleTime = 10;
 

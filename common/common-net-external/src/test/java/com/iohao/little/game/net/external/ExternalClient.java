@@ -1,7 +1,7 @@
 package com.iohao.little.game.net.external;
 
 import com.iohao.little.game.net.external.bootstrap.ExternalEncoder;
-import com.iohao.little.game.net.external.bootstrap.message.ExternalRequest;
+import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -58,7 +58,7 @@ public class ExternalClient {
         }
     }
 
-    public static boolean send(ExternalRequest msg) {
+    public static boolean send(ExternalMessage msg) {
         if (channel == null || !channel.isActive()) {
             log.debug("未连接服务器，发送失败");
             return false;
@@ -72,16 +72,15 @@ public class ExternalClient {
         final ChannelFuture connect = new ExternalClient().connect();
         if (connect.sync().isSuccess()) {
 
-            ExternalRequest request = new ExternalRequest();
-            request.setProtocolCode((byte) 1);
+            ExternalMessage request = new ExternalMessage();
             request.setCmdCode((short) 1);
             // 600 , 700
-            request.setMergeCmd(39322300);
+            request.setCmdMerge(39322300);
             request.setProtocolSwitch((byte) 2);
 
 //            String contentStr = "hello, world!";
             String contentStr = "aa aa aa";
-            request.setContent(contentStr.getBytes());
+            request.setData(contentStr.getBytes());
 
             send(request);
 
@@ -89,10 +88,10 @@ public class ExternalClient {
         }
     }
 
-    static class ClientMessageHandler extends SimpleChannelInboundHandler<ExternalRequest> {
+    static class ClientMessageHandler extends SimpleChannelInboundHandler<ExternalMessage> {
 
         @Override
-        protected void channelRead0(ChannelHandlerContext ctx, ExternalRequest msg) throws Exception {
+        protected void channelRead0(ChannelHandlerContext ctx, ExternalMessage msg) throws Exception {
             System.out.println("connection server");
         }
     }

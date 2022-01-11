@@ -99,7 +99,7 @@ public class GateConnectEventProcessor implements ConnectionEventProcessor {
 
             ResponseMessage responseMessage = null;
             try {
-                ModuleInfoProxy moduleInfo = ModuleInfoManager.me().getModuleInfo(cmdInfo.getCmdMerge());
+                ModuleInfoProxy moduleInfo = ModuleInfoManager.me().getModuleInfo(cmdInfo);
 
                 for (int i = 0; i < 2; i++) {
                     apple.setAge(i);

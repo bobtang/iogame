@@ -2,6 +2,7 @@ package com.iohao.little.game.action.skeleton.protocol;
 
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.action.skeleton.core.CmdInfoFlyweightFactory;
+import com.iohao.little.game.action.skeleton.core.CmdKit;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,10 +39,14 @@ public abstract class BarMessage implements Serializable {
      * 错误码
      */
     int errorCode;
+
+    /** userId */
     long userId;
 
     /** 实际请求的业务参数 */
     Object data;
+    /** 实际请求的业务参数 byte[] */
+    byte[] dataContent;
 
     public void setData(Object data) {
         this.data = data;
@@ -56,5 +61,11 @@ public abstract class BarMessage implements Serializable {
     public CmdInfo getCmdInfo() {
         CmdInfoFlyweightFactory factory = CmdInfoFlyweightFactory.me();
         return factory.getCmdInfo(this.cmd, this.subCmd);
+    }
+
+    public void setCmdMerge(int cmdMerge) {
+        this.cmdMerge = cmdMerge;
+        this.cmd = CmdKit.getCmd(cmdMerge);
+        this.subCmd = CmdKit.getSubCmd(cmdMerge);
     }
 }

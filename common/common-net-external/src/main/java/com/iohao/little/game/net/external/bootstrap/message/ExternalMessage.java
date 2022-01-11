@@ -14,25 +14,34 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @ToString
-public abstract class ExternalMessage {
-    /** 处理多种协议的请求: 0 pb */
-    byte protocolCode;
+public class ExternalMessage {
     /** 请求命令类型: 0 心跳，1 业务 */
     short cmdCode;
-    /** 业务路由（高16为主, 低16为子） */
-    int mergeCmd;
-    /** 协议开关，用于一些协议级别的开关控制，比如 安全校验等 : 0 不做任何处理 */
+    /** 协议开关，用于一些协议级别的开关控制，比如 安全加密校验等。 : 0 不校验 */
     byte protocolSwitch;
+    /** 业务路由（高16为主, 低16为子） */
+    int cmdMerge;
+    /**
+     * 响应码。
+     * <pre>
+     *     从字段精简的角度，我们不可能每次响应都带上完整的异常栈给客户端排查问题，
+     *     因此，我们会定义一些响应码，通过编号进行网络传输，方便客户端定位问题。
+     *
+     *     0:成功
+     *     >0: 有错误
+     * </pre>
+     */
+    short responseStatus;
     /** 业务请求体长度 */
-    int contentLength = 0;
-    /** 业务请求体 */
-    byte[] content;
+    int dataLength = 0;
+    /** 业务请求体 字节数组 */
+    byte[] data;
 
 
-    public void setContent(byte[] content) {
-        if (content != null) {
-            this.content = content;
-            this.contentLength = content.length;
+    public void setData(byte[] data) {
+        if (data != null) {
+            this.data = data;
+            this.dataLength = data.length;
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.iohao.little.game.net.external.bootstrap;
 
-import com.iohao.little.game.net.external.bootstrap.message.ExternalRequest;
+import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
@@ -10,6 +10,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -22,28 +23,30 @@ public class ExternalDecoder extends ByteToMessageDecoder {
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf in, List<Object> list) {
 
         int readableBytesLen = in.readableBytes();
-        if (readableBytesLen >= ExternalCont.REQUEST_HEADER_LEN) {
-            // 1
-            byte protocolCode = in.readByte();
-            // 1
-            byte protocolSwitch = in.readByte();
-            // 2
+        if (readableBytesLen >= ExternalCont.HEADER_LEN) {
+            // 2 请求命令类型: 0 心跳，1 业务
             short cmdCode = in.readShort();
-            // 4
+            // 1 处理多种协议的请求: 0 pb
+            byte protocolCode = in.readByte();
+            // 1 协议开关，用于一些协议级别的开关控制，比如 安全加密校验等。 : 0 不校验
+            byte protocolSwitch = in.readByte();
+            // 4 业务路由（高16为主, 低16为子）
             int mergeCmd = in.readInt();
-            // 4
+            // 2 响应码。 解码这里用不上，只是为了前端好处理
+//            in.readShort();
+            in.skipBytes(2);
+            // 4 业务请求体长度
             int contentLen = in.readInt();
 
-            ExternalRequest request = new ExternalRequest();
-            request.setProtocolCode(protocolCode);
+            ExternalMessage request = new ExternalMessage();
             request.setCmdCode(cmdCode);
-            request.setMergeCmd(mergeCmd);
+            request.setCmdMerge(mergeCmd);
             request.setProtocolSwitch(protocolSwitch);
 
             if (contentLen > 0) {
                 byte[] content = new byte[contentLen];
                 in.readBytes(content, 0, contentLen);
-                request.setContent(content);
+                request.setData(content);
             }
 
             list.add(request);
@@ -56,29 +59,28 @@ public class ExternalDecoder extends ByteToMessageDecoder {
         String contentStr = "hello, world!";
 
 
-        ExternalRequest request = new ExternalRequest();
+        ExternalMessage request = new ExternalMessage();
         request.setCmdCode((short) 1);
         // 600 , 700
-        request.setMergeCmd(39322300);
+        request.setCmdMerge(39322300);
 
-        request.setContent(contentStr.getBytes());
+        request.setData(contentStr.getBytes());
 
 
         ByteBuf buf = Unpooled.buffer(30);
-        buf.writeInt(ExternalCont.REQUEST_HEADER_LEN);
+        buf.writeInt(ExternalCont.HEADER_LEN);
 
-        buf.writeByte(request.getProtocolCode());
         buf.writeShort(request.getCmdCode());
-        buf.writeInt(request.getMergeCmd());
+        buf.writeInt(request.getCmdMerge());
         buf.writeByte(request.getProtocolSwitch());
-        buf.writeInt(request.getContentLength());
-        buf.writeBytes(request.getContent());
+        buf.writeInt(request.getDataLength());
+        buf.writeBytes(request.getData());
 
         String str = ByteBufUtil.hexDump(buf);
         // 000001025802bc000000000d68656c6c6f2c20776f726c6421
         System.out.println(str);
         byte[] a = buf.array();
-        System.out.println(a);
+        System.out.println(Arrays.toString(a));
 
 
         Charset utf8 = StandardCharsets.UTF_8;

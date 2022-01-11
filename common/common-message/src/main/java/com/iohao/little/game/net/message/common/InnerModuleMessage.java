@@ -1,4 +1,4 @@
-package com.iohao.little.game.net.common.message;
+package com.iohao.little.game.net.message.common;
 
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import lombok.Data;
