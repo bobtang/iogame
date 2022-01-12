@@ -30,17 +30,6 @@
             <version>${project-revision.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.iohao.game</groupId>
-            <artifactId>common-net-client</artifactId>
-            <version>${project-revision.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.iohao.game</groupId>
-            <artifactId>widget-broadcast</artifactId>
-            <version>${project-revision.version}</version>
-        </dependency>
 
     </dependencies>
 

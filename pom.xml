@@ -46,6 +46,8 @@
 
         <module>game-collect/game-logic-user</module>
         <module>game-collect/game-gateway</module>
+        <module>game-collect/game-external</module>
+        <module>game-collect/game-logic-all</module>
 
 
     </modules>

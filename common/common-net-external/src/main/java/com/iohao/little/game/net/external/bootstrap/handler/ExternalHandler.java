@@ -27,15 +27,18 @@ public class ExternalHandler extends SimpleChannelInboundHandler<ExternalMessage
     protected void channelRead0(ChannelHandlerContext ctx, ExternalMessage message) {
         log.info("{}", message);
 
+        // 将 message 转换成 RequestMessage
         RequestMessage requestMessage = convertRequestMessage(message);
 
+        // 设置当前操作用户
         long userId = sessionManager.getUserId(ctx.channel());
         requestMessage.setUserId(userId);
 
-        request(message, requestMessage);
+        // 执行请求,得到响应 （）
+        ExternalMessage response = request(message, requestMessage);
 
-        // 响应到用户
-        ctx.writeAndFlush(message);
+        // 响应结果给用户
+        ctx.writeAndFlush(response);
     }
 
     private RequestMessage convertRequestMessage(ExternalMessage message) {
@@ -45,7 +48,7 @@ public class ExternalHandler extends SimpleChannelInboundHandler<ExternalMessage
         return requestMessage;
     }
 
-    private void request(ExternalMessage message, RequestMessage requestMessage) {
+    private ExternalMessage request(ExternalMessage message, RequestMessage requestMessage) {
         InnerExternalMessage innerExternalMessage = new InnerExternalMessage();
         innerExternalMessage.setRequestMessage(requestMessage);
         ResponseMessage responseMessage = null;
@@ -69,5 +72,6 @@ public class ExternalHandler extends SimpleChannelInboundHandler<ExternalMessage
 
         }
 
+        return message;
     }
 }

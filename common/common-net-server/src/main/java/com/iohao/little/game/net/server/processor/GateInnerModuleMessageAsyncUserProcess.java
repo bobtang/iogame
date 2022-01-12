@@ -1,28 +1,25 @@
-package com.iohao.little.game.net.server.common;
+package com.iohao.little.game.net.server.processor;
 
 import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
-import com.iohao.little.game.net.server.module.ModuleInfoManager;
-import com.iohao.little.game.net.message.common.ModuleMessage;
-import lombok.extern.slf4j.Slf4j;
+import com.iohao.little.game.net.message.common.InnerModuleMessage;
+import com.iohao.little.game.net.server.GateKit;
 
 /**
- * 模块注册
+ * 网关转发到其它逻辑服
  *
  * @author 洛朱
  * @Date 2021-12-20
  */
-@Slf4j
-public class GateModuleMessageAsyncUserProcessor extends AsyncUserProcessor<ModuleMessage> {
+public class GateInnerModuleMessageAsyncUserProcess extends AsyncUserProcessor<InnerModuleMessage> {
     @Override
-    public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, ModuleMessage moduleMessage) {
-        String remoteAddress = bizCtx.getRemoteAddress();
-        moduleMessage.setAddress(remoteAddress);
+    public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, InnerModuleMessage innerModuleMessage) {
+        // 模块之间的请求处理
+        var requestMessage = innerModuleMessage.getRequestMessage();
 
-        log.info("--------------------------------- 模块注册 {}", moduleMessage);
 
-        ModuleInfoManager.me().addModuleInfo(moduleMessage);
+        GateKit.sendToLogicServer(asyncCtx, requestMessage);
     }
 
     /**
@@ -33,6 +30,6 @@ public class GateModuleMessageAsyncUserProcessor extends AsyncUserProcessor<Modu
      */
     @Override
     public String interest() {
-        return ModuleMessage.class.getName();
+        return InnerModuleMessage.class.getName();
     }
 }

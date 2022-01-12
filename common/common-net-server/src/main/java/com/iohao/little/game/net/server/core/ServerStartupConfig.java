@@ -1,8 +1,8 @@
 package com.iohao.little.game.net.server.core;
 
+import com.alipay.remoting.config.Configs;
 import com.iohao.little.game.net.common.BoltServer;
 import com.iohao.little.game.net.server.GateKit;
-import com.iohao.little.game.widget.broadcast.internal.GateBroadcastWidgetComponents;
 import com.iohao.little.game.widget.config.WidgetComponents;
 
 /**
@@ -29,7 +29,7 @@ public interface ServerStartupConfig {
      * @param widgetComponents 部件
      */
     default void widgetComponents(WidgetComponents widgetComponents) {
-        GateBroadcastWidgetComponents.configBroadcastWidgetComponents(widgetComponents);
+        CommonServerStartupConfig.configBroadcastWidgetComponents(widgetComponents);
     }
 
     /**
@@ -42,14 +42,18 @@ public interface ServerStartupConfig {
      *
      * @param boltServer boltServer
      */
-    void connectionEventProcessor(BoltServer boltServer);
+    default void connectionEventProcessor(BoltServer boltServer) {
+        CommonServerStartupConfig.connectionEventProcessor(boltServer);
+    }
 
     /**
      * 注册用户处理器
      *
      * @param boltServer boltServer
      */
-    void registerUserProcessor(BoltServer boltServer);
+    default void registerUserProcessor(BoltServer boltServer) {
+        CommonServerStartupConfig.registerUserProcessor(boltServer);
+    }
 
     /**
      * 服务器启动前的钩子方法
@@ -67,6 +71,10 @@ public interface ServerStartupConfig {
      * </pre>
      */
     default void startup() {
+        // 开启 bolt 重连
+        System.setProperty(Configs.CONN_MONITOR_SWITCH, "true");
+        System.setProperty(Configs.CONN_RECONNECT_SWITCH, "true");
+
         // 创建 BoltServer
         BoltServer boltServer = createBoltServer();
         GateKit.boltServer = boltServer;

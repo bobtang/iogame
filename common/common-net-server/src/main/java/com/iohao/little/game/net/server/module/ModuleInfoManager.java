@@ -20,6 +20,7 @@ public class ModuleInfoManager {
      */
     Map<Integer, Integer> moduleIdMap = new ConcurrentHashMap<>();
     Map<Integer, ModuleInfoRegion> moduleInfoRegionMap = new ConcurrentHashMap<>();
+    ModuleInfoRegion externalModuleInfoRegion = new ModuleInfoRegion();
 
     public ModuleInfoProxy getModuleInfo(CmdInfo cmdInfo) {
         Integer moduleId = moduleIdMap.get(cmdInfo.getCmdMerge());
@@ -33,8 +34,19 @@ public class ModuleInfoManager {
         return moduleInfoRegion.getModuleInfo();
     }
 
-    public void addModuleInfo(ModuleMessage moduleMessage) {
+    public ModuleInfoProxy getExternalModuleInfo() {
+        return externalModuleInfoRegion.getModuleInfo();
+    }
 
+
+    public void addModuleInfo(ModuleMessage moduleMessage) {
+        switch (moduleMessage.getModuleType()) {
+            case LOGIC -> extractedLogic(moduleMessage);
+            case EXTERNAL -> externalModuleInfoRegion.addModuleInfo(moduleMessage);
+        }
+    }
+
+    private void extractedLogic(ModuleMessage moduleMessage) {
         var moduleId = moduleMessage.getModuleKey().moduleId;
 
         ModuleInfoRegion moduleInfoRegion = moduleInfoRegionMap.get(moduleId);

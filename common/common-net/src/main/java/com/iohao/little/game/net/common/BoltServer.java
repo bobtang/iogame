@@ -40,8 +40,7 @@ public class BoltServer {
 
     // ~~~ constructors
     public BoltServer(int port) {
-        this.port = port;
-        this.server = new RpcServer(this.port);
+        this(port, true);
     }
 
     public BoltServer(int port, boolean manageFeatureEnabled) {

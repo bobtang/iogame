@@ -3,6 +3,7 @@ package com.iohao.little.game.net.server.module;
 import com.alipay.remoting.exception.RemotingException;
 import com.alipay.remoting.rpc.RpcServer;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
+import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.server.GateKit;
 import com.iohao.little.game.net.message.common.ModuleMessage;
 
@@ -29,6 +30,15 @@ public class ModuleInfoProxy {
 
         RpcServer rpcServer = GateKit.boltServer.getRpcServer();
         Object result = rpcServer.invokeSync(address, requestMessage, 1000);
+
+        return result;
+    }
+
+    public Object invokeSync(ResponseMessage responseMessage) throws RemotingException, InterruptedException {
+        String address = moduleMessage.getAddress();
+
+        RpcServer rpcServer = GateKit.boltServer.getRpcServer();
+        Object result = rpcServer.invokeSync(address, responseMessage, 1000);
 
         return result;
     }
