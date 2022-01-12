@@ -36,6 +36,7 @@ public class ModuleMessage implements Serializable {
                 "moduleKey=" + moduleKey +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", moduleType='" + moduleType + '\'' +
                 '}';
     }
 }

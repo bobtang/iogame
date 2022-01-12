@@ -1,10 +1,10 @@
 package com.iohao.game.collect.user;
 
+import com.iohao.game.collect.common.GameBarSkeletonConfig;
 import com.iohao.game.collect.common.ModuleKeyCont;
 import com.iohao.game.collect.logic.GameLogicCommonInit;
 import com.iohao.game.collect.user.action.LoginAction;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
-import com.iohao.little.game.net.client.common.ClientBarSkeleton;
 import com.iohao.little.game.net.client.core.ClientStartupConfig;
 import com.iohao.little.game.net.client.core.RemoteAddress;
 import com.iohao.little.game.net.message.common.ModuleKeyKit;
@@ -18,7 +18,7 @@ public class UserClientStartupConfig implements ClientStartupConfig {
     @Override
     public BarSkeleton createBarSkeleton() {
         // 扫描 AppleAction.class 所在包
-        BarSkeleton barSkeleton = ClientBarSkeleton.newBarSkeleton(LoginAction.class);
+        BarSkeleton barSkeleton = GameBarSkeletonConfig.newBarSkeleton(LoginAction.class);
         return barSkeleton;
     }
 

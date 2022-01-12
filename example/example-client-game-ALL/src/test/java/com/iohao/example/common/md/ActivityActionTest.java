@@ -1,6 +1,7 @@
 package com.iohao.example.common.md;
 
 import com.iohao.little.game.action.skeleton.core.*;
+import com.iohao.little.game.action.skeleton.core.flow.interal.DebugInOut;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +47,8 @@ public class ActivityActionTest {
     private BarSkeleton newBarSkeleton() {
         // 尽量做到所有操作是可插拔的. 详细配置 see BarSkeletonBuilder.build
         BarSkeletonBuilder builder = BarSkeleton.newBuilder();
-        builder.getBarSkeletonSetting().setPrintActionShort(true);
+        builder.getSetting().setPrintActionShort(true);
+        builder.addInOut(new DebugInOut());
 
         // 添加(请求响应)处理类. 用户可以定义自己的业务控制器 - 这里推荐实现扫描包的形式添加 tcp 处理类
         builder.addActionController(ActivityAction.class);

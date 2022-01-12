@@ -15,10 +15,10 @@ public class ExternalEncoder extends MessageToByteEncoder<ExternalMessage> {
     @Override
     protected void encode(ChannelHandlerContext channelHandlerContext, ExternalMessage message, ByteBuf byteBuf) {
 
-        // 消息头长度
+        // 消息头长度 2 + 2 + 1 + 4 + 2 + 4 = 15
         int headLen = ExternalCont.HEADER_LEN + message.getDataLength();
 
-        // 占用2位
+        // 2 消息头长度
         byteBuf.writeShort(headLen);
 
         // 2 请求命令类型: 0 心跳，1 业务

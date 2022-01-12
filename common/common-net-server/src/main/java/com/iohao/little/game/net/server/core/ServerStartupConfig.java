@@ -77,7 +77,7 @@ public interface ServerStartupConfig {
 
         // 创建 BoltServer
         BoltServer boltServer = createBoltServer();
-        GateKit.boltServer = boltServer;
+        GateKit.setBoltServer(boltServer);
 
         // 部件扩展 可以通过部件的方式来扩展
         WidgetComponents widgetComponents = boltServer.getWidgetComponents();

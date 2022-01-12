@@ -19,19 +19,17 @@ import java.util.*;
 @Accessors(chain = true)
 @Setter
 public final class BarSkeletonBuilder {
-    /** 默认tcp对象是single. 如果设置为false, 每次创建新的tcp对象. 默认:true */
-    boolean createSingleActionCommandController = true;
-    boolean openIn = true;
-    boolean openOut = true;
+    /** BarSkeletonSetting */
+    @Getter
+    final BarSkeletonSetting setting = new BarSkeletonSetting();
+
     /** handler 列表 */
     final List<Handler<RequestMessage>> handlers = new LinkedList<>();
     /** inout 列表 */
     final List<ActionMethodInOut> inOuts = new LinkedList<>();
     /** action class */
     final List<Class<?>> controllerClazzList = new LinkedList<>();
-    /** BarSkeletonSetting */
-    @Getter
-    final BarSkeletonSetting barSkeletonSetting = new BarSkeletonSetting();
+
     /** 命令执行器 */
     ActionCommandFlowExecute actionCommandFlowExecute = new DefaultActionCommandFlowExecute();
     /** action工厂 */
@@ -50,15 +48,24 @@ public final class BarSkeletonBuilder {
     BarSkeletonBuilder() {
     }
 
+    private void before() {
+        // 如果是 pb 协议
+        if (setting.parseType == ParseType.PB) {
+            this.actionMethodParamParser = new ProtoActionMethodParamParser();
+            this.actionMethodResultWrap = new ProtoActionMethodResultWrap();
+        }
+    }
+
     /**
      * 构建骨架, 提供了一些默认配置
      */
     public BarSkeleton build() {
+        this.before();
 
         // 参数设置
         var barSkeleton = new BarSkeleton()
-                .setOpenIn(this.openIn)
-                .setOpenOut(this.openOut)
+                .setOpenIn(setting.openIn)
+                .setOpenOut(setting.openOut)
                 // action command 命令执行器流程
                 .setActionCommandFlowExecute(this.actionCommandFlowExecute)
                 // action 工厂
@@ -78,7 +85,7 @@ public final class BarSkeletonBuilder {
         extractedHandler(barSkeleton);
 
         // inout
-        extractedInout(barSkeleton);
+        barSkeleton.inOuts.addAll(this.inOuts);
 
         // 构建 actionMapping
         extractedActionCommand(barSkeleton);
@@ -90,28 +97,20 @@ public final class BarSkeletonBuilder {
 
     private void extractedActionCommand(BarSkeleton barSkeleton) {
         // 命令信息构建器
-        var actionCommandInfoBuilder = new ActionCommandInfoBuilder(barSkeletonSetting)
+        var actionCommandInfoBuilder = new ActionCommandInfoBuilder(setting)
                 .buildAction(this.controllerClazzList);
 
         var map = actionCommandInfoBuilder.getMap();
 
         var actionCommandManager = barSkeleton.actionCommandManager;
         // map 转数组
-        actionCommandManager.actionCommands = BarInternalKit.convertArray(map, barSkeletonSetting);
+        actionCommandManager.actionCommands = BarInternalKit.convertArray(map, setting);
 
-        if (barSkeletonSetting.isKeepActionMap()) {
+        if (setting.isKeepActionMap()) {
             actionCommandManager.actionCommandMap.putAll(map);
         }
 
         map.clear();
-    }
-
-    private void extractedInout(BarSkeleton barSkeleton) {
-        if (this.inOuts.isEmpty()) {
-            barSkeleton.inOuts.add(new DebugInOut());
-        } else {
-            barSkeleton.inOuts.addAll(this.inOuts);
-        }
     }
 
     private void extractedHandler(BarSkeleton barSkeleton) {
@@ -129,16 +128,16 @@ public final class BarSkeletonBuilder {
     }
 
     private void log(BarSkeleton barSkeleton) {
-        if (barSkeletonSetting.isPrintHandler()) {
+        if (setting.isPrintHandler()) {
             PrintActionKit.printHandler(barSkeleton.getHandlers());
         }
 
-        if (barSkeletonSetting.isPrintInout()) {
+        if (setting.isPrintInout()) {
             PrintActionKit.printInout(barSkeleton.getInOuts());
         }
 
-        if (barSkeletonSetting.isPrintAction()) {
-            PrintActionKit.printActionCommand(barSkeleton.actionCommandManager.actionCommands, barSkeletonSetting.printActionShort);
+        if (setting.isPrintAction()) {
+            PrintActionKit.printActionCommand(barSkeleton.actionCommandManager.actionCommands, setting.printActionShort);
         }
     }
 
@@ -161,6 +160,12 @@ public final class BarSkeletonBuilder {
         return this;
     }
 
+    /**
+     * 添加 inOut
+     *
+     * @param inOut inOut
+     * @return this
+     */
     public BarSkeletonBuilder addInOut(ActionMethodInOut inOut) {
         n(inOut);
         this.inOuts.add(inOut);

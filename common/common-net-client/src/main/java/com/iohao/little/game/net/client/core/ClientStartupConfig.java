@@ -79,6 +79,15 @@ public interface ClientStartupConfig {
     }
 
     /**
+     * 服务器启动后的钩子方法
+     *
+     * @param boltClientServer BoltClientServer
+     */
+    default void startupSuccess(BoltClientServer boltClientServer) {
+
+    }
+
+    /**
      * 启动
      * <pre>
      *     模板方法模式
@@ -119,7 +128,7 @@ public interface ClientStartupConfig {
 
         // 部件组成部份 - 扩展功能可以通过部件的方式来扩展
         WidgetComponents widgetComponents = boltClientProxy.getWidgetComponents();
-        widgetComponents(widgetComponents);
+        this.widgetComponents(widgetComponents);
 
         // 启动 rpc client
         RpcClient rpcClient = boltClientServer.getRpcClient();
@@ -128,6 +137,8 @@ public interface ClientStartupConfig {
         // 客户端服务器注册到网关服
         boltClientServer.registerModuleToGate();
 
+        // 服务器启动后的钩子方法
+        this.startupSuccess(boltClientServer);
 
     }
 }

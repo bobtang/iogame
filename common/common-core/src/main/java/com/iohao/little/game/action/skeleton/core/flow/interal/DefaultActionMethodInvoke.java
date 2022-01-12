@@ -15,14 +15,11 @@ import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
  * @author 洛朱
  * @Date 2021-12-20
  */
-public class DefaultActionMethodInvoke implements ActionMethodInvoke {
+public  class DefaultActionMethodInvoke implements ActionMethodInvoke {
 
     @Override
-    public Object invoke(ParamContext paramContext, ActionCommand actionCommand, Object controller, RequestMessage request, BarSkeleton barSkeleton) {
-        // 解析参数器
-        ActionMethodParamParser paramParser = barSkeleton.getActionMethodParamParser();
-        // 方法参数列表
-        var pars = paramParser.listParam(paramContext, actionCommand, request);
+    public Object invoke(ParamContext paramContext, ActionCommand actionCommand, Object controller, RequestMessage request, BarSkeleton barSkeleton, Object[] pars) {
+
         // 方法下标
         var actionMethodIndex = actionCommand.getActionMethodIndex();
         // 方法访问器

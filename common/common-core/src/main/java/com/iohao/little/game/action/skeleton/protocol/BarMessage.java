@@ -59,8 +59,7 @@ public abstract class BarMessage implements Serializable {
     }
 
     public CmdInfo getCmdInfo() {
-        CmdInfoFlyweightFactory factory = CmdInfoFlyweightFactory.me();
-        return factory.getCmdInfo(this.cmd, this.subCmd);
+        return CmdInfoFlyweightFactory.me().getCmdInfo(this.cmd, this.subCmd);
     }
 
     public void setCmdMerge(int cmdMerge) {

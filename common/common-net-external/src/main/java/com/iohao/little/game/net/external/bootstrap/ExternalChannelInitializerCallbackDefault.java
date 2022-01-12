@@ -45,7 +45,7 @@ public class ExternalChannelInitializerCallbackDefault extends ChannelInitialize
                 // 长度字段的长度, 使用的是 short ，占用2位；（消息头用的 byteBuf.writeShort 来记录长度的）
                 2,
                 // 长度调整值： 这里不做任何调整
-                0,
+                -2,
                 // 跳过的初始字节数： 跳过2位; (跳过消息头的 2 位长度)
                 2));
 

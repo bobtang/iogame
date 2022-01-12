@@ -6,6 +6,10 @@ package com.iohao.game.collect.gateway;
  */
 public class GameGatewayBoot {
     public static void main(String[] args) {
+        GameGatewayBoot gameGatewayBoot = new GameGatewayBoot();
+    }
+
+    public void init() {
         // 启动网关
         GameGateServerStartupConfig gameGateServerStartupConfig = new GameGateServerStartupConfig();
         gameGateServerStartupConfig.startup();

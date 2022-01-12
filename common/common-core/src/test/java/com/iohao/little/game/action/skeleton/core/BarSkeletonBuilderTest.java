@@ -1,6 +1,7 @@
 package com.iohao.little.game.action.skeleton.core;
 
 import com.iohao.little.game.action.skeleton.core.action.DemoAction;
+import com.iohao.little.game.action.skeleton.core.flow.interal.DebugInOut;
 import org.junit.Test;
 
 /**
@@ -16,6 +17,7 @@ public class BarSkeletonBuilderTest {
         // 添加(请求响应)处理类. 用户可以定义自己的业务控制器
         builder
                 .addActionController(DemoAction.class)
+                .addInOut(new DebugInOut())
         ;
 
         // 构建业务框架

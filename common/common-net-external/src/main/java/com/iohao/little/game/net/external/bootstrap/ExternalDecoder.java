@@ -26,8 +26,6 @@ public class ExternalDecoder extends ByteToMessageDecoder {
         if (readableBytesLen >= ExternalCont.HEADER_LEN) {
             // 2 请求命令类型: 0 心跳，1 业务
             short cmdCode = in.readShort();
-            // 1 处理多种协议的请求: 0 pb
-            byte protocolCode = in.readByte();
             // 1 协议开关，用于一些协议级别的开关控制，比如 安全加密校验等。 : 0 不校验
             byte protocolSwitch = in.readByte();
             // 4 业务路由（高16为主, 低16为子）

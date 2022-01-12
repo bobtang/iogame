@@ -28,12 +28,14 @@ public interface ActionMethodInvoke {
      * @param controller    actionCommandController
      * @param request       请求参数
      * @param barSkeleton   业务框架
+     * @param pars          方法参数列表
      * @return 返回值
      */
     Object invoke(final ParamContext paramContext
             , final ActionCommand actionCommand
             , final Object controller
             , final RequestMessage request
-            , final BarSkeleton barSkeleton);
+            , final BarSkeleton barSkeleton
+            , final Object[] pars);
 
 }

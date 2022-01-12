@@ -16,8 +16,8 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class GameLogicCommonInit {
     public RemoteAddress createRemoteAddress() {
-        String ip = GameConfig.ip;
-        int port = GameConfig.port;
+        String ip = GameConfig.gateIp;
+        int port = GameConfig.gatePort;
         return new RemoteAddress(ip, port);
     }
 

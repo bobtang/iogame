@@ -26,7 +26,7 @@ public class PrintActionKit {
     public void printInout(List<ActionMethodInOut> inOuts) {
         String title = "@|CYAN ======================== InOut ========================= |@";
         System.out.println(Ansi.ansi().eraseScreen().render(title));
-        System.out.println("如果需要关闭日志, 查看 BehaviorConfig#setPrintInout");
+        System.out.println("如果需要关闭日志, 查看 BarSkeletonBuilder#setting#printInout");
         for (ActionMethodInOut inOut : inOuts) {
             String info = String.format("@|BLUE %s |@", inOut.getClass());
             System.out.println(Ansi.ansi().eraseScreen().render(info));
@@ -41,7 +41,7 @@ public class PrintActionKit {
 
         String title = "@|CYAN ======================== Handler ========================= |@";
         System.out.println(Ansi.ansi().eraseScreen().render(title));
-        System.out.println("如果需要关闭日志, 查看 BehaviorConfig#setPrintHandler");
+        System.out.println("如果需要关闭日志, 查看 BarSkeletonBuilder#setting#printHandler");
         for (Handler<RequestMessage> handler : handlers) {
             String info = String.format("@|BLUE %s |@", handler.getClass()
             );
@@ -62,8 +62,8 @@ public class PrintActionKit {
         String title = "@|CYAN ======================== action ========================= |@";
         System.out.println(Ansi.ansi().eraseScreen().render(title));
         String tip = """
-                如果需要关闭日志, 查看 BarSkeletonSetting#setPrintAction;
-                如需要打印（class method params return）完整的包名, 查看 BarSkeletonSetting#printActionShort;
+                如果需要关闭日志, 查看 BarSkeletonBuilder#setting#printAction;
+                如需要打印（class method params return）完整的包名, 查看 BarSkeletonBuilder#setting#printActionShort;
                 """;
         System.out.print(tip);
 

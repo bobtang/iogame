@@ -2,6 +2,7 @@ package com.iohao.little.game.widget.broadcast.internal;
 
 import com.alipay.remoting.exception.RemotingException;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
+import com.iohao.little.game.net.common.BoltServer;
 import com.iohao.little.game.net.server.GateKit;
 import com.iohao.little.game.net.server.module.ModuleInfoManager;
 import com.iohao.little.game.net.server.module.ModuleInfoProxy;
@@ -25,8 +26,10 @@ public class GateBroadcastMessageListenerWidget implements MessageListenerWidget
     @Override
     public void onMessage(ResponseMessage responseMessage, CharSequence channel, BroadcastMessage broadcastMessage) {
 
-        WidgetComponents widgetComponents = GateKit.boltServer.getWidgetComponents();
+        BoltServer boltServer = GateKit.getBoltServer();
+        WidgetComponents widgetComponents = boltServer.getWidgetComponents();
         MessageQueueWidget option = widgetComponents.option(MessageQueueWidget.class);
+
         log.info("当前使用的发布订阅内核是: {}", option.getClass());
         log.info("网关 Broadcast 正在处理 {}", responseMessage);
 

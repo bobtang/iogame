@@ -11,7 +11,7 @@ import com.iohao.little.game.net.server.core.ServerStartupConfig;
 public class GameGateServerStartupConfig implements ServerStartupConfig {
     @Override
     public BoltServer createBoltServer() {
-        int port = GameConfig.port;
+        int port = GameConfig.gatePort;
         return new BoltServer(port);
     }
 }

@@ -39,4 +39,29 @@ public class ProtoKit {
 
         return emptyBytes;
     }
+
+    /**
+     * 将字节解析成 pb 对象
+     *
+     * @param dataContent pb 字节
+     * @param clazz       pb class
+     * @param <T>         t
+     * @return pb 对象
+     */
+    public <T> T parseProtoByte(byte[] dataContent, Class<T> clazz) {
+
+        if (Objects.isNull(dataContent) || dataContent.length == 0) {
+            return null;
+        }
+
+        Codec<T> codec = ProtobufProxy.create(clazz);
+
+        try {
+            return codec.decode(dataContent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

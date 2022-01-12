@@ -12,13 +12,19 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BarSkeletonSetting {
-    /** 默认:true; 默认tcp action对象是single. 如果设置为false, 每次创建新的tcp action对象. */
+    /**
+     * <pre>
+     *     true: action 对象是 single.
+     *     false: 每次都创建新的 action 对象.
+     * </pre>
+     */
     boolean createSingleActionCommandController = true;
 
     /** action 的默认长度 (一级 cmd) */
     int actionMaxLen = 127;
     /** 子 action 的默认长度 (二级 subCmd) */
     int subActionMaxLen = 127;
+
     /** 是否保留 action Map */
     boolean keepActionMap = true;
 
@@ -30,4 +36,11 @@ public class BarSkeletonSetting {
     boolean printInout = true;
     /** true handler 日志打印 */
     boolean printHandler = true;
+
+    /** inOut 的 in 。 true 开启 */
+    boolean openIn = true;
+    /** inOut 的 out 。 true 开启 */
+    boolean openOut = true;
+    /** 解析类型 */
+    ParseType parseType = ParseType.JAVA;
 }

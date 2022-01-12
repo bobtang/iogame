@@ -1,8 +1,11 @@
-package com.iohao.little.game.net.client.common;
+package com.iohao.game.collect.common;
 
 import com.iohao.little.game.action.skeleton.annotation.ActionController;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
 import com.iohao.little.game.action.skeleton.core.BarSkeletonBuilder;
+import com.iohao.little.game.action.skeleton.core.BarSkeletonSetting;
+import com.iohao.little.game.action.skeleton.core.ParseType;
+import com.iohao.little.game.action.skeleton.core.flow.interal.DebugInOut;
 import com.iohao.little.game.common.kit.ClassScanner;
 import lombok.experimental.UtilityClass;
 
@@ -11,13 +14,13 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 /**
- * 客户端业务框架
+ * 实践案例游戏的 业务框架 配置
  *
  * @author 洛朱
- * @Date 2021-12-20
+ * @date 2022-01-12
  */
 @UtilityClass
-public class ClientBarSkeleton {
+public class GameBarSkeletonConfig {
     public BarSkeleton newBarSkeleton(Class<?>... actionClazz) {
         return createBuilder(actionClazz).build();
     }
@@ -25,20 +28,23 @@ public class ClientBarSkeleton {
     public BarSkeletonBuilder createBuilder(Class<?>... actionClazzArray) {
         // 尽量做到所有操作是可插拔的.
         BarSkeletonBuilder builder = BarSkeleton.newBuilder();
-        // 添加(请求响应)处理类. 用户可以定义自己的业务控制器 - 这里推荐实现扫描包的形式添加 tcp 处理类
-//        builder
-//                .addActionController(DogAction.class)
-        ;
+        builder.addInOut(new DebugInOut());
 
-        final Predicate<Class<?>> predicateFilter = (clazz) -> {
-            ActionController annotation = clazz.getAnnotation(ActionController.class);
-            return Objects.nonNull(annotation);
-        };
+        // 使用 pb
+        BarSkeletonSetting setting = builder.getSetting();
+        setting.setParseType(ParseType.PB);
+
+        // 过滤条件：只解析带有 ActionController 注解的 class
+        final Predicate<Class<?>> predicateFilter = (clazz) -> Objects.nonNull(clazz.getAnnotation(ActionController.class));
 
         for (Class<?> actionClazz : actionClazzArray) {
+
+            // 扫描
             String packagePath = actionClazz.getPackageName();
             ClassScanner classScanner = new ClassScanner(packagePath, predicateFilter);
             List<Class<?>> classList = classScanner.listScan();
+
+            // 将扫描好的 action class 添加到业务框架中
             classList.forEach(builder::addActionController);
         }
 

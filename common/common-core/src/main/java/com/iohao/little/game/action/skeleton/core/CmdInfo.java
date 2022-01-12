@@ -15,14 +15,11 @@ import lombok.Getter;
  */
 @Getter
 public final class CmdInfo {
-    /**
-     * 目标路由
-     */
+    /** 业务主路由 */
     final int cmd;
-    /**
-     * 目标子路由
-     */
+    /** 业务子路由 */
     final int subCmd;
+
     /**
      * 合并两个参数,分别存放在 [高16 和 低16]
      * <pre>
@@ -30,7 +27,7 @@ public final class CmdInfo {
      *     subCmd - 低16
      *     例如 cmd = 600; subCmd = 700;
      *     merge 的结果: 39322300
-     *     那么merge对应的二进制是: 0000 0010 0101 1000 0000 0010 1011 1100
+     *     那么 cmdMerge 对应的二进制是: [0000 0010 0101 1000] [0000 0010 1011 1100]
      * </pre>
      */
     final int cmdMerge;

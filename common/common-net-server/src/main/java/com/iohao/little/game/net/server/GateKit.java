@@ -6,6 +6,8 @@ import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.common.BoltServer;
 import com.iohao.little.game.net.server.module.ModuleInfoManager;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -16,7 +18,9 @@ import lombok.experimental.UtilityClass;
  */
 @UtilityClass
 public class GateKit {
-    public volatile BoltServer boltServer;
+    @Getter
+    @Setter
+    private volatile BoltServer boltServer;
 
     /**
      * 将请求转发到逻辑服

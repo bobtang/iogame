@@ -4,7 +4,6 @@ import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
-import com.iohao.little.game.net.message.common.InnerExternalMessage;
 import com.iohao.little.game.net.server.GateKit;
 
 /**
@@ -16,11 +15,9 @@ import com.iohao.little.game.net.server.GateKit;
  * @author 洛朱
  * @date 2022-01-11
  */
-public class GateInnerExternalMessageAsyncUserProcessor extends AsyncUserProcessor<InnerExternalMessage> {
+public class GateExternalRequestMessageAsyncUserProcessor extends AsyncUserProcessor<RequestMessage> {
     @Override
-    public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, InnerExternalMessage message) {
-        RequestMessage requestMessage = message.getRequestMessage();
-
+    public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, RequestMessage requestMessage) {
         // 把请求转发到逻辑服 处理
         GateKit.sendToLogicServer(asyncCtx, requestMessage);
     }
@@ -33,6 +30,6 @@ public class GateInnerExternalMessageAsyncUserProcessor extends AsyncUserProcess
      */
     @Override
     public String interest() {
-        return InnerExternalMessage.class.getName();
+        return RequestMessage.class.getName();
     }
 }

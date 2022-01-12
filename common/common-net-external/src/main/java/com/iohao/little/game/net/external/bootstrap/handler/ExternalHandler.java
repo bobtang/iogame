@@ -8,7 +8,6 @@ import com.iohao.little.game.common.kit.ProtoKit;
 import com.iohao.little.game.net.external.bootstrap.ExternalServerKit;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import com.iohao.little.game.net.external.session.UserSessionManager;
-import com.iohao.little.game.net.message.common.InnerExternalMessage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -49,9 +48,10 @@ public class ExternalHandler extends SimpleChannelInboundHandler<ExternalMessage
     }
 
     private ExternalMessage request(ExternalMessage message, RequestMessage requestMessage) {
-        InnerExternalMessage innerExternalMessage = new InnerExternalMessage();
-        innerExternalMessage.setRequestMessage(requestMessage);
-        ResponseMessage responseMessage = null;
+
+        // 响应
+        ResponseMessage responseMessage;
+
         try {
             // TODO: 2022/1/11 转发到网关
             RpcClient rpcClient = ExternalServerKit.rpcClient;
@@ -61,6 +61,7 @@ public class ExternalHandler extends SimpleChannelInboundHandler<ExternalMessage
             e.printStackTrace();
             // 超时错误
             message.setResponseStatus((short) -1);
+            return message;
         }
 
         if (Objects.nonNull(responseMessage)) {

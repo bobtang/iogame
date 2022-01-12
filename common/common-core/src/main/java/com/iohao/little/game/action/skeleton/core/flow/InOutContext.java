@@ -35,6 +35,8 @@ public class InOutContext {
     RequestMessage requestMessage;
     /** 响应对象, 在InOut.fuckOut 时才会有值 */
     ResponseMessage responseMessage;
+    /** 业务方法参数 */
+    Object[] methodParams;
 
     public void put(String key, Object value) {
         dataMap.put(key, value);

@@ -1,5 +1,7 @@
 package com.iohao.little.game.net.external.bootstrap.message;
 
+import com.iohao.little.game.action.skeleton.core.CmdKit;
+import com.iohao.little.game.common.kit.ProtoKit;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,6 +9,8 @@ import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 /**
+ * 对外数据的协议
+ *
  * @author 洛朱
  * @date 2022-01-10
  */
@@ -21,6 +25,7 @@ public class ExternalMessage {
     byte protocolSwitch;
     /** 业务路由（高16为主, 低16为子） */
     int cmdMerge;
+
     /**
      * 响应码。
      * <pre>
@@ -37,11 +42,35 @@ public class ExternalMessage {
     /** 业务请求体 字节数组 */
     byte[] data;
 
-
+    /**
+     * 业务数据
+     *
+     * @param data 业务数据
+     */
     public void setData(byte[] data) {
         if (data != null) {
             this.data = data;
             this.dataLength = data.length;
         }
+    }
+
+    /**
+     * 业务数据
+     *
+     * @param data 业务数据
+     */
+    public void setData(Object data) {
+        byte[] bytes = ProtoKit.toBytes(data);
+        setData(bytes);
+    }
+
+    /**
+     * 业务路由
+     *
+     * @param cmd    主路由
+     * @param subCmd 子路由
+     */
+    public void setCmdMerge(int cmd, int subCmd) {
+        this.cmdMerge = CmdKit.merge(cmd, subCmd);
     }
 }

@@ -57,7 +57,7 @@ public class CommonServerStartupConfig {
         boltServer.registerUserProcessor(innerModuleMessageAsyncUserProcess);
 
         // 处理 - 接收真实用户的请求，把请求转发到逻辑服
-        var externalMessageProcessor = new GateInnerExternalMessageAsyncUserProcessor();
+        var externalMessageProcessor = new GateExternalRequestMessageAsyncUserProcessor();
         boltServer.registerUserProcessor(externalMessageProcessor);
 
         // 处理 - 发布订阅

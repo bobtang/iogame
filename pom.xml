@@ -48,6 +48,8 @@
         <module>game-collect/game-gateway</module>
         <module>game-collect/game-external</module>
         <module>game-collect/game-logic-all</module>
+        <module>game-collect/game-test</module>
+        <module>game-collect/game-one</module>
 
 
     </modules>

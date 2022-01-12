@@ -5,8 +5,8 @@ package com.iohao.little.game.net.external.bootstrap;
  * @date 2022-01-10
  */
 public interface ExternalCont {
-    /** 2 + 1 + 1 + 4 + 2 + 4 */
-    int HEADER_LEN = 14;
+    /** 2 + 2 + 1 + 4 + 2 + 4 = 15 */
+    int HEADER_LEN = 15;
 
     /** 请求命令类型: 0 心跳 */
     int PROTOCOL_HEART = 0;

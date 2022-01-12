@@ -46,7 +46,7 @@ public class ExternalServer {
 //        this.isStarted.compareAndSet(false, true);
 
         try {
-            boolean b = doStart();
+            doStart();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

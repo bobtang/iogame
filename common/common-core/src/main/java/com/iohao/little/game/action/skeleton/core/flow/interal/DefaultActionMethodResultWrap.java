@@ -18,8 +18,11 @@ public class DefaultActionMethodResultWrap implements ActionMethodResultWrap<Req
 
         ResponseMessage responseMessage = new ResponseMessage();
         responseMessage.setCmdInfo(actionCommand.getCmdInfo());
+
+        // 业务方法返回值
         responseMessage.setData(result);
 
+        // 异常处理
         if (actionCommand.isHasThrowException() && result instanceof BarException barException) {
             int code = barException.getCode();
             responseMessage.setErrorCode(code);

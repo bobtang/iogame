@@ -1,9 +1,12 @@
 package com.iohao.game.collect.external;
 
+import com.iohao.game.collect.common.GameBarSkeletonConfig;
+import com.iohao.game.collect.common.GameConfig;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
-import com.iohao.little.game.net.client.common.ClientBarSkeleton;
+import com.iohao.little.game.net.client.BoltClientServer;
 import com.iohao.little.game.net.client.core.ClientStartupConfig;
 import com.iohao.little.game.net.client.core.RemoteAddress;
+import com.iohao.little.game.net.external.bootstrap.ExternalServerKit;
 import com.iohao.little.game.net.message.common.ModuleKeyKit;
 import com.iohao.little.game.net.message.common.ModuleMessage;
 import com.iohao.little.game.net.message.common.ModuleType;
@@ -16,7 +19,7 @@ public class ExternalClientStartupConfig implements ClientStartupConfig {
     @Override
     public BarSkeleton createBarSkeleton() {
         // 扫描 AppleAction.class 所在包
-        BarSkeleton barSkeleton = ClientBarSkeleton.newBarSkeleton(ExternalClientStartupConfig.class);
+        BarSkeleton barSkeleton = GameBarSkeletonConfig.newBarSkeleton(ExternalClientStartupConfig.class);
         return barSkeleton;
     }
 
@@ -36,8 +39,13 @@ public class ExternalClientStartupConfig implements ClientStartupConfig {
 
     @Override
     public RemoteAddress createRemoteAddress() {
-        int port = 8803;
+        int port = GameConfig.gatePort;
         String ip = "127.0.0.1";
         return new RemoteAddress(ip, port);
+    }
+
+    @Override
+    public void startupSuccess(BoltClientServer boltClientServer) {
+        ExternalServerKit.setBoltClientServer(boltClientServer);
     }
 }
