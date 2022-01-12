@@ -1,7 +1,7 @@
 package com.iohao.little.game.net.gateway.controller;
 
 import com.alipay.remoting.exception.RemotingException;
-import com.iohao.example.common.ActionCont;
+import com.iohao.example.common.ExampleActionCont;
 import com.iohao.example.common.Apple;
 import com.iohao.example.common.Book;
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-public class GatewayController {
+public class ExampleGatewayController {
 
     /**
      * 请求 A 服务器的方法
@@ -31,7 +31,7 @@ public class GatewayController {
         log.info("apple: {}", name);
 
         CmdInfoFlyweightFactory factory = CmdInfoFlyweightFactory.me();
-        CmdInfo cmdInfo = factory.getCmdInfo(ActionCont.AppleModule.cmd, ActionCont.AppleModule.name);
+        CmdInfo cmdInfo = factory.getCmdInfo(ExampleActionCont.AppleModule.cmd, ExampleActionCont.AppleModule.name);
 
         Apple apple = new Apple();
         apple.setAge(name.hashCode());
@@ -50,7 +50,7 @@ public class GatewayController {
         log.info("book: {}", name);
 
         CmdInfoFlyweightFactory factory = CmdInfoFlyweightFactory.me();
-        CmdInfo cmdInfo = factory.getCmdInfo(ActionCont.BookModule.cmd, ActionCont.BookModule.name);
+        CmdInfo cmdInfo = factory.getCmdInfo(ExampleActionCont.BookModule.cmd, ExampleActionCont.BookModule.name);
 
         Book book = new Book();
         book.setName(name);
@@ -68,7 +68,7 @@ public class GatewayController {
     public String bookVisitApple(@PathVariable Integer age) {
         log.info("book_age: {}", age);
 
-        CmdInfo cmdInfo = ActionCont.BookModule.info.cmdInfo(ActionCont.BookModule.get_apple_age);
+        CmdInfo cmdInfo = ExampleActionCont.BookModule.info.cmdInfo(ExampleActionCont.BookModule.get_apple_age);
 
         String data = (String) invokeSync(cmdInfo, age);
 
@@ -88,7 +88,7 @@ public class GatewayController {
     @GetMapping("/message_queue/{message}")
     public String messageQueue(@PathVariable String message) {
 
-        CmdInfo cmdInfo = ActionCont.BookModule.info.cmdInfo(ActionCont.BookModule.message_queue);
+        CmdInfo cmdInfo = ExampleActionCont.BookModule.info.cmdInfo(ExampleActionCont.BookModule.message_queue);
         RequestMessage requestMessage = new RequestMessage();
         requestMessage.setCmdInfo(cmdInfo);
 

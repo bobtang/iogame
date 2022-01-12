@@ -7,9 +7,9 @@ import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
  * @author 洛朱
  * @date 2021-12-24
  */
-@ActionController(ActionCont.DemoActionCont.cmd)
+@ActionController(ExampleActionCont.DemoActionCont.cmd)
 public class DemoAction {
-    @ActionMethod(ActionCont.DemoActionCont.hello)
+    @ActionMethod(ExampleActionCont.DemoActionCont.hello)
     public String hello(String name) {
         return name + ", I'm here ";
     }

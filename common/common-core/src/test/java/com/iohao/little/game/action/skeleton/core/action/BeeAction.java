@@ -6,7 +6,7 @@ import com.iohao.little.game.action.skeleton.core.action.pojo.BeeApple;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@ActionController(ActionCont.BeeActionCont.cmd)
+@ActionController(ExampleActionCont.BeeActionCont.cmd)
 public class BeeAction {
 
     /**
@@ -18,14 +18,14 @@ public class BeeAction {
      * @param beeApple a
      * @return 返回具体信息
      */
-    @ActionMethod(ActionCont.BeeActionCont.hello)
+    @ActionMethod(ExampleActionCont.BeeActionCont.hello)
     public String hello(BeeApple beeApple) {
 //        log.debug("beeApple: {}", beeApple);
         // 响应给客户端的数据 string 类型. 框架可根据返回参数类型将返回结果装到响应体中
         return "I'm here";
     }
 
-    @ActionMethod(ActionCont.BeeActionCont.name)
+    @ActionMethod(ExampleActionCont.BeeActionCont.name)
     public String name(BeeApple beeApple) {
         log.debug("beeApple: {}", beeApple);
         // 响应给客户端的数据 string 类型. 框架可根据返回参数类型将返回结果装到响应体中

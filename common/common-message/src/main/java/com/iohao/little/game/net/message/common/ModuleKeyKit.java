@@ -1,15 +1,18 @@
 package com.iohao.little.game.net.message.common;
 
+import lombok.experimental.UtilityClass;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ModuleKeyManager {
+@UtilityClass
+public class ModuleKeyKit {
 
     /**
      * key : cmdMerge
      * value : moduleKey
      */
-    Map<Integer, ModuleKey> cmdMergeModuleKeyMap = new ConcurrentHashMap<>();
+    final Map<Integer, ModuleKey> cmdMergeModuleKeyMap = new ConcurrentHashMap<>();
 
     /**
      * cmdMerge 与 moduleKey 关联
@@ -55,15 +58,6 @@ public class ModuleKeyManager {
      */
     public ModuleKey getModuleKey(int moduleId, int sequenceId) {
         return ModuleKeyFlyweightFactory.me().getModuleKey(moduleId, sequenceId);
-    }
-
-    public static ModuleKeyManager me() {
-        return Holder.ME;
-    }
-
-    /** 通过 JVM 的类加载机制, 保证只加载一次 (singleton) */
-    private static class Holder {
-        static final ModuleKeyManager ME = new ModuleKeyManager();
     }
 
 }

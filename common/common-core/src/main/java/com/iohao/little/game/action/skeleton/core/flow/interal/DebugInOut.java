@@ -63,6 +63,10 @@ public class DebugInOut implements ActionMethodInOut {
         methodResponseData(inOutContext, paramMap);
         methodRequestParam(inOutContext, paramMap);
 
+        if (actionCommand.getActionMethodReturnInfo().getReturnTypeClazz() == Void.TYPE) {
+            paramMap.put("returnData", "void");
+        }
+
         String message = StrUtil.format(template, paramMap);
         System.out.println(message);
     }

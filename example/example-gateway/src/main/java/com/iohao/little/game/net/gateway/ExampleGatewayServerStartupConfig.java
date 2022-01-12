@@ -4,19 +4,15 @@ import com.alipay.remoting.ConnectionEventType;
 import com.alipay.remoting.config.Configs;
 import com.iohao.example.common.ExampleCont;
 import com.iohao.little.game.net.common.BoltServer;
-import com.iohao.little.game.net.gateway.common.GateBroadcastMessageAsyncUserProcess;
-import com.iohao.little.game.net.gateway.common.GateConnectEventProcessor;
-import com.iohao.little.game.net.gateway.widget.broadcast.BroadcastMessageListenerWidget;
+import com.iohao.little.game.net.gateway.common.ExampleGateBroadcastMessageAsyncUserProcess;
+import com.iohao.little.game.net.gateway.common.ExampleGateConnectEventProcessor;
 import com.iohao.little.game.net.server.common.GateDisConnectEventProcessor;
 import com.iohao.little.game.net.server.common.GateInnerModuleMessageAsyncUserProcess;
 import com.iohao.little.game.net.server.common.GateModuleMessageAsyncUserProcessor;
 import com.iohao.little.game.net.server.core.ServerStartupConfig;
-import com.iohao.little.game.widget.broadcast.MessageQueueConfigWidget;
-import com.iohao.little.game.widget.broadcast.MessageQueueWidget;
-import com.iohao.little.game.widget.broadcast.internal.InternalMessageQueueWidget;
 import com.iohao.little.game.widget.config.WidgetComponents;
 
-public class GatewayServerStartupConfig implements ServerStartupConfig {
+public class ExampleGatewayServerStartupConfig implements ServerStartupConfig {
     @Override
     public BoltServer createBoltServer() {
         // 开启 bolt 重连
@@ -29,29 +25,8 @@ public class GatewayServerStartupConfig implements ServerStartupConfig {
     }
 
     @Override
-    public void widgetComponents(WidgetComponents widgetComponents) {
-        // 消息广播-配置项
-        MessageQueueConfigWidget messageQueueConfigWidget = new MessageQueueConfigWidget();
-        // 消息广播-小部件
-        MessageQueueWidget messageQueueWidget = null;
-        // 消息广播-小部件 - 使用内网的实现 (也可以换成 redis[Redisson， Lettuce], MQ[Apache Pulsar, RocketMQ]等)
-
-        // 消息广播-小部件 - 使用实现 内网
-        messageQueueWidget = new InternalMessageQueueWidget(messageQueueConfigWidget);
-
-        // 消息广播-小部件 - 使用实现 redis[Redisson]
-//        messageQueueWidget = new RedissonMessageQueueWidget(messageQueueConfigWidget);
-
-        // 添加发布订阅消息处理类
-        messageQueueWidget.addMessageListener(new BroadcastMessageListenerWidget());
-
-        // 添加到部件管理中
-        widgetComponents.option(MessageQueueWidget.class, messageQueueWidget);
-    }
-
-    @Override
     public void connectionEventProcessor(BoltServer boltServer) {
-        GateConnectEventProcessor serverConnectProcessor = new GateConnectEventProcessor();
+        ExampleGateConnectEventProcessor serverConnectProcessor = new ExampleGateConnectEventProcessor();
         GateDisConnectEventProcessor serverDisConnectProcessor = new GateDisConnectEventProcessor();
 
         serverConnectProcessor.setServer(boltServer);
@@ -71,7 +46,7 @@ public class GatewayServerStartupConfig implements ServerStartupConfig {
 
         // 处理 - 发布订阅
         WidgetComponents widgetComponents = boltServer.getWidgetComponents();
-        var gateBroadcastMessageAsyncUserProcess = new GateBroadcastMessageAsyncUserProcess(widgetComponents);
+        var gateBroadcastMessageAsyncUserProcess = new ExampleGateBroadcastMessageAsyncUserProcess(widgetComponents);
         boltServer.registerUserProcessor(gateBroadcastMessageAsyncUserProcess);
     }
 

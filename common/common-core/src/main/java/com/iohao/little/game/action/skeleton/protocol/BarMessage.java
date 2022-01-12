@@ -36,7 +36,7 @@ public abstract class BarMessage implements Serializable {
      */
     int cmdMerge;
     /**
-     * 错误码
+     * 响应错误码
      */
     int errorCode;
 

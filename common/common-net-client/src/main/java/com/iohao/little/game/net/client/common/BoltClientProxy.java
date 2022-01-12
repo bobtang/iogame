@@ -10,7 +10,7 @@ import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.client.BoltClientServer;
 import com.iohao.little.game.net.common.ServerSender;
-import com.iohao.little.game.net.message.common.BroadcastMessage;
+import com.iohao.little.game.widget.broadcast.BroadcastMessage;
 import com.iohao.little.game.net.message.common.InnerModuleMessage;
 import com.iohao.little.game.widget.broadcast.MessageQueueWidget;
 import com.iohao.little.game.widget.config.WidgetComponents;

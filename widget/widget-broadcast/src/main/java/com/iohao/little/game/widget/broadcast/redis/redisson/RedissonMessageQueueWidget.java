@@ -1,6 +1,6 @@
 package com.iohao.little.game.widget.broadcast.redis.redisson;
 
-import com.iohao.little.game.net.message.common.BroadcastMessage;
+import com.iohao.little.game.widget.broadcast.BroadcastMessage;
 import com.iohao.little.game.widget.config.WidgetOptions;
 import com.iohao.little.game.widget.broadcast.AbstractMessageQueueWidget;
 import com.iohao.little.game.widget.broadcast.MessageListenerWidget;
@@ -13,7 +13,6 @@ import org.redisson.config.Config;
 
 @Slf4j
 public class RedissonMessageQueueWidget extends AbstractMessageQueueWidget {
-
 
     RedissonClient redisson;
 

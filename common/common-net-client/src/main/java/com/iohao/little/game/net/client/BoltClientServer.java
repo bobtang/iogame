@@ -5,7 +5,7 @@ import com.alipay.remoting.exception.RemotingException;
 import com.alipay.remoting.rpc.RpcClient;
 import com.iohao.little.game.action.skeleton.core.ActionCommandManager;
 import com.iohao.little.game.net.client.common.BoltClientProxyManager;
-import com.iohao.little.game.net.message.common.ModuleKeyManager;
+import com.iohao.little.game.net.message.common.ModuleKeyKit;
 import com.iohao.little.game.net.message.common.ModuleMessage;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +42,7 @@ public class BoltClientServer {
         // cmd 与 moduleKey 关联
         ActionCommandManager actionCommandManager = barSkeleton.getActionCommandManager();
         var cmdMergeArray = actionCommandManager.arrayCmdMerge();
-        ModuleKeyManager.me().relation(cmdMergeArray, moduleKey);
+        ModuleKeyKit.relation(cmdMergeArray, moduleKey);
 
         // boltClient 代理设置 rpcClient
         var boltClientProxy = BoltClientProxyManager.me().getBoltClientProxy(moduleKey);

@@ -2,16 +2,13 @@ package com.iohao.example.a;
 
 import com.iohao.example.a.action.AppleAction;
 import com.iohao.example.client.InitClientCommon;
-import com.iohao.example.common.ModuleKeyCont;
+import com.iohao.example.common.ExampleModuleKeyCont;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
-import com.iohao.little.game.net.client.BoltClientServer;
-import com.iohao.little.game.net.client.BoltClientServerSetting;
 import com.iohao.little.game.net.client.common.ClientBarSkeleton;
 import com.iohao.little.game.net.client.core.ClientStartupConfig;
 import com.iohao.little.game.net.client.core.RemoteAddress;
-import com.iohao.little.game.net.message.common.ModuleKeyManager;
+import com.iohao.little.game.net.message.common.ModuleKeyKit;
 import com.iohao.little.game.net.message.common.ModuleMessage;
-import com.iohao.little.game.widget.config.WidgetComponents;
 
 public class MyClientAClientStartupConfig implements ClientStartupConfig {
     @Override
@@ -24,8 +21,8 @@ public class MyClientAClientStartupConfig implements ClientStartupConfig {
     @Override
     public ModuleMessage createModuleMessage() {
 
-        int moduleId = ModuleKeyCont.ModuleA.moduleId;
-        var moduleKey = ModuleKeyManager.me().getModuleKey(moduleId);
+        int moduleId = ExampleModuleKeyCont.ModuleA.moduleId;
+        var moduleKey = ModuleKeyKit.getModuleKey(moduleId);
 
         ModuleMessage moduleMessage = new ModuleMessage();
         moduleMessage.setModuleKey(moduleKey);
@@ -37,29 +34,6 @@ public class MyClientAClientStartupConfig implements ClientStartupConfig {
 
     @Override
     public RemoteAddress createRemoteAddress() {
-        return InitClientCommon.me().createRemoteAddress();
-    }
-
-
-    @Override
-    public void serverSetting(BoltClientServerSetting setting) {
-
-    }
-
-    @Override
-    public void connectionEventProcessor(BoltClientServer boltClientServer) {
-        InitClientCommon.me().connectionEventProcessor(boltClientServer);
-    }
-
-    @Override
-    public void registerUserProcessor(BoltClientServer boltClientServer) {
-        InitClientCommon.me().registerUserProcessor(boltClientServer);
-    }
-
-
-    @Override
-    public void widgetComponents(WidgetComponents widgetComponents) {
-        // 初始化小部件
-        InitClientCommon.me().widgetComponents(widgetComponents);
+        return InitClientCommon.createRemoteAddress();
     }
 }

@@ -12,7 +12,7 @@ import com.iohao.little.game.net.client.common.ClientRequestMessageAsyncUserProc
 import com.iohao.little.game.net.client.core.ClientStartupConfig;
 import com.iohao.little.game.net.client.core.RemoteAddress;
 import com.iohao.little.game.net.external.bootstrap.ExternalServerKit;
-import com.iohao.little.game.net.message.common.ModuleKeyManager;
+import com.iohao.little.game.net.message.common.ModuleKeyKit;
 import com.iohao.little.game.net.message.common.ModuleMessage;
 import com.iohao.little.game.widget.config.WidgetComponents;
 
@@ -31,7 +31,7 @@ public class ExternalClientStartupConfig implements ClientStartupConfig {
     @Override
     public ModuleMessage createModuleMessage() {
         int moduleId = 0;
-        var moduleKey = ModuleKeyManager.me().getModuleKey(moduleId);
+        var moduleKey = ModuleKeyKit.getModuleKey(moduleId);
 
         ModuleMessage moduleMessage = new ModuleMessage();
         moduleMessage.setModuleKey(moduleKey);

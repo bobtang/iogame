@@ -2,7 +2,7 @@ package com.iohao.little.game.net.client.common;
 
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.net.message.common.ModuleKey;
-import com.iohao.little.game.net.message.common.ModuleKeyManager;
+import com.iohao.little.game.net.message.common.ModuleKeyKit;
 
 import java.util.Map;
 import java.util.Objects;
@@ -43,7 +43,7 @@ public class BoltClientProxyManager {
     }
 
     public BoltClientProxy getBoltClientProxy(CmdInfo cmdInfo) {
-        ModuleKey moduleKey = ModuleKeyManager.me().getModuleKeyByCmdMerge(cmdInfo.getCmdMerge());
+        ModuleKey moduleKey = ModuleKeyKit.getModuleKeyByCmdMerge(cmdInfo.getCmdMerge());
         return getBoltClientProxy(moduleKey);
     }
 

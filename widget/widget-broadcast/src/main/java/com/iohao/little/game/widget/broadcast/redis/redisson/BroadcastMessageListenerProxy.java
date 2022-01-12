@@ -1,7 +1,7 @@
 package com.iohao.little.game.widget.broadcast.redis.redisson;
 
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
-import com.iohao.little.game.net.message.common.BroadcastMessage;
+import com.iohao.little.game.widget.broadcast.BroadcastMessage;
 import com.iohao.little.game.widget.broadcast.MessageListenerWidget;
 import org.redisson.api.listener.MessageListener;
 

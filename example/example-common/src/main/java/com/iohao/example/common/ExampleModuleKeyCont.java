@@ -1,6 +1,6 @@
 package com.iohao.example.common;
 
-public interface ModuleKeyCont {
+public interface ExampleModuleKeyCont {
     interface ModuleA {
         int moduleId = 1;
     }

@@ -42,6 +42,10 @@
         <!-- 实践案例  -->
         <module>game-collect/game-common-proto</module>
         <module>game-collect/game-common</module>
+        <module>game-collect/game-common-logic</module>
+
+        <module>game-collect/game-logic-user</module>
+        <module>game-collect/game-gateway</module>
 
 
     </modules>

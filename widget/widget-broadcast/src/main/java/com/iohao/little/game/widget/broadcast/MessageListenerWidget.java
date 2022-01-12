@@ -1,7 +1,6 @@
 package com.iohao.little.game.widget.broadcast;
 
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
-import com.iohao.little.game.net.message.common.BroadcastMessage;
 
 /**
  * 消息监听者，消息处理
@@ -28,8 +27,8 @@ public interface MessageListenerWidget<T> {
      *     当消息发布者发布消息后，监听者（订阅者）会进行处理
      * </pre>
      *
-     * @param responseMessage  responseMessage
-     * @param channel          channel
+     * @param responseMessage  responseMessage 消息
+     * @param channel          channel 监听频道
      * @param broadcastMessage broadcastMessage
      */
     void onMessage(ResponseMessage responseMessage, CharSequence channel, BroadcastMessage broadcastMessage);

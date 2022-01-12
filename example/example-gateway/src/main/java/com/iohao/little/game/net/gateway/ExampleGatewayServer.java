@@ -6,16 +6,16 @@ import lombok.extern.slf4j.Slf4j;
  * <BR>
  */
 @Slf4j
-public class GatewayServer {
+public class ExampleGatewayServer {
 
     public void init() {
-        var gatewayServerStartupConfig = new GatewayServerStartupConfig();
+        var gatewayServerStartupConfig = new ExampleGatewayServerStartupConfig();
         gatewayServerStartupConfig.startup();
     }
 
     public static void main(String[] args) {
         // 启动网关
-        GatewayServer gatewayServe = new GatewayServer();
+        ExampleGatewayServer gatewayServe = new ExampleGatewayServer();
         gatewayServe.init();
     }
 

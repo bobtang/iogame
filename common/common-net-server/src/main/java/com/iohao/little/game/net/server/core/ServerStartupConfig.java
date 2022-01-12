@@ -2,6 +2,7 @@ package com.iohao.little.game.net.server.core;
 
 import com.iohao.little.game.net.common.BoltServer;
 import com.iohao.little.game.net.server.GateKit;
+import com.iohao.little.game.widget.broadcast.internal.GateBroadcastWidgetComponents;
 import com.iohao.little.game.widget.config.WidgetComponents;
 
 /**
@@ -27,7 +28,9 @@ public interface ServerStartupConfig {
      *
      * @param widgetComponents 部件
      */
-    void widgetComponents(WidgetComponents widgetComponents);
+    default void widgetComponents(WidgetComponents widgetComponents) {
+        GateBroadcastWidgetComponents.configBroadcastWidgetComponents(widgetComponents);
+    }
 
     /**
      * 添加连接处理器

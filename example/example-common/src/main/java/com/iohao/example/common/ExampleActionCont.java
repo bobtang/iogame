@@ -3,7 +3,7 @@ package com.iohao.example.common;
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.action.skeleton.core.CmdInfoFlyweightFactory;
 
-public interface ActionCont {
+public interface ExampleActionCont {
 
     interface TheInfo {
         int cmd();

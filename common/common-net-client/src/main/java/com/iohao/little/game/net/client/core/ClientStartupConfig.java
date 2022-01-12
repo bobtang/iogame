@@ -42,7 +42,9 @@ public interface ClientStartupConfig {
      *
      * @param setting 客户端服务器构建配置项
      */
-    void serverSetting(BoltClientServerSetting setting);
+    default void serverSetting(BoltClientServerSetting setting) {
+
+    }
 
     /**
      * 添加连接处理器
@@ -54,21 +56,27 @@ public interface ClientStartupConfig {
      *
      * @param boltClientServer boltClientServer
      */
-    void connectionEventProcessor(BoltClientServer boltClientServer);
+    default void connectionEventProcessor(BoltClientServer boltClientServer) {
+        CommonClientStartupConfig.connectionEventProcessor(boltClientServer);
+    }
 
     /**
      * 注册用户处理器
      *
      * @param boltClientServer boltClientServer
      */
-    void registerUserProcessor(BoltClientServer boltClientServer);
+    default void registerUserProcessor(BoltClientServer boltClientServer) {
+        CommonClientStartupConfig.registerUserProcessor(boltClientServer);
+    }
 
     /**
      * 部件扩展 可以通过部件的方式来扩展
      *
      * @param widgetComponents 部件
      */
-    void widgetComponents(WidgetComponents widgetComponents);
+    default void widgetComponents(WidgetComponents widgetComponents) {
+        CommonClientStartupConfig.configBroadcastWidgetComponents(widgetComponents);
+    }
 
     /**
      * 启动

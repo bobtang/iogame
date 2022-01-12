@@ -6,14 +6,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @Slf4j
 @SpringBootApplication
-public class GatewayApplication {
+public class ExampleGatewayApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(GatewayApplication.class, args);
+        SpringApplication.run(ExampleGatewayApplication.class, args);
         System.out.println();
 
         // 启动网关
-        GatewayServer gatewayServe = new GatewayServer();
+        ExampleGatewayServer gatewayServe = new ExampleGatewayServer();
         gatewayServe.init();
 
     }

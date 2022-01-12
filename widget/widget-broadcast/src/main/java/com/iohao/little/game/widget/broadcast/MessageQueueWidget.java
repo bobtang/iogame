@@ -1,6 +1,5 @@
 package com.iohao.little.game.widget.broadcast;
 
-import com.iohao.little.game.net.message.common.BroadcastMessage;
 import com.iohao.little.game.widget.config.WidgetComponent;
 
 /**

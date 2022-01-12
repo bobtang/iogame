@@ -5,8 +5,6 @@ import com.iohao.little.game.action.skeleton.core.flow.InOutContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 
-import java.util.Objects;
-
 /**
  * 默认的 action 命令流程执行器
  * <pre>
@@ -38,20 +36,19 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
         var result = actionMethodInvoke.invoke(paramContext, actionCommand, controller, request, barSkeleton);
 
         // 响应
-        ResponseMessage response = null;
+//        ResponseMessage response = null;
         // 只将非 void 方法的值和有异常的情况, 才写入到 channel 中
-        var actionMethodReturnInfo = actionCommand.getActionMethodReturnInfo();
+//        var actionMethodReturnInfo = actionCommand.getActionMethodReturnInfo();
+//        if (Objects.nonNull(result) || Void.TYPE != actionMethodReturnInfo.getReturnTypeClazz()) {
+        // 结果包装器
+        var actionMethodResultWrap = barSkeleton.getActionMethodResultWrap();
+        // 4 ---- wrap result
+        ResponseMessage response = actionMethodResultWrap.wrap(actionCommand, request, result);
 
-        if (Objects.nonNull(result) || Void.TYPE != actionMethodReturnInfo.getReturnTypeClazz()) {
-            // 结果包装器
-            var actionMethodResultWrap = barSkeleton.getActionMethodResultWrap();
-            // 4 ---- wrap result
-            response = actionMethodResultWrap.wrap(actionCommand, request, result);
-
-            // 5 ---- after 一般用于响应数据到 请求端
-            ActionAfter<RequestMessage, ResponseMessage> actionAfter = barSkeleton.getActionAfter();
-            actionAfter.execute(paramContext, actionCommand, request, response);
-        }
+        // 5 ---- after 一般用于响应数据到 请求端
+        ActionAfter<RequestMessage, ResponseMessage> actionAfter = barSkeleton.getActionAfter();
+        actionAfter.execute(paramContext, actionCommand, request, response);
+//        }
 
         // 6 ---- fuck后 在调用控制器对应处理方法结束后, 执行inout的out.
         fuckOut(inOutContext, response, barSkeleton);

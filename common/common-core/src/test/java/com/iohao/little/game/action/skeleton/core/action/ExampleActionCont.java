@@ -1,7 +1,7 @@
 package com.iohao.little.game.action.skeleton.core.action;
 
 
-public interface ActionCont {
+public interface ExampleActionCont {
     /**
      * bee 模块功能
      */
@@ -26,6 +26,7 @@ public interface ActionCont {
 
         int bird_name = 0;
         int bird_age = 1;
+        int test_void = 2;
     }
 
     interface DemoActionCont {

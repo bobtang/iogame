@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Slf4j
-@ActionController(ActionCont.BirdActionCont.cmd)
+@ActionController(ExampleActionCont.BirdActionCont.cmd)
 public class BirdAction {
     /**
      * <pre>
@@ -21,18 +21,23 @@ public class BirdAction {
      * @param bird a
      * @return 返回具体信息
      */
-    @ActionMethod(ActionCont.BirdActionCont.bird_name)
+    @ActionMethod(ExampleActionCont.BirdActionCont.bird_name)
     public String hello(List<Bird> birdList, Bird bird) {
         log.debug("bird: {}", bird, birdList);
         // 响应给客户端的数据 string 类型. 框架可根据返回参数类型将返回结果装到响应体中
         return " : BIRD_NAME hello: ";
     }
 
-    @ActionMethod(ActionCont.BirdActionCont.bird_age)
+    @ActionMethod(ExampleActionCont.BirdActionCont.bird_age)
     public List<Bird> name(Bird bird, BizContext bizContext) {
         log.debug("bird: {}", bird);
         // 响应给客户端的数据 string 类型. 框架可根据返回参数类型将返回结果装到响应体中
 //        return " : BIRD_AGE name: ";
         return Collections.emptyList();
+    }
+
+    @ActionMethod(ExampleActionCont.BirdActionCont.test_void)
+    public void testVoid() {
+        System.out.println("hello void");
     }
 }

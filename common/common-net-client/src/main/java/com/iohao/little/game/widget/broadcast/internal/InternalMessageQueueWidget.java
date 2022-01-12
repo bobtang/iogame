@@ -5,7 +5,7 @@ import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.client.common.BoltClientProxy;
 import com.iohao.little.game.net.client.common.BoltClientProxyManager;
-import com.iohao.little.game.net.message.common.BroadcastMessage;
+import com.iohao.little.game.widget.broadcast.BroadcastMessage;
 import com.iohao.little.game.widget.broadcast.AbstractMessageQueueWidget;
 import com.iohao.little.game.widget.broadcast.MessageListenerWidget;
 import com.iohao.little.game.widget.broadcast.MessageQueueConfigWidget;
@@ -21,8 +21,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class InternalMessageQueueWidget extends AbstractMessageQueueWidget {
 
-    @Getter
-    ConcurrentHashMap<CharSequence, MessageListenerWidget> listenerWidgetMap = new ConcurrentHashMap<>();
 
     public InternalMessageQueueWidget(MessageQueueConfigWidget messageQueueConfigWidget) {
         super(messageQueueConfigWidget);
@@ -30,7 +28,7 @@ public class InternalMessageQueueWidget extends AbstractMessageQueueWidget {
 
     @Override
     public void publish(String channel, BroadcastMessage message) {
-        BroadcastMessage broadcastMessage = (BroadcastMessage) message;
+        BroadcastMessage broadcastMessage = message;
         ResponseMessage responseMessage = broadcastMessage.getResponseMessage();
         CmdInfo cmdInfo = responseMessage.getCmdInfo();
 

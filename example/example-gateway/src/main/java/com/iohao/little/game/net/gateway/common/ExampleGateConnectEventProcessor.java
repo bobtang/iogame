@@ -43,7 +43,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @Date 2021-12-12
  */
 @Slf4j
-public class GateConnectEventProcessor implements ConnectionEventProcessor {
+public class ExampleGateConnectEventProcessor implements ConnectionEventProcessor {
 
     private final AtomicBoolean connected = new AtomicBoolean();
     private final AtomicInteger connectTimes = new AtomicInteger();
@@ -91,7 +91,7 @@ public class GateConnectEventProcessor implements ConnectionEventProcessor {
             apple.setAge(188);
 
             CmdInfoFlyweightFactory factory = CmdInfoFlyweightFactory.me();
-            CmdInfo cmdInfo = factory.getCmdInfo(ActionCont.AppleModule.cmd, ActionCont.AppleModule.name);
+            CmdInfo cmdInfo = factory.getCmdInfo(ExampleActionCont.AppleModule.cmd, ExampleActionCont.AppleModule.name);
 
             RequestMessage requestMessage = new RequestMessage();
             requestMessage.setCmdInfo(cmdInfo);
