@@ -4,6 +4,7 @@ import cn.hutool.system.OsInfo;
 import cn.hutool.system.SystemUtil;
 import com.iohao.little.game.net.external.bootstrap.BootstrapOption;
 import com.iohao.little.game.net.external.bootstrap.ExternalChannelInitializerCallbackDefault;
+import com.iohao.little.game.net.external.bootstrap.handler.ExternalHandler;
 import com.iohao.little.game.net.external.bootstrap.option.BootstrapOptionForLinux;
 import com.iohao.little.game.net.external.bootstrap.option.BootstrapOptionForMac;
 import com.iohao.little.game.net.external.bootstrap.option.BootstrapOptionForWindows;
@@ -69,6 +70,11 @@ public class ExternalServerBuilder {
     private void defaultSetting() {
         if (Objects.isNull(bootstrapOption)) {
             bootstrapOption = createServerBootstrapOption();
+        }
+
+        // 如果没有 handler 默认给一个
+        if (channelHandlerProcessors.isEmpty()) {
+            registerChannelHandler("externalHandler", new ExternalHandler());
         }
     }
 

@@ -1,6 +1,5 @@
 package com.iohao.little.game.net.external.bootstrap;
 
-import com.iohao.little.game.net.external.bootstrap.handler.ExternalHandler;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -66,7 +65,7 @@ public class ExternalChannelInitializerCallbackDefault extends ChannelInitialize
             }
         }
 
-        pipeline.addLast("handler", new ExternalHandler());
+//        pipeline.addLast("handler", new ExternalHandler());
     }
 
     @Override

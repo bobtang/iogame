@@ -24,7 +24,7 @@ public class LoginAction {
     @ActionMethod(ActionCont.UserModule.loginVerify)
     public UserInfo loginVerify(LoginVerify loginVerify) {
 
-        String token = loginVerify.getToken();
+        String token = loginVerify.getJwt();
 
         Long userId = userMap.get(token);
 

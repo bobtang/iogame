@@ -10,7 +10,7 @@ import lombok.Data;
  * @date 2022-01-12
  */
 @Data
-@ProtobufClass(description = "")
+@ProtobufClass(description = "用户信息")
 @EnableZigZap
 public class UserInfo {
     /** id */

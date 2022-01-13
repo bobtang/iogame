@@ -29,5 +29,6 @@
             <artifactId>common-net-external</artifactId>
             <version>${project-revision.version}</version>
         </dependency>
+
     </dependencies>
 </project>

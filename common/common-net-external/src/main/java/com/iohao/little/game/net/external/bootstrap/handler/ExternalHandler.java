@@ -15,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Objects;
 
 /**
+ * 接收真实用户的请求，把请求数据转发到对应的业务逻辑服
+ *
  * @author 洛朱
  * @date 2022-01-10
  */

@@ -14,6 +14,6 @@ import lombok.Data;
 @EnableZigZap
 public class LoginVerify {
     /** name */
-    @Protobuf(description = "token")
-    String token;
+    @Protobuf(description = "jwt")
+    String jwt;
 }

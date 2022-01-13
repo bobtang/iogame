@@ -31,8 +31,9 @@ public class ExternalDecoder extends ByteToMessageDecoder {
             // 4 业务路由（高16为主, 低16为子）
             int mergeCmd = in.readInt();
             // 2 响应码。 解码这里用不上，只是为了前端好处理
-//            in.readShort();
-            in.skipBytes(2);
+//            in.skipBytes(2);
+            short responseStatus = in.readShort();
+
             // 4 业务请求体长度
             int contentLen = in.readInt();
 
@@ -40,6 +41,7 @@ public class ExternalDecoder extends ByteToMessageDecoder {
             request.setCmdCode(cmdCode);
             request.setCmdMerge(mergeCmd);
             request.setProtocolSwitch(protocolSwitch);
+            request.setResponseStatus(responseStatus);
 
             if (contentLen > 0) {
                 byte[] content = new byte[contentLen];
