@@ -31,17 +31,14 @@ public class ExternalHandlerWebsocket extends SimpleChannelInboundHandler<Object
 
     private void handleHttpRequest(ChannelHandlerContext ctx, FullHttpRequest req) {
 
-        // !"websocket".equals(req.headers().get(HttpHeaderNames.UPGRADE)
         if (!req.decoderResult().isSuccess() || (!"websocket".equals(req.headers().get("Upgrade")))) {
             sendHttpResponse(ctx, req,
                     new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST));
             return;
         }
 
-        var url = "ws://localhost:10088";
-
         String location = "ws://" + req.headers().get(HttpHeaderNames.HOST) + req.uri();
-        log.info("temp: {}", location);
+        log.info("location: {}", location);
 
         WebSocketServerHandshakerFactory wsFactory =
                 new WebSocketServerHandshakerFactory(location, null, false);
@@ -76,8 +73,8 @@ public class ExternalHandlerWebsocket extends SimpleChannelInboundHandler<Object
         BinaryWebSocketFrame binary = (BinaryWebSocketFrame) frame;
 
         ByteBuf in = binary.content();
-        // 消息头
-        short headLen = in.readShort();
+        // 跳过消息头 2字节
+        in.skipBytes(2);
 
         ExternalMessage request = ExternalDecoder.decode(in);
 

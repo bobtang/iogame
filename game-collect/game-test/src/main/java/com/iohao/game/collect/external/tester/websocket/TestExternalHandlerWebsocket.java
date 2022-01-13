@@ -1,6 +1,9 @@
 package com.iohao.game.collect.external.tester.websocket;
 
+import com.iohao.game.collect.proto.LoginVerify;
+import com.iohao.little.game.net.external.bootstrap.ExternalCont;
 import com.iohao.little.game.net.external.bootstrap.codec.ExternalDecoder;
+import com.iohao.little.game.net.external.bootstrap.codec.ExternalEncoder;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -9,6 +12,8 @@ import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.concurrent.atomic.LongAdder;
 
 /**
  * @author 洛朱
@@ -19,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 public class TestExternalHandlerWebsocket extends SimpleChannelInboundHandler<Object> {
 
     private WebSocketServerHandshaker handshaker;
+    LongAdder id = new LongAdder();
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -79,11 +85,21 @@ public class TestExternalHandlerWebsocket extends SimpleChannelInboundHandler<Ob
         // 消息头
         in.skipBytes(2);
 
-        ExternalMessage request = ExternalDecoder.decode(in);
+        ExternalMessage message = ExternalDecoder.decode(in);
 
-        log.info("接收客户端消息 {}", request);
+        log.info("接收客户端消息 {}", message);
 
+        LoginVerify loginVerify = new LoginVerify();
+        loginVerify.setJwt("jwt:" + id.toString());
+        message.setData(loginVerify);
 
+        int headLen = ExternalCont.HEADER_LEN + message.getDataLength();
+        ByteBuf byteBuf = Unpooled.buffer(headLen);
+        ExternalEncoder.encode(message, byteBuf);
+
+        BinaryWebSocketFrame tws = new BinaryWebSocketFrame(byteBuf);
+
+        ctx.writeAndFlush(tws);
     }
 
 

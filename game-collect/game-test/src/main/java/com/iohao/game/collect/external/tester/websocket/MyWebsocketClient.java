@@ -5,6 +5,7 @@ import com.iohao.game.collect.common.ActionCont;
 import com.iohao.game.collect.common.GameConfig;
 import com.iohao.game.collect.proto.LoginVerify;
 import com.iohao.little.game.net.external.bootstrap.ExternalCont;
+import com.iohao.little.game.net.external.bootstrap.codec.ExternalDecoder;
 import com.iohao.little.game.net.external.bootstrap.codec.ExternalEncoder;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import io.netty.buffer.ByteBuf;
@@ -68,7 +69,7 @@ public class MyWebsocketClient {
         var url = "ws://{}:{}" + GameConfig.websocketPath;
 
         var wsUrl = StrUtil.format(url, GameConfig.externalIp, GameConfig.externalPort);
-
+        log.info("ws url : {}", wsUrl);
         webSocketClient = new WebSocketClient(new URI(wsUrl), new Draft_6455()) {
 
             @Override
@@ -88,7 +89,15 @@ public class MyWebsocketClient {
 
             @Override
             public void onMessage(ByteBuffer byteBuffer) {
+                // 接收消息
+                log.info("收到 byteBuffer 消息========== {}", byteBuffer);
 
+                ByteBuf in = Unpooled.wrappedBuffer(byteBuffer);
+                in.skipBytes(2);
+
+                ExternalMessage message = ExternalDecoder.decode(in);
+
+                log.info("ok {}", message);
             }
 
             @Override
