@@ -11,13 +11,16 @@ import lombok.experimental.UtilityClass;
  */
 @UtilityClass
 public class ExternalServerKit {
+    /** 网关 rpcClient */
     public RpcClient rpcClient;
+    /** 网关 BoltClientServer */
     public BoltClientServer boltClientServer;
+    /** 网关 BoltClientServerSetting */
     public BoltClientServerSetting boltClientServerSetting;
 
     public void setBoltClientServer(BoltClientServer boltClientServer) {
         ExternalServerKit.rpcClient = boltClientServer.getRpcClient();
-        ExternalServerKit.boltClientServer  = boltClientServer;
+        ExternalServerKit.boltClientServer = boltClientServer;
         ExternalServerKit.boltClientServerSetting = boltClientServer.getBoltClientServerSetting();
     }
 

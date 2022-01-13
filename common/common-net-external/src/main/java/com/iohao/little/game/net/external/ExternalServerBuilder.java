@@ -3,8 +3,12 @@ package com.iohao.little.game.net.external;
 import cn.hutool.system.OsInfo;
 import cn.hutool.system.SystemUtil;
 import com.iohao.little.game.net.external.bootstrap.BootstrapOption;
-import com.iohao.little.game.net.external.bootstrap.ExternalChannelInitializerCallbackDefault;
+import com.iohao.little.game.net.external.bootstrap.ExternalChannelInitializerCallback;
+import com.iohao.little.game.net.external.bootstrap.ExternalJoinEnum;
 import com.iohao.little.game.net.external.bootstrap.handler.ExternalHandler;
+import com.iohao.little.game.net.external.bootstrap.initializer.ExternalChannelInitializerCallbackOption;
+import com.iohao.little.game.net.external.bootstrap.initializer.ExternalChannelInitializerCallbackSocket;
+import com.iohao.little.game.net.external.bootstrap.initializer.ExternalChannelInitializerCallbackWebsocket;
 import com.iohao.little.game.net.external.bootstrap.option.BootstrapOptionForLinux;
 import com.iohao.little.game.net.external.bootstrap.option.BootstrapOptionForMac;
 import com.iohao.little.game.net.external.bootstrap.option.BootstrapOptionForWindows;
@@ -14,10 +18,13 @@ import io.netty.channel.ChannelOption;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 对外服务器 - 构建器
@@ -30,12 +37,15 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author 洛朱
  * @date 2022-01-09
  */
+@Slf4j
 public class ExternalServerBuilder {
 
     /** 服务器 */
     final ServerBootstrap bootstrap = new ServerBootstrap();
-    /** user processors of rpc server */
-    final ConcurrentHashMap<String, ChannelHandler> channelHandlerProcessors = new ConcurrentHashMap<>(4);
+    /** 自定义 - 编排业务 */
+    final Map<String, ChannelHandler> channelHandlerProcessors = new LinkedHashMap<>(4);
+    /** 构建选项 */
+    final ExternalChannelInitializerCallbackOption option = new ExternalChannelInitializerCallbackOption();
 
     String ip;
     int port;
@@ -44,8 +54,10 @@ public class ExternalServerBuilder {
     @Setter
     BootstrapOption bootstrapOption;
 
-    /** 心跳时间 */
-    int idleTime = 10;
+    /** 连接方式 */
+    @Setter
+    ExternalJoinEnum externalJoinEnum = ExternalJoinEnum.SOCKET;
+
 
     ExternalServerBuilder(int port) {
         this.port = port;
@@ -58,7 +70,7 @@ public class ExternalServerBuilder {
     }
 
     public ExternalServerBuilder enableIdle(int idleTime) {
-        this.idleTime = idleTime;
+        option.setIdleTime(idleTime);
         return this.enableIdle();
     }
 
@@ -76,34 +88,74 @@ public class ExternalServerBuilder {
         if (channelHandlerProcessors.isEmpty()) {
             registerChannelHandler("externalHandler", new ExternalHandler());
         }
+
+        switch (externalJoinEnum) {
+            case SOCKET -> new SocketServerBootstrapSetting().setting(bootstrap);
+            case WEBSOCKET -> new WebSocketServerBootstrapSetting().setting(bootstrap);
+        }
     }
 
     private void check() throws RuntimeException {
         if (this.port == 0) {
             throw new RuntimeException("port err");
         }
+
+        if (Objects.isNull(externalJoinEnum)) {
+            throw new RuntimeException("externalJoinEnum expected: " + Arrays.toString(ExternalJoinEnum.values()));
+        }
     }
 
     public ExternalServer build() {
-        this.defaultSetting();
 
+        // 检查
         this.check();
 
-        ExternalChannelInitializerCallbackDefault callbackDefault = new ExternalChannelInitializerCallbackDefault()
-                .setIdleTime(this.idleTime)
-                .setChannelHandlerProcessors(this.channelHandlerProcessors);
+        // 默认值设置
+        this.defaultSetting();
+
+        option.setChannelHandlerProcessors(this.channelHandlerProcessors);
+
+        ExternalChannelInitializerCallback channelInitializerCallback = this.createExternalChannelInitializerCallback();
 
         bootstrap
                 // netty 核心组件. (1 连接创建线程组, 2 业务处理线程组)
                 .group(bootstrapOption.bossGroup(), bootstrapOption.workerGroup())
                 .channel(bootstrapOption.channelClass())
 
-                .childHandler(callbackDefault)
+                .childHandler((ChannelHandler) channelInitializerCallback)
         ;
 
-        new SocketServerBootstrapSetting().setting(bootstrap);
+        print();
 
         return new ExternalServer(this);
+    }
+
+    private void print() {
+        switch (externalJoinEnum) {
+            case SOCKET -> log.info("启动方式========================tcp socket========================");
+            case WEBSOCKET -> log.info("启动方式========================websocket========================");
+        }
+    }
+
+    private ExternalChannelInitializerCallback createExternalChannelInitializerCallback() {
+
+        if (externalJoinEnum == ExternalJoinEnum.SOCKET) {
+
+            ExternalChannelInitializerCallbackSocket callbackSocket = new ExternalChannelInitializerCallbackSocket();
+            callbackSocket.setOption(option);
+
+            return callbackSocket;
+        }
+
+        if (externalJoinEnum == ExternalJoinEnum.WEBSOCKET) {
+
+            ExternalChannelInitializerCallbackWebsocket callbackWebsocket = new ExternalChannelInitializerCallbackWebsocket();
+            callbackWebsocket.setOption(option);
+
+            return callbackWebsocket;
+        }
+
+        throw new RuntimeException("externalJoinEnum expected: " + Arrays.toString(ExternalJoinEnum.values()));
     }
 
     private BootstrapOption createServerBootstrapOption() {

@@ -1,5 +1,6 @@
-package com.iohao.little.game.net.external.bootstrap;
+package com.iohao.little.game.net.external.bootstrap.codec;
 
+import com.iohao.little.game.net.external.bootstrap.ExternalCont;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -7,6 +8,9 @@ import io.netty.handler.codec.MessageToByteEncoder;
 
 /**
  * 编码器
+ * <pre>
+ *     将 ExternalMessage 编码成 字节数组
+ * </pre>
  *
  * @author 洛朱
  * @date 2022-01-10
@@ -15,10 +19,16 @@ public class ExternalEncoder extends MessageToByteEncoder<ExternalMessage> {
     @Override
     protected void encode(ChannelHandlerContext channelHandlerContext, ExternalMessage message, ByteBuf byteBuf) {
 
-        // 消息头长度 2 + 2 + 1 + 4 + 2 + 4 = 15
+        encode(message, byteBuf);
+    }
+
+    public static void encode(ExternalMessage message, ByteBuf byteBuf) {
+
+        // 消息总长度 = 消息头2 + 协议体13
+        // 2 + (2 + 1 + 4 + 2 + 4) = 15
         int headLen = ExternalCont.HEADER_LEN + message.getDataLength();
 
-        // 2 消息头长度
+        // 2 消息头 长度
         byteBuf.writeShort(headLen);
 
         // 2 请求命令类型: 0 心跳，1 业务

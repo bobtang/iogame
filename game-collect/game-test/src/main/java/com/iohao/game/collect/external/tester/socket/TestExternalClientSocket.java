@@ -1,10 +1,10 @@
-package com.iohao.game.collect.external.tester;
+package com.iohao.game.collect.external.tester.socket;
 
 import com.iohao.game.collect.common.ActionCont;
 import com.iohao.game.collect.common.GameConfig;
 import com.iohao.game.collect.proto.LoginVerify;
-import com.iohao.little.game.net.external.bootstrap.ExternalDecoder;
-import com.iohao.little.game.net.external.bootstrap.ExternalEncoder;
+import com.iohao.little.game.net.external.bootstrap.codec.ExternalDecoder;
+import com.iohao.little.game.net.external.bootstrap.codec.ExternalEncoder;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2022-01-10
  */
 @Slf4j
-public class TestExternalClient {
+public class TestExternalClientSocket {
     private String host = GameConfig.externalIp;
     private int port = GameConfig.externalPort;
 
@@ -28,7 +28,7 @@ public class TestExternalClient {
     EventLoopGroup group = new NioEventLoopGroup();
 
     public static void main(String[] args) throws InterruptedException {
-        final ChannelFuture connect = new TestExternalClient().connect();
+        final ChannelFuture connect = new TestExternalClientSocket().connect();
         if (connect.sync().isSuccess()) {
 
             ExternalMessage request = getExternalMessage();
@@ -41,7 +41,7 @@ public class TestExternalClient {
         }
     }
 
-    public TestExternalClient() {
+    public TestExternalClientSocket() {
         this.init();
     }
 
@@ -82,7 +82,7 @@ public class TestExternalClient {
     }
 
     public ChannelFuture connect() {
-        synchronized (TestExternalClient.this) {
+        synchronized (TestExternalClientSocket.this) {
             final ChannelFuture f = bootstrap.connect(this.host, this.port);
             f.addListener((ChannelFutureListener) future -> {
                 if (future.isSuccess()) {

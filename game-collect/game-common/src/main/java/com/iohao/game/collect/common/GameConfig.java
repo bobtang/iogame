@@ -9,6 +9,8 @@ public interface GameConfig {
     int externalPort = 10088;
     /** 对外服务器 ip */
     String externalIp = "127.0.0.1";
+    /** http 升级 websocket 协议地址 */
+    String websocketPath = "/websocket";
 
     /** 网关 port */
     int gatePort = 10086;
