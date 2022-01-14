@@ -16,18 +16,9 @@ public interface ActionCont {
         }
     }
 
-    /**
-     * 用户模块
-     */
-    interface UserModule extends Info {
-        /**
-         * 模块A - 主 cmd
-         */
-        int cmd = 1;
+    /** 用户模块 */
+    int userModuleCmd = 1;
+    /** 游戏 坦克模块 */
+    int tankModuleCmd = 2;
 
-        Info info = () -> cmd;
-
-        /** 登录验证 */
-        int loginVerify = 1;
-    }
 }

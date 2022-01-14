@@ -1,6 +1,5 @@
 package com.iohao.game.collect.user.action;
 
-import com.iohao.game.collect.common.ActionCont;
 import com.iohao.game.collect.proto.LoginVerify;
 import com.iohao.game.collect.proto.UserInfo;
 import com.iohao.little.game.action.skeleton.annotation.ActionController;
@@ -14,14 +13,14 @@ import java.util.concurrent.atomic.LongAdder;
  * @author 洛朱
  * @date 2022-01-11
  */
-@ActionController(ActionCont.UserModule.cmd)
+@ActionController(UserCmd.cmd)
 public class LoginAction {
 
     final ConcurrentHashMap<String, Long> userMap = new ConcurrentHashMap<>();
 
     LongAdder userIdAdder = new LongAdder();
 
-    @ActionMethod(ActionCont.UserModule.loginVerify)
+    @ActionMethod(UserCmd.loginVerify)
     public UserInfo loginVerify(LoginVerify loginVerify) {
 
         String token = loginVerify.getJwt();

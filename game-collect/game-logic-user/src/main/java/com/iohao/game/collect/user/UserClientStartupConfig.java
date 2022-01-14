@@ -25,7 +25,7 @@ public class UserClientStartupConfig implements ClientStartupConfig {
     @Override
     public ModuleMessage createModuleMessage() {
 
-        int moduleId = ModuleKeyCont.UserModule.moduleId;
+        int moduleId = ModuleKeyCont.userModuleId;
         var moduleKey = ModuleKeyKit.getModuleKey(moduleId);
 
         ModuleMessage moduleMessage = new ModuleMessage();

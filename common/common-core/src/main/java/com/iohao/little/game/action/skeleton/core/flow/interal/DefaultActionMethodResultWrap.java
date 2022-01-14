@@ -1,7 +1,7 @@
 package com.iohao.little.game.action.skeleton.core.flow.interal;
 
 import com.iohao.little.game.action.skeleton.core.ActionCommand;
-import com.iohao.little.game.action.skeleton.core.BarException;
+import com.iohao.little.game.action.skeleton.core.exception.MsgException;
 import com.iohao.little.game.action.skeleton.core.flow.ActionMethodResultWrap;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
@@ -23,8 +23,8 @@ public class DefaultActionMethodResultWrap implements ActionMethodResultWrap<Req
         responseMessage.setData(result);
 
         // 异常处理
-        if (actionCommand.isHasThrowException() && result instanceof BarException barException) {
-            int code = barException.getCode();
+        if (actionCommand.isHasThrowException() && result instanceof MsgException msgException) {
+            int code = msgException.getMsgCode();
             responseMessage.setErrorCode(code);
         }
 

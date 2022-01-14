@@ -1,6 +1,6 @@
 package com.iohao.little.game.action.skeleton.core.flow;
 
-import com.iohao.little.game.action.skeleton.core.BarException;
+import com.iohao.little.game.action.skeleton.core.exception.MsgException;
 
 /**
  * ActionMethod 的异常处理
@@ -15,5 +15,5 @@ public interface ActionMethodExceptionProcess {
      * @param e e
      * @return BarException
      */
-    BarException processException(Throwable e);
+    MsgException processException(Throwable e);
 }

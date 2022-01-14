@@ -1,6 +1,6 @@
 package com.iohao.little.game.action.skeleton.core.flow.interal;
 
-import com.iohao.little.game.action.skeleton.core.BarException;
+import com.iohao.little.game.action.skeleton.core.exception.MsgException;
 import com.iohao.little.game.action.skeleton.core.flow.ActionMethodExceptionProcess;
 
 /**
@@ -11,12 +11,12 @@ import com.iohao.little.game.action.skeleton.core.flow.ActionMethodExceptionProc
  */
 public class DefaultActionMethodExceptionProcess implements ActionMethodExceptionProcess {
     @Override
-    public BarException processException(Throwable e) {
+    public MsgException processException(Throwable e) {
 
-        if (e instanceof BarException barException) {
-            return barException;
+        if (e instanceof MsgException msgException) {
+            return msgException;
         }
 
-        return new BarException(e.getMessage(), -1000);
+        return new MsgException(-1000, e.getMessage());
     }
 }

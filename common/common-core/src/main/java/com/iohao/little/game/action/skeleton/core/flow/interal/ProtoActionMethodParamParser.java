@@ -16,7 +16,6 @@ import java.util.Objects;
  * @date 2022-01-12
  */
 public class ProtoActionMethodParamParser implements ActionMethodParamParser {
-    private static final Object[] METHOD_PARAMS = new Object[0];
 
     @Override
     public Object[] listParam(final ParamContext paramContext1, final ActionCommand actionCommand, final RequestMessage request) {
@@ -58,6 +57,11 @@ public class ProtoActionMethodParamParser implements ActionMethodParamParser {
 
             if (RequestMessage.class.equals(paramClazz)) {
                 pars[i] = request;
+                continue;
+            }
+
+            if ("userId".equals(paramInfo.getName())) {
+                pars[i] = request.getUserId();
                 continue;
             }
 

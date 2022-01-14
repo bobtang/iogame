@@ -40,8 +40,8 @@ public class MyWebsocketClient {
         request.setProtocolSwitch((byte) 100);
 
         // 路由
-        int subCmd = ActionCont.UserModule.loginVerify;
-        int cmd = ActionCont.UserModule.cmd;
+        int subCmd = 1;
+        int cmd = ActionCont.userModuleCmd;
         request.setCmdMerge(cmd, subCmd);
 
         // 业务数据

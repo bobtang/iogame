@@ -2,6 +2,7 @@ package com.iohao.little.game.widget.light.domain.event;
 
 import com.iohao.little.game.widget.light.domain.event.disruptor.DefaultDisruptorCreate;
 import com.iohao.little.game.widget.light.domain.event.disruptor.DisruptorCreate;
+import com.iohao.little.game.widget.light.domain.event.exception.DefaultDomainEventExceptionHandler;
 import com.iohao.little.game.widget.light.domain.event.message.DomainEventHandler;
 import com.lmax.disruptor.*;
 import com.lmax.disruptor.dsl.ProducerType;
@@ -46,7 +47,7 @@ public class DomainEventContextParam {
     int ringBufferSize = 1024;
 
     /** 异常处理 */
-    ExceptionHandler exceptionHandler;
+    ExceptionHandler exceptionHandler = new DefaultDomainEventExceptionHandler();
 
     /** true 初始化完成 */
     private final AtomicBoolean init = new AtomicBoolean(false);

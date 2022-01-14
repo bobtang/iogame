@@ -111,8 +111,8 @@ public class TestExternalClientSocket {
         request.setCmdCode((short) 1);
 
         // 路由
-        int cmd = ActionCont.UserModule.cmd;
-        int subCmd = ActionCont.UserModule.loginVerify;
+        int cmd = ActionCont.userModuleCmd;
+        int subCmd = 1;
         request.setCmdMerge(cmd, subCmd);
 
         // 业务数据

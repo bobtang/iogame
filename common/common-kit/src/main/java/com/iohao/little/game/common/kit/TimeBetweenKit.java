@@ -1,4 +1,4 @@
-package com.iohao.little.game.kit;
+package com.iohao.little.game.common.kit;
 
 import java.io.Serializable;
 import java.time.LocalTime;

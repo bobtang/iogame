@@ -5,7 +5,10 @@ package com.iohao.game.collect.common;
  * @date 2022-01-12
  */
 public interface ModuleKeyCont {
-    interface UserModule {
-        int moduleId = 10;
-    }
+
+    /** 用户模块 */
+    int userModuleId = 10;
+    /** 游戏 坦克模块 */
+    int gameTankModuleId = 11;
+
 }
