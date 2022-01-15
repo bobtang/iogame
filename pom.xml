@@ -55,7 +55,6 @@
         <module>game-collect/game-logic-tank</module>
 
 
-
     </modules>
 
     <parent>
@@ -124,6 +123,8 @@
         <disruptor.version>3.4.4</disruptor.version>
         <!-- bean 验证框架 https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
         <hibernate-validator.version>7.0.2.Final</hibernate-validator.version>
+        <!-- 实体映射工具 https://mvnrepository.com/artifact/org.mapstruct/mapstruct https://mapstruct.org/documentation/reference-guide/ -->
+        <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 
         <!-- temp spring boot -->
         <spring.version>5.3.14</spring.version>
@@ -171,6 +172,7 @@
             <version>${jprotobuf.version}</version>
         </dependency>
 
+
     </dependencies>
 
     <build>
@@ -195,6 +197,29 @@
                     <compilerVersion>${java.version}</compilerVersion>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <skip>true</skip>
+                    <!-- JDK9+ with module-info.java -->
+                    <annotationProcessorPaths>
+                        <!-- 实体映射工具 -->
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+
+                        <!-- lombok 消除冗长的 Java 代码 -->
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <!-- additional annotation processor required as of Lombok 1.18.16 -->
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>0.2.0</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
 
@@ -202,6 +227,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
                 <configuration>
                     <skipTests>true</skipTests>
                 </configuration>
@@ -229,8 +255,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>17</source>
-                    <target>17</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
 

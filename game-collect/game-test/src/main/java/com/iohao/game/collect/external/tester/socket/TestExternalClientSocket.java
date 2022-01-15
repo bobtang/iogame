@@ -117,7 +117,7 @@ public class TestExternalClientSocket {
 
         // 业务数据
         LoginVerify loginVerify = new LoginVerify();
-        loginVerify.setJwt("abc");
+        loginVerify.jwt = ("abc");
         request.setData(loginVerify);
 
         System.out.println(request);

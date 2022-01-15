@@ -19,7 +19,8 @@ public interface RoomCreateCustom {
      * 根据 创建游戏规则
      *
      * @param createRoomInfo 创建房间信息
+     * @param <T>            AbstractRoom
      * @return 房间
      */
-    AbstractRoom createRoom(CreateRoomInfo createRoomInfo);
+    <T extends AbstractRoom> T createRoom(CreateRoomInfo createRoomInfo);
 }

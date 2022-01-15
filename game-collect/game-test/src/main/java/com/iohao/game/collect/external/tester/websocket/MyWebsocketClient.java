@@ -46,7 +46,7 @@ public class MyWebsocketClient {
 
         // 业务数据
         LoginVerify loginVerify = new LoginVerify();
-        loginVerify.setJwt("abc");
+        loginVerify.jwt = ("abc");
         request.setData(loginVerify);
 
         log.info("client 发送 消息 {}", request);

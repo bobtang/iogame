@@ -51,9 +51,9 @@ public class UserSessionManager {
 
         log.info("玩家退出 -- tcpSession. channel: {}", channel);
 
-        long playerId = this.getUserId(channel);
-        if (playerId == 0) {
-            channelIdMap.remove(playerId);
+        long userId = this.getUserId(channel);
+        if (userId == 0) {
+            channelIdMap.remove(userId);
             // TODO: 2022/1/11  离线通知
             //  #offline(userId);
         }
@@ -95,11 +95,11 @@ public class UserSessionManager {
     /**
      * 获取玩家ip
      *
-     * @param playerId 玩家
+     * @param userId 玩家
      * @return ip地址
      */
-    public String getIp(long playerId) {
-        Channel channel = this.getChannel(playerId);
+    public String getIp(long userId) {
+        Channel channel = this.getChannel(userId);
         if (isActive(channel)) {
             InetSocketAddress inetSocketAddress = (InetSocketAddress) channel.remoteAddress();
             return inetSocketAddress.getHostString();

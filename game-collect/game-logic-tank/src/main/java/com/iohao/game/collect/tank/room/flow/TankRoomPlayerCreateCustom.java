@@ -1,6 +1,5 @@
 package com.iohao.game.collect.tank.room.flow;
 
-import com.iohao.game.collect.common.room.AbstractPlayer;
 import com.iohao.game.collect.common.room.flow.RoomPlayerCreateCustom;
 import com.iohao.game.collect.tank.room.TankPlayer;
 
@@ -12,7 +11,10 @@ import com.iohao.game.collect.tank.room.TankPlayer;
  */
 public class TankRoomPlayerCreateCustom implements RoomPlayerCreateCustom {
     @Override
-    public AbstractPlayer createPlayer() {
-        return new TankPlayer();
+    @SuppressWarnings("unchecked")
+    public TankPlayer createPlayer() {
+        TankPlayer tankPlayer = new TankPlayer();
+        tankPlayer.setHp(10000);
+        return tankPlayer;
     }
 }

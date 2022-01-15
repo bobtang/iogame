@@ -15,7 +15,8 @@ public interface RoomPlayerCreateCustom {
     /**
      * 构建房间内的玩家
      *
+     * @param <T> AbstractPlayer
      * @return 玩家
      */
-    AbstractPlayer createPlayer();
+    <T extends AbstractPlayer> T createPlayer();
 }

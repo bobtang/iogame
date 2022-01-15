@@ -6,7 +6,9 @@ import com.baidu.bjf.remoting.protobuf.ProtobufProxy;
 import com.baidu.bjf.remoting.protobuf.annotation.EnableZigZap;
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.ToString;
+import lombok.experimental.FieldDefaults;
 
 import java.io.IOException;
 
@@ -16,7 +18,8 @@ import java.io.IOException;
  * @author 洛朱
  * @date 2022-01-07
  */
-@Data
+@ToString
+@FieldDefaults(level = AccessLevel.PUBLIC)
 @ProtobufClass(description = "老师")
 @EnableZigZap
 public class Teacher {
@@ -54,6 +57,8 @@ public class Teacher {
             String code = ProtobufIDLGenerator.getIDL(Teacher.class);
 
             System.out.println(code);
+
+
 
         } catch (IOException e) {
             e.printStackTrace();

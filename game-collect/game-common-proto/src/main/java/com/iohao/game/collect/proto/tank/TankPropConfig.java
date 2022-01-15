@@ -1,4 +1,4 @@
-package com.iohao.game.collect.proto;
+package com.iohao.game.collect.proto.tank;
 
 import com.baidu.bjf.remoting.protobuf.annotation.EnableZigZap;
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
@@ -7,15 +7,13 @@ import lombok.ToString;
 
 /**
  * @author 洛朱
- * @date 2022-01-12
+ * @date 2022-01-15
  */
 @ToString
-@ProtobufClass(description = "用户信息")
+@ProtobufClass(description = "坦克道具配置")
 @EnableZigZap
-public class UserInfo {
+public class TankPropConfig {
     /** id */
     @Protobuf(description = "id")
-    public long id;
-
-    public String name;
+    public int id;
 }

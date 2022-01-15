@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -30,20 +31,20 @@ public abstract class AbstractRoom implements Serializable {
     /**
      * 玩家
      * <pre>
-     *     key is playerId
+     *     key is userId
      *     value is player
      * </pre>
      */
-    final Map<Long, AbstractPlayer> playerMap = new HashMap<>();
+    final ConcurrentHashMap<Long, AbstractPlayer> playerMap = new ConcurrentHashMap<>();
 
     /**
      * 玩家位置
      * <pre>
      *     key is seat
-     *     value is playerId
+     *     value is userId
      * </pre>
      */
-    final Map<Integer, Long> playerSeatPlayerIdMap = new TreeMap<>();
+    final Map<Integer, Long> playerSeatMap = new TreeMap<>();
 
     /** 房间唯一 id - uuid */
     String roomId;
@@ -54,6 +55,9 @@ public abstract class AbstractRoom implements Serializable {
     CreateRoomInfo createRoomInfo;
     /** 房间空间大小: 4 就是4个人上限 (根据规则设置) */
     int spaceSize;
+
+    /** 房间状态 */
+    RoomStatusEnum roomStatusEnum = RoomStatusEnum.wait;
 
     /**
      * 玩家列表: 所有玩家信息
@@ -70,13 +74,17 @@ public abstract class AbstractRoom implements Serializable {
         return listPlayer().stream().filter(predicate).collect(Collectors.toList());
     }
 
-    public Collection<Long> listPlayerId() {
+    public Collection<Long> listUserId() {
         return this.playerMap.keySet();
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends AbstractPlayer> T getPlayerById(long playerId) {
-        return (T) this.playerMap.get(playerId);
+    public <T extends AbstractPlayer> T getUserById(long userId) {
+        return (T) this.playerMap.get(userId);
+    }
+
+    public boolean existUser(long userId) {
+        return this.playerMap.get(userId) != null;
     }
 
     /**
@@ -85,8 +93,12 @@ public abstract class AbstractRoom implements Serializable {
      * @param player 玩家
      */
     public void addPlayer(AbstractPlayer player) {
-        long playerId = player.getId();
-        this.playerMap.put(playerId, player);
-        this.playerSeatPlayerIdMap.put(player.getSeat(), playerId);
+        long userId = player.getId();
+        this.playerMap.put(userId, player);
+        this.playerSeatMap.put(player.getSeat(), userId);
+    }
+
+    public boolean isStatus(RoomStatusEnum roomStatusEnum) {
+        return this.roomStatusEnum == roomStatusEnum;
     }
 }

@@ -12,7 +12,7 @@ import com.iohao.game.collect.common.room.flow.RoomEnterInfo;
  */
 public class TankRoomEnterCustom implements RoomEnterCustom {
     @Override
-    public RoomEnterInfo enterRoom(long playerId, AbstractRoom abstractRoom, RoomEnterInfo roomEnterInfo) {
+    public RoomEnterInfo enterRoom(long userId, AbstractRoom abstractRoom, RoomEnterInfo roomEnterInfo) {
         return null;
     }
 }

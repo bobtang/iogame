@@ -9,7 +9,7 @@ import com.iohao.game.collect.common.ActionCont;
  * @date 2022-01-14
  */
 public interface TankCmd extends ActionCont.Info {
-    /** 模块A - 主 cmd */
+    /** 模块 - 主 cmd : 2 */
     int cmd = ActionCont.tankModuleCmd;
 
     ActionCont.Info info = () -> cmd;
@@ -20,4 +20,12 @@ public interface TankCmd extends ActionCont.Info {
     int enterRoom = 2;
     /** 游戏开始 */
     int gameStart = 3;
+
+    /** 子弹配置 */
+    int getTankBulletConfigRes = 4;
+    /** 坦克移动 */
+    int tankMove = 4;
+
+    /** 坦克攻击 */
+    int attack = 5;
 }

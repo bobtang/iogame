@@ -23,20 +23,20 @@ public class LoginAction {
     @ActionMethod(UserCmd.loginVerify)
     public UserInfo loginVerify(LoginVerify loginVerify) {
 
-        String token = loginVerify.getJwt();
+        String jwt = loginVerify.jwt;
 
-        Long userId = userMap.get(token);
+        Long userId = userMap.get(jwt);
 
         if (Objects.isNull(userId)) {
             userIdAdder.increment();
 
             userId = userIdAdder.longValue();
-            userMap.put(token, userId);
+            userMap.put(jwt, userId);
         }
 
         UserInfo userInfo = new UserInfo();
-        userInfo.setId(userId);
-        userInfo.setName(token);
+        userInfo.id = userId;
+        userInfo.name = jwt;
 
         return userInfo;
     }

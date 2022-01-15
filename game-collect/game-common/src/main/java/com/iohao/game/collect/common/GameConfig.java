@@ -16,4 +16,7 @@ public interface GameConfig {
     int gatePort = 10086;
     /** 网关 ip */
     String gateIp = "127.0.0.1";
+
+
+
 }

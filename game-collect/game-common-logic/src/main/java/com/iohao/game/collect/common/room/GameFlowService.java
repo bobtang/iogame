@@ -37,5 +37,13 @@ public class GameFlowService {
     /** 进入房间 */
     RoomEnterCustom roomEnterCustom;
 
+    public static GameFlowService me() {
+    	return Holder.ME;
+    }
+
+    /** 通过 JVM 的类加载机制, 保证只加载一次 (singleton) */
+    private static class Holder {
+        static final GameFlowService ME = new GameFlowService();
+     }
 
 }

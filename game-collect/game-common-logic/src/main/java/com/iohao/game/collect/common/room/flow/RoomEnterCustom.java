@@ -13,11 +13,11 @@ public interface RoomEnterCustom {
     /**
      * 进入房间
      *
-     * @param playerId      玩家 id
+     * @param userId        玩家 id
      * @param abstractRoom  玩家所在房间
      * @param roomEnterInfo 进入房间请求信息
      * @return enter Response
      */
-    RoomEnterInfo enterRoom(long playerId, AbstractRoom abstractRoom, RoomEnterInfo roomEnterInfo);
+    RoomEnterInfo enterRoom(long userId, AbstractRoom abstractRoom, RoomEnterInfo roomEnterInfo);
 
 }

@@ -90,7 +90,7 @@ public class TestExternalHandlerWebsocket extends SimpleChannelInboundHandler<Ob
         log.info("接收客户端消息 {}", message);
 
         LoginVerify loginVerify = new LoginVerify();
-        loginVerify.setJwt("jwt:" + id.toString());
+        loginVerify.jwt = ("jwt:" + id.toString());
         message.setData(loginVerify);
 
         int headLen = ExternalCont.HEADER_LEN + message.getDataLength();

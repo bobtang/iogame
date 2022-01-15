@@ -30,7 +30,7 @@ public class TestExternalHandler extends SimpleChannelInboundHandler<ExternalMes
         }
 
         LoginVerify loginVerify = new LoginVerify();
-        loginVerify.setJwt("jwt:" + id.toString());
+        loginVerify.jwt = ("jwt:" + id.toString());
 
         message.setData(loginVerify);
 

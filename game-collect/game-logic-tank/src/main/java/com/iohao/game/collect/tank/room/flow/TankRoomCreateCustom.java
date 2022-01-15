@@ -1,5 +1,6 @@
 package com.iohao.game.collect.tank.room.flow;
 
+import cn.hutool.core.util.IdUtil;
 import com.iohao.game.collect.common.room.AbstractRoom;
 import com.iohao.game.collect.common.room.CreateRoomInfo;
 import com.iohao.game.collect.common.room.flow.RoomCreateCustom;
@@ -13,12 +14,14 @@ import com.iohao.game.collect.tank.room.TankRoom;
  */
 public class TankRoomCreateCustom implements RoomCreateCustom {
 
-    static final TankRoom room = new TankRoom();
-
     @Override
+    @SuppressWarnings("unchecked")
     public AbstractRoom createRoom(CreateRoomInfo createRoomInfo) {
-//        return new TankRoom();
-        // TODO: 2022/1/14 开发阶段，只用一个房间
+        String roomId = IdUtil.simpleUUID();
+
+        TankRoom room = new TankRoom();
+        room.setRoomId(roomId);
+
         return room;
     }
 }

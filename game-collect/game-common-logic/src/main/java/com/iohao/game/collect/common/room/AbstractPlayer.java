@@ -23,7 +23,7 @@ public abstract class AbstractPlayer implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -26338708253909097L;
-    /** playerId 玩家 id */
+    /** userId 玩家 id */
     long id;
     /** 用户所在位置 */
     int seat;
