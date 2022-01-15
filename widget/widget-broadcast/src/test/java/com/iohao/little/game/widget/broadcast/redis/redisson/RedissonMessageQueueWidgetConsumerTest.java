@@ -2,7 +2,7 @@ package com.iohao.little.game.widget.broadcast.redis.redisson;
 
 import com.iohao.little.game.widget.broadcast.MessageQueueConfigWidget;
 import com.iohao.little.game.widget.broadcast.MessageQueueWidget;
-import com.iohao.little.game.widget.broadcast.redis.redisson.listener.LionMessageListenerWidget;
+import com.iohao.little.game.widget.broadcast.redis.redisson.listener.LionMessageListenerWidgetTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ public class RedissonMessageQueueWidgetConsumerTest {
         // 消息消费
 
         // 订阅处理类
-        LionMessageListenerWidget lionWidgetMessageListener = new LionMessageListenerWidget();
+        LionMessageListenerWidgetTest lionWidgetMessageListener = new LionMessageListenerWidgetTest();
 
         // 配置项
         var widgetMessageQueueConfig = new MessageQueueConfigWidget();

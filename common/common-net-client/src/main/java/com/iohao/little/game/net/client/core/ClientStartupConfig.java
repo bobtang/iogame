@@ -6,6 +6,7 @@ import com.iohao.little.game.action.skeleton.core.BarSkeleton;
 import com.iohao.little.game.net.client.BoltClientServer;
 import com.iohao.little.game.net.client.BoltClientServerSetting;
 import com.iohao.little.game.net.client.common.BoltClientProxy;
+import com.iohao.little.game.net.client.kit.BoltClientProxyKit;
 import com.iohao.little.game.net.message.common.ModuleMessage;
 import com.iohao.little.game.widget.config.WidgetComponents;
 
@@ -136,6 +137,9 @@ public interface ClientStartupConfig {
 
         // 客户端服务器注册到网关服
         boltClientServer.registerModuleToGate();
+
+        // save BoltClientServer
+        BoltClientProxyKit.put(moduleMessage.getModuleKey(), boltClientProxy);
 
         // 服务器启动后的钩子方法
         this.startupSuccess(boltClientServer);

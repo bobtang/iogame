@@ -26,7 +26,7 @@ public class TankAction {
     static GameFlowService gameFlowService = GameFlowService.me();
     RoomService roomService = RoomService.me();
     // TODO: 2022/1/14 开发阶段，只用一个房间
-    String tempRoomId = "abc";
+    public static long tempRoomId = 10000;
 
     static {
         gameFlowService.setRoomRuleInfoCustom(new TankRoomRuleInfoCustom());
@@ -37,10 +37,16 @@ public class TankAction {
     }
 
     @ActionMethod(TankCmd.tankMove)
-    public TankMove tankMove(TankMove location) {
-        // 广播位置
+    public TankMove tankMove(long userId, TankMove tankMove) {
+        tankMove.userId = userId;
 
-        return location;
+        TankRoom room = roomService.getRoomByUserId(userId);
+
+        TankPlayer player = room.getPlayerById(userId);
+
+        player.setTankMove(tankMove);
+
+        return tankMove;
     }
 
     @ActionMethod(TankCmd.getTankBulletConfigRes)
@@ -53,7 +59,7 @@ public class TankAction {
         // TODO: 2022/1/14 开发阶段，只用一个房间
         enterRoom.roomId = tempRoomId;
 
-        String roomId = enterRoom.roomId;
+        long roomId = enterRoom.roomId;
 
         // 房间
         TankRoom room = roomService.getRoom(roomId);
@@ -67,20 +73,21 @@ public class TankAction {
             roomService.addRoom(room);
         }
 
-        TankPlayer player = room.getUserById(userId);
+        TankPlayer player = room.getPlayerById(userId);
 
         // 如果检查是否在房间内
         if (Objects.isNull(player)) {
             // 如果不在房间内先加入房间
             player = gameFlowService.getRoomPlayerCreateCustom().createPlayer();
             player.setId(userId);
+            player.setRoomId(roomId);
 
             roomService.addPlayer(room, player);
         }
 
         // 进入房间
         Collection<TankPlayer> players = room.listPlayer();
-        enterRoom.playerTanks = TankMapstruct.ME.convertList(players);
+        enterRoom.playerTankList = TankMapstruct.ME.convertList(players);
 
 
         return enterRoom;

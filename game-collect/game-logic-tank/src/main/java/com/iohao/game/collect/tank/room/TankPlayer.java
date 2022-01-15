@@ -2,6 +2,7 @@ package com.iohao.game.collect.tank.room;
 
 import com.iohao.game.collect.common.room.AbstractPlayer;
 import com.iohao.game.collect.proto.tank.TankBulletBox;
+import com.iohao.game.collect.proto.tank.TankMove;
 import lombok.Data;
 
 import java.io.Serial;
@@ -23,10 +24,12 @@ public class TankPlayer extends AbstractPlayer {
     long hp;
     /** 坦克 所属队伍 */
     int team;
-    /** 皮肤 */
-    int skin;
     /** 速度 */
     int speed;
+    /** 皮肤 */
+    int skin;
+
+    TankMove tankMove = new TankMove();
 
     /**
      * 坦克子弹
@@ -37,5 +40,7 @@ public class TankPlayer extends AbstractPlayer {
      */
     Map<Integer, TankBulletBox> tankBulletMap = new HashMap<>();
 
+    /** 房间 id */
+    long roomId;
 
 }

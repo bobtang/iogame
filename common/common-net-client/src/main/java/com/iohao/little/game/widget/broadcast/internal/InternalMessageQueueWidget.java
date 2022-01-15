@@ -1,17 +1,14 @@
 package com.iohao.little.game.widget.broadcast.internal;
 
 import com.alipay.remoting.exception.RemotingException;
-import com.iohao.little.game.action.skeleton.core.CmdInfo;
-import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.client.common.BoltClientProxy;
-import com.iohao.little.game.net.client.common.BoltClientProxyManager;
-import com.iohao.little.game.widget.broadcast.BroadcastMessage;
 import com.iohao.little.game.widget.broadcast.AbstractMessageQueueWidget;
+import com.iohao.little.game.widget.broadcast.BroadcastMessage;
 import com.iohao.little.game.widget.broadcast.MessageListenerWidget;
 import com.iohao.little.game.widget.broadcast.MessageQueueConfigWidget;
-import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Objects;
 
 /**
  * 逻辑服与网关
@@ -19,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author 洛朱
  * @Date 2021-12-17
  */
+@Slf4j
 public class InternalMessageQueueWidget extends AbstractMessageQueueWidget {
 
 
@@ -27,12 +25,17 @@ public class InternalMessageQueueWidget extends AbstractMessageQueueWidget {
     }
 
     @Override
-    public void publish(String channel, BroadcastMessage message) {
-        BroadcastMessage broadcastMessage = message;
-        ResponseMessage responseMessage = broadcastMessage.getResponseMessage();
-        CmdInfo cmdInfo = responseMessage.getCmdInfo();
+    public void publish(String channel, BroadcastMessage broadcastMessage) {
 
-        BoltClientProxy boltClientProxy = BoltClientProxyManager.me().getBoltClientProxy(cmdInfo);
+
+        ClientBroadcastMessageContext context = (ClientBroadcastMessageContext) broadcastMessage.getContext();
+
+        if (Objects.isNull(context) || Objects.isNull(context.boltClientProxy())) {
+            log.error("ClientBroadcastMessageContext is null");
+            return;
+        }
+
+        BoltClientProxy boltClientProxy = context.boltClientProxy();
 
         try {
             boltClientProxy.oneway(broadcastMessage);

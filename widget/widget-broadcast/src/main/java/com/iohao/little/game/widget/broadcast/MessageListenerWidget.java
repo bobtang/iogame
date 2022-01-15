@@ -19,7 +19,16 @@ public interface MessageListenerWidget<T> {
      *
      * @return 监听的频道名
      */
-    CharSequence channel();
+    default CharSequence channel() {
+        return BroadcastCont.defaultChannel;
+    }
+
+//    /**
+//     * 添加监听者（消息订阅者）
+//     *
+//     * @param listener 监听者
+//     */
+//    void addMessageListener(MessageListenerWidget listener);
 
     /**
      * 消息处理

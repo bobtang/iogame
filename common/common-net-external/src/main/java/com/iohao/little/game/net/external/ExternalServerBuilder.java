@@ -31,7 +31,7 @@ import java.util.Objects;
  * <p>
  * 如果不配置默认如下
  * <ul>
- *     <li>serverBootstrapOption : 根据当前操作系统自动创建</li>
+ *     <li>bootstrapOption : 根据当前操作系统自动创建</li>
  * </ul>
  *
  * @author 洛朱

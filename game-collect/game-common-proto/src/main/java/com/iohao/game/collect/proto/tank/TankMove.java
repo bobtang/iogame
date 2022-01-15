@@ -30,8 +30,8 @@ public class TankMove {
     public int directionV;
 
     @Protobuf(description = "玩家 id")
-    public int userId;
+    public long userId;
 
     @Protobuf(description = "hash")
-    int hash;
+    public int hash;
 }

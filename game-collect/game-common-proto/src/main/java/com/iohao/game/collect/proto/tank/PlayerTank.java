@@ -19,11 +19,9 @@ import java.util.List;
 @ProtobufClass(description = "玩家的坦克")
 @EnableZigZap
 public class PlayerTank {
-    /** id */
     @Protobuf(description = "玩家id")
     public long id;
 
-    /** 血条 */
     @Protobuf(description = "坦克 血条")
     public long hp;
 
@@ -36,10 +34,11 @@ public class PlayerTank {
     @Protobuf(description = "坦克 皮肤")
     public int skin;
 
-    @Protobuf(description = "坦克 子弹集 [key:子弹类型 ，value:子弹盒]")
-    public List<TankBulletBox> tankBulletBoxList;
-
     @Protobuf(description = "坦克位置")
     public TankMove tankMove;
+
+    @Protobuf(description = "坦克 子弹盒")
+    public List<TankBulletBox> tankBulletBoxList;
+
 
 }

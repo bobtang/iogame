@@ -36,9 +36,12 @@ public class RedissonMessageQueueWidget extends AbstractMessageQueueWidget {
     public void addMessageListener(MessageListenerWidget listener) {
         CharSequence channel = listener.channel();
         RTopic topic = redisson.getTopic(channel.toString());
+
         // 数据适配
-        BroadcastMessageListenerProxy broadcastMessageListenerProxy = new BroadcastMessageListenerProxy(listener);
-        topic.addListener(BroadcastMessage.class, broadcastMessageListenerProxy);
+        RedissonBroadcastMessageListenerProxy redissonBroadcastMessageListenerProxy =
+                new RedissonBroadcastMessageListenerProxy(listener);
+
+        topic.addListener(BroadcastMessage.class, redissonBroadcastMessageListenerProxy);
     }
 
 

@@ -7,11 +7,7 @@ import com.iohao.little.game.widget.broadcast.dto.Lion;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class LionMessageListenerWidget implements MessageListenerWidget<Lion> {
-    @Override
-    public CharSequence channel() {
-        return "internal_channel";
-    }
+public class LionMessageListenerWidgetTest implements MessageListenerWidget<Lion> {
 
     @Override
     public void onMessage(ResponseMessage responseMessage, CharSequence channel, BroadcastMessage broadcastMessage) {

@@ -17,16 +17,15 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2022-01-12
  */
 @Slf4j
+@Deprecated
 public class GateBroadcastMessageListenerWidget implements MessageListenerWidget<ResponseMessage> {
-    @Override
-    public CharSequence channel() {
-        return "internal_channel";
-    }
 
     @Override
     public void onMessage(ResponseMessage responseMessage, CharSequence channel, BroadcastMessage broadcastMessage) {
 
         BoltServer boltServer = GateKit.getBoltServer();
+
+        // 广播小部件
         WidgetComponents widgetComponents = boltServer.getWidgetComponents();
         MessageQueueWidget option = widgetComponents.option(MessageQueueWidget.class);
 

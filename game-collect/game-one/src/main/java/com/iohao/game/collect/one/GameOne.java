@@ -1,7 +1,7 @@
 package com.iohao.game.collect.one;
 
 import com.iohao.game.collect.GameLogicAll;
-import com.iohao.game.collect.external.ExternalBoot;
+import com.iohao.game.collect.external.GameExternalBoot;
 import com.iohao.game.collect.gateway.GameGatewayBoot;
 
 import java.util.Timer;
@@ -39,9 +39,9 @@ public class GameOne {
     }
 
     public void externalServer() {
-        ExternalBoot externalBoot = new ExternalBoot();
+        GameExternalBoot gameExternalBoot = new GameExternalBoot();
 
-        externalBoot.init();
+        gameExternalBoot.init();
     }
 
     public void logicServer() {

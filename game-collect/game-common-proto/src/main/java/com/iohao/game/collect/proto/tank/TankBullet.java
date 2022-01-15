@@ -3,19 +3,24 @@ package com.iohao.game.collect.proto.tank;
 import com.baidu.bjf.remoting.protobuf.annotation.EnableZigZap;
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
-import lombok.ToString;
 
-import java.util.List;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @author 洛朱
  * @date 2022-01-15
  */
 @ToString
-@ProtobufClass(description = "坦克子弹配置 响应")
+@Setter
+@ProtobufClass(description = "坦克子弹")
 @EnableZigZap
-public class TankBulletConfigRes {
+public class TankBullet {
     /** id */
     @Protobuf(description = "id")
-    public List<TankBulletConfig> tankBulletConfigList;
+    public long id;
+
+    @Protobuf(description = "子弹 类型2")
+    public BulletEnum bulletEnum;
+
 }

@@ -21,14 +21,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2022-01-11
  */
 @Slf4j
-public class UserSessionManager {
+public class UserSession {
     final ChannelGroup channelGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     /**
      * key is 玩家 id
      * value is channelId
      */
     final ConcurrentHashMap<Long, ChannelId> channelIdMap = new ConcurrentHashMap<>();
-
 
     /**
      * 添加 channel 关联
@@ -134,16 +133,16 @@ public class UserSessionManager {
         channelGroup.remove(channel);
     }
 
-    UserSessionManager() {
+    UserSession() {
 
     }
 
-    public static UserSessionManager me() {
+    public static UserSession me() {
         return Holder.ME;
     }
 
     /** 通过 JVM 的类加载机制, 保证只加载一次 (singleton) */
     private static class Holder {
-        static final UserSessionManager ME = new UserSessionManager();
+        static final UserSession ME = new UserSession();
     }
 }

@@ -7,6 +7,7 @@ import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.common.BoltServer;
 import com.iohao.little.game.net.server.GateKit;
 import com.iohao.little.game.net.message.common.ModuleMessage;
+import lombok.Getter;
 
 /**
  * 模块信息代理
@@ -19,12 +20,12 @@ import com.iohao.little.game.net.message.common.ModuleMessage;
  */
 public class ModuleInfoProxy {
 
+    @Getter
     final ModuleMessage moduleMessage;
 
     public ModuleInfoProxy(ModuleMessage moduleMessage) {
         this.moduleMessage = moduleMessage;
     }
-
 
     public Object invokeSync(RequestMessage requestMessage) throws RemotingException, InterruptedException {
         String address = moduleMessage.getAddress();

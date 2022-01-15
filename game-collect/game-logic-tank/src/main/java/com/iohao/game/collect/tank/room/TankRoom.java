@@ -1,6 +1,6 @@
 package com.iohao.game.collect.tank.room;
 
-import com.iohao.game.collect.common.FrameConfig;
+import com.iohao.game.collect.common.FrameKit;
 import com.iohao.game.collect.common.room.AbstractRoom;
 import com.iohao.game.collect.proto.tank.TankMove;
 import lombok.AccessLevel;
@@ -36,7 +36,7 @@ public class TankRoom extends AbstractRoom {
     }
 
     public TankRoom() {
-        this.maxFrameId = 60 * FrameConfig.MINUTE;
+        this.maxFrameId = 60 * FrameKit.MINUTE;
     }
 
     /**

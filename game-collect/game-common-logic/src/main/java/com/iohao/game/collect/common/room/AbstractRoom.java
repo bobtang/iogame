@@ -46,8 +46,8 @@ public abstract class AbstractRoom implements Serializable {
      */
     final Map<Integer, Long> playerSeatMap = new TreeMap<>();
 
-    /** 房间唯一 id - uuid */
-    String roomId;
+    /** 房间唯一 id */
+    long roomId;
     /** 房间号 */
     int roomNo;
 
@@ -79,7 +79,7 @@ public abstract class AbstractRoom implements Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends AbstractPlayer> T getUserById(long userId) {
+    public <T extends AbstractPlayer> T getPlayerById(long userId) {
         return (T) this.playerMap.get(userId);
     }
 

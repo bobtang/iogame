@@ -20,6 +20,7 @@ public class BoltClientProxyManager {
 
     public BoltClientProxy getBoltClientProxy(ModuleKey moduleKey) {
 
+        // TODO: 2022/1/16 有问题这里
         if (Objects.isNull(moduleKey)) {
             // 把数据传到网关, is null 通常是请求其它服务器的数据
             return gateProxy;

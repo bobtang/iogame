@@ -2,10 +2,7 @@ package com.iohao.little.game.net.external.bootstrap.message;
 
 import com.iohao.little.game.action.skeleton.core.CmdKit;
 import com.iohao.little.game.common.kit.ProtoKit;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 /**
@@ -15,9 +12,7 @@ import lombok.experimental.FieldDefaults;
  * @date 2022-01-10
  */
 @FieldDefaults(level = AccessLevel.PROTECTED)
-@Getter
-@Setter
-@ToString
+@Data
 public class ExternalMessage {
     /** 请求命令类型: 0 心跳，1 业务 */
     short cmdCode;

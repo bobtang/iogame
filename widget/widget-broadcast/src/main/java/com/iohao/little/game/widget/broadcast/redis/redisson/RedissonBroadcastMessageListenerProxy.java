@@ -13,10 +13,10 @@ import org.redisson.api.listener.MessageListener;
  * @author 洛朱
  * @Date 2021-12-17
  */
-public class BroadcastMessageListenerProxy implements MessageListener<BroadcastMessage> {
+public class RedissonBroadcastMessageListenerProxy implements MessageListener<BroadcastMessage> {
     MessageListenerWidget<Object> messageListenerWidget;
 
-    public BroadcastMessageListenerProxy(MessageListenerWidget<Object> listener) {
+    public RedissonBroadcastMessageListenerProxy(MessageListenerWidget<Object> listener) {
         this.messageListenerWidget = listener;
     }
 

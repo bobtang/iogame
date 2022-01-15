@@ -50,7 +50,7 @@ public class TankConfigService {
         configList.add(bulletConfig2);
         configList.add(bulletConfig3);
 
-        tankBulletConfigRes.tankBulletConfigs = (configList);
+        tankBulletConfigRes.tankBulletConfigList = (configList);
 
         for (TankBulletConfig bulletConfig : configList) {
             tankBulletConfigMap.put(bulletConfig.bulletEnum, bulletConfig);

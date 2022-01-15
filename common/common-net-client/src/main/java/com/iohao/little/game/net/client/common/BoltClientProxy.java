@@ -10,13 +10,17 @@ import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.client.BoltClientServer;
 import com.iohao.little.game.net.common.ServerSender;
+import com.iohao.little.game.widget.broadcast.BroadcastCont;
 import com.iohao.little.game.widget.broadcast.BroadcastMessage;
 import com.iohao.little.game.net.message.common.InnerModuleMessage;
 import com.iohao.little.game.widget.broadcast.MessageQueueWidget;
+import com.iohao.little.game.widget.broadcast.internal.ClientBroadcastMessageContext;
 import com.iohao.little.game.widget.config.WidgetComponents;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+
+import java.util.List;
 
 /**
  * 客户端服务器代理, 持有一些属性
@@ -32,6 +36,9 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 public class BoltClientProxy implements ServerContext, ServerSender {
+
+    ClientBroadcastMessageContext broadcastMessageContext = new ClientBroadcastMessageContext(BoltClientProxy.this);
+
     Connection connection;
 
     /**
@@ -75,17 +82,40 @@ public class BoltClientProxy implements ServerContext, ServerSender {
         broadcast(data.getUserId(), data);
     }
 
-    public void broadcast(long userId, ResponseMessage responseMessage) {
-        responseMessage.setUserId(userId);
-
-        // TODO: 2021-12-14 广播
-        String channel = "internal_channel";
+    public void broadcast(ResponseMessage responseMessage, List<Long> userIdList) {
+        // 广播上下文
         BroadcastMessage broadcastMessage = new BroadcastMessage();
-        broadcastMessage.setChannel(channel);
+        broadcastMessage.setChannel(BroadcastCont.defaultChannel);
         broadcastMessage.setResponseMessage(responseMessage);
+        broadcastMessage.setContext(broadcastMessageContext);
+        broadcastMessage.setUserIdList(userIdList);
 
+        // 广播小部件
         MessageQueueWidget messageQueueWidget = widgetComponents.option(MessageQueueWidget.class);
-        messageQueueWidget.publish(channel, broadcastMessage);
+        messageQueueWidget.publish(broadcastMessage);
+    }
+
+    /**
+     * 给单个用户广播
+     *
+     * @param userId          userId -1 给全体广播
+     * @param responseMessage 消息
+     */
+    public void broadcast(long userId, ResponseMessage responseMessage) {
+        if (userId > 0) {
+            responseMessage.setUserId(userId);
+        }
+
+        // 广播上下文
+        BroadcastMessage broadcastMessage = new BroadcastMessage();
+        broadcastMessage.setChannel(BroadcastCont.defaultChannel);
+        broadcastMessage.setResponseMessage(responseMessage);
+        broadcastMessage.setContext(broadcastMessageContext);
+        broadcastMessage.setBroadcastAll(userId == -1);
+
+        // 广播小部件
+        MessageQueueWidget messageQueueWidget = widgetComponents.option(MessageQueueWidget.class);
+        messageQueueWidget.publish(broadcastMessage);
     }
 
     /**

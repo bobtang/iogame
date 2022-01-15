@@ -22,7 +22,7 @@ public class RoomService {
      *     value : room
      * </pre>
      */
-    final Map<String, AbstractRoom> roomMap = new HashMap<>();
+    final Map<Long, AbstractRoom> roomMap = new HashMap<>();
 
     /**
      * 玩家对应的房间 map
@@ -31,14 +31,14 @@ public class RoomService {
      *     value : roomId
      * </pre>
      */
-    final Map<Long, String> userRoomMap = new HashMap<>();
+    final Map<Long, Long> userRoomMap = new HashMap<>();
 
     @SuppressWarnings("unchecked")
     public <T extends AbstractRoom> T getRoomByUserId(long userId) {
         // 通过 userId 得到 roomId
-        String roomId = userRoomMap.get(userId);
+        long roomId = userRoomMap.get(userId);
 
-        if (Objects.isNull(roomId)) {
+        if (roomId == 0) {
             return null;
         }
 
@@ -47,12 +47,12 @@ public class RoomService {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends AbstractRoom> T getRoom(String roomId) {
+    public <T extends AbstractRoom> T getRoom(long roomId) {
         return (T) this.roomMap.get(roomId);
     }
 
     public void addRoom(AbstractRoom room) {
-        String roomId = room.getRoomId();
+        long roomId = room.getRoomId();
         this.roomMap.put(roomId, room);
     }
 

@@ -7,7 +7,7 @@ import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.common.kit.ProtoKit;
 import com.iohao.little.game.net.external.bootstrap.ExternalServerKit;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
-import com.iohao.little.game.net.external.session.UserSessionManager;
+import com.iohao.little.game.net.external.session.UserSession;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ import java.util.Objects;
  */
 @Slf4j
 public class ExternalHandler extends SimpleChannelInboundHandler<ExternalMessage> {
-    UserSessionManager sessionManager = UserSessionManager.me();
+    UserSession sessionManager = UserSession.me();
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ExternalMessage message) {

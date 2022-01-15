@@ -1,6 +1,7 @@
 package com.iohao.little.game.widget.broadcast.redis.redisson;
 
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
+import com.iohao.little.game.widget.broadcast.BroadcastCont;
 import com.iohao.little.game.widget.broadcast.BroadcastMessage;
 import com.iohao.little.game.widget.broadcast.MessageQueueConfigWidget;
 import com.iohao.little.game.widget.broadcast.MessageQueueWidget;
@@ -17,7 +18,7 @@ public class RedissonMessageQueueWidgetProducerTest {
         MessageQueueWidget messageQueueWidget = new RedissonMessageQueueWidget(widgetMessageQueueConfig);
         log.info("MessageQueueProducer - start ok!");
         int i = 0;
-        String channel = "internal_channel";
+        String channel = BroadcastCont.defaultChannel;
         while (true) {
 
             Lion lion = new Lion();

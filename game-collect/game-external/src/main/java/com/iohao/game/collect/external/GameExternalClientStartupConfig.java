@@ -6,20 +6,22 @@ import com.iohao.little.game.action.skeleton.core.BarSkeleton;
 import com.iohao.little.game.net.client.BoltClientServer;
 import com.iohao.little.game.net.client.core.ClientStartupConfig;
 import com.iohao.little.game.net.client.core.RemoteAddress;
+import com.iohao.little.game.net.external.bolt.ExternalBroadcastMessageAsyncUserProcess;
 import com.iohao.little.game.net.external.bootstrap.ExternalServerKit;
 import com.iohao.little.game.net.message.common.ModuleKeyKit;
 import com.iohao.little.game.net.message.common.ModuleMessage;
 import com.iohao.little.game.net.message.common.ModuleType;
+import com.iohao.little.game.widget.config.WidgetComponents;
 
 /**
  * @author 洛朱
  * @date 2022-01-11
  */
-public class ExternalClientStartupConfig implements ClientStartupConfig {
+public class GameExternalClientStartupConfig implements ClientStartupConfig {
     @Override
     public BarSkeleton createBarSkeleton() {
         // 扫描 AppleAction.class 所在包
-        BarSkeleton barSkeleton = GameBarSkeletonConfig.newBarSkeleton(ExternalClientStartupConfig.class);
+        BarSkeleton barSkeleton = GameBarSkeletonConfig.newBarSkeleton(GameExternalClientStartupConfig.class);
         return barSkeleton;
     }
 
@@ -42,6 +44,22 @@ public class ExternalClientStartupConfig implements ClientStartupConfig {
         int port = GameConfig.gatePort;
         String ip = "127.0.0.1";
         return new RemoteAddress(ip, port);
+    }
+
+    @Override
+    public void widgetComponents(WidgetComponents widgetComponents) {
+
+    }
+
+    @Override
+    public void registerUserProcessor(BoltClientServer boltClientServer) {
+        ClientStartupConfig.super.registerUserProcessor(boltClientServer);
+
+        ExternalBroadcastMessageAsyncUserProcess broadcastMessageAsyncUserProcess = new ExternalBroadcastMessageAsyncUserProcess();
+
+        // 注册 广播处理器
+        boltClientServer.getRpcClient().registerUserProcessor(broadcastMessageAsyncUserProcess);
+
     }
 
     @Override

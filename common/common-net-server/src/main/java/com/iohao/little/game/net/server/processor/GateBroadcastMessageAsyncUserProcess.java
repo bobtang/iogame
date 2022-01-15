@@ -2,11 +2,14 @@ package com.iohao.little.game.net.server.processor;
 
 import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
+import com.alipay.remoting.exception.RemotingException;
+import com.alipay.remoting.rpc.RpcServer;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
-import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
+import com.iohao.little.game.net.common.BoltServer;
+import com.iohao.little.game.net.server.GateKit;
+import com.iohao.little.game.net.server.module.ModuleInfoManager;
+import com.iohao.little.game.net.server.module.ModuleInfoProxy;
 import com.iohao.little.game.widget.broadcast.BroadcastMessage;
-import com.iohao.little.game.widget.broadcast.MessageListenerWidget;
-import com.iohao.little.game.widget.broadcast.MessageQueueWidget;
 import com.iohao.little.game.widget.config.WidgetComponents;
 
 /**
@@ -22,14 +25,31 @@ public class GateBroadcastMessageAsyncUserProcess extends AsyncUserProcessor<Bro
 
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, BroadcastMessage broadcastMessage) {
-        // 模块之间的请求处理
-        MessageQueueWidget messageQueueWidget = widgetComponents.option(MessageQueueWidget.class);
+        BoltServer boltServer = GateKit.getBoltServer();
+        RpcServer rpcServer = boltServer.getRpcServer();
 
-        // 逻辑服推送的消息
-        ResponseMessage responseMessage = broadcastMessage.getResponseMessage();
-        String channel = broadcastMessage.getChannel();
-        MessageListenerWidget messageListenerWidget = messageQueueWidget.getByChannel(channel);
-        messageListenerWidget.onMessage(responseMessage, channel, broadcastMessage);
+        // 转发给对外服务器
+        ModuleInfoProxy externalModuleInfo = ModuleInfoManager.me().getExternalModuleInfo();
+        String address = externalModuleInfo.getModuleMessage().getAddress();
+
+        try {
+            rpcServer.oneway(address, broadcastMessage);
+        } catch (RemotingException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+//        externalModuleInfo.invokeSync(null);
+
+//        // 模块之间的请求处理
+//        MessageQueueWidget messageQueueWidget = widgetComponents.option(MessageQueueWidget.class);
+//
+//        // 逻辑服推送的消息
+//        ResponseMessage responseMessage = broadcastMessage.getResponseMessage();
+//        String channel = broadcastMessage.getChannel();
+//
+//        // 根据 channel 得到对应的消息处理
+//        MessageListenerWidget messageListenerWidget = messageQueueWidget.getByChannel(channel);
+//        messageListenerWidget.onMessage(responseMessage, channel, broadcastMessage);
     }
 
     /**

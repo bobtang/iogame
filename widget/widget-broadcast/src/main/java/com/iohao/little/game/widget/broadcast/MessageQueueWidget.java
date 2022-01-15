@@ -10,7 +10,7 @@ import com.iohao.little.game.widget.config.WidgetComponent;
  */
 public interface MessageQueueWidget extends WidgetComponent {
     default void publish(BroadcastMessage message) {
-        this.publish("internal_channel", message);
+        this.publish(BroadcastCont.defaultChannel, message);
     }
 
     /**

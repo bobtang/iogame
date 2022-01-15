@@ -13,15 +13,15 @@ import java.util.TimerTask;
  * @author 洛朱
  * @date 2022-01-12
  */
-public class ExternalBoot {
+public class GameExternalBoot {
     public void init() {
 
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
                 // 启动连接网关服务器
-                ExternalClientStartupConfig externalClientStartupConfig = new ExternalClientStartupConfig();
-                externalClientStartupConfig.startup();
+                GameExternalClientStartupConfig gameExternalClientStartupConfig = new GameExternalClientStartupConfig();
+                gameExternalClientStartupConfig.startup();
                 System.out.println("external 启动连接网关服务器");
             }
         }, 1000);
@@ -45,7 +45,7 @@ public class ExternalBoot {
     }
 
     public static void main(String[] args) {
-        new ExternalBoot().init();
+        new GameExternalBoot().init();
         System.out.println("对外服务器启动 ok!");
     }
 }
