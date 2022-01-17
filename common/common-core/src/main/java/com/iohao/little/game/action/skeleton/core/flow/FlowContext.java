@@ -12,7 +12,9 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * flow 上下文
@@ -46,4 +48,14 @@ public class FlowContext implements AttrDynamic {
     Object[] methodParams;
     /** 业务方法的返回值 */
     Object methodResult;
+
+    @Override
+    public Map<String, Object> getAttr() {
+
+        if (Objects.isNull(attr)) {
+            attr = new HashMap<>();
+        }
+
+        return attr;
+    }
 }

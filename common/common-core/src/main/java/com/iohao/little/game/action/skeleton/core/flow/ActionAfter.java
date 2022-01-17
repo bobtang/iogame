@@ -8,8 +8,6 @@ package com.iohao.little.game.action.skeleton.core.flow;
  *     因为不知道各个NIO框架是如何写出数据到客户端的, 所以把这个问题交给用户自行处理
  * </pre>
  *
- * @param <Request>  客户端请求的request
- * @param <Response> 响应类型
  * @author 洛朱
  * @Date 2021-12-12
  */

@@ -1,7 +1,6 @@
 package com.iohao.little.game.action.skeleton.core;
 
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
-import lombok.Setter;
 
 /**
  * 该handler用于执行 {@link ActionCommand} 对象
@@ -10,9 +9,6 @@ import lombok.Setter;
  * @Date 2021-12-12
  */
 public final class ActionCommandHandler implements Handler {
-
-    @Setter
-    BarSkeleton barSkeleton;
 
     @Override
     public boolean handler(ParamContext paramContext, RequestMessage request, BarSkeleton barSkeleton) {

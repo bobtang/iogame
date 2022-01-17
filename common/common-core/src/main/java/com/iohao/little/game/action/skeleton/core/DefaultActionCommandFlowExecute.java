@@ -4,8 +4,6 @@ import com.iohao.little.game.action.skeleton.core.flow.*;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 
-import java.util.HashMap;
-
 /**
  * 默认的 action 命令流程执行器
  * <pre>
@@ -23,19 +21,18 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
             , final BarSkeleton barSkeleton) {
 
         // flow 上下文
-        FlowContext flowContext = createFlowContext(paramContext, actionCommand, request, barSkeleton);
+        final FlowContext flowContext = createFlowContext(paramContext, actionCommand, request, barSkeleton);
 
-        // 1 ---- ActionController 工厂
-        var factoryBean = barSkeleton.getActionControllerFactoryBean();
-        var controller = factoryBean.getBean(actionCommand);
-        // 业务 actionController
-        flowContext.setActionController(controller);
-
-        // 2 ---- fuck前 在调用控制器对应处理方法前, 执行inout的in.
+        // 1 ---- fuck前 在调用控制器对应处理方法前, 执行inout的in.
         fuckIn(flowContext);
 
         // 在这里有错误码，一般是业务参数验证得到的错误 （既开启了业务框架的验证）
         if (notError(flowContext)) {
+            // 2 ---- ActionController 工厂
+            var factoryBean = barSkeleton.getActionControllerFactoryBean();
+            var controller = factoryBean.getBean(actionCommand);
+            // 业务 actionController
+            flowContext.setActionController(controller);
 
             // 3 ---- fuck中 开始执行控制器方法, 这是真正处理客户端请求的逻辑.
             var actionMethodInvoke = barSkeleton.getActionMethodInvoke();
@@ -45,7 +42,7 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
 
             // 4 ---- wrap result 结果包装器
             var actionMethodResultWrap = barSkeleton.getActionMethodResultWrap();
-            // 响应
+            // 结果包装器
             actionMethodResultWrap.wrap(flowContext);
         }
 
@@ -96,10 +93,6 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
                 .setActionCommand(actionCommand)
                 .setRequest(request)
                 .setResponse(responseMessage);
-
-        if (barSkeleton.isOpenIn() || barSkeleton.isOpenOut()) {
-            flowContext.setAttr(new HashMap<>());
-        }
 
         // 解析参数器
         ActionMethodParamParser paramParser = barSkeleton.getActionMethodParamParser();

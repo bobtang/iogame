@@ -4,6 +4,9 @@ import com.iohao.little.game.action.skeleton.annotation.ActionController;
 
 /**
  * ActionController 工厂
+ * <pre>
+ *     负责创建 用户定义的 Action 业务方法
+ * </pre>
  *
  * @param <T> t
  * @author 洛朱

@@ -1,6 +1,7 @@
 package com.iohao.little.game.action.skeleton.core.flow.interal;
 
 import com.alipay.remoting.AsyncContext;
+import com.iohao.little.game.action.skeleton.core.ActionCommand;
 import com.iohao.little.game.action.skeleton.core.DefaultParamContext;
 import com.iohao.little.game.action.skeleton.core.flow.ActionAfter;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
@@ -17,15 +18,31 @@ import java.util.Objects;
 public class DefaultActionAfter implements ActionAfter {
     @Override
     public void execute(FlowContext flowContext) {
-        final ResponseMessage responseMessage = flowContext.getResponse();
+        final ResponseMessage response = flowContext.getResponse();
 
         DefaultParamContext paramContext = (DefaultParamContext) flowContext.getParamContext();
 
         AsyncContext asyncCtx = paramContext.getAsyncCtx();
 
-        if (Objects.nonNull(asyncCtx)) {
-            // 将数据回传给掉用方
-            asyncCtx.sendResponse(responseMessage);
+        if (Objects.isNull(asyncCtx)) {
+            return;
         }
+
+        // 有错误就响应给掉用方
+        if (response.hasError()) {
+            asyncCtx.sendResponse(response);
+            return;
+        }
+
+        // action 方法返回值是 void 的，不做处理
+        ActionCommand actionCommand = flowContext.getActionCommand();
+        if (actionCommand.getActionMethodReturnInfo().isVoid()) {
+            return;
+        }
+
+        // 将数据回传给掉用方
+        asyncCtx.sendResponse(response);
+
+
     }
 }

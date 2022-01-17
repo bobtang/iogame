@@ -45,7 +45,8 @@ public class BarSkeletonSetting {
     ParseType parseType = ParseType.JAVA;
 
     /**
-     * true : 开启 JSR303、JSR 349、JSR 380 验证
+     * true : 业务参数开启 JSR303、JSR 349、JSR 380 验证规范
+     *
      * <p>
      * 需要在你的项目 maven 中引入
      * <pre>

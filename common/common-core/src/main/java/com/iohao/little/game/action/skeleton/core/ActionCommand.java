@@ -196,7 +196,15 @@ public final class ActionCommand {
             } else {
                 this.actualTypeArgumentClazz = null;
             }
+        }
 
+        /**
+         * 方法返回值类型是否 void
+         *
+         * @return true 是 void
+         */
+        public boolean isVoid() {
+            return Void.TYPE == this.returnTypeClazz;
         }
 
 
