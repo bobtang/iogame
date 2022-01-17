@@ -1,10 +1,5 @@
 package com.iohao.little.game.action.skeleton.core.flow;
 
-import com.iohao.little.game.action.skeleton.core.ActionCommand;
-import com.iohao.little.game.action.skeleton.core.ParamContext;
-import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
-import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
-
 /**
  * ActionAfter 最后的处理
  * <pre>
@@ -18,7 +13,7 @@ import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
  * @author 洛朱
  * @Date 2021-12-12
  */
-public interface ActionAfter<Request extends RequestMessage, Response extends ResponseMessage> {
+public interface ActionAfter {
     /**
      * 最后执行的方法, 一般将发送到客户端的逻辑存放到这里
      * <pre>
@@ -26,10 +21,7 @@ public interface ActionAfter<Request extends RequestMessage, Response extends Re
      *     channelContext.writeAndFlush(msg);
      * </pre>
      *
-     * @param paramContext  参数上下文
-     * @param actionCommand actionCommand
-     * @param request       request
-     * @param response      response
+     * @param flowContext flow 上下文
      */
-    void execute(ParamContext paramContext, ActionCommand actionCommand, Request request, Response response);
+    void execute(FlowContext flowContext);
 }

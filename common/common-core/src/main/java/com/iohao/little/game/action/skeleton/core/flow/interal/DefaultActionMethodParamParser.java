@@ -4,7 +4,11 @@ import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
 import com.iohao.little.game.action.skeleton.core.*;
 import com.iohao.little.game.action.skeleton.core.flow.ActionMethodParamParser;
+import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
+import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
+
+import java.util.Objects;
 
 /**
  * action 方法参数解析器 actionCommand
@@ -16,14 +20,18 @@ public class DefaultActionMethodParamParser implements ActionMethodParamParser {
     private static final Object[] METHOD_PARAMS = new Object[0];
 
     @Override
-    public Object[] listParam(final ParamContext paramContext1, final ActionCommand actionCommand, final RequestMessage request) {
+    public Object[] listParam(final FlowContext flowContext) {
 
+        ActionCommand actionCommand = flowContext.getActionCommand();
         if (!actionCommand.isHasMethodParam()) {
             return METHOD_PARAMS;
         }
 
-        final var paramContext = (DefaultParamContext) paramContext1;
+        RequestMessage request = flowContext.getRequest();
+        ResponseMessage response = flowContext.getResponse();
+
         final var paramInfos = actionCommand.getParamInfos();
+        final var paramContext = (DefaultParamContext) flowContext.getParamContext();
 
         final var len = paramInfos.length;
         final var pars = new Object[len];
@@ -58,7 +66,15 @@ public class DefaultActionMethodParamParser implements ActionMethodParamParser {
                 continue;
             }
 
+            if (Objects.isNull(request.getData())) {
+                continue;
+            }
+
             pars[i] = request.getData();
+            if (paramInfo.isValidator()) {
+                String validateMsg = ValidatorKit.validate(pars[i]);
+                response.setValidatorMsg(validateMsg);
+            }
         }
 
         return pars;

@@ -43,4 +43,26 @@ public class BarSkeletonSetting {
     boolean openOut = true;
     /** 解析类型 */
     ParseType parseType = ParseType.JAVA;
+
+    /**
+     * true : 开启 JSR303、JSR 349、JSR 380 验证
+     * <p>
+     * 需要在你的项目 maven 中引入
+     * <pre>
+     *         &lt;!-- EL实现。在Java SE环境中，您必须将实现作为依赖项添加到POM文件中-->
+     *         &lt;dependency>
+     *             &lt;groupId>org.glassfish&lt;/groupId>
+     *             &lt;artifactId>jakarta.el&lt;/artifactId>
+     *             &lt;version>4.0.1&lt;/version>
+     *         &lt;/dependency>
+     *
+     *         &lt;!-- 验证器Maven依赖项 -->
+     *         &lt;dependency>
+     *             &lt;groupId>jakarta.validation&lt;/groupId>
+     *             &lt;artifactId>jakarta.validation-api&lt;/artifactId>
+     *             &lt;version>3.0.0&lt;/version>
+     *         &lt;/dependency>
+     * </pre>
+     */
+    boolean validator = false;
 }

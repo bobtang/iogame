@@ -3,7 +3,6 @@ package com.iohao.little.game.action.skeleton.core;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.iohao.little.game.action.skeleton.core.flow.ActionMethodInOut;
-import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import lombok.experimental.UtilityClass;
 import org.fusesource.jansi.Ansi;
 
@@ -33,7 +32,7 @@ public class PrintActionKit {
         }
     }
 
-    public void printHandler(List<Handler<RequestMessage>> handlers) {
+    public void printHandler(List<Handler> handlers) {
         String iohaoTitle = "@|CYAN ======================== 业务框架 iohao ========================= |@";
         System.out.println(Ansi.ansi().eraseScreen().render(iohaoTitle));
         String colorStr = "@|BLACK BLACK|@ @|RED RED|@ @|GREEN GREEN|@ @|YELLOW YELLOW|@ @|BLUE BLUE|@ @|MAGENTA MAGENTA|@ @|CYAN CYAN|@ @|WHITE WHITE|@ @|DEFAULT DEFAULT|@";
@@ -42,7 +41,7 @@ public class PrintActionKit {
         String title = "@|CYAN ======================== Handler ========================= |@";
         System.out.println(Ansi.ansi().eraseScreen().render(title));
         System.out.println("如果需要关闭日志, 查看 BarSkeletonBuilder#setting#printHandler");
-        for (Handler<RequestMessage> handler : handlers) {
+        for (Handler handler : handlers) {
             String info = String.format("@|BLUE %s |@", handler.getClass()
             );
             System.out.println(Ansi.ansi().eraseScreen().render(info));

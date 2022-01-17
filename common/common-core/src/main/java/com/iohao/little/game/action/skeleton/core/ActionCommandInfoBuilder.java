@@ -29,10 +29,10 @@ public final class ActionCommandInfoBuilder {
     @Getter
     private final ConcurrentHashMap<Integer, Map<Integer, ActionCommand>> map = new ConcurrentHashMap<>();
 
-    private final BarSkeletonSetting barSkeletonSetting;
+    private final BarSkeletonSetting setting;
 
-    ActionCommandInfoBuilder(BarSkeletonSetting barSkeletonSetting) {
-        this.barSkeletonSetting = barSkeletonSetting;
+    ActionCommandInfoBuilder(BarSkeletonSetting setting) {
+        this.setting = setting;
     }
 
     private Map<Integer, ActionCommand> getSubCmdMap(int cmd) {
@@ -102,6 +102,9 @@ public final class ActionCommandInfoBuilder {
                 // 方法参数信息
                 paramInfo(method, builder);
 
+                // JSR
+                ValidatorKit.buildValidator(this.setting, builder);
+
                 // 检测路由是否重复
                 checkExistSubCmd(controllerClazz, subCmd, subActionMap);
 
@@ -109,7 +112,7 @@ public final class ActionCommandInfoBuilder {
                 路由key，根据这个路由可以找到对应的 command（命令对象）
                 将映射类的方法，保存在 command 中。每个command封装成一个命令对象。
                  */
-                var command = builder.build(this.barSkeletonSetting);
+                var command = builder.build(this.setting);
 
                 // 子路由映射
                 subActionMap.put(subCmd, command);
@@ -141,14 +144,13 @@ public final class ActionCommandInfoBuilder {
 
             // 方法的参数对象
             Parameter p = parameters[i];
-            // 方法的参数类型
-            Class<?> type = p.getType();
-            // 方法名
-            name = p.getName();
 
+            // 方法的参数下标
             paramInfo.index = i;
-            paramInfo.name = name;
-            paramInfo.paramClazz = type;
+            // 方法的参数名
+            paramInfo.name = p.getName();
+            // 方法的参数类型 class
+            paramInfo.paramClazz = p.getType();
 
         }
     }

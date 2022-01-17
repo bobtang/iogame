@@ -4,10 +4,15 @@ import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
+import com.iohao.little.game.net.external.bootstrap.ExternalCont;
+import com.iohao.little.game.net.external.bootstrap.codec.ExternalEncoder;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import com.iohao.little.game.net.external.session.UserSession;
 import com.iohao.little.game.widget.broadcast.BroadcastMessage;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
@@ -23,18 +28,18 @@ public class ExternalBroadcastMessageAsyncUserProcess extends AsyncUserProcessor
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, BroadcastMessage message) {
 
-        UserSession session = UserSession.me();
         ExternalMessage externalMessage = convert(message.getResponseMessage());
 
         // 推送消息到真实用户
         if (message.isBroadcastAll()) {
             // 给全体推送
-            session.broadcast(externalMessage);
+            UserSession.me().broadcast(externalMessage);
             return;
         }
 
+        // 给用户列表推送
         if (Objects.nonNull(message.getUserIdList())) {
-            // 给用户列表推送
+
             for (Long userId : message.getUserIdList()) {
                 writeAndFlush(userId, externalMessage);
             }
@@ -47,7 +52,7 @@ public class ExternalBroadcastMessageAsyncUserProcess extends AsyncUserProcessor
         writeAndFlush(userId, externalMessage);
     }
 
-    private void writeAndFlush(long userId, ExternalMessage externalMessage) {
+    private void writeAndFlush(long userId, ExternalMessage message) {
         UserSession session = UserSession.me();
         Channel channel = session.getChannel(userId);
 
@@ -57,10 +62,17 @@ public class ExternalBroadcastMessageAsyncUserProcess extends AsyncUserProcessor
             return;
         }
 
-        channel.writeAndFlush(externalMessage);
+        int headLen = ExternalCont.HEADER_LEN + message.getDataLength();
+        ByteBuf byteBuf = Unpooled.buffer(headLen);
+        ExternalEncoder.encode(message, byteBuf);
+
+        BinaryWebSocketFrame binaryWebSocketFrame = new BinaryWebSocketFrame(byteBuf);
+
+        channel.writeAndFlush(binaryWebSocketFrame);
     }
 
-    public ExternalMessage convert(ResponseMessage responseMessage) {
+    private ExternalMessage convert(ResponseMessage responseMessage) {
+
         ExternalMessage externalMessage = new ExternalMessage();
         externalMessage.setCmdCode((short) 1);
         externalMessage.setCmdMerge(responseMessage.getCmdMerge());

@@ -8,7 +8,7 @@ import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
  * @author 洛朱
  * @Date 2021-12-20
  */
-public interface Handler<Request extends RequestMessage> {
+public interface Handler {
     /**
      * 处理一个action请求
      *
@@ -17,5 +17,5 @@ public interface Handler<Request extends RequestMessage> {
      * @param barSkeleton  骨架
      * @return 如果返回 false 就不交给下一个链进行处理. 全剧终了.
      */
-    boolean handler(ParamContext paramContext, Request request, BarSkeleton barSkeleton);
+    boolean handler(ParamContext paramContext, RequestMessage request, BarSkeleton barSkeleton);
 }

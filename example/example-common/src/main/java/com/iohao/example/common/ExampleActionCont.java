@@ -26,6 +26,9 @@ public interface ExampleActionCont {
 
         int name = 0;
         int age = 1;
+        /** jsr 303 测试 */
+        /** jsr 303 测试 */
+        int validate = 2;
     }
 
     interface BookModule extends TheInfo {

@@ -9,7 +9,7 @@ import lombok.Setter;
  * @author 洛朱
  * @Date 2021-12-12
  */
-public final class ActionCommandHandler implements Handler<RequestMessage> {
+public final class ActionCommandHandler implements Handler {
 
     @Setter
     BarSkeleton barSkeleton;

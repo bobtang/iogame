@@ -7,7 +7,7 @@ import com.iohao.little.game.action.skeleton.core.ActionCommand;
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.action.skeleton.core.ServerContext;
 import com.iohao.little.game.action.skeleton.core.flow.ActionMethodInOut;
-import com.iohao.little.game.action.skeleton.core.flow.InOutContext;
+import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 
@@ -52,14 +52,35 @@ public class DebugInOut implements ActionMethodInOut {
     String timeKey = "ExecuteTimeInOutStartTime";
 
     @Override
-    public void fuckIn(InOutContext inOutContext) {
-        inOutContext.put(timeKey, System.currentTimeMillis());
+    public void fuckIn(FlowContext flowContext) {
+        flowContext.setAttr(timeKey, System.currentTimeMillis());
     }
 
-    @Override
-    public void fuckOut(InOutContext inOutContext) {
+    private void printValidate(FlowContext flowContext, Map<String, Object> paramMap) {
 
-        long ms = System.currentTimeMillis() - inOutContext.getLong(timeKey);
+        ResponseMessage responseMessage = flowContext.getResponse();
+        paramMap.put("errorCode", responseMessage.getErrorCode());
+        paramMap.put("validatorMsg", responseMessage.getValidatorMsg());
+
+        String template = """
+                ┏━━不符合验证━━━ Debug [{className}.java] ━━━ [.({className}.java:1).{actionMethodName}] ━━━ {cmdInfo}
+                ┣ 参数: {paramName} : {paramData}
+                ┣ 错误码: {errorCode}
+                ┣ 验证信息: {validatorMsg}
+                ┣ 时间: {time} ms (业务方法总耗时)
+                ┗━━━━━ Debug [{className}.java] ━━━
+                """;
+        String message = StrUtil.format(template, paramMap);
+        System.out.println(message);
+    }
+
+    private void printNormal(FlowContext flowContext, Map<String, Object> paramMap) {
+        methodResponseData(flowContext, paramMap);
+
+        ActionCommand actionCommand = flowContext.getActionCommand();
+        if (actionCommand.getActionMethodReturnInfo().getReturnTypeClazz() == Void.TYPE) {
+            paramMap.put("returnData", "void");
+        }
 
         String template = """
                 ┏━━━━━ Debug [{className}.java] ━━━ [.({className}.java:1).{actionMethodName}] ━━━ {cmdInfo}
@@ -68,36 +89,44 @@ public class DebugInOut implements ActionMethodInOut {
                 ┣ 时间: {time} ms (业务方法总耗时)
                 ┗━━━━━ Debug [{className}.java] ━━━
                 """;
+        String message = StrUtil.format(template, paramMap);
+        System.out.println(message);
+    }
 
-        ActionCommand actionCommand = inOutContext.getActionCommand();
+    @Override
+    public void fuckOut(FlowContext flowContext) {
+
+        long ms = System.currentTimeMillis() - flowContext.getAttrLong(timeKey);
+
+        ActionCommand actionCommand = flowContext.getActionCommand();
         Class<?> cc = actionCommand.getActionControllerClazz();
 
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("className", cc.getSimpleName());
         paramMap.put("actionMethodName", actionCommand.getActionMethodName());
         paramMap.put("time", ms);
+        // 路由信息
+        CmdInfo cmdInfo = flowContext.getRequest().getCmdInfo();
+        paramMap.put("cmdInfo", cmdInfo);
 
         paramMap.put("paramName", "");
         paramMap.put("paramData", "");
         paramMap.put("returnData", "");
 
-        methodResponseData(inOutContext, paramMap);
-        methodRequestParam(inOutContext, paramMap);
+        methodRequestParam(flowContext, paramMap);
 
-        if (actionCommand.getActionMethodReturnInfo().getReturnTypeClazz() == Void.TYPE) {
-            paramMap.put("returnData", "void");
+        ResponseMessage responseMessage = flowContext.getResponse();
+
+        if (responseMessage.hasError()) {
+            this.printValidate(flowContext, paramMap);
+        } else {
+            this.printNormal(flowContext, paramMap);
         }
 
-        // 路由信息
-        CmdInfo cmdInfo = inOutContext.getRequestMessage().getCmdInfo();
-        paramMap.put("cmdInfo", cmdInfo);
-
-        String message = StrUtil.format(template, paramMap);
-        System.out.println(message);
     }
 
-    private void methodResponseData(InOutContext inOutContext, Map<String, Object> paramMap) {
-        ResponseMessage responseMessage = inOutContext.getResponseMessage();
+    private void methodResponseData(FlowContext flowContext, Map<String, Object> paramMap) {
+        ResponseMessage responseMessage = flowContext.getResponse();
         Object responseMessageData = responseMessage.getData();
         if (Objects.isNull(responseMessageData)) {
             responseMessageData = "null";
@@ -107,13 +136,13 @@ public class DebugInOut implements ActionMethodInOut {
 
     }
 
-    private void methodRequestParam(InOutContext inOutContext, Map<String, Object> paramMap) {
-        ActionCommand actionCommand = inOutContext.getActionCommand();
+    private void methodRequestParam(FlowContext flowContext, Map<String, Object> paramMap) {
+        ActionCommand actionCommand = flowContext.getActionCommand();
         if (!actionCommand.isHasMethodParam()) {
             return;
         }
 
-        RequestMessage requestMessage = inOutContext.getRequestMessage();
+        RequestMessage requestMessage = flowContext.getRequest();
         final var paramInfos = actionCommand.getParamInfos();
 
         for (ActionCommand.ParamInfo paramInfo : paramInfos) {

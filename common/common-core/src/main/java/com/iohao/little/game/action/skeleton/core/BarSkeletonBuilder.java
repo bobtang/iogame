@@ -2,13 +2,13 @@ package com.iohao.little.game.action.skeleton.core;
 
 import com.iohao.little.game.action.skeleton.core.flow.*;
 import com.iohao.little.game.action.skeleton.core.flow.interal.*;
-import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
-import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * 骨架构建器<BR>
@@ -24,7 +24,7 @@ public final class BarSkeletonBuilder {
     final BarSkeletonSetting setting = new BarSkeletonSetting();
 
     /** handler 列表 */
-    final List<Handler<RequestMessage>> handlers = new LinkedList<>();
+    final List<Handler> handlers = new LinkedList<>();
     /** inout 列表 */
     final List<ActionMethodInOut> inOuts = new LinkedList<>();
     /** action class */
@@ -35,15 +35,18 @@ public final class BarSkeletonBuilder {
     /** action工厂 */
     ActionControllerFactoryBean<Object> actionControllerFactoryBean = new DefaultActionControllerFactoryBean<>();
     /** 框架执行完后, 最后需要做的事. 一般用于write数据到掉用端端 */
-    ActionAfter<RequestMessage, ResponseMessage> actionAfter = new DefaultActionAfter();
+    ActionAfter actionAfter = new DefaultActionAfter();
     /** 结果包装器 */
-    ActionMethodResultWrap<RequestMessage, ResponseMessage> actionMethodResultWrap = new DefaultActionMethodResultWrap();
+    ActionMethodResultWrap actionMethodResultWrap = new DefaultActionMethodResultWrap();
     /** 异常处理 */
     ActionMethodExceptionProcess actionMethodExceptionProcess = new DefaultActionMethodExceptionProcess();
     /** InvokeActionMethod */
     ActionMethodInvoke actionMethodInvoke = new DefaultActionMethodInvoke();
     /** ActionMethod 方法参数解析器 */
     ActionMethodParamParser actionMethodParamParser = new DefaultActionMethodParamParser();
+
+    /** 响应对象的创建 */
+    ResponseMessageCreate responseMessageCreate = new DefaultResponseMessageCreate();
 
     BarSkeletonBuilder() {
     }
@@ -79,7 +82,10 @@ public final class BarSkeletonBuilder {
                 // ActionMethod 结果包装器
                 .setActionMethodResultWrap(this.actionMethodResultWrap)
                 // action after 对action最后的处理; 一般用于把结果 write 到掉用端
-                .setActionAfter(this.actionAfter);
+                .setActionAfter(this.actionAfter)
+
+                // 响应对象的创建
+                .setResponseMessageCreate(this.responseMessageCreate);
 
         // handler
         extractedHandler(barSkeleton);

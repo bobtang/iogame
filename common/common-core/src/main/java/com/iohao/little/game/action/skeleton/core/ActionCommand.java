@@ -41,64 +41,36 @@ import java.util.List;
  */
 @Getter
 public final class ActionCommand {
-    /**
-     * cmdInfo
-     */
+    /** cmdInfo */
     final CmdInfo cmdInfo;
-    /**
-     * 构造方法器
-     */
+    /** 构造方法器 */
     final ConstructorAccess<?> actionControllerConstructorAccess;
-    /**
-     * 一个single控制器对象
-     */
+    /** 一个single控制器对象 */
     final Object actionController;
-    /**
-     * 方法所在 class
-     */
+    /** 方法所在 class */
     final Class<?> actionControllerClazz;
-    /**
-     * 默认tcp对象是single. 如果设置为false, 每次创建新的tcp对象. 默认:true
-     */
+    /** 默认tcp对象是single. 如果设置为false, 每次创建新的tcp对象. 默认:true */
     final boolean createSingleActionCommandController;
 
-    /**
-     * 方法对象
-     */
+    /** 方法对象 */
     final Method actionMethod;
-    /**
-     * 方法名
-     */
+    /** 方法名 */
     final String actionMethodName;
-    /**
-     * 方法下标
-     */
+    /** 方法下标 */
     final int actionMethodIndex;
-    /**
-     * 方法访问器
-     */
+    /** 方法访问器 */
     final MethodAccess actionMethodAccess;
 
-    /**
-     * 方法参数信息 数组
-     */
+    /** 方法参数信息 数组 */
     final ParamInfo[] paramInfos;
-    /**
-     * 方法是否有参数: true 有参数
-     */
+    /** 方法是否有参数: true 有参数 */
     final boolean hasMethodParam;
-    /**
-     * 方法是否有异常抛出, 一般是错误码: true 有异常
-     */
-    final boolean hasThrowException;
-    /**
-     * 返回类型
-     */
+    /** 方法是否有异常抛出, 一般是错误码: true 有异常 */
+    final boolean throwException;
+    /** 返回类型 */
     final ActionMethodReturnInfo actionMethodReturnInfo;
 
-    /**
-     * 打印信息
-     */
+    /** 打印信息 */
     final String toStringInfo;
 
     private ActionCommand(Builder builder, BarSkeletonSetting barSkeletonSetting) {
@@ -120,7 +92,7 @@ public final class ActionCommand {
         // -------------- 控制器-方法参数相关 --------------
         this.paramInfos = builder.paramInfos;
         this.hasMethodParam = builder.paramInfos != null;
-        this.hasThrowException = builder.actionMethod.getExceptionTypes().length != 0;
+        this.throwException = builder.actionMethod.getExceptionTypes().length != 0;
         this.actionMethodReturnInfo = new ActionMethodReturnInfo(builder);
 
         this.toStringInfo = info();
@@ -136,7 +108,7 @@ public final class ActionCommand {
                 , Arrays.deepToString(paramInfos)
                 , actionControllerClazz
                 , actionMethodName
-                , hasThrowException
+                , throwException
                 , hasMethodParam
         );
     }
@@ -149,45 +121,25 @@ public final class ActionCommand {
     @Setter
     @FieldDefaults(level = AccessLevel.PUBLIC)
     static final class Builder {
-        /**
-         * 目标路由
-         */
+        /** 目标路由 */
         int cmd;
-        /**
-         * 目标子路由
-         */
+        /** 目标子路由 */
         int subCmd;
-        /**
-         * 方法访问器
-         */
+        /** 方法访问器 */
         MethodAccess actionMethodAccess;
-        /**
-         * 类访问器
-         */
+        /** 类访问器 */
         ConstructorAccess<?> actionControllerConstructorAccess;
-        /**
-         * 方法名
-         */
+        /** 方法名 */
         String actionMethodName;
-        /**
-         * tcp controller类
-         */
+        /** tcp controller类 */
         Class<?> actionControllerClazz;
-        /**
-         * 方法对象
-         */
+        /** 方法对象 */
         Method actionMethod;
-        /**
-         * 参数列表信息
-         */
+        /** 参数列表信息 */
         ActionCommand.ParamInfo[] paramInfos;
-        /**
-         * 方法下标 (配合 MethodAccess 使用)
-         */
+        /** 方法下标 (配合 MethodAccess 使用) */
         int actionMethodIndex;
-        /**
-         * 返回值信息
-         */
+        /** 返回值信息 */
         Class<?> returnTypeClazz;
 
         ActionCommand build(BarSkeletonSetting barSkeletonSetting) {
@@ -200,18 +152,14 @@ public final class ActionCommand {
      */
     @Getter
     public static final class ParamInfo {
-        /**
-         * 参数名
-         */
+        /** 参数名 */
         String name;
-        /**
-         * 参数下标
-         */
+        /** 参数下标 */
         int index;
-        /**
-         * 参数类型
-         */
+        /** 参数类型 */
         Class<?> paramClazz;
+        /** true : 参数开启 JSR 303、JSR 349、JSR 380 验证规范 */
+        boolean validator;
 
         ParamInfo() {
         }
@@ -233,13 +181,9 @@ public final class ActionCommand {
     @Getter
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static final class ActionMethodReturnInfo {
-        /**
-         * 返回类型
-         */
+        /** 返回类型 */
         final Class<?> returnTypeClazz;
-        /**
-         * list 泛型的类型
-         */
+        /** list 泛型的类型 */
         final Class<?> actualTypeArgumentClazz;
 
         private ActionMethodReturnInfo(ActionCommand.Builder builder) {

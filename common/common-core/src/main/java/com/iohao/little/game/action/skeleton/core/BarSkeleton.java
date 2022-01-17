@@ -2,12 +2,12 @@ package com.iohao.little.game.action.skeleton.core;
 
 import com.iohao.little.game.action.skeleton.core.flow.*;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
-import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -31,7 +31,7 @@ public class BarSkeleton {
     /** ActionCommandManager */
     final ActionCommandManager actionCommandManager = new ActionCommandManager();
     /** handlerList */
-    final List<Handler<RequestMessage>> handlers = new ArrayList<>();
+    final List<Handler> handlers = new ArrayList<>();
     /** inoutList */
     final List<ActionMethodInOut> inOuts = new ArrayList<>();
 
@@ -51,9 +51,12 @@ public class BarSkeleton {
     /** 异常处理 */
     ActionMethodExceptionProcess actionMethodExceptionProcess;
     /** 结果包装器 */
-    ActionMethodResultWrap<RequestMessage, ResponseMessage> actionMethodResultWrap;
+    ActionMethodResultWrap actionMethodResultWrap;
     /** 框架执行完后, 最后需要做的事. 一般用于write数据到客户端 */
-    ActionAfter<RequestMessage, ResponseMessage> actionAfter;
+    ActionAfter actionAfter;
+
+    /** 响应对象的创建 */
+    ResponseMessageCreate responseMessageCreate;
 
     /**
      * true 只有一个 handler
@@ -61,7 +64,7 @@ public class BarSkeleton {
      * @see Handler
      */
     boolean singleHandler;
-    Handler<RequestMessage> handler;
+    Handler handler;
 
     BarSkeleton() {
 
@@ -75,7 +78,7 @@ public class BarSkeleton {
         if (singleHandler) {
             handler.handler(paramContext, request, this);
         } else {
-            for (Handler<RequestMessage> handler : handlers) {
+            for (Handler handler : handlers) {
                 if (!handler.handler(paramContext, request, this)) {
                     return;
                 }

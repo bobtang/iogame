@@ -1,6 +1,7 @@
 package com.iohao.little.game.net.gateway.controller;
 
 import com.alipay.remoting.exception.RemotingException;
+import com.iohao.example.common.AppleValidPOJO;
 import com.iohao.example.common.ExampleActionCont;
 import com.iohao.example.common.Apple;
 import com.iohao.example.common.Book;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Objects;
+
 /**
  * @author 洛朱
  * @date 2021-12-26
@@ -22,6 +25,26 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 public class ExampleGatewayController {
+
+    /**
+     * 请求 A 服务器的方法 测试 JSR 303
+     */
+    @GetMapping("/validate/{name}-{age}")
+    public String validate(@PathVariable String name, @PathVariable int age) {
+        log.info("apple: {}", name);
+
+        CmdInfoFlyweightFactory factory = CmdInfoFlyweightFactory.me();
+        CmdInfo cmdInfo = factory.getCmdInfo(ExampleActionCont.AppleModule.cmd, ExampleActionCont.AppleModule.validate);
+
+        AppleValidPOJO validPOJO = new AppleValidPOJO();
+        validPOJO.setEmail(name);
+        validPOJO.setAge(age);
+        log.info("pojo: {}", validPOJO);
+
+       Object obj =  invokeSync(cmdInfo, validPOJO);
+
+        return obj.toString();
+    }
 
     /**
      * 请求 A 服务器的方法
@@ -110,7 +133,8 @@ public class ExampleGatewayController {
         RequestMessage requestMessage = new RequestMessage();
         requestMessage.setCmdInfo(cmdInfo);
         requestMessage.setData(data);
-        return this.invokeSync(requestMessage);
+        Object obj = this.invokeSync(requestMessage);
+        return obj;
     }
 
     private Object invokeSync(RequestMessage requestMessage) {
@@ -118,10 +142,15 @@ public class ExampleGatewayController {
         ModuleInfoProxy moduleInfo = ModuleInfoManager.me().getModuleInfo(cmdInfo);
 
         try {
-            ResponseMessage responseCommand = (ResponseMessage) moduleInfo.invokeSync(requestMessage);
-            Object invokeData = responseCommand.getData();
+            ResponseMessage responseMessage = (ResponseMessage) moduleInfo.invokeSync(requestMessage);
+            Object invokeData = responseMessage.getData();
             log.info("invokeData: {}", invokeData);
-            return invokeData.toString();
+            if (Objects.isNull(invokeData)) {
+                return responseMessage;
+            } else {
+                return invokeData.toString();
+            }
+
         } catch (RemotingException | InterruptedException e) {
             e.printStackTrace();
         }

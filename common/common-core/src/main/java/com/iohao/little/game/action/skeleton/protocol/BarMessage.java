@@ -1,5 +1,6 @@
 package com.iohao.little.game.action.skeleton.protocol;
 
+import com.iohao.little.game.action.skeleton.core.BarErrorCode;
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.action.skeleton.core.CmdInfoFlyweightFactory;
 import com.iohao.little.game.action.skeleton.core.CmdKit;
@@ -9,6 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -22,6 +24,8 @@ import java.io.Serializable;
 @Setter
 @FieldDefaults(level = AccessLevel.PROTECTED)
 public abstract class BarMessage implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 562068269463876111L;
     /** 目标路由 */
     int cmd;
     /** 目标子路由 */
@@ -35,10 +39,11 @@ public abstract class BarMessage implements Serializable {
      * </pre>
      */
     int cmdMerge;
-    /**
-     * 响应错误码
-     */
+
+    /** 响应错误码 */
     int errorCode;
+    /** JSR303、JSR 349 验证信息 */
+    String validatorMsg;
 
     /** userId */
     long userId;
@@ -66,5 +71,29 @@ public abstract class BarMessage implements Serializable {
         this.cmdMerge = cmdMerge;
         this.cmd = CmdKit.getCmd(cmdMerge);
         this.subCmd = CmdKit.getSubCmd(cmdMerge);
+    }
+
+    /**
+     * 设置验证的错误信息
+     *
+     * @param validatorMsg 错误信息
+     */
+    public void setValidatorMsg(String validatorMsg) {
+        if (validatorMsg != null) {
+            this.validatorMsg = validatorMsg;
+            this.errorCode = BarErrorCode.validateErrCode;
+        }
+    }
+
+    /**
+     * 是否有错误
+     * <pre>
+     *     this.errorCode != 0 表示有错误
+     * </pre>
+     *
+     * @return true 有错误码
+     */
+    public boolean hasError() {
+        return this.errorCode != 0;
     }
 }

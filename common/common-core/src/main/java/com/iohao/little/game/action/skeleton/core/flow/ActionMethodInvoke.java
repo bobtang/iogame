@@ -1,10 +1,5 @@
 package com.iohao.little.game.action.skeleton.core.flow;
 
-import com.iohao.little.game.action.skeleton.core.ActionCommand;
-import com.iohao.little.game.action.skeleton.core.BarSkeleton;
-import com.iohao.little.game.action.skeleton.core.ParamContext;
-import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
-
 /**
  * ActionMethod Invoke
  * <pre>
@@ -23,19 +18,9 @@ public interface ActionMethodInvoke {
      *     只要有这两个注解的，就是业务类
      * </pre>
      *
-     * @param paramContext  参数上下方
-     * @param actionCommand actionCommand
-     * @param controller    actionCommandController
-     * @param request       请求参数
-     * @param barSkeleton   业务框架
-     * @param pars          方法参数列表
+     * @param flowContext flow 上下文
      * @return 返回值
      */
-    Object invoke(final ParamContext paramContext
-            , final ActionCommand actionCommand
-            , final Object controller
-            , final RequestMessage request
-            , final BarSkeleton barSkeleton
-            , final Object[] pars);
+    Object invoke(FlowContext flowContext);
 
 }

@@ -28,9 +28,9 @@ public interface ActionMethodInOut {
      * 建议做一些时间记录等非耗时运算
      * </pre>
      *
-     * @param inOutContext inout 上下文
+     * @param flowContext inout 上下文
      */
-    void fuckIn(InOutContext inOutContext);
+    void fuckIn(FlowContext flowContext);
 
     /**
      * fuck后
@@ -38,8 +38,8 @@ public interface ActionMethodInOut {
      * 当执行这个方法时, 已经把响应数据发送到客户端了
      * </pre>
      *
-     * @param inOutContext inout 上下文
+     * @param flowContext inout 上下文
      */
-    void fuckOut(InOutContext inOutContext);
+    void fuckOut(FlowContext flowContext);
 
 }

@@ -82,7 +82,7 @@
         <!--  bolt https://mvnrepository.com/artifact/com.alipay.sofa/bolt  -->
         <bolt.version>1.6.4</bolt.version>
         <!-- pb 数据描述语言 : https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
-        <protobuf-java.version>3.19.2</protobuf-java.version>
+        <protobuf-java.version>3.19.3</protobuf-java.version>
         <!-- pb 格式化 https://www.oschina.net/p/protobuf-java-format -->
         <protobuf-java-format.version>1.4</protobuf-java-format.version>
         <!-- hessian 格式化 https://mvnrepository.com/artifact/com.caucho/hessian -->
@@ -95,7 +95,7 @@
         <!-- JCTools是一款对jdk并发数据结构进行增强的并发工具 see http://jctools.github.io/JCTools/ https://mvnrepository.com/artifact/org.jctools/jctools-core -->
         <jctools-core.version>3.3.0</jctools-core.version>
         <!-- 新一代 Java 模板引擎 see http://ibeetl.com/ https://mvnrepository.com/artifact/com.ibeetl/beetl -->
-        <beetl.version>3.9.0.RELEASE</beetl.version>
+        <beetl.version>3.9.3.RELEASE</beetl.version>
         <!-- lombok 消除冗长的 Java 代码 https://www.oschina.net/p/lombok https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <lombok.version>1.18.22</lombok.version>
 
@@ -109,8 +109,6 @@
         <commons-pool.version>2.11.1</commons-pool.version>
         <!--  JSR-107 高性能缓存库 https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine -->
         <caffeine.version>3.0.5</caffeine.version>
-        <!--  Java 实体映射工具 https://mvnrepository.com/artifact/org.mapstruct/mapstruct  -->
-        <mapstruct.version>1.4.2.Final</mapstruct.version>
         <!--  reflectasm 高性能的反射处理 https://www.oschina.net/p/reflectasm https://mvnrepository.com/artifact/com.esotericsoftware/reflectasm  -->
         <reflectasm.version>1.11.9</reflectasm.version>
         <!-- jprotobuf是针对Java程序开发一套简易类库，目的是简化java语言对protobuf类库的使用 https://github.com/jhunters/jprotobuf/ https://mvnrepository.com/artifact/com.baidu/jprotobuf -->
@@ -121,9 +119,15 @@
         <cache2k.version>1.2.4.Final</cache2k.version>
         <!--  disruptor https://mvnrepository.com/artifact/com.lmax/disruptor -->
         <disruptor.version>3.4.4</disruptor.version>
-        <!-- bean 验证框架 https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+
+        <!-- JSR-303、JSR 349 bean 验证框架 https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
         <hibernate-validator.version>7.0.2.Final</hibernate-validator.version>
-        <!-- 实体映射工具 https://mvnrepository.com/artifact/org.mapstruct/mapstruct https://mapstruct.org/documentation/reference-guide/ -->
+        <!-- JSR-303、JSR 349 https://mvnrepository.com/artifact/jakarta.validation/jakarta.validation-api -->
+        <jakarta.validation-api.version>3.0.1</jakarta.validation-api.version>
+        <!-- JSR-303、JSR 349 https://mvnrepository.com/artifact/org.glassfish/jakarta.el -->
+        <jakarta.el.version>4.0.2</jakarta.el.version>
+
+        <!-- Java 实体映射工具 https://mvnrepository.com/artifact/org.mapstruct/mapstruct https://mapstruct.org/documentation/reference-guide/ -->
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 
         <!-- temp spring boot -->
@@ -260,29 +264,6 @@
                 </configuration>
             </plugin>
 
-            <!--            &lt;!&ndash;-->
-            <!--            mvn jprotobuf:precompile-->
-            <!--            or-->
-            <!--            mvn package-->
-            <!--            &ndash;&gt;-->
-            <!--            <plugin>-->
-            <!--                <groupId>com.baidu</groupId>-->
-            <!--                <artifactId>jprotobuf-precompile-plugin</artifactId>-->
-            <!--                <version>2.2.6</version>-->
-            <!--                <configuration>-->
-            <!--                    <filterClassPackage>com.iohao</filterClassPackage>-->
-            <!--                    <generateProtoFile>true</generateProtoFile>-->
-            <!--                    <compileDependencies>true</compileDependencies>-->
-            <!--                </configuration>-->
-            <!--                <executions>-->
-            <!--                    <execution>-->
-            <!--                        <phase>compile</phase>-->
-            <!--                        <goals>-->
-            <!--                            <goal>precompile</goal>-->
-            <!--                        </goals>-->
-            <!--                    </execution>-->
-            <!--                </executions>-->
-            <!--            </plugin>-->
         </plugins>
     </build>
 

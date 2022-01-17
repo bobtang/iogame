@@ -1,5 +1,6 @@
 package com.iohao.little.game.action.skeleton.core.flow.interal;
 
+import com.iohao.little.game.action.skeleton.core.BarErrorCode;
 import com.iohao.little.game.action.skeleton.core.exception.MsgException;
 import com.iohao.little.game.action.skeleton.core.flow.ActionMethodExceptionProcess;
 
@@ -17,6 +18,6 @@ public class DefaultActionMethodExceptionProcess implements ActionMethodExceptio
             return msgException;
         }
 
-        return new MsgException(-1000, e.getMessage());
+        return new MsgException(BarErrorCode.systemOtherErrCode, e.getMessage());
     }
 }
