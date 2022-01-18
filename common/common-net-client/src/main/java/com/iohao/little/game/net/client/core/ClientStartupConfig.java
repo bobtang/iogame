@@ -10,6 +10,8 @@ import com.iohao.little.game.net.client.kit.BoltClientProxyKit;
 import com.iohao.little.game.net.message.common.ModuleMessage;
 import com.iohao.little.game.widget.config.WidgetComponents;
 
+import java.util.Objects;
+
 /**
  * client server 启动流程
  *
@@ -17,6 +19,7 @@ import com.iohao.little.game.widget.config.WidgetComponents;
  * @Date 2021-12-17
  */
 public interface ClientStartupConfig {
+
     /**
      * 初始化 业务框架
      *
@@ -95,14 +98,20 @@ public interface ClientStartupConfig {
      * </pre>
      */
     default void startup() {
+        int[] cmdMergeArray;
+
         // 业务框架
         BarSkeleton barSkeleton = this.createBarSkeleton();
+        if (Objects.nonNull(barSkeleton)) {
+            // 设置模块包含的 cmd 列表
+            ActionCommandManager actionCommandManager = barSkeleton.getActionCommandManager();
+            cmdMergeArray = actionCommandManager.arrayCmdMerge();
+        } else {
+            cmdMergeArray = new int[0];
+        }
 
         // 创建模块信息
         ModuleMessage moduleMessage = this.createModuleMessage();
-        // 设置模块包含的 cmd 列表
-        ActionCommandManager actionCommandManager = barSkeleton.getActionCommandManager();
-        int[] cmdMergeArray = actionCommandManager.arrayCmdMerge();
         moduleMessage.setCmdMergeArray(cmdMergeArray);
 
         // 远程连接地址

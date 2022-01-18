@@ -40,6 +40,30 @@ public abstract class BarMessage implements Serializable {
      */
     int cmdMerge;
 
+    /**
+     * rpc type
+     * <pre>
+     *     see : {@link com.alipay.remoting.rpc.RpcCommandType}
+     *
+     *     在 bolt 中， 掉用方使用
+     *     （{@link com.alipay.remoting.rpc.RpcServer#oneway}
+     *     或 {@link com.alipay.remoting.rpc.RpcClient#oneway}）的 oneway 方法
+     *
+     *     则 AsyncContext.sendResponse 无法回传响应
+     *     原因可阅读 {@link com.alipay.remoting.rpc.protocol.RpcRequestProcessor#sendResponseIfNecessary} 源码。
+     *
+     *
+     *     业务框架保持与 bolt 的风格一至使用 RpcCommandType
+     *     不同的是业务框架会用 RpcCommandType 区别使用什么方式来发送响应。
+     *
+     *     如果 rpcCommandType != RpcCommandType.REQUEST_ONEWAY ,
+     *     就使用 {@link com.alipay.remoting.AsyncContext#sendResponse} 来发送响应
+     *     具体发送逻辑可读 {@link com.iohao.little.game.action.skeleton.core.flow.interal.DefaultActionAfter} 源码
+     *
+     * </pre>
+     */
+    byte rpcCommandType;
+
     /** 响应错误码 */
     int errorCode;
     /** JSR303、JSR 349 验证信息 */
@@ -52,10 +76,6 @@ public abstract class BarMessage implements Serializable {
     Object data;
     /** 实际请求的业务参数 byte[] */
     byte[] dataContent;
-
-    public void setData(Object data) {
-        this.data = data;
-    }
 
     public void setCmdInfo(CmdInfo cmdInfo) {
         this.cmd = cmdInfo.getCmd();

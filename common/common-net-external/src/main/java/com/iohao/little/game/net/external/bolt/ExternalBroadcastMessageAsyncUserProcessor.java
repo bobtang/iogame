@@ -4,15 +4,10 @@ import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
-import com.iohao.little.game.net.external.bootstrap.ExternalCont;
-import com.iohao.little.game.net.external.bootstrap.codec.ExternalEncoder;
+import com.iohao.little.game.net.external.bootstrap.handler.ExternalKit;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import com.iohao.little.game.net.external.session.UserSession;
 import com.iohao.little.game.widget.broadcast.BroadcastMessage;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.Channel;
-import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
@@ -24,15 +19,17 @@ import java.util.Objects;
  * @date 2022-01-16
  */
 @Slf4j
-public class ExternalBroadcastMessageAsyncUserProcess extends AsyncUserProcessor<BroadcastMessage> {
+public class ExternalBroadcastMessageAsyncUserProcessor extends AsyncUserProcessor<BroadcastMessage> {
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, BroadcastMessage message) {
 
-        ExternalMessage externalMessage = convert(message.getResponseMessage());
+        ResponseMessage responseMessage = message.getResponseMessage();
+        ExternalMessage externalMessage = ExternalKit.convertExternalMessage(responseMessage);
 
         // 推送消息到真实用户
         if (message.isBroadcastAll()) {
             // 给全体推送
+            // TODO: 2022/1/18 这里可以使用领域事件
             UserSession.me().broadcast(externalMessage);
             return;
         }
@@ -41,45 +38,15 @@ public class ExternalBroadcastMessageAsyncUserProcess extends AsyncUserProcessor
         if (Objects.nonNull(message.getUserIdList())) {
 
             for (Long userId : message.getUserIdList()) {
-                writeAndFlush(userId, externalMessage);
+                ExternalKit.writeAndFlush(userId, externalMessage);
             }
 
             return;
         }
 
         // 推送给单个用户
-        long userId = message.getResponseMessage().getUserId();
-        writeAndFlush(userId, externalMessage);
-    }
-
-    private void writeAndFlush(long userId, ExternalMessage message) {
-        UserSession session = UserSession.me();
-        Channel channel = session.getChannel(userId);
-
-        if (Objects.isNull(channel)) {
-            // TODO: 2022/1/16 用户不在线, 可以做点其他事
-
-            return;
-        }
-
-        int headLen = ExternalCont.HEADER_LEN + message.getDataLength();
-        ByteBuf byteBuf = Unpooled.buffer(headLen);
-        ExternalEncoder.encode(message, byteBuf);
-
-        BinaryWebSocketFrame binaryWebSocketFrame = new BinaryWebSocketFrame(byteBuf);
-
-        channel.writeAndFlush(binaryWebSocketFrame);
-    }
-
-    private ExternalMessage convert(ResponseMessage responseMessage) {
-
-        ExternalMessage externalMessage = new ExternalMessage();
-        externalMessage.setCmdCode((short) 1);
-        externalMessage.setCmdMerge(responseMessage.getCmdMerge());
-        externalMessage.setResponseStatus((short) responseMessage.getErrorCode());
-        externalMessage.setData(responseMessage.getDataContent());
-
-        return externalMessage;
+        long userId = responseMessage.getUserId();
+        ExternalKit.writeAndFlush(userId, externalMessage);
     }
 
     /**

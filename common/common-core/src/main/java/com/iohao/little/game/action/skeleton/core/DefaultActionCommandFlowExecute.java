@@ -82,17 +82,23 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
             , RequestMessage request
             , BarSkeleton barSkeleton) {
 
+        long userId = request.getUserId();
+
         // 创建响应对象
         ResponseMessageCreate responseMessageCreate = barSkeleton.getResponseMessageCreate();
         ResponseMessage responseMessage = responseMessageCreate.createResponseMessage();
         responseMessage.setCmdInfo(actionCommand.getCmdInfo());
+        responseMessage.setUserId(userId);
+        responseMessage.setRpcCommandType(request.getRpcCommandType());
 
+        // flow 上下文
         FlowContext flowContext = new FlowContext()
                 .setBarSkeleton(barSkeleton)
                 .setParamContext(paramContext)
                 .setActionCommand(actionCommand)
                 .setRequest(request)
-                .setResponse(responseMessage);
+                .setResponse(responseMessage)
+                .setUserId(userId);
 
         // 解析参数器
         ActionMethodParamParser paramParser = barSkeleton.getActionMethodParamParser();

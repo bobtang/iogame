@@ -61,12 +61,14 @@ public class ExternalChannelInitializerCallbackWebsocket extends ChannelInitiali
          * 移除 HTTPRequest HTTPResponse
          */
         WebSocketServerProtocolConfig config = WebSocketServerProtocolConfig.newBuilder()
+                // 验证 URL
                 .websocketPath(option.websocketPath)
                 .maxFramePayloadLength(option.packageMaxSize)
                 .checkStartsWith(true)
                 .build();
-        // 处理 websocket 的编解码器
-        pipeline.addLast("webSocketHandler", new WebSocketServerProtocolHandler(config));
+
+        // 处理 websocket 的解码器
+        pipeline.addLast("WebSocketServerProtocolHandler", new WebSocketServerProtocolHandler(config));
 
         // 心跳
         option.idleHandler(pipeline);

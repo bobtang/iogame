@@ -21,9 +21,6 @@ import java.util.function.Predicate;
  */
 @UtilityClass
 public class GameBarSkeletonConfig {
-    public BarSkeleton newBarSkeleton(Class<?>... actionClazz) {
-        return createBuilder(actionClazz).build();
-    }
 
     public BarSkeletonBuilder createBuilder(Class<?>... actionClazzArray) {
         // 尽量做到所有操作是可插拔的.

@@ -25,6 +25,15 @@ public class ModuleInfoManager {
     public ModuleInfoProxy getModuleInfo(CmdInfo cmdInfo) {
         Integer moduleId = moduleIdMap.get(cmdInfo.getCmdMerge());
 
+        return this.getModuleInfoByModuleId(moduleId);
+    }
+
+    public ModuleInfoProxy getModuleInfoByModuleId(Integer moduleId) {
+
+        if (Objects.isNull(moduleId)) {
+            return null;
+        }
+
         ModuleInfoRegion moduleInfoRegion = moduleInfoRegionMap.get(moduleId);
 
         if (Objects.isNull(moduleInfoRegion)) {
@@ -32,6 +41,7 @@ public class ModuleInfoManager {
         }
 
         return moduleInfoRegion.getModuleInfo();
+
     }
 
     public ModuleInfoProxy getExternalModuleInfo() {

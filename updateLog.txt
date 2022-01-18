@@ -1,4 +1,30 @@
 更新日志
+2022-01-19
+登录业务 新增 ChangeUserIdKit 工具：
+    变更对外服的 userId, userId与channel 关联
+    用在用户登录时，从程序员的业务数据库中获得 userId
+
+新增用户登录, 登录流程：
+    真实客户端发送请求 --> 对外服 --> 网关服 --> 逻辑服（
+        逻辑服通知对外服变更：逻辑服 --> 网关服 --> 对外服 --> 网关服 --> 逻辑服
+    ） --> 网关服 --> 对外服
+
+业务框架:
+BarMessage 增加 rpcCommandType 字段:
+    特性如下：
+        在 bolt 中， 掉用方使用
+        （com.alipay.remoting.rpc.RpcServer.oneway
+        或 com.alipay.remoting.rpc.RpcClient.oneway）的 oneway 方法
+
+        则 AsyncContext.sendResponse 无法回传响应
+        原因可阅读 com.alipay.remoting.rpc.protocol.RpcRequestProcessor.sendResponseIfNecessary 源码。
+
+        业务框架保持与 bolt 的风格一至使用 RpcCommandType
+        不同的是业务框架会用 RpcCommandType 区别使用什么方式来发送响应。
+
+        如果 rpcCommandType != RpcCommandType.REQUEST_ONEWAY ,
+        就使用 com.alipay.remoting.AsyncContext.sendResponse 来发送响应
+        具体发送逻辑可读 com.iohao.little.game.action.skeleton.core.flow.interal.DefaultActionAfter 源码
 
 2022-01-18
 优化业务框架: 新增 action void 特性， 定义为 void 的业务方法，不在给掉用端响应（除非有业务异常码）
@@ -22,6 +48,9 @@
 业务框架加强规范异常处理
 提供异常全局统一处理规范
 领域事件新增默认异常处理
+
+2022-01-12
+业务框架支持 proto
 
 实践：
 抽象逻辑服相关

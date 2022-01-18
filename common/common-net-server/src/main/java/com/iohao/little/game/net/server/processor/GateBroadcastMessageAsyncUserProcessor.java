@@ -6,50 +6,43 @@ import com.alipay.remoting.exception.RemotingException;
 import com.alipay.remoting.rpc.RpcServer;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
 import com.iohao.little.game.net.common.BoltServer;
-import com.iohao.little.game.net.server.GateKit;
 import com.iohao.little.game.net.server.module.ModuleInfoManager;
 import com.iohao.little.game.net.server.module.ModuleInfoProxy;
 import com.iohao.little.game.widget.broadcast.BroadcastMessage;
 import com.iohao.little.game.widget.config.WidgetComponents;
+import lombok.extern.slf4j.Slf4j;
 
 /**
+ * 把逻辑服的广播转发到对外服
+ *
  * @author 洛朱
  * @date 2022-01-12
  */
-public class GateBroadcastMessageAsyncUserProcess extends AsyncUserProcessor<BroadcastMessage> {
+@Slf4j
+public class GateBroadcastMessageAsyncUserProcessor extends AsyncUserProcessor<BroadcastMessage> {
     final WidgetComponents widgetComponents;
+    final BoltServer boltServer;
 
-    public GateBroadcastMessageAsyncUserProcess(WidgetComponents widgetComponents) {
+    public GateBroadcastMessageAsyncUserProcessor(BoltServer boltServer, WidgetComponents widgetComponents) {
         this.widgetComponents = widgetComponents;
+        this.boltServer = boltServer;
     }
 
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, BroadcastMessage broadcastMessage) {
-        BoltServer boltServer = GateKit.getBoltServer();
-        RpcServer rpcServer = boltServer.getRpcServer();
+        log.info("把逻辑服的广播转发到对外服 {}", broadcastMessage);
+        // TODO: 2022/1/18 广播上下文是有问题的
 
-        // 转发给对外服务器
+        // 转发 给 对外服务器
         ModuleInfoProxy externalModuleInfo = ModuleInfoManager.me().getExternalModuleInfo();
         String address = externalModuleInfo.getModuleMessage().getAddress();
 
         try {
+            RpcServer rpcServer = boltServer.getRpcServer();
             rpcServer.oneway(address, broadcastMessage);
         } catch (RemotingException | InterruptedException e) {
             e.printStackTrace();
         }
-
-//        externalModuleInfo.invokeSync(null);
-
-//        // 模块之间的请求处理
-//        MessageQueueWidget messageQueueWidget = widgetComponents.option(MessageQueueWidget.class);
-//
-//        // 逻辑服推送的消息
-//        ResponseMessage responseMessage = broadcastMessage.getResponseMessage();
-//        String channel = broadcastMessage.getChannel();
-//
-//        // 根据 channel 得到对应的消息处理
-//        MessageListenerWidget messageListenerWidget = messageQueueWidget.getByChannel(channel);
-//        messageListenerWidget.onMessage(responseMessage, channel, broadcastMessage);
     }
 
     /**

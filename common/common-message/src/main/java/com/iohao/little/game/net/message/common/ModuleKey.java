@@ -2,6 +2,7 @@ package com.iohao.little.game.net.message.common;
 
 import lombok.ToString;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -17,6 +18,8 @@ import java.util.Objects;
  */
 @ToString
 public class ModuleKey implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 2294369045536024682L;
     /** 模块id */
     public final int moduleId;
     /** 序列 */

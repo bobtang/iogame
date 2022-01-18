@@ -22,14 +22,14 @@ import java.util.Objects;
  */
 @Slf4j
 public class ExternalHandler extends SimpleChannelInboundHandler<ExternalMessage> {
-    UserSession sessionManager = UserSession.me();
+    final UserSession sessionManager = UserSession.me();
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ExternalMessage message) {
         log.info("{}", message);
 
         // 将 message 转换成 RequestMessage
-        RequestMessage requestMessage = convertRequestMessage(message);
+        RequestMessage requestMessage = ExternalKit.convertRequestMessage(message);
 
         // 设置当前操作用户
         long userId = sessionManager.getUserId(ctx.channel());
@@ -40,13 +40,6 @@ public class ExternalHandler extends SimpleChannelInboundHandler<ExternalMessage
 
         // 响应结果给用户
         ctx.writeAndFlush(response);
-    }
-
-    private RequestMessage convertRequestMessage(ExternalMessage message) {
-        RequestMessage requestMessage = new RequestMessage();
-        requestMessage.setCmdMerge(message.getCmdMerge());
-        requestMessage.setDataContent(message.getData());
-        return requestMessage;
     }
 
     private ExternalMessage request(ExternalMessage message, RequestMessage requestMessage) {

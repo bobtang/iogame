@@ -1,9 +1,9 @@
 package com.iohao.example.a.action;
 
 import cn.hutool.core.util.RandomUtil;
-import com.iohao.example.common.AppleValidPOJO;
-import com.iohao.example.common.ExampleActionCont;
 import com.iohao.example.common.Apple;
+import com.iohao.example.common.AppleValidPOJO;
+import com.iohao.example.common.ExampleAppleCmd;
 import com.iohao.little.game.action.skeleton.annotation.ActionController;
 import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
 import lombok.extern.slf4j.Slf4j;
@@ -12,10 +12,10 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-@ActionController(ExampleActionCont.AppleModule.cmd)
+@ActionController(ExampleAppleCmd.cmd)
 public class AppleAction {
 
-    @ActionMethod(ExampleActionCont.AppleModule.validate)
+    @ActionMethod(ExampleAppleCmd.validate)
     public int validate(AppleValidPOJO validPOJO) {
         // 从这里可以看出，参数与返回值可以是任意类型
         log.info("validate");
@@ -32,7 +32,7 @@ public class AppleAction {
      * @param apple 请求参数，是由掉用方传入 (通常是游戏的客户端)
      * @return 响应 （对象）
      */
-    @ActionMethod(ExampleActionCont.AppleModule.name)
+    @ActionMethod(ExampleAppleCmd.name)
     public Apple hello(Apple apple) {
         log.info("apple: {}", apple);
         Apple joker = new Apple();
@@ -49,13 +49,11 @@ public class AppleAction {
      * @param age age
      * @return age + 10
      */
-    @ActionMethod(ExampleActionCont.AppleModule.age)
+    @ActionMethod(ExampleAppleCmd.age)
     public int age(int age) {
         // 从这里可以看出，参数与返回值可以是任意类型
         return age + 10;
     }
-
-
 
 
 }

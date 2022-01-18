@@ -48,22 +48,31 @@ public class CommonServerStartupConfig {
     }
 
     public void registerUserProcessor(BoltServer boltServer) {
+        // 处理 - 发布订阅
+        WidgetComponents widgetComponents = boltServer.getWidgetComponents();
+        var gateBroadcastMessageAsyncUserProcess = new GateBroadcastMessageAsyncUserProcessor(boltServer, widgetComponents);
+        boltServer.registerUserProcessor(gateBroadcastMessageAsyncUserProcess);
+
         // 处理 - 模块注册
-        var registerModuleProcessor = new GateRegisterModuleMessageAsyncUserProcessor();
+        var registerModuleProcessor = new GateRegisterModuleMessageAsyncUserProcessor(boltServer);
         boltServer.registerUserProcessor(registerModuleProcessor);
 
         // 处理 - 内部模块消息的转发
-        var innerModuleMessageAsyncUserProcess = new GateInnerModuleMessageAsyncUserProcess();
+        var innerModuleMessageAsyncUserProcess = new GateInnerModuleMessageAsyncUserProcessor();
         boltServer.registerUserProcessor(innerModuleMessageAsyncUserProcess);
 
         // 处理 - 接收真实用户的请求，把请求转发到逻辑服
         var externalMessageProcessor = new GateExternalRequestMessageAsyncUserProcessor();
         boltServer.registerUserProcessor(externalMessageProcessor);
 
-        // 处理 - 发布订阅
-        WidgetComponents widgetComponents = boltServer.getWidgetComponents();
-        var gateBroadcastMessageAsyncUserProcess = new GateBroadcastMessageAsyncUserProcess(widgetComponents);
-        boltServer.registerUserProcessor(gateBroadcastMessageAsyncUserProcess);
+        // 处理 - 改变用户 id -- external server
+        var gateChangeUserIdMessageAsyncUserProcess = new GateChangeUserIdMessageAsyncUserProcessor(boltServer);
+        boltServer.registerUserProcessor(gateChangeUserIdMessageAsyncUserProcess);
+
+        // 处理 - 把逻辑服的响应转发到对外服
+        var responseMessageAsyncUserProcessor = new GateResponseMessageAsyncUserProcessor(boltServer);
+        boltServer.registerUserProcessor(responseMessageAsyncUserProcessor);
+
     }
 
 }

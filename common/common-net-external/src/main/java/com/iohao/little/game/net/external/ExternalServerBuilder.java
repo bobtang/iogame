@@ -11,7 +11,7 @@ import com.iohao.little.game.net.external.bootstrap.initializer.ExternalChannelI
 import com.iohao.little.game.net.external.bootstrap.initializer.ExternalChannelInitializerCallbackWebsocket;
 import com.iohao.little.game.net.external.bootstrap.option.BootstrapOptionForLinux;
 import com.iohao.little.game.net.external.bootstrap.option.BootstrapOptionForMac;
-import com.iohao.little.game.net.external.bootstrap.option.BootstrapOptionForWindows;
+import com.iohao.little.game.net.external.bootstrap.option.BootstrapOptionForOther;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelOption;
@@ -81,6 +81,7 @@ public class ExternalServerBuilder {
 
     private void defaultSetting() {
         if (Objects.isNull(bootstrapOption)) {
+            // Bootstrap 优化项
             bootstrapOption = createServerBootstrapOption();
         }
 
@@ -89,10 +90,16 @@ public class ExternalServerBuilder {
             registerChannelHandler("externalHandler", new ExternalHandler());
         }
 
-        switch (externalJoinEnum) {
-            case SOCKET -> new SocketServerBootstrapSetting().setting(bootstrap);
-            case WEBSOCKET -> new WebSocketServerBootstrapSetting().setting(bootstrap);
+        // 连接方式
+        ServerBootstrapSetting serverBootstrapSetting;
+
+        if (externalJoinEnum == ExternalJoinEnum.WEBSOCKET) {
+            serverBootstrapSetting = new WebSocketServerBootstrapSetting();
+        } else {
+            serverBootstrapSetting = new SocketServerBootstrapSetting();
         }
+
+        serverBootstrapSetting.setting(bootstrap);
     }
 
     private void check() throws RuntimeException {
@@ -171,7 +178,7 @@ public class ExternalServerBuilder {
         }
 
         // other system
-        return new BootstrapOptionForWindows();
+        return new BootstrapOptionForOther();
     }
 
     interface ServerBootstrapSetting {

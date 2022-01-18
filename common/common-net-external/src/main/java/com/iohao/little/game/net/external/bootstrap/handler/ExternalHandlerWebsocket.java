@@ -1,7 +1,13 @@
 package com.iohao.little.game.net.external.bootstrap.handler;
 
+import com.alipay.remoting.exception.RemotingException;
+import com.alipay.remoting.rpc.RpcClient;
+import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
+import com.iohao.little.game.net.external.bootstrap.ExternalServerKit;
 import com.iohao.little.game.net.external.bootstrap.codec.ExternalDecoder;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
+import com.iohao.little.game.net.external.session.UserSession;
+import com.iohao.little.game.net.external.session.UserSessionKit;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
@@ -40,17 +46,22 @@ public class ExternalHandlerWebsocket extends SimpleChannelInboundHandler<Object
         String location = "ws://" + req.headers().get(HttpHeaderNames.HOST) + req.uri();
         log.info("location: {}", location);
 
+        // 创建握手工厂
         WebSocketServerHandshakerFactory wsFactory =
                 new WebSocketServerHandshakerFactory(location, null, false);
 
+        // 创建一个握手处理器
         handshaker = wsFactory.newHandshaker(req);
 
         if (handshaker == null) {
+            // 不支持的版本
             WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(ctx.channel());
         } else {
             handshaker.handshake(ctx.channel(), req);
         }
     }
+
+    final UserSession sessionManager = UserSession.me();
 
     private void handlerWebSocketFrame(ChannelHandlerContext ctx, WebSocketFrame frame) {
         // 判断是否关闭链路的指令
@@ -76,11 +87,25 @@ public class ExternalHandlerWebsocket extends SimpleChannelInboundHandler<Object
         // 跳过消息头 2字节
         in.skipBytes(2);
 
-        ExternalMessage request = ExternalDecoder.decode(in);
+        ExternalMessage message = ExternalDecoder.decode(in);
 
-        log.info("接收客户端消息 {}", request);
+        log.info("接收客户端消息 {}", message);
 
+        // 转发到网关
+        // 将 message 转换成 RequestMessage
+        RequestMessage requestMessage = ExternalKit.convertRequestMessage(message);
+        long userId = UserSession.me().getUserId(ctx.channel());
+        requestMessage.setUserId(userId);
 
+        String address = ExternalServerKit.address();
+        RpcClient rpcClient = ExternalServerKit.rpcClient;
+
+        try {
+            log.info("external 请求 网关");
+            rpcClient.oneway(address, requestMessage);
+        } catch (RemotingException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -101,5 +126,14 @@ public class ExternalHandlerWebsocket extends SimpleChannelInboundHandler<Object
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         log.info("玩家下线");
+
+    }
+
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) {
+        log.info("创建 websocket 链接玩家 {}", 1);
+
+        UserSessionKit.channelActive(ctx);
     }
 }

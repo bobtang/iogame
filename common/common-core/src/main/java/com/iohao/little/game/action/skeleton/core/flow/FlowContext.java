@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * flow 上下文
+ * 业务框架 flow 上下文
  * <pre>
  *     生命周期存在于这一次的 flow 过程
  * </pre>
@@ -48,6 +48,8 @@ public class FlowContext implements AttrDynamic {
     Object[] methodParams;
     /** 业务方法的返回值 */
     Object methodResult;
+    /** userId */
+    long userId;
 
     @Override
     public Map<String, Object> getAttr() {
@@ -57,5 +59,10 @@ public class FlowContext implements AttrDynamic {
         }
 
         return attr;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends ParamContext> T getParamContext() {
+        return (T) this.paramContext;
     }
 }

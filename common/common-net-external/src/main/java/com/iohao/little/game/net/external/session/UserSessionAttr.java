@@ -9,5 +9,10 @@ import io.netty.util.AttributeKey;
 public interface UserSessionAttr {
     /** 玩家id */
     AttributeKey<Long> userId = AttributeKey.valueOf("userId");
+    /**
+     * false 没有进行身份验证
+     */
+    AttributeKey<Boolean> verifyIdentity = AttributeKey.valueOf("verifyIdentity");
+
 
 }

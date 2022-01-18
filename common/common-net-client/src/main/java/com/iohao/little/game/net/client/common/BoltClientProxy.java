@@ -166,4 +166,12 @@ public class BoltClientProxy implements ServerContext, ServerSender {
         return o;
     }
 
+    @Override
+    public void sendResponse(Object request) {
+        try {
+            rpcClient.oneway(connection, request);
+        } catch (RemotingException e) {
+            e.printStackTrace();
+        }
+    }
 }

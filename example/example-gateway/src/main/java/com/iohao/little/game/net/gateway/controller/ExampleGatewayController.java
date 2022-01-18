@@ -1,10 +1,7 @@
 package com.iohao.little.game.net.gateway.controller;
 
 import com.alipay.remoting.exception.RemotingException;
-import com.iohao.example.common.AppleValidPOJO;
-import com.iohao.example.common.ExampleActionCont;
-import com.iohao.example.common.Apple;
-import com.iohao.example.common.Book;
+import com.iohao.example.common.*;
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.action.skeleton.core.CmdInfoFlyweightFactory;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
@@ -34,14 +31,14 @@ public class ExampleGatewayController {
         log.info("apple: {}", name);
 
         CmdInfoFlyweightFactory factory = CmdInfoFlyweightFactory.me();
-        CmdInfo cmdInfo = factory.getCmdInfo(ExampleActionCont.AppleModule.cmd, ExampleActionCont.AppleModule.validate);
+        CmdInfo cmdInfo = factory.getCmdInfo(ExampleAppleCmd.cmd, ExampleAppleCmd.validate);
 
         AppleValidPOJO validPOJO = new AppleValidPOJO();
         validPOJO.setEmail(name);
         validPOJO.setAge(age);
         log.info("pojo: {}", validPOJO);
 
-       Object obj =  invokeSync(cmdInfo, validPOJO);
+        Object obj = invokeSync(cmdInfo, validPOJO);
 
         return obj.toString();
     }
@@ -54,7 +51,7 @@ public class ExampleGatewayController {
         log.info("apple: {}", name);
 
         CmdInfoFlyweightFactory factory = CmdInfoFlyweightFactory.me();
-        CmdInfo cmdInfo = factory.getCmdInfo(ExampleActionCont.AppleModule.cmd, ExampleActionCont.AppleModule.name);
+        CmdInfo cmdInfo = factory.getCmdInfo(ExampleAppleCmd.cmd, ExampleAppleCmd.name);
 
         Apple apple = new Apple();
         apple.setAge(name.hashCode());
@@ -73,7 +70,7 @@ public class ExampleGatewayController {
         log.info("book: {}", name);
 
         CmdInfoFlyweightFactory factory = CmdInfoFlyweightFactory.me();
-        CmdInfo cmdInfo = factory.getCmdInfo(ExampleActionCont.BookModule.cmd, ExampleActionCont.BookModule.name);
+        CmdInfo cmdInfo = factory.getCmdInfo(ExampleBookCmd.cmd, ExampleBookCmd.name);
 
         Book book = new Book();
         book.setName(name);
@@ -91,7 +88,7 @@ public class ExampleGatewayController {
     public String bookVisitApple(@PathVariable Integer age) {
         log.info("book_age: {}", age);
 
-        CmdInfo cmdInfo = ExampleActionCont.BookModule.info.cmdInfo(ExampleActionCont.BookModule.get_apple_age);
+        CmdInfo cmdInfo = ExampleBookCmd.info.cmdInfo(ExampleBookCmd.get_apple_age);
 
         String data = (String) invokeSync(cmdInfo, age);
 
@@ -111,7 +108,7 @@ public class ExampleGatewayController {
     @GetMapping("/message_queue/{message}")
     public String messageQueue(@PathVariable String message) {
 
-        CmdInfo cmdInfo = ExampleActionCont.BookModule.info.cmdInfo(ExampleActionCont.BookModule.message_queue);
+        CmdInfo cmdInfo = ExampleBookCmd.info.cmdInfo(ExampleBookCmd.message_queue);
         RequestMessage requestMessage = new RequestMessage();
         requestMessage.setCmdInfo(cmdInfo);
 

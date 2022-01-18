@@ -6,6 +6,7 @@ import com.iohao.game.collect.logic.GameLogicCommonInit;
 import com.iohao.game.collect.tank.action.TankAction;
 import com.iohao.game.collect.tank.config.TankKit;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
+import com.iohao.little.game.action.skeleton.core.BarSkeletonBuilder;
 import com.iohao.little.game.net.client.BoltClientServer;
 import com.iohao.little.game.net.client.core.ClientStartupConfig;
 import com.iohao.little.game.net.client.core.RemoteAddress;
@@ -19,9 +20,11 @@ import com.iohao.little.game.net.message.common.ModuleMessage;
 public class TankClientStartupConfig implements ClientStartupConfig {
     @Override
     public BarSkeleton createBarSkeleton() {
-        // 扫描 AppleAction.class 所在包
-        BarSkeleton barSkeleton = GameBarSkeletonConfig.newBarSkeleton(TankAction.class);
-        return barSkeleton;
+
+        // 扫描 TankAction.class 所在包
+        BarSkeletonBuilder builder = GameBarSkeletonConfig.createBuilder(TankAction.class);
+
+        return builder.build();
     }
 
     @Override

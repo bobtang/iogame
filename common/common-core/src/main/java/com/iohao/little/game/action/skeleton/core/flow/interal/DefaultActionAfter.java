@@ -1,6 +1,7 @@
 package com.iohao.little.game.action.skeleton.core.flow.interal;
 
 import com.alipay.remoting.AsyncContext;
+import com.alipay.remoting.rpc.RpcCommandType;
 import com.iohao.little.game.action.skeleton.core.ActionCommand;
 import com.iohao.little.game.action.skeleton.core.DefaultParamContext;
 import com.iohao.little.game.action.skeleton.core.flow.ActionAfter;
@@ -20,9 +21,7 @@ public class DefaultActionAfter implements ActionAfter {
     public void execute(FlowContext flowContext) {
         final ResponseMessage response = flowContext.getResponse();
 
-        DefaultParamContext paramContext = (DefaultParamContext) flowContext.getParamContext();
-
-        AsyncContext asyncCtx = paramContext.getAsyncCtx();
+        AsyncContext asyncCtx = getAsyncContext(flowContext);
 
         if (Objects.isNull(asyncCtx)) {
             return;
@@ -42,7 +41,18 @@ public class DefaultActionAfter implements ActionAfter {
 
         // 将数据回传给掉用方
         asyncCtx.sendResponse(response);
+    }
 
+    private AsyncContext getAsyncContext(FlowContext flowContext) {
+        ResponseMessage response = flowContext.getResponse();
+        byte rpcCommandType = response.getRpcCommandType();
 
+        DefaultParamContext paramContext = (DefaultParamContext) flowContext.getParamContext();
+
+        if (rpcCommandType != RpcCommandType.REQUEST_ONEWAY) {
+            return paramContext.getAsyncCtx();
+        } else {
+            return paramContext.getServerContext();
+        }
     }
 }

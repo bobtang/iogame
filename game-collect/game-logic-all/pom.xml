@@ -23,6 +23,20 @@
             <artifactId>game-logic-user</artifactId>
             <version>${project-revision.version}</version>
         </dependency>
+
+        <!-- EL实现。在Java SE环境中，您必须将实现作为依赖项添加到POM文件中-->
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>jakarta.el</artifactId>
+            <version>4.0.1</version>
+        </dependency>
+
+        <!-- 验证器Maven依赖项 -->
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>3.0.0</version>
+        </dependency>
     </dependencies>
 
 </project>

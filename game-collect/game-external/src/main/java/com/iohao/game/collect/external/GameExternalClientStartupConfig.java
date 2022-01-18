@@ -1,12 +1,16 @@
 package com.iohao.game.collect.external;
 
+import com.alipay.remoting.rpc.RpcClient;
 import com.iohao.game.collect.common.GameBarSkeletonConfig;
 import com.iohao.game.collect.common.GameConfig;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
+import com.iohao.little.game.action.skeleton.core.BarSkeletonBuilder;
 import com.iohao.little.game.net.client.BoltClientServer;
 import com.iohao.little.game.net.client.core.ClientStartupConfig;
 import com.iohao.little.game.net.client.core.RemoteAddress;
-import com.iohao.little.game.net.external.bolt.ExternalBroadcastMessageAsyncUserProcess;
+import com.iohao.little.game.net.external.bolt.ExternalBroadcastMessageAsyncUserProcessor;
+import com.iohao.little.game.net.external.bolt.ExternalChangeUserIdMessageAsyncUserProcessor;
+import com.iohao.little.game.net.external.bolt.ExternalResponseMessageAsyncUserProcessor;
 import com.iohao.little.game.net.external.bootstrap.ExternalServerKit;
 import com.iohao.little.game.net.message.common.ModuleKeyKit;
 import com.iohao.little.game.net.message.common.ModuleMessage;
@@ -20,9 +24,12 @@ import com.iohao.little.game.widget.config.WidgetComponents;
 public class GameExternalClientStartupConfig implements ClientStartupConfig {
     @Override
     public BarSkeleton createBarSkeleton() {
-        // 扫描 AppleAction.class 所在包
-        BarSkeleton barSkeleton = GameBarSkeletonConfig.newBarSkeleton(GameExternalClientStartupConfig.class);
-        return barSkeleton;
+
+        // 扫描 GameExternalClientStartupConfig.class 所在包
+        BarSkeletonBuilder builder = GameBarSkeletonConfig.createBuilder(GameExternalClientStartupConfig.class);
+
+        return builder.build();
+//        return null;
     }
 
     @Override
@@ -42,7 +49,7 @@ public class GameExternalClientStartupConfig implements ClientStartupConfig {
     @Override
     public RemoteAddress createRemoteAddress() {
         int port = GameConfig.gatePort;
-        String ip = "127.0.0.1";
+        String ip = GameConfig.gateIp;
         return new RemoteAddress(ip, port);
     }
 
@@ -53,12 +60,21 @@ public class GameExternalClientStartupConfig implements ClientStartupConfig {
 
     @Override
     public void registerUserProcessor(BoltClientServer boltClientServer) {
-        ClientStartupConfig.super.registerUserProcessor(boltClientServer);
+//        ClientStartupConfig.super.registerUserProcessor(boltClientServer);
 
-        ExternalBroadcastMessageAsyncUserProcess broadcastMessageAsyncUserProcess = new ExternalBroadcastMessageAsyncUserProcess();
+        RpcClient rpcClient = boltClientServer.getRpcClient();
 
         // 注册 广播处理器
-        boltClientServer.getRpcClient().registerUserProcessor(broadcastMessageAsyncUserProcess);
+        ExternalBroadcastMessageAsyncUserProcessor broadcastMessageAsyncUserProcessor = new ExternalBroadcastMessageAsyncUserProcessor();
+        rpcClient.registerUserProcessor(broadcastMessageAsyncUserProcessor);
+
+        // 注册 用户id变更处理
+        ExternalChangeUserIdMessageAsyncUserProcessor changeUserIdMessageAsyncUserProcessor = new ExternalChangeUserIdMessageAsyncUserProcessor();
+        rpcClient.registerUserProcessor(changeUserIdMessageAsyncUserProcessor);
+
+        // 注册 接收网关消息处理
+        ExternalResponseMessageAsyncUserProcessor responseMessageAsyncUserProcessor = new ExternalResponseMessageAsyncUserProcessor();
+        rpcClient.registerUserProcessor(responseMessageAsyncUserProcessor);
 
     }
 

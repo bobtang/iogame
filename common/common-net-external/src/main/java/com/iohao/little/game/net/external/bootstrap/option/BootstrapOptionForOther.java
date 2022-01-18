@@ -7,7 +7,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 /**
- * 服务端 for window nio 处理类
+ * 服务端 for other nio 处理类
  *
  * <pre>
  * other system:
@@ -17,7 +17,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  * @author 洛朱
  * @date 2022-01-09
  */
-public class BootstrapOptionForWindows implements BootstrapOption {
+public class BootstrapOptionForOther implements BootstrapOption {
     @Override
     public EventLoopGroup bossGroup() {
         return new NioEventLoopGroup(

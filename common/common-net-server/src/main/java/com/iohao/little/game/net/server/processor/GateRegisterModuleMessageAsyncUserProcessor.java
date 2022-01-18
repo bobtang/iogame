@@ -3,8 +3,10 @@ package com.iohao.little.game.net.server.processor;
 import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
-import com.iohao.little.game.net.server.module.ModuleInfoManager;
+import com.iohao.little.game.net.common.BoltServer;
 import com.iohao.little.game.net.message.common.ModuleMessage;
+import com.iohao.little.game.net.server.module.ModuleInfoManager;
+import com.iohao.little.game.net.server.module.ModuleInfoProxy;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -15,6 +17,13 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class GateRegisterModuleMessageAsyncUserProcessor extends AsyncUserProcessor<ModuleMessage> {
+
+    final BoltServer boltServer;
+
+    public GateRegisterModuleMessageAsyncUserProcessor(BoltServer boltServer) {
+        this.boltServer = boltServer;
+    }
+
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, ModuleMessage moduleMessage) {
         String remoteAddress = bizCtx.getRemoteAddress();
@@ -23,6 +32,14 @@ public class GateRegisterModuleMessageAsyncUserProcessor extends AsyncUserProces
         log.info("--------------------------------- 模块注册 {}", moduleMessage);
 
         ModuleInfoManager.me().addModuleInfo(moduleMessage);
+
+        var moduleId = moduleMessage.getModuleKey().moduleId;
+
+        ModuleInfoProxy moduleInfoProxy = ModuleInfoManager.me().getModuleInfoByModuleId(moduleId);
+
+        moduleInfoProxy.setBoltServer(boltServer);
+
+
     }
 
     /**

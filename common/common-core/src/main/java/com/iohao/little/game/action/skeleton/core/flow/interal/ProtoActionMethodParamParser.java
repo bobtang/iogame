@@ -1,8 +1,7 @@
 package com.iohao.little.game.action.skeleton.core.flow.interal;
 
-import com.alipay.remoting.AsyncContext;
-import com.alipay.remoting.BizContext;
-import com.iohao.little.game.action.skeleton.core.*;
+import com.iohao.little.game.action.skeleton.core.ActionCommand;
+import com.iohao.little.game.action.skeleton.core.ValidatorKit;
 import com.iohao.little.game.action.skeleton.core.flow.ActionMethodParamParser;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
@@ -31,7 +30,6 @@ public class ProtoActionMethodParamParser implements ActionMethodParamParser {
         ResponseMessage response = flowContext.getResponse();
 
         final var paramInfos = actionCommand.getParamInfos();
-        final var paramContext = (DefaultParamContext) flowContext.getParamContext();
 
         final var len = paramInfos.length;
         final var pars = new Object[len];
@@ -41,50 +39,31 @@ public class ProtoActionMethodParamParser implements ActionMethodParamParser {
             Class<?> paramClazz = paramInfo.getParamClazz();
 
             // 这里可以使用策略模式 （但现在还不着急）
-            if (BizContext.class.equals(paramClazz)) {
-                pars[i] = paramContext.getBizCtx();
-                continue;
+            if (FlowContext.class.equals(paramClazz)) {
+                // flow 上下文
+                pars[i] = flowContext;
+            } else if ("userId".equals(paramInfo.getName())) {
+                // userId
+                pars[i] = flowContext.getUserId();
+            } else {
+                // 业务参数
+                byte[] dataContent = request.getDataContent();
+
+                if (Objects.isNull(dataContent)) {
+                    continue;
+                }
+
+                // 把字节解析成 pb 对象
+                pars[i] = ProtoKit.parseProtoByte(dataContent, paramClazz);
+                request.setData(pars[i]);
+
+                if (paramInfo.isValidator()) {
+                    String validateMsg = ValidatorKit.validate(pars[i]);
+                    response.setValidatorMsg(validateMsg);
+                }
+
             }
 
-            if (AsyncContext.class.equals(paramClazz)) {
-                pars[i] = paramContext.getAsyncCtx();
-                continue;
-            }
-
-            if (ServerContext.class.equals(paramClazz)) {
-                pars[i] = paramContext.getServerContext();
-                continue;
-            }
-
-            if (CmdInfo.class.equals(paramClazz)) {
-                pars[i] = request.getCmdInfo();
-                continue;
-            }
-
-            if (RequestMessage.class.equals(paramClazz)) {
-                pars[i] = request;
-                continue;
-            }
-
-            if ("userId".equals(paramInfo.getName())) {
-                pars[i] = request.getUserId();
-                continue;
-            }
-
-            byte[] dataContent = request.getDataContent();
-
-            if (Objects.isNull(dataContent)) {
-                continue;
-            }
-
-            // 把字节解析成 pb 对象
-            pars[i] = ProtoKit.parseProtoByte(dataContent, paramClazz);
-            request.setData(pars[i]);
-
-            if (paramInfo.isValidator()) {
-                String validateMsg = ValidatorKit.validate(pars[i]);
-                response.setValidatorMsg(validateMsg);
-            }
         }
 
         return pars;

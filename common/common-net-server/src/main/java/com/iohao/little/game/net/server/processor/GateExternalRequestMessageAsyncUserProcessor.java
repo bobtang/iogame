@@ -2,9 +2,12 @@ package com.iohao.little.game.net.server.processor;
 
 import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
+import com.alipay.remoting.exception.RemotingException;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.net.server.GateKit;
+import com.iohao.little.game.net.server.module.ModuleInfoProxy;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 对外服务器消息处理
@@ -15,11 +18,21 @@ import com.iohao.little.game.net.server.GateKit;
  * @author 洛朱
  * @date 2022-01-11
  */
+@Slf4j
 public class GateExternalRequestMessageAsyncUserProcessor extends AsyncUserProcessor<RequestMessage> {
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, RequestMessage requestMessage) {
-        // 把请求转发到逻辑服 处理
-        GateKit.sendToLogicServer(asyncCtx, requestMessage);
+        // 把对外服的请求转发到逻辑服 处理
+
+        log.info("把对外服的请求转发到逻辑服 处理 {}", requestMessage);
+        ModuleInfoProxy moduleInfo = GateKit.getModuleInfo(requestMessage);
+
+        try {
+            moduleInfo.oneway(requestMessage);
+        } catch (RemotingException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**

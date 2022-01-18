@@ -26,12 +26,16 @@ public class ProtoActionMethodResultWrap implements ActionMethodResultWrap {
             // 异常处理
             int code = msgException.getMsgCode();
             responseMessage.setErrorCode(code);
-        } else if (Objects.nonNull(result)) {
-            // 业务方法返回值
-            byte[] dataContent = ProtoKit.toBytes(result);
-            responseMessage.setDataContent(dataContent);
-            responseMessage.setData(result);
         }
+
+        if (Objects.isNull(result)) {
+            return;
+        }
+
+        // 业务方法返回值
+        byte[] dataContent = ProtoKit.toBytes(result);
+        responseMessage.setDataContent(dataContent);
+        responseMessage.setData(result);
 
     }
 }

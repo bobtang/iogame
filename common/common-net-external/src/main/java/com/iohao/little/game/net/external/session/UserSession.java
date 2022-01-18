@@ -29,6 +29,7 @@ public class UserSession {
      */
     final ConcurrentHashMap<Long, ChannelId> channelIdMap = new ConcurrentHashMap<>();
 
+
     /**
      * 添加 channel 关联
      *
@@ -36,11 +37,37 @@ public class UserSession {
      * @param channel channel
      */
     public void add(long userId, Channel channel) {
+
+        if (userId == 0) {
+            throw new RuntimeException("userId is 0");
+        }
+
         channel.attr(UserSessionAttr.userId).setIfAbsent(userId);
 
         ChannelId channelId = channel.id();
+
         channelIdMap.putIfAbsent(userId, channelId);
         channelGroup.add(channel);
+    }
+
+    public boolean changeUserId(long userId, long newUserId) {
+        Channel channel = this.getChannel(userId);
+
+        if (!isActive(channel)) {
+            return false;
+        }
+
+        ChannelId channelId = channelIdMap.remove(userId);
+
+        if (Objects.isNull(channelId)) {
+            return false;
+        }
+
+        channel.attr(UserSessionAttr.userId).set(newUserId);
+        channel.attr(UserSessionAttr.verifyIdentity).set(true);
+        channelIdMap.putIfAbsent(newUserId, channelId);
+
+        return true;
     }
 
     public void remove(Channel channel) {
@@ -80,6 +107,7 @@ public class UserSession {
         return channel;
     }
 
+
     /**
      * channel 中获取用户主键
      *
@@ -88,7 +116,12 @@ public class UserSession {
      */
     public long getUserId(Channel channel) {
         Long userId = channel.attr(UserSessionAttr.userId).get();
-        return Objects.isNull(userId) ? 0 : userId;
+
+        if (Objects.nonNull(userId)) {
+            return userId;
+        }
+
+        return 0;
     }
 
     /**
@@ -131,10 +164,6 @@ public class UserSession {
         }
 
         channelGroup.remove(channel);
-    }
-
-    UserSession() {
-
     }
 
     public static UserSession me() {
