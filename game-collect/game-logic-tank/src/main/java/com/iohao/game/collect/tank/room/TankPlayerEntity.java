@@ -1,6 +1,7 @@
 package com.iohao.game.collect.tank.room;
 
 import com.iohao.game.collect.common.room.AbstractPlayer;
+import com.iohao.game.collect.proto.tank.BulletEnum;
 import com.iohao.game.collect.proto.tank.TankBulletBox;
 import com.iohao.game.collect.proto.tank.TankMove;
 import lombok.Data;
@@ -16,7 +17,7 @@ import java.util.Map;
  * @date 2022-01-14
  */
 @Data
-public class TankPlayer extends AbstractPlayer {
+public class TankPlayerEntity extends AbstractPlayer {
     @Serial
     private static final long serialVersionUID = 774219456031784563L;
 
@@ -38,7 +39,7 @@ public class TankPlayer extends AbstractPlayer {
      *     value : TankBullet
      * </pre>
      */
-    Map<Integer, TankBulletBox> tankBulletMap = new HashMap<>();
+    Map<BulletEnum, TankBulletBox> tankBulletMap = new HashMap<>();
 
     /** 房间 id */
     long roomId;

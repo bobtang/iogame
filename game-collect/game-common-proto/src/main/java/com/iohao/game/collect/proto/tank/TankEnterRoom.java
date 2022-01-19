@@ -23,5 +23,5 @@ public class TankEnterRoom {
     public int team;
 
     @Protobuf(description = "玩家坦克列表")
-    public List<PlayerTank> playerTankList;
+    public List<TankPlayer> tankPlayerList;
 }

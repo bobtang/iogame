@@ -1,4 +1,9 @@
 更新日志
+
+2022-01-20
+对外服的 socket 和 websocket 共用一个业务处理类 ExternalBizHandler (负责把游戏端的请求 转发给网关)
+对外服的 socket 和 websocket 接收来自网关的响应也逻辑也保持一至
+
 2022-01-19
 登录业务 新增 ChangeUserIdKit 工具：
     变更对外服的 userId, userId与channel 关联

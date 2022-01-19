@@ -1,7 +1,7 @@
 package com.iohao.game.collect.tank.mapstruct;
 
-import com.iohao.game.collect.proto.tank.PlayerTank;
-import com.iohao.game.collect.tank.room.TankPlayer;
+import com.iohao.game.collect.proto.tank.TankPlayer;
+import com.iohao.game.collect.tank.room.TankPlayerEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
@@ -13,15 +13,15 @@ import org.junit.Test;
 public class TankMapstructTest {
     @Test
     public void testCon() {
-        TankPlayer tankPlayer = new TankPlayer();
-        tankPlayer.setHp(1000);
-        tankPlayer.setId(200);
-        tankPlayer.setTeam(20);
+        TankPlayerEntity tankPlayerEntity = new TankPlayerEntity();
+        tankPlayerEntity.setHp(1000);
+        tankPlayerEntity.setId(200);
+        tankPlayerEntity.setTeam(20);
+
+        log.info("{}", tankPlayerEntity);
+        TankPlayer tankPlayer =
+                TankMapstruct.ME.convert(tankPlayerEntity);
 
         log.info("{}", tankPlayer);
-        PlayerTank playerTank =
-                TankMapstruct.ME.convert(tankPlayer);
-
-        log.info("{}", playerTank);
     }
 }

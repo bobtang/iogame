@@ -1,4 +1,4 @@
-package com.iohao.little.game.net.external.bootstrap.codec;
+package com.iohao.little.game.net.external.bootstrap.handler.socket;
 
 import com.iohao.little.game.net.external.bootstrap.ExternalCont;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;

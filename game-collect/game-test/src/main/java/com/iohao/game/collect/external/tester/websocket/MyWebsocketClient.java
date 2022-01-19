@@ -4,9 +4,10 @@ import cn.hutool.core.util.StrUtil;
 import com.iohao.game.collect.common.ActionCont;
 import com.iohao.game.collect.common.GameConfig;
 import com.iohao.game.collect.proto.LoginVerify;
+import com.iohao.little.game.common.kit.ProtoKit;
 import com.iohao.little.game.net.external.bootstrap.ExternalCont;
-import com.iohao.little.game.net.external.bootstrap.codec.ExternalDecoder;
-import com.iohao.little.game.net.external.bootstrap.codec.ExternalEncoder;
+import com.iohao.little.game.net.external.bootstrap.handler.socket.ExternalDecoder;
+import com.iohao.little.game.net.external.bootstrap.handler.socket.ExternalEncoder;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -31,7 +32,7 @@ public class MyWebsocketClient {
         websocketClient.init();
         websocketClient.start();
 
-        log.info("start");
+        log.info("start ws://127.0.0.1:10088/websocket");
     }
 
     private ExternalMessage getExternalMessage() {
@@ -46,10 +47,9 @@ public class MyWebsocketClient {
 
         // 业务数据
         LoginVerify loginVerify = new LoginVerify();
-        loginVerify.jwt = ("abc");
+        loginVerify.jwt = ("test");
         request.setData(loginVerify);
 
-        log.info("client 发送 消息 {}", request);
 
         return request;
     }
@@ -57,7 +57,7 @@ public class MyWebsocketClient {
     private ByteBuf toByteBuf(ExternalMessage message) {
         int headLen = ExternalCont.HEADER_LEN + message.getDataLength();
         ByteBuf byteBuf = Unpooled.buffer(headLen);
-        ExternalEncoder.encode(getExternalMessage(), byteBuf);
+        ExternalEncoder.encode(message, byteBuf);
         return byteBuf;
     }
 
@@ -77,27 +77,39 @@ public class MyWebsocketClient {
                 // 建立连接后 执行的方法
                 ExternalMessage request = getExternalMessage();
 
-                // 发送
-                for (int i = 0; i < 6; i++) {
+//                // 发送
+//                for (int i = 0; i < 6; i++) {
+//
+//                }
 
-                }
 
                 var byteBuf = toByteBuf(request);
                 byte[] data1 = byteBuf.array();
+                data1 = new byte[]{0, 21, 0, 1, 100, 0, 1, 0, 1, 0, 0, 0, 0, 0, 6, 10, 4, 116, 101, 115, 116};
+
+                log.info("client 发送消息 {}", request);
+                log.info("client 发送消息 {}", data1);
+                System.out.println();
+
                 webSocketClient.send(data1);
             }
 
             @Override
             public void onMessage(ByteBuffer byteBuffer) {
                 // 接收消息
-                log.info("收到 byteBuffer 消息========== {}", byteBuffer);
+                log.info("client 收到消息 {}", byteBuffer.array());
 
                 ByteBuf in = Unpooled.wrappedBuffer(byteBuffer);
                 in.skipBytes(2);
 
                 ExternalMessage message = ExternalDecoder.decode(in);
+                byte[] data = message.getData();
+                LoginVerify loginVerify = ProtoKit.parseProtoByte(data, LoginVerify.class);
 
-                log.info("ok {}", message);
+//                LoginVerify.
+
+                log.info("client 收到消息 {}", message);
+                log.info("LoginVerify {}", loginVerify);
             }
 
             @Override

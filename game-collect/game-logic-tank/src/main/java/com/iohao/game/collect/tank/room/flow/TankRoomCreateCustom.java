@@ -5,7 +5,7 @@ import cn.hutool.core.util.IdUtil;
 import com.iohao.game.collect.common.room.AbstractRoom;
 import com.iohao.game.collect.common.room.CreateRoomInfo;
 import com.iohao.game.collect.common.room.flow.RoomCreateCustom;
-import com.iohao.game.collect.tank.room.TankRoom;
+import com.iohao.game.collect.tank.room.TankRoomEntity;
 
 /**
  * 坦克 房间创建
@@ -21,7 +21,7 @@ public class TankRoomCreateCustom implements RoomCreateCustom {
     public AbstractRoom createRoom(CreateRoomInfo createRoomInfo) {
         long roomId = snowflake.nextId();
 
-        TankRoom room = new TankRoom();
+        TankRoomEntity room = new TankRoomEntity();
         room.setRoomId(roomId);
 
         return room;

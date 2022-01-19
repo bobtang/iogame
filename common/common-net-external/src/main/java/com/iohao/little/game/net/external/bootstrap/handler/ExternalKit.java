@@ -5,7 +5,7 @@ import com.alipay.remoting.rpc.RpcCommandType;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.external.bootstrap.ExternalCont;
-import com.iohao.little.game.net.external.bootstrap.codec.ExternalEncoder;
+import com.iohao.little.game.net.external.bootstrap.handler.socket.ExternalEncoder;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import com.iohao.little.game.net.external.session.UserSession;
 import io.netty.buffer.ByteBuf;

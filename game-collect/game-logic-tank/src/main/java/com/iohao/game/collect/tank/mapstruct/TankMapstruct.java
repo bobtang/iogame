@@ -1,7 +1,7 @@
 package com.iohao.game.collect.tank.mapstruct;
 
-import com.iohao.game.collect.proto.tank.PlayerTank;
-import com.iohao.game.collect.tank.room.TankPlayer;
+import com.iohao.game.collect.proto.tank.TankPlayer;
+import com.iohao.game.collect.tank.room.TankPlayerEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -23,7 +23,7 @@ import java.util.List;
 public interface TankMapstruct {
     TankMapstruct ME = Mappers.getMapper(TankMapstruct.class);
 
-    PlayerTank convert(TankPlayer tankPlayer);
+    TankPlayer convert(TankPlayerEntity tankPlayerEntity);
 
-    List<PlayerTank> convertList(Collection<TankPlayer> tankPlayerList);
+    List<TankPlayer> convertList(Collection<TankPlayerEntity> tankPlayerEntityList);
 }

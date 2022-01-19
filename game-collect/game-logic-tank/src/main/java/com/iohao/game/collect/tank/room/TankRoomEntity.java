@@ -22,7 +22,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Data
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TankRoom extends AbstractRoom {
+public class TankRoomEntity extends AbstractRoom {
     @Serial
     private static final long serialVersionUID = 5354718988786951601L;
     /** 帧同步 id */
@@ -31,11 +31,11 @@ public class TankRoom extends AbstractRoom {
     /** 房间最大帧数 */
     private final int maxFrameId;
 
-    public TankRoom(int maxFrameId) {
+    public TankRoomEntity(int maxFrameId) {
         this.maxFrameId = maxFrameId;
     }
 
-    public TankRoom() {
+    public TankRoomEntity() {
         this.maxFrameId = 60 * FrameKit.MINUTE;
     }
 

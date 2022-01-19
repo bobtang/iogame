@@ -19,5 +19,5 @@ import java.util.List;
 @EnableZigZap
 public class TankRoomBroadcastRes {
     @Protobuf(description = "玩家坦克列表")
-    public List<PlayerTank> playerTanks;
+    public List<TankPlayer> tankPlayers;
 }

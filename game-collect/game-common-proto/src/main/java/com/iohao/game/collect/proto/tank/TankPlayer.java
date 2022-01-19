@@ -6,7 +6,7 @@ import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * 玩家的坦克
@@ -18,7 +18,7 @@ import java.util.List;
 @Setter
 @ProtobufClass(description = "玩家的坦克")
 @EnableZigZap
-public class PlayerTank {
+public class TankPlayer {
     @Protobuf(description = "玩家id")
     public long id;
 
@@ -38,7 +38,8 @@ public class PlayerTank {
     public TankMove tankMove;
 
     @Protobuf(description = "坦克 子弹盒")
-    public List<TankBulletBox> tankBulletBoxList;
+//    public List<TankBulletBox> tankBulletBoxList;
+    Map<BulletEnum, TankBulletBox> tankBulletMap;
 
 
 }

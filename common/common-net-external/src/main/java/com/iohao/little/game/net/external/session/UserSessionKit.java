@@ -34,13 +34,15 @@ public class UserSessionKit {
         UserSession.me().add(userId, channel);
         channel.attr(UserSessionAttr.verifyIdentity).set(false);
 
-        InetSocketAddress socketAddress = (InetSocketAddress) ctx.channel().remoteAddress();
-        String remoteAddress = socketAddress.getAddress().getHostAddress();
+        if (log.isDebugEnabled()) {
+            InetSocketAddress socketAddress = (InetSocketAddress) ctx.channel().remoteAddress();
+            String remoteAddress = socketAddress.getAddress().getHostAddress();
 
-        socketAddress = (InetSocketAddress) ctx.channel().localAddress();
-        String localAddress = socketAddress != null ? socketAddress.getAddress().getHostAddress() : "null";
+            socketAddress = (InetSocketAddress) ctx.channel().localAddress();
+            String localAddress = socketAddress != null ? socketAddress.getAddress().getHostAddress() : "null";
 
-        log.trace("localAddress::{}, remoteAddress::{}", localAddress, remoteAddress);
+            log.debug("localAddress::{}, remoteAddress::{}", localAddress, remoteAddress);
+        }
     }
 
 }

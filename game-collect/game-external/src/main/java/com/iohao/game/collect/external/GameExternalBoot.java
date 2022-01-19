@@ -4,7 +4,7 @@ import com.iohao.game.collect.common.GameConfig;
 import com.iohao.little.game.net.external.ExternalServer;
 import com.iohao.little.game.net.external.ExternalServerBuilder;
 import com.iohao.little.game.net.external.bootstrap.ExternalJoinEnum;
-import com.iohao.little.game.net.external.bootstrap.handler.ExternalHandlerWebsocket;
+import com.iohao.little.game.net.external.bootstrap.handler.ExternalBizHandler;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -33,7 +33,7 @@ public class GameExternalBoot {
         // websocket 方式连接
         builder.setExternalJoinEnum(ExternalJoinEnum.WEBSOCKET);
         // websocket 业务处理器
-        builder.registerChannelHandler("externalHandler", new ExternalHandlerWebsocket());
+        builder.registerChannelHandler("ExternalBizHandler", new ExternalBizHandler());
 
         // 构建对外服务器
         ExternalServer externalServer = builder.build();

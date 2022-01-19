@@ -6,8 +6,8 @@ import com.iohao.game.collect.proto.tank.TankBulletConfigRes;
 import com.iohao.game.collect.proto.tank.TankEnterRoom;
 import com.iohao.game.collect.proto.tank.TankMove;
 import com.iohao.game.collect.tank.mapstruct.TankMapstruct;
-import com.iohao.game.collect.tank.room.TankPlayer;
-import com.iohao.game.collect.tank.room.TankRoom;
+import com.iohao.game.collect.tank.room.TankPlayerEntity;
+import com.iohao.game.collect.tank.room.TankRoomEntity;
 import com.iohao.game.collect.tank.room.flow.*;
 import com.iohao.game.collect.tank.service.TankConfigService;
 import com.iohao.little.game.action.skeleton.annotation.ActionController;
@@ -40,9 +40,9 @@ public class TankAction {
     public TankMove tankMove(long userId, TankMove tankMove) {
         tankMove.userId = userId;
 
-        TankRoom room = roomService.getRoomByUserId(userId);
+        TankRoomEntity room = roomService.getRoomByUserId(userId);
 
-        TankPlayer player = room.getPlayerById(userId);
+        TankPlayerEntity player = room.getPlayerById(userId);
 
         player.setTankMove(tankMove);
 
@@ -51,6 +51,7 @@ public class TankAction {
 
     @ActionMethod(TankCmd.getTankBulletConfigRes)
     public TankBulletConfigRes getTankBulletConfigRes() {
+        // 子弹配置
         return TankConfigService.me().getTankBulletConfigRes();
     }
 
@@ -62,7 +63,7 @@ public class TankAction {
         long roomId = enterRoom.roomId;
 
         // 房间
-        TankRoom room = roomService.getRoom(roomId);
+        TankRoomEntity room = roomService.getRoom(roomId);
 
         // 房间不存在，创建一个房间
         if (Objects.isNull(room)) {
@@ -73,7 +74,7 @@ public class TankAction {
             roomService.addRoom(room);
         }
 
-        TankPlayer player = room.getPlayerById(userId);
+        TankPlayerEntity player = room.getPlayerById(userId);
 
         // 如果检查是否在房间内
         if (Objects.isNull(player)) {
@@ -86,8 +87,8 @@ public class TankAction {
         }
 
         // 进入房间
-        Collection<TankPlayer> players = room.listPlayer();
-        enterRoom.playerTankList = TankMapstruct.ME.convertList(players);
+        Collection<TankPlayerEntity> players = room.listPlayer();
+        enterRoom.tankPlayerList = TankMapstruct.ME.convertList(players);
 
 
         return enterRoom;

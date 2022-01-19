@@ -1,7 +1,7 @@
 package com.iohao.little.game.net.external.bootstrap.initializer;
 
-import com.iohao.little.game.net.external.bootstrap.codec.ExternalDecoder;
-import com.iohao.little.game.net.external.bootstrap.codec.ExternalEncoder;
+import com.iohao.little.game.net.external.bootstrap.handler.socket.ExternalDecoder;
+import com.iohao.little.game.net.external.bootstrap.handler.socket.ExternalEncoder;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.timeout.IdleStateHandler;

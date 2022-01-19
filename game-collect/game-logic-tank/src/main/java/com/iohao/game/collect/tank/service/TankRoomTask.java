@@ -5,8 +5,8 @@ import com.iohao.game.collect.common.room.RoomService;
 import com.iohao.game.collect.proto.tank.TankRoomBroadcastRes;
 import com.iohao.game.collect.tank.action.TankAction;
 import com.iohao.game.collect.tank.mapstruct.TankMapstruct;
-import com.iohao.game.collect.tank.room.TankPlayer;
-import com.iohao.game.collect.tank.room.TankRoom;
+import com.iohao.game.collect.tank.room.TankPlayerEntity;
+import com.iohao.game.collect.tank.room.TankRoomEntity;
 import com.iohao.little.game.common.kit.ExecutorKit;
 
 import java.util.Collection;
@@ -45,12 +45,12 @@ public class TankRoomTask {
 //            Collection<TankRoom> rooms = roomService.listRoom();
 
             long roomId = TankAction.tempRoomId;
-            TankRoom room = roomService.getRoom(roomId);
+            TankRoomEntity room = roomService.getRoom(roomId);
             if (Objects.isNull(room)) {
                 return;
             }
 
-            Collection<TankPlayer> listPlayer = room.listPlayer();
+            Collection<TankPlayerEntity> listPlayer = room.listPlayer();
             TankRoomBroadcastRes res = new TankRoomBroadcastRes();
             TankMapstruct.ME.convertList(listPlayer);
 

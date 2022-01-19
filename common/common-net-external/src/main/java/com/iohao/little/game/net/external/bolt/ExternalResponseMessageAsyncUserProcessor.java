@@ -4,16 +4,12 @@ import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
-import com.iohao.little.game.net.external.bootstrap.ExternalCont;
-import com.iohao.little.game.net.external.bootstrap.codec.ExternalEncoder;
 import com.iohao.little.game.net.external.bootstrap.handler.ExternalKit;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import com.iohao.little.game.net.external.session.UserSession;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
-import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import lombok.extern.slf4j.Slf4j;
+
 
 /**
  * 接收来自网关的响应
@@ -34,17 +30,11 @@ public class ExternalResponseMessageAsyncUserProcessor extends AsyncUserProcesso
 
         ExternalMessage message = ExternalKit.convertExternalMessage(responseMessage);
 
-        // 消息编码
-        int headLen = ExternalCont.HEADER_LEN + message.getDataLength();
-        ByteBuf byteBuf = Unpooled.buffer(headLen);
-        ExternalEncoder.encode(message, byteBuf);
-
         // 响应结果给用户
         long userId = responseMessage.getUserId();
         Channel channel = UserSession.me().getChannel(userId);
 
-        BinaryWebSocketFrame socketFrame = new BinaryWebSocketFrame(byteBuf);
-        channel.writeAndFlush(socketFrame);
+        channel.writeAndFlush(message);
     }
 
     /**

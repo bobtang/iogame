@@ -4,7 +4,6 @@ import com.iohao.game.collect.common.GameConfig;
 import com.iohao.little.game.net.external.ExternalServer;
 import com.iohao.little.game.net.external.ExternalServerBuilder;
 import com.iohao.little.game.net.external.bootstrap.ExternalJoinEnum;
-import com.iohao.little.game.net.external.bootstrap.handler.ExternalHandlerWebsocket;
 
 /**
  * @author 洛朱
@@ -27,7 +26,7 @@ public class TestExternalServerWebsocket {
         // websocket 方式连接
         builder.setExternalJoinEnum(ExternalJoinEnum.WEBSOCKET);
         // websocket 业务处理器
-        builder.registerChannelHandler("testExternalHandler", new TestExternalHandlerWebsocket());
+        builder.registerChannelHandler("TestExternalBizHandler", new TestExternalBizHandler());
 
         // 构建对外服务器
         ExternalServer externalServer = builder.build();

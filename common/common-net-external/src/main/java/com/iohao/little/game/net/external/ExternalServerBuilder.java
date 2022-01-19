@@ -5,7 +5,7 @@ import cn.hutool.system.SystemUtil;
 import com.iohao.little.game.net.external.bootstrap.BootstrapOption;
 import com.iohao.little.game.net.external.bootstrap.ExternalChannelInitializerCallback;
 import com.iohao.little.game.net.external.bootstrap.ExternalJoinEnum;
-import com.iohao.little.game.net.external.bootstrap.handler.ExternalHandler;
+import com.iohao.little.game.net.external.bootstrap.handler.ExternalBizHandler;
 import com.iohao.little.game.net.external.bootstrap.initializer.ExternalChannelInitializerCallbackOption;
 import com.iohao.little.game.net.external.bootstrap.initializer.ExternalChannelInitializerCallbackSocket;
 import com.iohao.little.game.net.external.bootstrap.initializer.ExternalChannelInitializerCallbackWebsocket;
@@ -87,7 +87,7 @@ public class ExternalServerBuilder {
 
         // 如果没有 handler 默认给一个
         if (channelHandlerProcessors.isEmpty()) {
-            registerChannelHandler("externalHandler", new ExternalHandler());
+            registerChannelHandler("ExternalBizHandler", new ExternalBizHandler());
         }
 
         // 连接方式
