@@ -5,7 +5,7 @@ import com.alipay.remoting.rpc.RpcCommandType;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.external.bootstrap.ExternalCont;
-import com.iohao.little.game.net.external.bootstrap.handler.socket.ExternalEncoder;
+import com.iohao.little.game.net.external.bootstrap.handler.codec.ExternalEncoder;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import com.iohao.little.game.net.external.session.UserSession;
 import io.netty.buffer.ByteBuf;
@@ -40,6 +40,22 @@ public class ExternalKit {
         externalMessage.setData(responseMessage.getDataContent());
 
         return externalMessage;
+    }
+
+    /**
+     * 消息总长度
+     * <pre>
+     *     消息总长度 = 消息头2 + 协议体13
+     *     2 + (2 + 1 + 4 + 2 + 4) = 15
+     * </pre>
+     *
+     * @param message ExternalMessage
+     * @return 消息总长度
+     */
+    public int messageHeadLen(ExternalMessage message) {
+        // 消息总长度 = 消息头2 + 协议体13
+        // 2 + (2 + 1 + 4 + 2 + 4) = 15
+        return ExternalCont.HEADER_LEN + message.getDataLength();
     }
 
     public void writeAndFlush(long userId, ExternalMessage message) {

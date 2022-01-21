@@ -61,18 +61,17 @@ public class CommonServerStartupConfig {
         var innerModuleMessageAsyncUserProcess = new GateInnerModuleMessageAsyncUserProcessor();
         boltServer.registerUserProcessor(innerModuleMessageAsyncUserProcess);
 
-        // 处理 - 接收真实用户的请求，把请求转发到逻辑服
-        var externalMessageProcessor = new GateExternalRequestMessageAsyncUserProcessor();
-        boltServer.registerUserProcessor(externalMessageProcessor);
-
         // 处理 - 改变用户 id -- external server
         var gateChangeUserIdMessageAsyncUserProcess = new GateChangeUserIdMessageAsyncUserProcessor(boltServer);
         boltServer.registerUserProcessor(gateChangeUserIdMessageAsyncUserProcess);
 
-        // 处理 - 把逻辑服的响应转发到对外服
+        // 处理 - (接收真实用户的请求) 把对外服的请求转发到逻辑服
+        var externalMessageProcessor = new GateExternalRequestMessageAsyncUserProcessor(boltServer);
+        boltServer.registerUserProcessor(externalMessageProcessor);
+
+        // 处理 - （响应真实用户的请求）把逻辑服的响应转发到对外服
         var responseMessageAsyncUserProcessor = new GateResponseMessageAsyncUserProcessor(boltServer);
         boltServer.registerUserProcessor(responseMessageAsyncUserProcessor);
-
     }
 
 }

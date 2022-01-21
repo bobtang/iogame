@@ -1,6 +1,8 @@
 package com.iohao.little.game.net.external.bootstrap.initializer;
 
 import com.iohao.little.game.net.external.bootstrap.ExternalChannelInitializerCallback;
+import com.iohao.little.game.net.external.bootstrap.handler.codec.ExternalDecoder;
+import com.iohao.little.game.net.external.bootstrap.handler.codec.ExternalEncoder;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -37,11 +39,12 @@ public class ExternalChannelInitializerCallbackSocket extends ChannelInitializer
                 2,
                 // 长度调整值： 这里不做任何调整
                 -2,
-                // 跳过的初始字节数： 跳过2位; (跳过消息头的 2 位长度)
-                2));
+                // 跳过的初始字节数： 跳过0位; (跳过消息头的 0 位长度)
+                0));
 
         // 编解码
-        option.codec(pipeline);
+        pipeline.addLast("decoder", new ExternalDecoder());
+        pipeline.addLast("encoder", new ExternalEncoder());
 
         // 心跳
         option.idleHandler(pipeline);

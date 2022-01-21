@@ -6,8 +6,8 @@ import com.iohao.game.collect.common.GameConfig;
 import com.iohao.game.collect.proto.LoginVerify;
 import com.iohao.little.game.common.kit.ProtoKit;
 import com.iohao.little.game.net.external.bootstrap.ExternalCont;
-import com.iohao.little.game.net.external.bootstrap.handler.socket.ExternalDecoder;
-import com.iohao.little.game.net.external.bootstrap.handler.socket.ExternalEncoder;
+import com.iohao.little.game.net.external.bootstrap.handler.codec.ExternalDecoder;
+import com.iohao.little.game.net.external.bootstrap.handler.codec.ExternalEncoder;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -100,7 +100,6 @@ public class MyWebsocketClient {
                 log.info("client 收到消息 {}", byteBuffer.array());
 
                 ByteBuf in = Unpooled.wrappedBuffer(byteBuffer);
-                in.skipBytes(2);
 
                 ExternalMessage message = ExternalDecoder.decode(in);
                 byte[] data = message.getData();

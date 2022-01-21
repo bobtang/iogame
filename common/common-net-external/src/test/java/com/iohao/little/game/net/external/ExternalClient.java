@@ -1,6 +1,6 @@
 package com.iohao.little.game.net.external;
 
-import com.iohao.little.game.net.external.bootstrap.handler.socket.ExternalEncoder;
+import com.iohao.little.game.net.external.bootstrap.handler.codec.ExternalEncoder;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;

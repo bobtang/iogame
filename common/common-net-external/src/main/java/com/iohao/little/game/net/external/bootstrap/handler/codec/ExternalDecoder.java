@@ -1,17 +1,11 @@
-package com.iohao.little.game.net.external.bootstrap.handler.socket;
+package com.iohao.little.game.net.external.bootstrap.handler.codec;
 
 import com.iohao.little.game.net.external.bootstrap.ExternalCont;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -37,6 +31,9 @@ public class ExternalDecoder extends ByteToMessageDecoder {
     }
 
     public static ExternalMessage decode(ByteBuf in) {
+        // 跳过消息头 2字节
+        in.skipBytes(2);
+
         // 2 请求命令类型: 0 心跳，1 业务
         short cmdCode = in.readShort();
         // 1 协议开关，用于一些协议级别的开关控制，比如 安全加密校验等。 : 0 不校验
@@ -64,42 +61,4 @@ public class ExternalDecoder extends ByteToMessageDecoder {
         return request;
     }
 
-
-    public static void main(String[] args) throws Exception {
-
-        String contentStr = "hello, world!";
-
-
-        ExternalMessage request = new ExternalMessage();
-        request.setCmdCode((short) 1);
-        // 600 , 700
-        request.setCmdMerge(39322300);
-
-        request.setData(contentStr.getBytes());
-
-
-        ByteBuf buf = Unpooled.buffer(30);
-        buf.writeInt(ExternalCont.HEADER_LEN);
-
-        buf.writeShort(request.getCmdCode());
-        buf.writeInt(request.getCmdMerge());
-        buf.writeByte(request.getProtocolSwitch());
-        buf.writeInt(request.getDataLength());
-        buf.writeBytes(request.getData());
-
-        String str = ByteBufUtil.hexDump(buf);
-        // 000001025802bc000000000d68656c6c6f2c20776f726c6421
-        System.out.println(str);
-        byte[] a = buf.array();
-        System.out.println(Arrays.toString(a));
-
-
-        Charset utf8 = StandardCharsets.UTF_8;
-        System.out.println(buf.toString(utf8));
-
-
-        ExternalDecoder decoder = new ExternalDecoder();
-
-        decoder.decode(null, buf, new ArrayList<>());
-    }
 }

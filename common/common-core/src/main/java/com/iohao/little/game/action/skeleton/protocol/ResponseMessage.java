@@ -11,4 +11,6 @@ import java.io.Serial;
 public class ResponseMessage extends BarMessage {
     @Serial
     private static final long serialVersionUID = 2501490581523234975L;
+
+
 }

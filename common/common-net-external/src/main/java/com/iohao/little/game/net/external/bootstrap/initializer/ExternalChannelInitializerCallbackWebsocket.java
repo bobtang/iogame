@@ -1,8 +1,7 @@
 package com.iohao.little.game.net.external.bootstrap.initializer;
 
 import com.iohao.little.game.net.external.bootstrap.ExternalChannelInitializerCallback;
-import com.iohao.little.game.net.external.bootstrap.handler.websocket.ExternalEncoderWebsocket;
-import com.iohao.little.game.net.external.bootstrap.handler.websocket.WebSocketExternalDecoder;
+import com.iohao.little.game.net.external.bootstrap.handler.codec.ExternalCodecWebsocket;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -59,13 +58,16 @@ public class ExternalChannelInitializerCallbackWebsocket extends ChannelInitiali
                 .websocketPath(option.websocketPath)
                 .maxFramePayloadLength(option.packageMaxSize)
                 .checkStartsWith(true)
+                .allowExtensions(true)
                 .build();
 
         /*
          * 处理 websocket 的解码器
-         * 协议包长度限制
+         * 1 协议包长度限制
+         * 2 验证协议url。
+         *
          * 按照 WebSocket 规范的要求, 处理 :
-         * 1 WebSocket 升级握手
+         * 1 WebSocket 升级握手, 验证GET的请求升级
          * 2 PingWebSocketFrame
          * 3 PongWebSocketFrame
          * 4 CloseWebSocketFrame
@@ -74,10 +76,8 @@ public class ExternalChannelInitializerCallbackWebsocket extends ChannelInitiali
          */
         pipeline.addLast("WebSocketServerProtocolHandler", new WebSocketServerProtocolHandler(config));
 
-        // 解码 BinaryWebSocketFrame --> ExternalMessage
-        pipeline.addLast("WebSocketExternalDecoder", WebSocketExternalDecoder.me());
-
-        pipeline.addLast("out-ExternalEncoderWebsocket", new ExternalEncoderWebsocket());
+        // websocket 编解码
+        pipeline.addLast("codec", new ExternalCodecWebsocket());
 
         // 心跳
         option.idleHandler(pipeline);

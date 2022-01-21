@@ -87,7 +87,7 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
         // 创建响应对象
         ResponseMessageCreate responseMessageCreate = barSkeleton.getResponseMessageCreate();
         ResponseMessage responseMessage = responseMessageCreate.createResponseMessage();
-        responseMessage.setCmdInfo(actionCommand.getCmdInfo());
+        responseMessage.setCmdInfo(request.getCmdInfo());
         responseMessage.setUserId(userId);
         responseMessage.setRpcCommandType(request.getRpcCommandType());
 

@@ -1,7 +1,5 @@
 package com.iohao.little.game.net.external.bootstrap.initializer;
 
-import com.iohao.little.game.net.external.bootstrap.handler.socket.ExternalDecoder;
-import com.iohao.little.game.net.external.bootstrap.handler.socket.ExternalEncoder;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.timeout.IdleStateHandler;
@@ -24,18 +22,10 @@ public class ExternalChannelInitializerCallbackOption {
 
     /** user processors of rpc server */
     Map<String, ChannelHandler> channelHandlerProcessors;
-    /** 默认数据包最大 2MB */
-    int packageMaxSize = 2 * 1024 * 1024;
+    /** 默认数据包最大 1MB */
+    int packageMaxSize = 1024 * 1024;
     /** http 升级 websocket 协议地址 */
     String websocketPath = "/websocket";
-
-
-    void codec(ChannelPipeline pipeline) {
-        // 编解码
-        pipeline.addLast("decoder", new ExternalDecoder());
-        pipeline.addLast("encoder", new ExternalEncoder());
-
-    }
 
     void idleHandler(ChannelPipeline pipeline) {
         // 心跳处理

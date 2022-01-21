@@ -27,6 +27,7 @@ public class TestExternalServerWebsocket {
         builder.setExternalJoinEnum(ExternalJoinEnum.WEBSOCKET);
         // websocket 业务处理器
         builder.registerChannelHandler("TestExternalBizHandler", new TestExternalBizHandler());
+//        builder.registerChannelHandler("TestExternalBizHandler", new ExternalTextHandler());
 
         // 构建对外服务器
         ExternalServer externalServer = builder.build();

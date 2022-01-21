@@ -13,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public enum ActionErrorEnum implements MsgExceptionInfo {
-
+    
     ;
 
     /** 消息码 */

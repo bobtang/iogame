@@ -2,12 +2,19 @@ package com.iohao.little.game.net.server.processor;
 
 import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
+import com.alipay.remoting.Connection;
 import com.alipay.remoting.exception.RemotingException;
+import com.alipay.remoting.rpc.RpcServer;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
+import com.iohao.little.game.action.skeleton.core.exception.BarErrorCode;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
+import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
+import com.iohao.little.game.net.common.BoltServer;
 import com.iohao.little.game.net.server.GateKit;
 import com.iohao.little.game.net.server.module.ModuleInfoProxy;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Objects;
 
 /**
  * 对外服务器消息处理
@@ -20,6 +27,12 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class GateExternalRequestMessageAsyncUserProcessor extends AsyncUserProcessor<RequestMessage> {
+    final BoltServer boltServer;
+
+    public GateExternalRequestMessageAsyncUserProcessor(BoltServer boltServer) {
+        this.boltServer = boltServer;
+    }
+
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, RequestMessage requestMessage) {
         // 把对外服的请求转发到逻辑服 处理
@@ -27,13 +40,34 @@ public class GateExternalRequestMessageAsyncUserProcessor extends AsyncUserProce
         log.info("把对外服的请求转发到逻辑服 处理 {}", requestMessage);
         ModuleInfoProxy moduleInfo = GateKit.getModuleInfo(requestMessage);
 
+        if (Objects.isNull(moduleInfo)) {
+            //  通知对外服， 路由不存在
+            extracted(bizCtx, requestMessage);
+            return;
+        }
+
         try {
             moduleInfo.oneway(requestMessage);
         } catch (RemotingException | InterruptedException e) {
             e.printStackTrace();
         }
-
     }
+
+    private void extracted(BizContext bizCtx, RequestMessage requestMessage) {
+        // 路由不存在
+        Connection connection = bizCtx.getConnection();
+        ResponseMessage responseMessage = requestMessage.createResponseMessage();
+        responseMessage.setValidatorMsg("路由不存在");
+        responseMessage.setErrorCode(BarErrorCode.cmdInfoErrorCode);
+
+        RpcServer rpcServer = boltServer.getRpcServer();
+        try {
+            rpcServer.oneway(connection, responseMessage);
+        } catch (RemotingException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * 指定感兴趣的请求数据类型，该 UserProcessor 只对感兴趣的请求类型的数据进行处理；

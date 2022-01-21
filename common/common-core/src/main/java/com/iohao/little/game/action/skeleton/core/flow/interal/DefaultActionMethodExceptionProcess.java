@@ -1,6 +1,6 @@
 package com.iohao.little.game.action.skeleton.core.flow.interal;
 
-import com.iohao.little.game.action.skeleton.core.BarErrorCode;
+import com.iohao.little.game.action.skeleton.core.exception.BarErrorCode;
 import com.iohao.little.game.action.skeleton.core.exception.MsgException;
 import com.iohao.little.game.action.skeleton.core.flow.ActionMethodExceptionProcess;
 

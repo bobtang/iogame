@@ -1,6 +1,6 @@
 package com.iohao.little.game.action.skeleton.protocol;
 
-import com.iohao.little.game.action.skeleton.core.BarErrorCode;
+import com.iohao.little.game.action.skeleton.core.exception.BarErrorCode;
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.action.skeleton.core.CmdInfoFlyweightFactory;
 import com.iohao.little.game.action.skeleton.core.CmdKit;
