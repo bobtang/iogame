@@ -37,4 +37,6 @@ public class FrameKit {
     public int framePerMillis(int frameCount) {
         return 1000 / frameCount;
     }
+
+
 }

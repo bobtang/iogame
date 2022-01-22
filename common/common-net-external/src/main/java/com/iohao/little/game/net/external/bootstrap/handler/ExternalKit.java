@@ -4,14 +4,9 @@ import cn.hutool.core.util.IdUtil;
 import com.alipay.remoting.rpc.RpcCommandType;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
-import com.iohao.little.game.net.external.bootstrap.ExternalCont;
-import com.iohao.little.game.net.external.bootstrap.handler.codec.ExternalEncoder;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import com.iohao.little.game.net.external.session.UserSession;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
-import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import lombok.experimental.UtilityClass;
 
 import java.util.Objects;
@@ -25,8 +20,8 @@ public class ExternalKit {
     public RequestMessage convertRequestMessage(ExternalMessage message) {
         RequestMessage requestMessage = new RequestMessage();
         requestMessage.setCmdMerge(message.getCmdMerge());
-        requestMessage.setDataContent(message.getData());
         requestMessage.setRpcCommandType(RpcCommandType.REQUEST_ONEWAY);
+        requestMessage.setDataContent(message.getDataContent());
 
         return requestMessage;
     }
@@ -42,22 +37,6 @@ public class ExternalKit {
         return externalMessage;
     }
 
-    /**
-     * 消息总长度
-     * <pre>
-     *     消息总长度 = 消息头2 + 协议体13
-     *     2 + (2 + 1 + 4 + 2 + 4) = 15
-     * </pre>
-     *
-     * @param message ExternalMessage
-     * @return 消息总长度
-     */
-    public int messageHeadLen(ExternalMessage message) {
-        // 消息总长度 = 消息头2 + 协议体13
-        // 2 + (2 + 1 + 4 + 2 + 4) = 15
-        return ExternalCont.HEADER_LEN + message.getDataLength();
-    }
-
     public void writeAndFlush(long userId, ExternalMessage message) {
         UserSession session = UserSession.me();
         Channel channel = session.getChannel(userId);
@@ -68,13 +47,8 @@ public class ExternalKit {
             return;
         }
 
-        int headLen = ExternalCont.HEADER_LEN + message.getDataLength();
-        ByteBuf byteBuf = Unpooled.buffer(headLen);
-        ExternalEncoder.encode(message, byteBuf);
+        channel.writeAndFlush(message);
 
-        BinaryWebSocketFrame binaryWebSocketFrame = new BinaryWebSocketFrame(byteBuf);
-
-        channel.writeAndFlush(binaryWebSocketFrame);
     }
 
     public long newId() {

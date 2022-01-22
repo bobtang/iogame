@@ -1,6 +1,6 @@
 package com.iohao.little.game.net.external.bootstrap.handler.codec;
 
-import com.iohao.little.game.net.external.bootstrap.handler.ExternalKit;
+import com.iohao.little.game.common.kit.ProtoKit;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -17,11 +17,11 @@ import java.util.Objects;
  * websocket  编解码
  *
  * @author 洛朱
- * @date 2022-01-21
+ * @date 2022-01-22
  */
 @Slf4j
 @ChannelHandler.Sharable
-public class ExternalCodecWebsocket extends MessageToMessageCodec<BinaryWebSocketFrame, ExternalMessage> {
+public class ExternalCodecWebsocketProto extends MessageToMessageCodec<BinaryWebSocketFrame, ExternalMessage> {
     @Override
     protected void encode(ChannelHandlerContext ctx, ExternalMessage msg, List<Object> out) throws Exception {
         if (Objects.isNull(msg)) {
@@ -29,11 +29,10 @@ public class ExternalCodecWebsocket extends MessageToMessageCodec<BinaryWebSocke
         }
 
         // 编码器 - 将 ExternalMessage 编码成 字节数组
-        int initialCapacity = ExternalKit.messageHeadLen(msg);
 
-        ByteBuf byteBuf = Unpooled.buffer(initialCapacity);
+        byte[] bytes = ProtoKit.toBytes(msg);
 
-        ExternalEncoder.encode(msg, byteBuf);
+        ByteBuf byteBuf = Unpooled.wrappedBuffer(bytes);
 
         BinaryWebSocketFrame socketFrame = new BinaryWebSocketFrame(byteBuf);
 
@@ -44,11 +43,16 @@ public class ExternalCodecWebsocket extends MessageToMessageCodec<BinaryWebSocke
     }
 
     @Override
-    protected void decode(ChannelHandlerContext ctx, BinaryWebSocketFrame binary, List<Object> out) throws Exception {
-        // 解码器 - 将字节数组解码成 ExternalMessage
-        ByteBuf in = binary.content();
-        ExternalMessage message = ExternalDecoder.decode(in);
+    protected void decode(ChannelHandlerContext ctx, BinaryWebSocketFrame binary, List<Object> out) {
+
+        ByteBuf content = binary.content();
+        byte[] msgBytes = new byte[content.readableBytes()];
+        content.readBytes(msgBytes);
+
+        ExternalMessage message = ProtoKit.parseProtoByte(msgBytes, ExternalMessage.class);
 
         out.add(message);
     }
+
+
 }

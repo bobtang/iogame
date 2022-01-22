@@ -1,7 +1,7 @@
 package com.iohao.little.game.net.external.bootstrap.initializer;
 
 import com.iohao.little.game.net.external.bootstrap.ExternalChannelInitializerCallback;
-import com.iohao.little.game.net.external.bootstrap.handler.codec.ExternalCodecWebsocket;
+import com.iohao.little.game.net.external.bootstrap.handler.codec.ExternalCodecWebsocketProto;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -50,14 +50,16 @@ public class ExternalChannelInitializerCallbackWebsocket extends ChannelInitiali
          */
         pipeline.addLast("aggregator", new HttpObjectAggregator(65536));
 
-        // WebSocket数据压缩
+        // WebSocket 数据压缩
         pipeline.addLast("compression", new WebSocketServerCompressionHandler());
 
         WebSocketServerProtocolConfig config = WebSocketServerProtocolConfig.newBuilder()
                 // 验证 URL
                 .websocketPath(option.websocketPath)
+                // 默认数据包大小
                 .maxFramePayloadLength(option.packageMaxSize)
                 .checkStartsWith(true)
+                // 开启 WebSocket 扩展
                 .allowExtensions(true)
                 .build();
 
@@ -77,7 +79,11 @@ public class ExternalChannelInitializerCallbackWebsocket extends ChannelInitiali
         pipeline.addLast("WebSocketServerProtocolHandler", new WebSocketServerProtocolHandler(config));
 
         // websocket 编解码
-        pipeline.addLast("codec", new ExternalCodecWebsocket());
+//        pipeline.addLast("codec", new ExternalCodecWebsocket());
+        pipeline.addLast("codec", new ExternalCodecWebsocketProto());
+
+        //半包处理
+//        pipeline.addLast(new ProtobufVarint32LengthFieldPrepender());
 
         // 心跳
         option.idleHandler(pipeline);

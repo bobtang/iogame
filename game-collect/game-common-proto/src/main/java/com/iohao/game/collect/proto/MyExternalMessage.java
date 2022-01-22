@@ -1,10 +1,8 @@
-package com.iohao.little.game.net.external.bootstrap.message;
+package com.iohao.game.collect.proto;
 
 import com.baidu.bjf.remoting.protobuf.annotation.EnableZigZap;
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
-import com.iohao.little.game.action.skeleton.core.CmdKit;
-import com.iohao.little.game.common.kit.ProtoKit;
 import lombok.Data;
 
 /**
@@ -16,7 +14,7 @@ import lombok.Data;
 @Data
 @ProtobufClass(description = "对外数据协议")
 @EnableZigZap
-public class ExternalMessage {
+public class MyExternalMessage {
     /** 请求命令类型: 0 心跳，1 业务 */
     @Protobuf(description = "请求命令类型: 0 心跳，1 业务")
     int cmdCode;
@@ -64,15 +62,15 @@ public class ExternalMessage {
         }
     }
 
-    /**
-     * 业务数据
-     *
-     * @param data 业务数据
-     */
-    public void setData(Object data) {
-        byte[] bytes = ProtoKit.toBytes(data);
-        setData(bytes);
-    }
+//    /**
+//     * 业务数据
+//     *
+//     * @param data 业务数据
+//     */
+//    public void setData(Object data) {
+//        byte[] bytes = ProtoKit.toBytes(data);
+//        setData(bytes);
+//    }
 
     /**
      * 业务路由
@@ -81,6 +79,6 @@ public class ExternalMessage {
      * @param subCmd 子路由
      */
     public void setCmdMerge(int cmd, int subCmd) {
-        this.cmdMerge = CmdKit.merge(cmd, subCmd);
+//        this.cmdMerge = CmdKit.merge(cmd, subCmd);
     }
 }

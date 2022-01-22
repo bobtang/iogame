@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class TestExternalBizHandler extends SimpleChannelInboundHandler<ExternalMessage> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ExternalMessage message) {
-        byte[] data = message.getData();
+        byte[] data = message.getDataContent();
         LoginVerify loginVerify = ProtoKit.parseProtoByte(data, LoginVerify.class);
         log.info("x 接收客户端消息 {} - {}", loginVerify, message);
 

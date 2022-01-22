@@ -17,6 +17,7 @@ import java.util.List;
  * @author 洛朱
  * @date 2022-01-10
  */
+@Deprecated
 public class ExternalDecoder extends ByteToMessageDecoder {
 
     @Override
