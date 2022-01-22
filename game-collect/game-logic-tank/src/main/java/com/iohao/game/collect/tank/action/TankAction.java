@@ -12,14 +12,18 @@ import com.iohao.game.collect.tank.room.flow.*;
 import com.iohao.game.collect.tank.service.TankConfigService;
 import com.iohao.little.game.action.skeleton.annotation.ActionController;
 import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
 import java.util.Objects;
 
 /**
+ * 井架
+ *
  * @author 洛朱
  * @date 2022-01-14
  */
+@Slf4j
 @ActionController(TankCmd.cmd)
 public class TankAction {
     /*=============== 暂时不加 spring 进来， 后面在加入 spring ===============*/
@@ -36,6 +40,13 @@ public class TankAction {
         gameFlowService.setRoomEnterCustom(new TankRoomEnterCustom());
     }
 
+    /**
+     * 坦克移动
+     *
+     * @param userId   userId
+     * @param tankMove move
+     * @return move
+     */
     @ActionMethod(TankCmd.tankMove)
     public TankMove tankMove(long userId, TankMove tankMove) {
         tankMove.userId = userId;
@@ -49,12 +60,25 @@ public class TankAction {
         return tankMove;
     }
 
+    /**
+     * 子弹的配置
+     *
+     * @return 子弹的配置列表
+     * @apiNote 子弹配置
+     */
     @ActionMethod(TankCmd.getTankBulletConfigRes)
     public TankBulletConfigRes getTankBulletConfigRes() {
         // 子弹配置
         return TankConfigService.me().getTankBulletConfigRes();
     }
 
+    /**
+     * 进入房间
+     *
+     * @param userId    userId
+     * @param enterRoom enterRoom
+     * @return TankEnterRoom
+     */
     @ActionMethod(TankCmd.enterRoom)
     public TankEnterRoom enterRoom(long userId, TankEnterRoom enterRoom) {
         // TODO: 2022/1/14 开发阶段，只用一个房间
@@ -93,4 +117,5 @@ public class TankAction {
 
         return enterRoom;
     }
+
 }

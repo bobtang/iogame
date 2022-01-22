@@ -4,7 +4,7 @@ import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
-import com.iohao.little.game.net.external.bootstrap.handler.ExternalKit;
+import com.iohao.little.game.net.external.bootstrap.ExternalKit;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import com.iohao.little.game.net.external.session.UserSession;
 import com.iohao.little.game.widget.broadcast.BroadcastMessage;

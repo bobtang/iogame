@@ -70,6 +70,8 @@ public final class ActionCommand {
     /** 返回类型 */
     final ActionMethodReturnInfo actionMethodReturnInfo;
 
+    final ActionCommandDoc actionCommandDoc;
+
     /** 打印信息 */
     final String toStringInfo;
 
@@ -94,6 +96,8 @@ public final class ActionCommand {
         this.hasMethodParam = builder.paramInfos != null;
         this.throwException = builder.actionMethod.getExceptionTypes().length != 0;
         this.actionMethodReturnInfo = new ActionMethodReturnInfo(builder);
+
+        this.actionCommandDoc = builder.actionCommandDoc;
 
         this.toStringInfo = info();
     }
@@ -141,6 +145,8 @@ public final class ActionCommand {
         int actionMethodIndex;
         /** 返回值信息 */
         Class<?> returnTypeClazz;
+        /** action command 文档 */
+        ActionCommandDoc actionCommandDoc;
 
         ActionCommand build(BarSkeletonSetting barSkeletonSetting) {
             return new ActionCommand(this, barSkeletonSetting);
@@ -206,7 +212,5 @@ public final class ActionCommand {
         public boolean isVoid() {
             return Void.TYPE == this.returnTypeClazz;
         }
-
-
     }
 }

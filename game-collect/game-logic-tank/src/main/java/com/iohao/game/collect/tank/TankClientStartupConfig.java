@@ -24,19 +24,20 @@ public class TankClientStartupConfig implements ClientStartupConfig {
         // 扫描 TankAction.class 所在包
         BarSkeletonBuilder builder = GameBarSkeletonConfig.createBuilder(TankAction.class);
 
+
         return builder.build();
     }
 
     @Override
     public ModuleMessage createModuleMessage() {
 
-        int moduleId = ModuleKeyCont.userModuleId;
+        int moduleId = ModuleKeyCont.gameTankModuleId;
         var moduleKey = ModuleKeyKit.getModuleKey(moduleId);
 
         ModuleMessage moduleMessage = new ModuleMessage();
         moduleMessage.setModuleKey(moduleKey);
-        moduleMessage.setName("游戏服 用户");
-        moduleMessage.setDescription("用户业务");
+        moduleMessage.setName("游戏服 坦克");
+        moduleMessage.setDescription("坦克业务");
 
         return moduleMessage;
     }

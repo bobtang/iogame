@@ -1,4 +1,4 @@
-package com.iohao.little.game.net.external.bootstrap.handler;
+package com.iohao.little.game.net.external.bootstrap;
 
 import cn.hutool.core.util.IdUtil;
 import com.alipay.remoting.rpc.RpcCommandType;

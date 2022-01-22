@@ -34,6 +34,7 @@ public class GameBarSkeletonConfig {
         // 过滤条件：只解析带有 ActionController 注解的 class
         final Predicate<Class<?>> predicateFilter = (clazz) -> Objects.nonNull(clazz.getAnnotation(ActionController.class));
 
+
         for (Class<?> actionClazz : actionClazzArray) {
 
             // 扫描

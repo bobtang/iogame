@@ -67,20 +67,20 @@ public class PrintActionKit {
         System.out.print(tip);
 
         for (int cmd = 0; cmd < behaviors.length; cmd++) {
-            ActionCommand[] subBehavior = behaviors[cmd];
+            ActionCommand[] subBehaviors = behaviors[cmd];
 
-            if (Objects.isNull(subBehavior)) {
+            if (Objects.isNull(subBehaviors)) {
                 continue;
             }
 
-            for (int subCmd = 0; subCmd < subBehavior.length; subCmd++) {
-                ActionCommand behavior = subBehavior[subCmd];
+            for (int subCmd = 0; subCmd < subBehaviors.length; subCmd++) {
+                ActionCommand subBehavior = subBehaviors[subCmd];
 
-                if (Objects.isNull(behavior)) {
+                if (Objects.isNull(subBehavior)) {
                     continue;
                 }
 
-                ActionCommand.ParamInfo[] paramInfos = behavior.getParamInfos();
+                ActionCommand.ParamInfo[] paramInfos = subBehavior.getParamInfos();
                 String paramInfo = "";
                 String paramInfoShort = "";
 
@@ -96,12 +96,12 @@ public class PrintActionKit {
                 Map<String, Object> params = new HashMap<>();
                 params.put("cmd", cmd);
                 params.put("subCmd", subCmd);
-                params.put("actionName", behavior.getActionControllerClazz().getName());
-                params.put("methodName", behavior.getActionMethodName());
+                params.put("actionName", subBehavior.getActionControllerClazz().getName());
+                params.put("methodName", subBehavior.getActionMethodName());
                 params.put("paramInfo", paramInfo);
 
                 params.put("paramInfoShort", paramInfoShort);
-                params.put("actionNameShort", behavior.getActionControllerClazz().getSimpleName());
+                params.put("actionNameShort", subBehavior.getActionControllerClazz().getSimpleName());
 
                 shortName(params, shortName);
                 String template = "@|red 路由: {cmd} - {subCmd}|@ @|WHITE --- tcp action 类.方法(参数):|@ @|BLUE {actionName}|@.@|green {methodName}|@(@|RED {paramInfo}|@)";
@@ -109,11 +109,10 @@ public class PrintActionKit {
 
                 // 返回类型
                 String returnInfoTemplate = " --- @|DEFAULT return|@ @|MAGENTA {returnTypeClazz}|@";
-                ActionCommand.ActionMethodReturnInfo actionMethodReturnInfo = behavior.getActionMethodReturnInfo();
+                ActionCommand.ActionMethodReturnInfo actionMethodReturnInfo = subBehavior.getActionMethodReturnInfo();
                 final Class<?> returnTypeClazz = actionMethodReturnInfo.getReturnTypeClazz();
                 params.put("returnTypeClazz", returnTypeClazz.getName());
                 params.put("returnTypeClazzShort", returnTypeClazz.getSimpleName());
-
 
                 if (List.class.isAssignableFrom(returnTypeClazz)) {
                     returnInfoTemplate = returnInfoTemplate + "<@|RED {actualTypeArgumentClazz}|@>";
@@ -124,8 +123,10 @@ public class PrintActionKit {
                 shortName(params, shortName);
                 String returnInfo = StrUtil.format(returnInfoTemplate, params);
 
-                String jumpTemplate = " ~~~ see.({actionSimpleName}.java:1).{methodName}";
-                params.put("actionSimpleName", behavior.getActionControllerClazz().getSimpleName());
+                params.put("actionSimpleName", subBehavior.getActionControllerClazz().getSimpleName());
+                params.put("lineNumber", subBehavior.actionCommandDoc.getLineNumber());
+
+                String jumpTemplate = " ~~~ see.({actionSimpleName}.java:{lineNumber}).{methodName}";
                 String jumpInfo = StrUtil.format(jumpTemplate, params);
 
                 String text = info + returnInfo + jumpInfo;

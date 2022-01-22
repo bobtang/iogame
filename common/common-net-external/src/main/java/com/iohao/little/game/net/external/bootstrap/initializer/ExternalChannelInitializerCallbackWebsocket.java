@@ -79,11 +79,7 @@ public class ExternalChannelInitializerCallbackWebsocket extends ChannelInitiali
         pipeline.addLast("WebSocketServerProtocolHandler", new WebSocketServerProtocolHandler(config));
 
         // websocket 编解码
-//        pipeline.addLast("codec", new ExternalCodecWebsocket());
         pipeline.addLast("codec", new ExternalCodecWebsocketProto());
-
-        //半包处理
-//        pipeline.addLast(new ProtobufVarint32LengthFieldPrepender());
 
         // 心跳
         option.idleHandler(pipeline);

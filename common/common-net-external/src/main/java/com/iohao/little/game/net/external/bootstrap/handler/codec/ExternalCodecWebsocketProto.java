@@ -28,8 +28,7 @@ public class ExternalCodecWebsocketProto extends MessageToMessageCodec<BinaryWeb
             throw new Exception("The encode ExternalMessage is null");
         }
 
-        // 编码器 - 将 ExternalMessage 编码成 字节数组
-
+        // 编码器 - ExternalMessage ---> 字节数组
         byte[] bytes = ProtoKit.toBytes(msg);
 
         ByteBuf byteBuf = Unpooled.wrappedBuffer(bytes);
@@ -37,14 +36,11 @@ public class ExternalCodecWebsocketProto extends MessageToMessageCodec<BinaryWeb
         BinaryWebSocketFrame socketFrame = new BinaryWebSocketFrame(byteBuf);
 
         out.add(socketFrame);
-
-        log.info("写出消息给客户端 : {}", msg);
-
     }
 
     @Override
     protected void decode(ChannelHandlerContext ctx, BinaryWebSocketFrame binary, List<Object> out) {
-
+        // 解码器 - 字节数组 ---> ExternalMessage
         ByteBuf content = binary.content();
         byte[] msgBytes = new byte[content.readableBytes()];
         content.readBytes(msgBytes);

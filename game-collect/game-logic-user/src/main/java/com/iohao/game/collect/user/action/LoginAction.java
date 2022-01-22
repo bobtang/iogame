@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.LongAdder;
 
 /**
+ * 登录相关
  * @author 洛朱
  * @date 2022-01-11
  */
@@ -24,6 +25,13 @@ public class LoginAction {
 
     LongAdder userIdAdder = new LongAdder();
 
+    /**
+     * 登录验证
+     *
+     * @param loginVerify 登录验证pb
+     * @param flowContext f
+     * @return 用户信息
+     */
     @ActionMethod(UserCmd.loginVerify)
     public UserInfo loginVerify(LoginVerify loginVerify, FlowContext flowContext) {
         log.info("loginVerify {} ", loginVerify);

@@ -1,11 +1,9 @@
 package com.iohao.little.game.action.skeleton.core.flow.interal;
 
 import cn.hutool.core.util.StrUtil;
-import com.alipay.remoting.AsyncContext;
-import com.alipay.remoting.BizContext;
 import com.iohao.little.game.action.skeleton.core.ActionCommand;
+import com.iohao.little.game.action.skeleton.core.ActionCommandDoc;
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
-import com.iohao.little.game.action.skeleton.core.ServerContext;
 import com.iohao.little.game.action.skeleton.core.flow.ActionMethodInOut;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
@@ -63,13 +61,14 @@ public class DebugInOut implements ActionMethodInOut {
         paramMap.put("validatorMsg", responseMessage.getValidatorMsg());
 
         String template = """
-                ┏━━不符合验证━━━ Debug [{className}.java] ━━━ [.({className}.java:1).{actionMethodName}] ━━━ {cmdInfo}
+                ┏━━不符合验证━━━ Debug [{className}.java] ━━━ [.({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo}
                 ┣ 参数: {paramName} : {paramData}
                 ┣ 错误码: {errorCode}
                 ┣ 验证信息: {validatorMsg}
                 ┣ 时间: {time} ms (业务方法总耗时)
                 ┗━━━━━ Debug [{className}.java] ━━━
                 """;
+
         String message = StrUtil.format(template, paramMap);
         System.out.println(message);
     }
@@ -83,12 +82,13 @@ public class DebugInOut implements ActionMethodInOut {
         }
 
         String template = """
-                ┏━━━━━ Debug [{className}.java] ━━━ [.({className}.java:1).{actionMethodName}] ━━━ {cmdInfo}
+                ┏━━━━━ Debug [{className}.java] ━━━ [.({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo}
                 ┣ 参数: {paramName} : {paramData}
                 ┣ 响应: {returnData}
                 ┣ 时间: {time} ms (业务方法总耗时)
                 ┗━━━━━ Debug [{className}.java] ━━━
                 """;
+
         String message = StrUtil.format(template, paramMap);
         System.out.println(message);
     }
@@ -99,12 +99,14 @@ public class DebugInOut implements ActionMethodInOut {
         long ms = System.currentTimeMillis() - flowContext.getAttrLong(timeKey);
 
         ActionCommand actionCommand = flowContext.getActionCommand();
+        ActionCommandDoc actionCommandDoc = actionCommand.getActionCommandDoc();
         Class<?> cc = actionCommand.getActionControllerClazz();
 
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("className", cc.getSimpleName());
         paramMap.put("actionMethodName", actionCommand.getActionMethodName());
         paramMap.put("time", ms);
+        paramMap.put("lineNumber", actionCommandDoc.getLineNumber());
         // 路由信息
         CmdInfo cmdInfo = flowContext.getRequest().getCmdInfo();
         paramMap.put("cmdInfo", cmdInfo);
@@ -150,12 +152,7 @@ public class DebugInOut implements ActionMethodInOut {
             Class<?> paramClazz = paramInfo.getParamClazz();
 
             // 这里可以使用策略模式 （但现在还不着急）
-            if (BizContext.class.equals(paramClazz)
-                    || AsyncContext.class.equals(paramClazz)
-                    || ServerContext.class.equals(paramClazz)
-                    || CmdInfo.class.equals(paramClazz)
-                    || RequestMessage.class.equals(paramClazz)
-            ) {
+            if (FlowContext.class.equals(paramClazz)) {
                 continue;
             }
 

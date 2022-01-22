@@ -21,27 +21,23 @@ public class TankConfigService {
 
 
     public TankConfigService() {
-        init();
-    }
-
-    private void init() {
         // 子弹配置
         initBulletConfig();
     }
 
     private void initBulletConfig() {
         TankBulletConfig bulletConfig1 = new TankBulletConfig();
-        bulletConfig1.bulletEnum = (BulletEnum.toyBullet);
+        bulletConfig1.bulletEnum = BulletEnum.toyBullet;
         bulletConfig1.speed = 1;
         bulletConfig1.attackValue = 1;
 
         TankBulletConfig bulletConfig2 = new TankBulletConfig();
-        bulletConfig2.bulletEnum = (BulletEnum.directionBullet);
+        bulletConfig2.bulletEnum = BulletEnum.directionBullet;
         bulletConfig2.speed = 2;
         bulletConfig2.attackValue = 1;
 
         TankBulletConfig bulletConfig3 = new TankBulletConfig();
-        bulletConfig3.bulletEnum = (BulletEnum.snowBullet);
+        bulletConfig3.bulletEnum = BulletEnum.snowBullet;
         bulletConfig3.speed = 1;
         bulletConfig3.attackValue = 2;
 
@@ -50,7 +46,7 @@ public class TankConfigService {
         configList.add(bulletConfig2);
         configList.add(bulletConfig3);
 
-        tankBulletConfigRes.tankBulletConfigList = (configList);
+        tankBulletConfigRes.tankBulletConfigList = configList;
 
         for (TankBulletConfig bulletConfig : configList) {
             tankBulletConfigMap.put(bulletConfig.bulletEnum, bulletConfig);

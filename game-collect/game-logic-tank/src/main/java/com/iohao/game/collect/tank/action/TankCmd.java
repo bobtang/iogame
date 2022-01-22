@@ -24,8 +24,8 @@ public interface TankCmd extends ActionCont.Info {
     /** 子弹配置 */
     int getTankBulletConfigRes = 4;
     /** 坦克移动 */
-    int tankMove = 4;
+    int tankMove = 5;
 
     /** 坦克攻击 */
-    int attack = 5;
+    int attack = 6;
 }

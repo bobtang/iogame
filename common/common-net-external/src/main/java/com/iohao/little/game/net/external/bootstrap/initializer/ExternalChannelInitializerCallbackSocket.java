@@ -1,8 +1,6 @@
 package com.iohao.little.game.net.external.bootstrap.initializer;
 
 import com.iohao.little.game.net.external.bootstrap.ExternalChannelInitializerCallback;
-import com.iohao.little.game.net.external.bootstrap.handler.codec.ExternalDecoder;
-import com.iohao.little.game.net.external.bootstrap.handler.codec.ExternalEncoder;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -43,8 +41,8 @@ public class ExternalChannelInitializerCallbackSocket extends ChannelInitializer
                 0));
 
         // 编解码
-        pipeline.addLast("decoder", new ExternalDecoder());
-        pipeline.addLast("encoder", new ExternalEncoder());
+//        pipeline.addLast("decoder", new ExternalDecoder());
+//        pipeline.addLast("encoder", new ExternalEncoder());
 
         // 心跳
         option.idleHandler(pipeline);

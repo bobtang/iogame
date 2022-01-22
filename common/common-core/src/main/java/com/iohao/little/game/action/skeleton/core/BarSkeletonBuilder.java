@@ -48,6 +48,8 @@ public final class BarSkeletonBuilder {
     /** 响应对象的创建 */
     ResponseMessageCreate responseMessageCreate = new DefaultResponseMessageCreate();
 
+    String currentDir;
+
     BarSkeletonBuilder() {
     }
 
@@ -57,12 +59,15 @@ public final class BarSkeletonBuilder {
             this.actionMethodParamParser = new ProtoActionMethodParamParser();
             this.actionMethodResultWrap = new ProtoActionMethodResultWrap();
         }
+
+
     }
 
     /**
      * 构建骨架, 提供了一些默认配置
      */
     public BarSkeleton build() {
+
         this.before();
 
         // 参数设置
@@ -98,6 +103,8 @@ public final class BarSkeletonBuilder {
 
         log(barSkeleton);
 
+        BarSkeletonDoc.me().addSkeleton(barSkeleton);
+
         return barSkeleton;
     }
 
@@ -116,7 +123,7 @@ public final class BarSkeletonBuilder {
             actionCommandManager.actionCommandMap.putAll(map);
         }
 
-        map.clear();
+        actionCommandInfoBuilder.clean();
     }
 
     private void extractedHandler(BarSkeleton barSkeleton) {

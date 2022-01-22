@@ -89,6 +89,8 @@
         <hessian.version>4.0.65</hessian.version>
         <!--  Jansi 控制台输出彩色文字 https://www.oschina.net/p/jansi https://mvnrepository.com/artifact/org.fusesource.jansi/jansi  -->
         <jansi.version>2.4.0</jansi.version>
+        <!-- Java文档解析器 https://mvnrepository.com/artifact/com.thoughtworks.qdox/qdox -->
+        <qdox.version>2.0.1</qdox.version>
 
         <!-- Hutool是一个Java工具包 see https://www.hutool.cn/ https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
         <hutool.version>5.7.16</hutool.version>

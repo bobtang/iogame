@@ -51,8 +51,7 @@ public class ClassScanner {
 
     public List<Class<?>> listScan() {
         try {
-            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            this.classLoader = classLoader != null ? classLoader : ClassScanner.class.getClassLoader();
+            this.initClassLoad();
 
             List<URL> urlList = getResources();
             scanResources(urlList);
@@ -63,13 +62,27 @@ public class ClassScanner {
         return new ArrayList<>(clazzSet);
     }
 
-    private List<URL> getResources() throws IOException {
-        Set<URL> urlSet = new HashSet<>();
+    private void initClassLoad() {
+        if (Objects.nonNull(this.classLoader)) {
+            return;
+        }
+
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        this.classLoader = classLoader != null ? classLoader : ClassScanner.class.getClassLoader();
+
+    }
+
+    public List<URL> getResources() throws IOException {
+        this.initClassLoad();
+
         Enumeration<URL> urlEnumeration = classLoader.getResources(packagePath);
+
+        Set<URL> urlSet = new HashSet<>();
         while (urlEnumeration.hasMoreElements()) {
             URL url = urlEnumeration.nextElement();
             urlSet.add(url);
         }
+
         return new ArrayList<>(urlSet);
     }
 

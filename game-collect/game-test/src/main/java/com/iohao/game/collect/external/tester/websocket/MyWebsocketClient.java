@@ -4,10 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.iohao.game.collect.common.GameConfig;
 import com.iohao.game.collect.proto.LoginVerify;
 import com.iohao.little.game.common.kit.ProtoKit;
-import com.iohao.little.game.net.external.bootstrap.handler.codec.ExternalEncoder;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import lombok.extern.slf4j.Slf4j;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft_6455;
@@ -32,24 +29,6 @@ public class MyWebsocketClient {
         log.info("start ws://127.0.0.1:10088/websocket");
     }
 
-//    public static void main(String[] args) {
-//
-//        ExternalMessage externalMessage = MyWebsocketClient.getExternalMessage();
-//        MyBird myBird = new MyBird();
-//        myBird.setId(21);
-//
-//        byte[] protoBytes = ProtoKit.toBytes(myBird);
-//        log.info("{}", protoBytes);
-//
-//        ByteBuf byteBuf = Unpooled.buffer(2);
-//        byteBuf.writeShort(21);
-//
-//        byte[] temp = byteBuf.array();
-//
-//        log.info("{}", temp);
-//
-//    }
-
     private static ExternalMessage getExternalMessage() {
         ExternalMessage request = new ExternalMessage();
         request.setCmdCode((short) 1);
@@ -63,17 +42,9 @@ public class MyWebsocketClient {
         loginVerify.jwt = ("test");
         request.setData(loginVerify);
 
-
         return request;
     }
 
-    private static ByteBuf toByteBuf(ExternalMessage message) {
-//        int headLen = ExternalCont.HEADER_LEN + message.getDataLength();
-        int headLen = 1;
-        ByteBuf byteBuf = Unpooled.buffer(headLen);
-        ExternalEncoder.encode(message, byteBuf);
-        return byteBuf;
-    }
 
     public void start() {
         webSocketClient.connect();
@@ -115,7 +86,6 @@ public class MyWebsocketClient {
                 // 接收消息
                 byte[] dataContent = byteBuffer.array();
                 log.info("client 收到消息 {}", dataContent);
-
 
 
                 ExternalMessage message = ProtoKit.parseProtoByte(dataContent, ExternalMessage.class);

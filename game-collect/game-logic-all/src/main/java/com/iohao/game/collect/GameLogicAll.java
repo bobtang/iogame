@@ -1,5 +1,6 @@
 package com.iohao.game.collect;
 
+import com.iohao.game.collect.tank.TankClientStartupConfig;
 import com.iohao.game.collect.user.UserClientStartupConfig;
 
 /**
@@ -16,5 +17,9 @@ public class GameLogicAll {
         // 启动用户逻辑服
         UserClientStartupConfig userClientStartupConfig = new UserClientStartupConfig();
         userClientStartupConfig.startup();
+
+        TankClientStartupConfig tankClientStartupConfig = new TankClientStartupConfig();
+        tankClientStartupConfig.startup();
+
     }
 }

@@ -1,6 +1,5 @@
 package com.iohao.little.game.net.external;
 
-import com.iohao.little.game.net.external.bootstrap.handler.codec.ExternalEncoder;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -37,7 +36,7 @@ public class ExternalClient {
                         ChannelPipeline pipeline = ch.pipeline();
 
                         // 编解码
-                        pipeline.addLast("encoder", new ExternalEncoder());
+//                        pipeline.addLast("encoder", new ExternalEncoder());
 
                         pipeline.addLast(new ClientMessageHandler());
                     }

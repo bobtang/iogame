@@ -3,8 +3,6 @@ package com.iohao.game.collect.external.tester.socket;
 import com.iohao.game.collect.common.ActionCont;
 import com.iohao.game.collect.common.GameConfig;
 import com.iohao.game.collect.proto.LoginVerify;
-import com.iohao.little.game.net.external.bootstrap.handler.codec.ExternalDecoder;
-import com.iohao.little.game.net.external.bootstrap.handler.codec.ExternalEncoder;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -69,12 +67,12 @@ public class TestExternalClientSocket {
                                 // 长度调整值： 这里不做任何调整
                                 -2,
                                 // 跳过的初始字节数： 跳过2位; (跳过消息头的 2 位长度)
-                                2));
+                                0));
 
 
                         // 编解码
-                        pipeline.addLast("decoder", new ExternalDecoder());
-                        pipeline.addLast("encoder", new ExternalEncoder());
+//                        pipeline.addLast("decoder", new ExternalDecoder());
+//                        pipeline.addLast("encoder", new ExternalEncoder());
 
                         pipeline.addLast(new ClientMessageHandler());
                     }

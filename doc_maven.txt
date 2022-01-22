@@ -1,0 +1,10 @@
+mvn clean install -Dmaven.test.skip=true
+
+编译
+mvn compile
+
+jprotobuf
+mvn jprotobuf:precompile
+
+生成 html doc
+mvn clean install -Dmaven.test.skip=true

@@ -45,14 +45,6 @@ public class ExternalMessage {
     @Protobuf(description = "业务请求数据")
     byte[] dataContent;
 
-
-//
-//    /** 业务请求体长度 */
-//    int dataLength = 0;
-//    /** 业务请求体 字节数组 */
-//    byte[] data;
-//
-
     /**
      * 业务数据
      *
