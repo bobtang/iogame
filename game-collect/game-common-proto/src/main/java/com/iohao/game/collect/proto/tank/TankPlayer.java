@@ -37,9 +37,6 @@ public class TankPlayer {
     @Protobuf(description = "坦克位置")
     public TankMove tankMove;
 
-    @Protobuf(description = "坦克 子弹盒")
-//    public List<TankBulletBox> tankBulletBoxList;
-    Map<BulletEnum, TankBulletBox> tankBulletMap;
-
-
+    @Protobuf(description = "坦克子弹: key: 子弹 id 1 玩具弹, 2 雪弹; value : 数量")
+    public Map<Integer, Integer> tankBulletMap;
 }

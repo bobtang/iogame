@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 /**
- * 井架
+ * 坦克相关
  *
  * @author 洛朱
  * @date 2022-01-14
@@ -73,7 +73,7 @@ public class TankAction {
     }
 
     /**
-     * 进入房间
+     * 玩家进入房间
      *
      * @param userId    userId
      * @param enterRoom enterRoom

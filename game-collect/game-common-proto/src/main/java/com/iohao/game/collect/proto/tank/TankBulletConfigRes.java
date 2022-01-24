@@ -16,6 +16,6 @@ import java.util.List;
 @EnableZigZap
 public class TankBulletConfigRes {
     /** id */
-    @Protobuf(description = "id")
+    @Protobuf(description = "坦克子弹配置 list")
     public List<TankBulletConfig> tankBulletConfigList;
 }

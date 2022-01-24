@@ -6,10 +6,10 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import lombok.extern.slf4j.Slf4j;
+import org.jctools.maps.NonBlockingHashMapLong;
 
 import java.net.InetSocketAddress;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 用户 session 管理
@@ -27,8 +27,7 @@ public class UserSession {
      * key is 玩家 id
      * value is channelId
      */
-    final ConcurrentHashMap<Long, ChannelId> channelIdMap = new ConcurrentHashMap<>();
-
+    final NonBlockingHashMapLong<ChannelId> channelIdMap = new NonBlockingHashMapLong<>();
 
     /**
      * 添加 channel 关联

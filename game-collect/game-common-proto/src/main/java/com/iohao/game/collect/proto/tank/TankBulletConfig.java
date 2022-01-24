@@ -15,8 +15,8 @@ import lombok.ToString;
 @ProtobufClass(description = "坦克子弹配置")
 @EnableZigZap
 public class TankBulletConfig {
-    @Protobuf(description = "子弹 类型2")
-    public BulletEnum bulletEnum;
+    @Protobuf(description = "子弹 id")
+    public int bulletId;
 
     @Protobuf(description = "子弹 攻击力")
     public long attackValue;

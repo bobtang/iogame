@@ -33,6 +33,8 @@
             mvn jprotobuf:precompile
             or
             mvn package
+
+            https://mvnrepository.com/artifact/com.baidu/jprotobuf-precompile-plugin
             -->
             <plugin>
                 <groupId>com.baidu</groupId>

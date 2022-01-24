@@ -94,7 +94,7 @@
 
         <!-- Hutool是一个Java工具包 see https://www.hutool.cn/ https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
         <hutool.version>5.7.16</hutool.version>
-        <!-- JCTools是一款对jdk并发数据结构进行增强的并发工具 see http://jctools.github.io/JCTools/ https://mvnrepository.com/artifact/org.jctools/jctools-core -->
+        <!-- JCTools 是一款对jdk并发数据结构进行增强的并发工具 see http://jctools.github.io/JCTools/ https://mvnrepository.com/artifact/org.jctools/jctools-core -->
         <jctools-core.version>3.3.0</jctools-core.version>
         <!-- 新一代 Java 模板引擎 see http://ibeetl.com/ https://mvnrepository.com/artifact/com.ibeetl/beetl -->
         <beetl.version>3.9.3.RELEASE</beetl.version>

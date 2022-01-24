@@ -1,8 +1,6 @@
 package com.iohao.game.collect.tank.room;
 
 import com.iohao.game.collect.common.room.AbstractPlayer;
-import com.iohao.game.collect.proto.tank.BulletEnum;
-import com.iohao.game.collect.proto.tank.TankBulletBox;
 import com.iohao.game.collect.proto.tank.TankMove;
 import lombok.Data;
 
@@ -39,9 +37,8 @@ public class TankPlayerEntity extends AbstractPlayer {
      *     value : TankBullet
      * </pre>
      */
-    Map<BulletEnum, TankBulletBox> tankBulletMap = new HashMap<>();
+    Map<Integer, Integer> tankBulletMap = new HashMap<>();
 
     /** 房间 id */
     long roomId;
-
 }

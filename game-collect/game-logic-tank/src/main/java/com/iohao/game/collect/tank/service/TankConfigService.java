@@ -1,8 +1,8 @@
 package com.iohao.game.collect.tank.service;
 
-import com.iohao.game.collect.proto.tank.BulletEnum;
 import com.iohao.game.collect.proto.tank.TankBulletConfig;
 import com.iohao.game.collect.proto.tank.TankBulletConfigRes;
+import com.iohao.game.collect.tank.config.BulletId;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
@@ -16,7 +16,8 @@ import java.util.*;
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TankConfigService {
-    final Map<BulletEnum, TankBulletConfig> tankBulletConfigMap = new HashMap<>();
+
+    final Map<Integer, TankBulletConfig> tankBulletConfigMap = new HashMap<>();
     final TankBulletConfigRes tankBulletConfigRes = new TankBulletConfigRes();
 
 
@@ -27,29 +28,24 @@ public class TankConfigService {
 
     private void initBulletConfig() {
         TankBulletConfig bulletConfig1 = new TankBulletConfig();
-        bulletConfig1.bulletEnum = BulletEnum.toyBullet;
+        bulletConfig1.bulletId = BulletId.toyBullet;
         bulletConfig1.speed = 1;
         bulletConfig1.attackValue = 1;
 
         TankBulletConfig bulletConfig2 = new TankBulletConfig();
-        bulletConfig2.bulletEnum = BulletEnum.directionBullet;
+        bulletConfig2.bulletId = BulletId.snowBullet;
         bulletConfig2.speed = 2;
-        bulletConfig2.attackValue = 1;
+        bulletConfig2.attackValue = 2;
 
-        TankBulletConfig bulletConfig3 = new TankBulletConfig();
-        bulletConfig3.bulletEnum = BulletEnum.snowBullet;
-        bulletConfig3.speed = 1;
-        bulletConfig3.attackValue = 2;
 
         List<TankBulletConfig> configList = new ArrayList<>();
         configList.add(bulletConfig1);
         configList.add(bulletConfig2);
-        configList.add(bulletConfig3);
 
         tankBulletConfigRes.tankBulletConfigList = configList;
 
         for (TankBulletConfig bulletConfig : configList) {
-            tankBulletConfigMap.put(bulletConfig.bulletEnum, bulletConfig);
+            tankBulletConfigMap.put(bulletConfig.bulletId, bulletConfig);
         }
     }
 

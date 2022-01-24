@@ -20,7 +20,5 @@ public class TankBullet {
     @Protobuf(description = "id")
     public long id;
 
-    @Protobuf(description = "子弹 类型2")
-    public BulletEnum bulletEnum;
 
 }
