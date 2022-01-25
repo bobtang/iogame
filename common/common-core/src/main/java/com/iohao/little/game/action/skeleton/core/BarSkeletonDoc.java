@@ -9,6 +9,8 @@ import java.util.*;
 import java.util.function.Consumer;
 
 /**
+ * 游戏文档生成
+ *
  * @author 洛朱
  * @date 2022-01-23
  */
@@ -78,7 +80,7 @@ public class BarSkeletonDoc {
                     paramMap.put("methodName", subBehavior.getActionMethodName());
                     paramMap.put("methodComment", actionCommandDoc.getComment());
                     paramMap.put("methodParam", "");
-                    paramMap.put("returnTypeClazz", subBehavior.getActionMethodReturnInfo().getReturnTypeClazz());
+                    paramMap.put("returnTypeClazz", subBehavior.getActionMethodReturnInfo().getReturnTypeClazz().getName());
                     paramMap.put("lineNumber", actionCommandDoc.getLineNumber());
 
                     for (ActionCommand.ParamInfo paramInfo : subBehavior.paramInfos) {

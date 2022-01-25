@@ -13,6 +13,7 @@ import java.io.File;
 public class GenerateFileForProto {
     public static void main(String[] args) {
 
+        // 需要扫描的包名
         String protoPackagePath = GenerateFileForProto.class.getPackageName();
 
         String[] protoSourcePathArray = new String[]{
@@ -25,6 +26,7 @@ public class GenerateFileForProto {
                 , protoPackagePath.replaceAll("\\.", File.separator)
         };
 
+        // 源码目录
         String protoSourcePath = ArrayUtil.join(protoSourcePathArray, File.separator);
 
         String[] generateFolderArray = new String[]{
@@ -35,14 +37,19 @@ public class GenerateFileForProto {
                 , "proto"
         };
 
+        // 生成 .proto 文件存放的目录
         String generateFolder = ArrayUtil.join(generateFolderArray, File.separator);
 
         ProtoGenerateFile protoGenerateFile = ProtoGenerateFile.builder()
+                // 源码目录
                 .protoSourcePath(protoSourcePath)
+                // 需要扫描的包名
                 .protoPackagePath(protoPackagePath)
+                // 生成 .proto 文件存放的目录
                 .generateFolder(generateFolder)
                 .build();
 
+        // 生成 .proto 文件
         protoGenerateFile.generate();
     }
 }
