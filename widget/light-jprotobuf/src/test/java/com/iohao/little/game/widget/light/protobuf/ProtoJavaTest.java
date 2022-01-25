@@ -24,12 +24,12 @@ public class ProtoJavaTest {
             return;
         }
 
+        // 源码目录
         String protoSourcePath = "/Users/join/gitme/little-game-sun/widget/light-jprotobuf/src/test/java/com/iohao/little/game/widget/light/protobuf/pojo";
-
+        // 需要扫描的包名
         String protoPackagePath = ProtoTeacher.class.getPackageName();
-
-//        String generateFolder = "/Users/join/gitme/little-game-sun/widget/light-jprotobuf/src/main/resources";
-        String generateFolder = "/Users/join/gitme/little-game-sun/widget/light-jprotobuf/target/temp";
+        // 生成 .proto 文件存放的目录
+        String generateFolder = "/Users/join/gitme/little-game-sun/widget/light-jprotobuf/target/proto";
 
         ProtoGenerateFile protoGenerateFile = ProtoGenerateFile.builder()
                 .protoSourcePath(protoSourcePath)
@@ -37,6 +37,7 @@ public class ProtoJavaTest {
                 .generateFolder(generateFolder)
                 .build();
 
+        // 生成 .proto 文件
         protoGenerateFile.generate();
 
     }
