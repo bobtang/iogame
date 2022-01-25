@@ -5,6 +5,7 @@ import cn.hutool.system.SystemUtil;
 import com.iohao.little.game.widget.light.protobuf.ProtoGenerateFile;
 
 import java.io.File;
+import java.util.regex.Matcher;
 
 /**
  * @author 洛朱
@@ -16,6 +17,7 @@ public class GenerateFileForProto {
         // 需要扫描的包名
         String protoPackagePath = GenerateFileForProto.class.getPackageName();
 
+        String replacement = Matcher.quoteReplacement(File.separator);
         String[] protoSourcePathArray = new String[]{
                 SystemUtil.getUserInfo().getCurrentDir()
                 , "game-collect"
@@ -23,7 +25,7 @@ public class GenerateFileForProto {
                 , "src"
                 , "main"
                 , "java"
-                , protoPackagePath.replaceAll("\\.", File.separator)
+                , protoPackagePath.replaceAll("\\.", replacement)
         };
 
         // 源码目录

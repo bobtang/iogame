@@ -23,5 +23,5 @@ import lombok.experimental.FieldDefaults;
 @ProtoFileMerge(fileName = GameProtoFile.commonFileName, filePackage = GameProtoFile.commonFilePackage)
 public class LoginVerify {
     /** jwt */
-    public String jwt;
+    String jwt;
 }
