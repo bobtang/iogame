@@ -2,7 +2,7 @@ package com.iohao.game.collect.external.tester.websocket;
 
 import cn.hutool.core.util.StrUtil;
 import com.iohao.game.collect.common.GameConfig;
-import com.iohao.game.collect.proto.LoginVerify;
+import com.iohao.game.collect.proto.common.LoginVerify;
 import com.iohao.little.game.common.kit.ProtoKit;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import lombok.extern.slf4j.Slf4j;

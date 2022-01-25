@@ -1,4 +1,14 @@
 
+2022-01-25
+新增轻量小部件 light-jprotobuf
+    简化 jprotobuf 的编写方式
+
+    不在需要 @Protobuf(description = "xxx") 来生成注释了
+    现在 jprotobuf 的类中，注释既文档
+
+    可将多个 jprotobuf 类 合并生成为一个原生的 .proto 文件， 不使用 jprotobuf 提供的生成插件，
+    因为 jprotobuf 生成的 .proto 文件太乱（会有重复的文件类），在阅读时也不方便
+
 2022-01-24
 坦克 pb 更新
 

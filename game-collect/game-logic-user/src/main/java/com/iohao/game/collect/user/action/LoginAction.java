@@ -1,7 +1,7 @@
 package com.iohao.game.collect.user.action;
 
-import com.iohao.game.collect.proto.LoginVerify;
-import com.iohao.game.collect.proto.UserInfo;
+import com.iohao.game.collect.proto.common.LoginVerify;
+import com.iohao.game.collect.proto.common.UserInfo;
 import com.iohao.little.game.action.skeleton.annotation.ActionController;
 import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;

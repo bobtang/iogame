@@ -2,7 +2,7 @@ package com.iohao.game.collect.external.tester.socket;
 
 import com.iohao.game.collect.common.ActionCont;
 import com.iohao.game.collect.common.GameConfig;
-import com.iohao.game.collect.proto.LoginVerify;
+import com.iohao.game.collect.proto.common.LoginVerify;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;

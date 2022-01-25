@@ -1,11 +1,13 @@
 package com.iohao.game.collect.proto.tank;
 
 import com.baidu.bjf.remoting.protobuf.annotation.EnableZigZap;
-import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
-
+import com.iohao.game.collect.proto.GameProtoFile;
+import com.iohao.little.game.widget.light.protobuf.ProtoFileMerge;
+import lombok.AccessLevel;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.FieldDefaults;
 
 /**
  * 坦克位置
@@ -13,25 +15,27 @@ import lombok.ToString;
  * @author 洛朱
  * @date 2022-01-15
  */
-@ToString
 @Setter
-@ProtobufClass(description = "坦克位置")
+@ProtobufClass
 @EnableZigZap
+@FieldDefaults(level = AccessLevel.PUBLIC)
+@ToString
+@ProtoFileMerge(fileName = GameProtoFile.tankFileName, filePackage = GameProtoFile.tankFilePackage)
 public class TankMove {
-    @Protobuf(description = "x 轴")
-    public int x;
+    /** x 轴 */
+    int x;
 
-    @Protobuf(description = "y 轴")
-    public int y;
+    /** y 轴 */
+    int y;
 
-    @Protobuf(description = "方向 H")
-    public int directionH;
-    @Protobuf(description = "方向 V")
-    public int directionV;
+    /** 方向 H */
+    int directionH;
+    /** 方向 V */
+    int directionV;
 
-    @Protobuf(description = "玩家 id")
-    public long userId;
+    /** 玩家 id */
+    long userId;
 
-    @Protobuf(description = "hash")
-    public int hash;
+    /** hash */
+    int hash;
 }

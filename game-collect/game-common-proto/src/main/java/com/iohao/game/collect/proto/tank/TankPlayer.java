@@ -1,10 +1,13 @@
 package com.iohao.game.collect.proto.tank;
 
 import com.baidu.bjf.remoting.protobuf.annotation.EnableZigZap;
-import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
+import com.iohao.game.collect.proto.GameProtoFile;
+import com.iohao.little.game.widget.light.protobuf.ProtoFileMerge;
+import lombok.AccessLevel;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.FieldDefaults;
 
 import java.util.Map;
 
@@ -14,29 +17,31 @@ import java.util.Map;
  * @author 洛朱
  * @date 2022-01-15
  */
-@ToString
 @Setter
-@ProtobufClass(description = "玩家的坦克")
+@ProtobufClass
 @EnableZigZap
+@FieldDefaults(level = AccessLevel.PUBLIC)
+@ToString
+@ProtoFileMerge(fileName = GameProtoFile.tankFileName, filePackage = GameProtoFile.tankFilePackage)
 public class TankPlayer {
-    @Protobuf(description = "玩家id")
-    public long id;
+    /** 玩家id */
+    long id;
 
-    @Protobuf(description = "坦克 血条")
-    public long hp;
+    /** 坦克 血条 */
+    long hp;
 
-    @Protobuf(description = "坦克 所属队伍")
-    public int team;
+    /** 坦克 所属队伍 */
+    int team;
 
-    @Protobuf(description = "坦克 速度")
-    public int speed;
+    /** 坦克 速度 */
+    int speed;
 
-    @Protobuf(description = "坦克 皮肤")
-    public int skin;
+    /** 坦克 皮肤 */
+    int skin;
 
-    @Protobuf(description = "坦克位置")
-    public TankMove tankMove;
+    /** 坦克位置 */
+    TankMove tankMove;
 
-    @Protobuf(description = "坦克子弹: key: 子弹 id 1 玩具弹, 2 雪弹; value : 数量")
-    public Map<Integer, Integer> tankBulletMap;
+    /** 坦克子弹: key: 子弹 id 1 玩具弹, 2 雪弹; value : 数量 */
+    Map<Integer, Integer> tankBulletMap;
 }

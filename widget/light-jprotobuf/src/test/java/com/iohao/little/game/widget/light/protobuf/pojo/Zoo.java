@@ -1,30 +1,29 @@
-package com.iohao.game.collect.proto.tank;
+package com.iohao.little.game.widget.light.protobuf.pojo;
 
 import com.baidu.bjf.remoting.protobuf.annotation.EnableZigZap;
 import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
-import com.iohao.game.collect.proto.GameProtoFile;
 import com.iohao.little.game.widget.light.protobuf.ProtoFileMerge;
+import com.iohao.little.game.widget.light.protobuf.pojo.animal.Cat;
 import lombok.AccessLevel;
-import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 /**
- * 坦克道具配置
+ * 动物园
  *
  * @author 洛朱
- * @date 2022-01-15
+ * @date 2022-01-25
  */
-@Setter
 @ProtobufClass
 @EnableZigZap
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @ToString
-@ProtoFileMerge(fileName = GameProtoFile.tankFileName, filePackage = GameProtoFile.tankFilePackage)
-public class TankPropConfig {
+@ProtoFileMerge(fileName = TempProtoFile.commonFileName, filePackage = TempProtoFile.commonFilePackage)
+public class Zoo {
     /** id */
-    int id;
-
-    /** 道具名 */
-    String name;
+    long id;
+    /** 动物园名 */
+    String zooName;
+    /** 小猫 */
+    Cat cat;
 }

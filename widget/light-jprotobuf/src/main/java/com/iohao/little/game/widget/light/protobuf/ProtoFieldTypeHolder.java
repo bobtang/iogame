@@ -1,0 +1,60 @@
+package com.iohao.little.game.widget.light.protobuf;
+
+import lombok.AccessLevel;
+import lombok.experimental.Accessors;
+import lombok.experimental.FieldDefaults;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @author 洛朱
+ * @date 2022-01-24
+ */
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Accessors(chain = true)
+public class ProtoFieldTypeHolder {
+
+    final Map<Class<?>, String> filedTypeMap = new HashMap<>();
+
+    public String getProtoType(Class<?> filedTypeClass) {
+        return filedTypeMap.get(filedTypeClass);
+    }
+
+    private void init() {
+        filedTypeMap.put(Double.class, "double");
+        filedTypeMap.put(double.class, "double");
+
+        filedTypeMap.put(Float.class, "float");
+        filedTypeMap.put(float.class, "float");
+
+        filedTypeMap.put(Long.class, "sint64");
+        filedTypeMap.put(long.class, "sint64");
+
+        filedTypeMap.put(Integer.class, "sint32");
+        filedTypeMap.put(int.class, "sint32");
+
+        filedTypeMap.put(Boolean.class, "bool");
+        filedTypeMap.put(boolean.class, "bool");
+
+        filedTypeMap.put(String.class, "string");
+
+
+        filedTypeMap.put(byte[].class, "bytes");
+
+    }
+
+    public ProtoFieldTypeHolder() {
+        init();
+    }
+
+    public static ProtoFieldTypeHolder me() {
+        return Holder.ME;
+    }
+
+    /** 通过 JVM 的类加载机制, 保证只加载一次 (singleton) */
+    private static class Holder {
+        static final ProtoFieldTypeHolder ME = new ProtoFieldTypeHolder();
+    }
+
+}

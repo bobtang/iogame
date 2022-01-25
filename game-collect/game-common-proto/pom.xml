@@ -25,6 +25,12 @@
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate-validator.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.iohao.game</groupId>
+            <artifactId>light-jprotobuf</artifactId>
+            <version>${project-revision.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

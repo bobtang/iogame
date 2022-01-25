@@ -1,6 +1,6 @@
 package com.iohao.game.collect.external.tester.websocket;
 
-import com.iohao.game.collect.proto.LoginVerify;
+import com.iohao.game.collect.proto.common.LoginVerify;
 import com.iohao.little.game.common.kit.ProtoKit;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import com.iohao.little.game.net.external.session.UserSession;
