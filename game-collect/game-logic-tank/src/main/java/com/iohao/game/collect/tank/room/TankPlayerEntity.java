@@ -1,7 +1,7 @@
 package com.iohao.game.collect.tank.room;
 
 import com.iohao.game.collect.common.room.AbstractPlayer;
-import com.iohao.game.collect.proto.tank.TankMove;
+import com.iohao.game.collect.proto.tank.TankLocation;
 import lombok.Data;
 
 import java.io.Serial;
@@ -28,7 +28,7 @@ public class TankPlayerEntity extends AbstractPlayer {
     /** 皮肤 */
     int skin;
 
-    TankMove tankMove = new TankMove();
+    TankLocation tankLocation = new TankLocation();
 
     /**
      * 坦克子弹

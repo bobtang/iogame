@@ -2,9 +2,10 @@ package com.iohao.game.collect.tank.action;
 
 import com.iohao.game.collect.common.room.GameFlowService;
 import com.iohao.game.collect.common.room.RoomService;
+import com.iohao.game.collect.proto.tank.TankBullet;
 import com.iohao.game.collect.proto.tank.TankBulletConfigRes;
 import com.iohao.game.collect.proto.tank.TankEnterRoom;
-import com.iohao.game.collect.proto.tank.TankMove;
+import com.iohao.game.collect.proto.tank.TankLocation;
 import com.iohao.game.collect.tank.mapstruct.TankMapstruct;
 import com.iohao.game.collect.tank.room.TankPlayerEntity;
 import com.iohao.game.collect.tank.room.TankRoomEntity;
@@ -12,6 +13,8 @@ import com.iohao.game.collect.tank.room.flow.*;
 import com.iohao.game.collect.tank.service.TankConfigService;
 import com.iohao.little.game.action.skeleton.annotation.ActionController;
 import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
+import com.iohao.little.game.action.skeleton.annotation.DocActionBroadcast;
+import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
@@ -40,24 +43,43 @@ public class TankAction {
         gameFlowService.setRoomEnterCustom(new TankRoomEnterCustom());
     }
 
+
+    /**
+     * 坦克射击(发射子弹)
+     *
+     * @param flowContext flowContext
+     * @param tankBullet  tankBullet
+     */
+    @ActionMethod(TankCmd.shooting)
+    @DocActionBroadcast
+    public void shooting(FlowContext flowContext, TankBullet tankBullet) {
+        long userId = flowContext.getUserId();
+        tankBullet.tankLocation.playerId = userId;
+
+        // 广播这颗子弹的消息
+        TankRoomEntity room = roomService.getRoomByUserId(userId);
+        room.broadcast(flowContext, tankBullet);
+    }
+
     /**
      * 坦克移动
      *
-     * @param userId   userId
-     * @param tankMove move
-     * @return move
+     * @param flowContext  flowContext
+     * @param tankLocation tankLocation
      */
     @ActionMethod(TankCmd.tankMove)
-    public TankMove tankMove(long userId, TankMove tankMove) {
-        tankMove.userId = userId;
+    public void tankMove(FlowContext flowContext, TankLocation tankLocation) {
+        long userId = flowContext.getUserId();
+        tankLocation.playerId = userId;
 
         TankRoomEntity room = roomService.getRoomByUserId(userId);
 
         TankPlayerEntity player = room.getPlayerById(userId);
 
-        player.setTankMove(tankMove);
+        player.setTankLocation(tankLocation);
 
-        return tankMove;
+        //  广播坦克移动
+        room.broadcast(flowContext, tankLocation);
     }
 
     /**

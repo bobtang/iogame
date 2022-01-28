@@ -39,7 +39,6 @@
             <version>${fastjson.version}</version>
         </dependency>
 
-
         <!-- https://mvnrepository.com/artifact/org.jctools/jctools-core -->
         <dependency>
             <groupId>org.jctools</groupId>
@@ -47,6 +46,13 @@
             <version>${jctools-core.version}</version>
         </dependency>
 
+
+        <!-- https://mvnrepository.com/artifact/com.ibeetl/beetl -->
+        <dependency>
+            <groupId>com.ibeetl</groupId>
+            <artifactId>beetl</artifactId>
+            <version>${beetl.version}</version>
+        </dependency>
 
 
     </dependencies>

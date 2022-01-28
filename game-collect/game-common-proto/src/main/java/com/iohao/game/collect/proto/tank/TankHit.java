@@ -10,10 +10,8 @@ import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 /**
- * 坦克位置
- *
  * @author 洛朱
- * @date 2022-01-15
+ * @date 2022-01-28
  */
 @Setter
 @ProtobufClass
@@ -21,21 +19,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @ToString
 @ProtoFileMerge(fileName = GameProtoFile.tankFileName, filePackage = GameProtoFile.tankFilePackage)
-public class TankMove {
-    /** x 轴 */
-    int x;
+public class TankHit {
+    int tankBulletId;
 
-    /** y 轴 */
-    int y;
-
-    /** 方向 H */
-    int directionH;
-    /** 方向 V */
-    int directionV;
-
-    /** 玩家 id */
-    long userId;
-
-    /** hash */
-    int hash;
+    /** 被攻击的玩家 id */
+    int targetUserId;
 }

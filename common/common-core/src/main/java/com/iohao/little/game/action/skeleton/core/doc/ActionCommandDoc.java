@@ -1,6 +1,6 @@
-package com.iohao.little.game.action.skeleton.core;
+package com.iohao.little.game.action.skeleton.core.doc;
 
-import lombok.Getter;
+import lombok.Data;
 
 /**
  * action command 文档
@@ -11,7 +11,7 @@ import lombok.Getter;
  * @author 洛朱
  * @date 2022-01-22
  */
-@Getter
+@Data
 public class ActionCommandDoc {
     int classLineNumber = 1;
     String classComment = "";

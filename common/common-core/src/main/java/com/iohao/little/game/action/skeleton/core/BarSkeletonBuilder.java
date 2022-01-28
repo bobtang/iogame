@@ -1,5 +1,6 @@
 package com.iohao.little.game.action.skeleton.core;
 
+import com.iohao.little.game.action.skeleton.core.doc.BarSkeletonDoc;
 import com.iohao.little.game.action.skeleton.core.flow.*;
 import com.iohao.little.game.action.skeleton.core.flow.interal.*;
 import lombok.Getter;

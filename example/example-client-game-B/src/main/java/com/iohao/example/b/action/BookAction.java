@@ -1,14 +1,11 @@
 package com.iohao.example.b.action;
 
 import cn.hutool.core.util.RandomUtil;
-import com.iohao.example.common.*;
+import com.iohao.example.common.ExampleAppleCmd;
 import com.iohao.example.common.ExampleBookCmd;
 import com.iohao.little.game.action.skeleton.annotation.ActionController;
 import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
-import com.iohao.little.game.action.skeleton.core.ServerContext;
-import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
-import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.client.common.BoltClientProxy;
 import com.iohao.little.game.net.client.common.BoltClientProxyManager;
 import lombok.extern.slf4j.Slf4j;
@@ -40,20 +37,17 @@ public class BookAction {
         return (Integer) data;
     }
 
-    @ActionMethod(ExampleBookCmd.message_queue)
-    public boolean messageQueue(String message, RequestMessage requestMessage, ServerContext serverContext) {
-
-        long userId = requestMessage.getUserId();
-
-
-        CmdInfo cmdInfo = ExampleBroadcastCmd.info.cmdInfo(ExampleBroadcastCmd.user_account);
-        ResponseMessage responseMessage = new ResponseMessage();
-        responseMessage.setCmdInfo(cmdInfo);
-
-
-        BoltClientProxy boltClientProxy = (BoltClientProxy) serverContext;
-        boltClientProxy.broadcast(responseMessage);
-
-        return true;
-    }
+//    @ActionMethod(ExampleBookCmd.message_queue)
+//    public boolean messageQueue(String message, FlowContext flowContext) {
+//        long userId = flowContext.getUserId();
+//
+//        ResponseMessage responseMessage = flowContext.getResponse();
+//        responseMessage.setData(message);
+//
+//        DefaultParamContext paramContext = flowContext.getParamContext();
+//        BoltClientProxy boltClientProxy = (BoltClientProxy) paramContext.getServerContext();
+//        boltClientProxy.broadcast(responseMessage);
+//
+//        return true;
+//    }
 }

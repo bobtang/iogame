@@ -30,6 +30,7 @@
         <module>widget/light-timer-task</module>
         <module>widget/light-domain-event</module>
         <module>widget/light-profile</module>
+        <module>widget/light-jprotobuf</module>
 
         <module>widget/light-all</module>
 
@@ -53,7 +54,7 @@
         <module>game-collect/game-test</module>
         <module>game-collect/game-one</module>
         <module>game-collect/game-logic-tank</module>
-        <module>widget/light-jprotobuf</module>
+
 
 
     </modules>
@@ -97,7 +98,7 @@
         <hutool.version>5.7.16</hutool.version>
         <!-- JCTools 是一款对jdk并发数据结构进行增强的并发工具 see http://jctools.github.io/JCTools/ https://mvnrepository.com/artifact/org.jctools/jctools-core -->
         <jctools-core.version>3.3.0</jctools-core.version>
-        <!-- 新一代 Java 模板引擎 see http://ibeetl.com/ https://mvnrepository.com/artifact/com.ibeetl/beetl -->
+        <!-- 新一代 Java 模板引擎 see https://www.kancloud.cn/xiandafu/beetl3_guide/1992542 https://mvnrepository.com/artifact/com.ibeetl/beetl -->
         <beetl.version>3.9.3.RELEASE</beetl.version>
         <!-- lombok 消除冗长的 Java 代码 https://www.oschina.net/p/lombok https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <lombok.version>1.18.22</lombok.version>

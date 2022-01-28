@@ -2,7 +2,7 @@ package com.iohao.little.game.action.skeleton.core.flow.interal;
 
 import cn.hutool.core.util.StrUtil;
 import com.iohao.little.game.action.skeleton.core.ActionCommand;
-import com.iohao.little.game.action.skeleton.core.ActionCommandDoc;
+import com.iohao.little.game.action.skeleton.core.doc.ActionCommandDoc;
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.action.skeleton.core.flow.ActionMethodInOut;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;

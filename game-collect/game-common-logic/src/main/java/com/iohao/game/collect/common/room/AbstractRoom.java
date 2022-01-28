@@ -71,10 +71,18 @@ public abstract class AbstractRoom implements Serializable {
     }
 
     public List<AbstractPlayer> listPlayer(Predicate<AbstractPlayer> predicate) {
-        return listPlayer().stream().filter(predicate).collect(Collectors.toList());
+        return listPlayer().stream()
+                .filter(predicate)
+                .collect(Collectors.toList());
     }
 
-    public Collection<Long> listUserId() {
+    public Collection<Long> listPlayerId(long excludePlayerId) {
+        return listPlayerId().stream()
+                .filter(playerId -> playerId != excludePlayerId)
+                .collect(Collectors.toList());
+    }
+
+    public Collection<Long> listPlayerId() {
         return this.playerMap.keySet();
     }
 

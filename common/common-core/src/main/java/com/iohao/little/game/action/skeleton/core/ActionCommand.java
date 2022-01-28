@@ -3,6 +3,8 @@ package com.iohao.little.game.action.skeleton.core;
 import cn.hutool.core.util.StrUtil;
 import com.esotericsoftware.reflectasm.ConstructorAccess;
 import com.esotericsoftware.reflectasm.MethodAccess;
+import com.iohao.little.game.action.skeleton.core.doc.ActionCommandDoc;
+import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -177,6 +179,14 @@ public final class ActionCommand {
         @Override
         public String toString() {
             return paramClazz.getName() + " " + name;
+        }
+
+        /**
+         * 是否扩展属性
+         * @return true 是扩展属性
+         */
+        public boolean isExtension() {
+            return FlowContext.class.equals(paramClazz) || "userId".equals(this.name);
         }
     }
 

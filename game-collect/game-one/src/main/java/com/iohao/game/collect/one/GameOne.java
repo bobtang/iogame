@@ -3,7 +3,7 @@ package com.iohao.game.collect.one;
 import com.iohao.game.collect.GameLogicAll;
 import com.iohao.game.collect.external.GameExternalBoot;
 import com.iohao.game.collect.gateway.GameGatewayBoot;
-import com.iohao.little.game.action.skeleton.core.BarSkeletonDoc;
+import com.iohao.little.game.action.skeleton.core.doc.BarSkeletonDoc;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,7 +28,7 @@ public class GameOne {
                 // 启动对外服
                 gameOne.externalServer();
 
-                // 生成文档
+                // 生成游戏文档
                 BarSkeletonDoc.me().buildDoc();
 
             }

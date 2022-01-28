@@ -1,23 +1,18 @@
 package com.iohao.little.game.action.skeleton.core;
 
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.esotericsoftware.reflectasm.ConstructorAccess;
 import com.esotericsoftware.reflectasm.MethodAccess;
 import com.iohao.little.game.action.skeleton.annotation.ActionController;
 import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
-import com.iohao.little.game.common.kit.ClassScanner;
-import com.thoughtworks.qdox.JavaProjectBuilder;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaMethod;
+import com.iohao.little.game.action.skeleton.core.doc.ActionCommandDoc;
+import com.iohao.little.game.action.skeleton.core.doc.ActionCommandDocKit;
+import com.iohao.little.game.action.skeleton.core.doc.JavaClassDocInfo;
 import lombok.Getter;
 
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
@@ -39,15 +34,12 @@ public final class ActionCommandInfoBuilder {
 
     private final BarSkeletonSetting setting;
 
-    private final Map<String, JavaClassDocInfo> javaClassSourceMap = new ConcurrentHashMap<>();
-
     ActionCommandInfoBuilder(BarSkeletonSetting setting) {
         this.setting = setting;
     }
 
     void clean() {
         map.clear();
-        javaClassSourceMap.clear();
     }
 
     private Map<Integer, ActionCommand> getSubCmdMap(int cmd) {
@@ -78,7 +70,7 @@ public final class ActionCommandInfoBuilder {
      */
     ActionCommandInfoBuilder buildAction(List<Class<?>> controllerList) {
         // java source
-        javaProjectBuilder(controllerList);
+        Map<String, JavaClassDocInfo> javaClassDocInfoMap = ActionCommandDocKit.getJavaClassDocInfoMap(controllerList);
 
         Set<Class<?>> controllerSet = new HashSet<>(controllerList);
 
@@ -95,12 +87,12 @@ public final class ActionCommandInfoBuilder {
             // 子路由 map
             var subActionMap = getSubCmdMap(cmd);
 
-            JavaClassDocInfo javaClassDocInfo = javaClassSourceMap.get(controllerClazz.toString());
+            JavaClassDocInfo javaClassDocInfo = javaClassDocInfoMap.get(controllerClazz.toString());
 
             // 遍历所有方法上有 ActionMethod 注解的方法对象
             BarInternalKit.getMethodStream(controllerClazz).forEach(method -> {
 
-                ActionCommandDoc actionCommandDoc = createActionCommandDoc(javaClassDocInfo, method);
+                ActionCommandDoc actionCommandDoc = javaClassDocInfo.createActionCommandDoc(method);
 
                 // 目标子路由 (方法上的路由)
                 int subCmd = method.getAnnotation(ActionMethod.class).value();
@@ -161,7 +153,6 @@ public final class ActionCommandInfoBuilder {
         var paramInfos = new ActionCommand.ParamInfo[len];
         builder.setParamInfos(paramInfos);
 
-        String name;
         for (int i = 0; i < len; i++) {
             // 构建参数信息
             var paramInfo = new ActionCommand.ParamInfo();
@@ -184,92 +175,6 @@ public final class ActionCommandInfoBuilder {
         if (subActionMap.containsKey(subCmd)) {
             String message = StrUtil.format("已经存在方法编号:{} : {} .请查看: {}", subCmd, controllerClass);
             throw new RuntimeException(message);
-        }
-    }
-
-    private ActionCommandDoc createActionCommandDoc(JavaClassDocInfo javaClassDocInfo, Method method) {
-
-        if (Objects.isNull(javaClassDocInfo)) {
-            return new ActionCommandDoc();
-        }
-
-        return javaClassDocInfo.createActionCommandDoc(method);
-    }
-
-    private void javaProjectBuilder(List<Class<?>> controllerList) {
-        JavaProjectBuilder javaProjectBuilder = new JavaProjectBuilder();
-
-        for (Class<?> actionClazz : controllerList) {
-
-            try {
-                String packagePath = actionClazz.getPackageName();
-                ClassScanner classScanner = new ClassScanner(packagePath, null);
-                List<URL> resources = classScanner.getResources();
-
-                for (URL resource : resources) {
-
-                    String path = resource.getPath();
-                    String srcPath = path.replace("target/classes", "src/main/java");
-
-                    File file = new File(srcPath);
-                    if (!FileUtil.exist(file)) {
-                        continue;
-                    }
-
-                    javaProjectBuilder.addSourceTree(file);
-                }
-
-                Collection<JavaClass> classes = javaProjectBuilder.getClasses();
-
-                for (JavaClass javaClass : classes) {
-
-                    JavaClassDocInfo javaClassDocInfo = new JavaClassDocInfo();
-                    javaClassDocInfo.setJavaClass(javaClass);
-
-                    javaClassSourceMap.put(javaClass.toString(), javaClassDocInfo);
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    static class JavaClassDocInfo {
-        JavaClass javaClass;
-        Map<String, JavaMethod> javaMethodMap = new HashMap<>();
-
-        void setJavaClass(JavaClass javaClass) {
-            this.javaClass = javaClass;
-            List<JavaMethod> methods = javaClass.getMethods();
-            for (JavaMethod method : methods) {
-                javaMethodMap.put(method.toString(), method);
-            }
-        }
-
-        JavaMethod getJavaMethod(Method method) {
-            return javaMethodMap.get(method.toString());
-        }
-
-        ActionCommandDoc createActionCommandDoc(Method method) {
-            JavaMethod javaMethod = getJavaMethod(method);
-
-            ActionCommandDoc actionCommandDoc = new ActionCommandDoc();
-
-            actionCommandDoc.classComment = this.javaClass.getComment();
-            actionCommandDoc.classLineNumber = this.javaClass.getLineNumber();
-            actionCommandDoc.comment = javaMethod.getComment();
-            actionCommandDoc.lineNumber = javaMethod.getLineNumber();
-
-            if (actionCommandDoc.classComment == null) {
-                actionCommandDoc.classComment = "";
-            }
-
-            if (actionCommandDoc.comment == null) {
-                actionCommandDoc.comment = "";
-            }
-
-            return actionCommandDoc;
         }
     }
 

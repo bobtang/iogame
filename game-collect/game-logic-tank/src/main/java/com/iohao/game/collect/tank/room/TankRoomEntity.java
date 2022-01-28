@@ -2,13 +2,16 @@ package com.iohao.game.collect.tank.room;
 
 import com.iohao.game.collect.common.FrameKit;
 import com.iohao.game.collect.common.room.AbstractRoom;
-import com.iohao.game.collect.proto.tank.TankMove;
+import com.iohao.game.collect.proto.tank.TankLocation;
+import com.iohao.game.collect.tank.config.TankKit;
+import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serial;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -44,5 +47,18 @@ public class TankRoomEntity extends AbstractRoom {
      *     key : frame
      * </pre>
      */
-    Map<Integer, CopyOnWriteArrayList<TankMove>> moveMap = new ConcurrentHashMap<>();
+    Map<Integer, CopyOnWriteArrayList<TankLocation>> moveMap = new ConcurrentHashMap<>();
+
+    /**
+     * 广播
+     *
+     * @param flowContext  flow 上下文
+     * @param methodResult 广播的业务数据
+     */
+    public void broadcast(FlowContext flowContext, Object methodResult) {
+        flowContext.setMethodResult(methodResult);
+
+        Collection<Long> listPlayerId = this.listPlayerId();
+        TankKit.boltClientProxy.broadcast(flowContext, listPlayerId);
+    }
 }

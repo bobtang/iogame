@@ -17,7 +17,6 @@ public class GenerateFileForProto {
         // 需要扫描的包名
         String protoPackagePath = GenerateFileForProto.class.getPackageName();
 
-        String replacement = Matcher.quoteReplacement(File.separator);
         String[] protoSourcePathArray = new String[]{
                 SystemUtil.getUserInfo().getCurrentDir()
                 , "game-collect"
@@ -25,7 +24,7 @@ public class GenerateFileForProto {
                 , "src"
                 , "main"
                 , "java"
-                , protoPackagePath.replaceAll("\\.", replacement)
+                , protoPackagePath.replaceAll("\\.", Matcher.quoteReplacement(File.separator))
         };
 
         // 源码目录

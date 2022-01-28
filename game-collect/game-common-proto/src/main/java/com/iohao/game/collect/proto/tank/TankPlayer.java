@@ -40,7 +40,7 @@ public class TankPlayer {
     int skin;
 
     /** 坦克位置 */
-    TankMove tankMove;
+    TankLocation tankLocation;
 
     /** 坦克子弹: key: 子弹 id 1 玩具弹, 2 雪弹; value : 数量 */
     Map<Integer, Integer> tankBulletMap;

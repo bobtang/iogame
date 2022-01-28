@@ -47,7 +47,7 @@ public class DefaultActionAfter implements ActionAfter {
         ResponseMessage response = flowContext.getResponse();
         byte rpcCommandType = response.getRpcCommandType();
 
-        DefaultParamContext paramContext = (DefaultParamContext) flowContext.getParamContext();
+        DefaultParamContext paramContext = flowContext.getParamContext();
 
         if (rpcCommandType != RpcCommandType.REQUEST_ONEWAY) {
             return paramContext.getAsyncCtx();

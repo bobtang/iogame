@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 
 /**
  * 广播消息
@@ -22,7 +22,7 @@ public class BroadcastMessage implements Serializable {
     /** 广播上下文 */
     BroadcastMessageContext context;
     /** 接收广播的用户列表 */
-    List<Long> userIdList;
+    Collection<Long> userIdList;
     /** true 给全体广播 */
     boolean broadcastAll;
 }

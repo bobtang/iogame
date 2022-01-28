@@ -1,5 +1,7 @@
 package com.iohao.little.game.action.skeleton.core;
 
+import lombok.Getter;
+
 import java.util.*;
 
 /**
@@ -24,6 +26,7 @@ public final class ActionCommandManager {
     /**
      * action 数组. 下标对应 cmd
      */
+    @Getter
     ActionCommand[][] actionCommands;
 
 

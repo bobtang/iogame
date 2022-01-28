@@ -10,7 +10,7 @@ import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 /**
- * 坦克子弹
+ * 坦克游戏中位置相关的：（坦克、子弹的位置）
  *
  * @author 洛朱
  * @date 2022-01-15
@@ -21,9 +21,21 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @ToString
 @ProtoFileMerge(fileName = GameProtoFile.tankFileName, filePackage = GameProtoFile.tankFilePackage)
-public class TankBullet {
-    /** id */
-    int id;
-    /** 子弹的位置 */
-    TankLocation tankLocation;
+public class TankLocation {
+    /** x 轴 */
+    int x;
+
+    /** y 轴 */
+    int y;
+
+    /** 方向 H */
+    int directionH;
+    /** 方向 V */
+    int directionV;
+
+    /** 玩家 id */
+    long playerId;
+
+    /** hash */
+    int hash;
 }

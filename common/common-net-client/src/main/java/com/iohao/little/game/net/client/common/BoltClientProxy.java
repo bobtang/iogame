@@ -6,21 +6,25 @@ import com.alipay.remoting.rpc.RpcClient;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.action.skeleton.core.ServerContext;
+import com.iohao.little.game.action.skeleton.core.flow.ActionMethodResultWrap;
+import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.client.BoltClientServer;
 import com.iohao.little.game.net.common.ServerSender;
+import com.iohao.little.game.net.message.common.InnerModuleMessage;
 import com.iohao.little.game.widget.broadcast.BroadcastCont;
 import com.iohao.little.game.widget.broadcast.BroadcastMessage;
-import com.iohao.little.game.net.message.common.InnerModuleMessage;
 import com.iohao.little.game.widget.broadcast.MessageQueueWidget;
 import com.iohao.little.game.widget.broadcast.internal.ClientBroadcastMessageContext;
 import com.iohao.little.game.widget.config.WidgetComponents;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Objects;
 
 /**
  * 客户端服务器代理, 持有一些属性
@@ -35,9 +39,10 @@ import java.util.List;
 @Getter
 @Setter
 @Accessors(chain = true)
+@Slf4j
 public class BoltClientProxy implements ServerContext, ServerSender {
 
-    ClientBroadcastMessageContext broadcastMessageContext = new ClientBroadcastMessageContext(BoltClientProxy.this);
+    final ClientBroadcastMessageContext broadcastMessageContext = new ClientBroadcastMessageContext(BoltClientProxy.this);
 
     Connection connection;
 
@@ -62,27 +67,54 @@ public class BoltClientProxy implements ServerContext, ServerSender {
 
     final WidgetComponents widgetComponents = new WidgetComponents();
 
-    public Object invokeSync(final Object request, final int timeoutMillis) throws RemotingException, InterruptedException {
-        return rpcClient.invokeSync(connection, request, timeoutMillis);
+    /**
+     * 广播给指定用户列表
+     *
+     * @param flowContext flowContext
+     * @param userIdList  用户列表
+     */
+    public void broadcast(FlowContext flowContext, Collection<Long> userIdList) {
+        this.internalBroadcast(flowContext.getResponse(), userIdList);
     }
 
-    public Object invokeSync(final Object request) throws RemotingException, InterruptedException {
-        return invokeSync(request, timeoutMillis);
+    /**
+     * 广播给全部用户
+     *
+     * @param flowContext flowContext
+     */
+    public void broadcastAll(FlowContext flowContext) {
+        this.broadcast(flowContext, -1);
     }
 
-    public void oneway(final Object request) throws RemotingException {
-        this.rpcClient.oneway(connection, request);
+    /**
+     * 广播给单个用户
+     *
+     * @param flowContext flowContext
+     * @param userId      接收广播的用户
+     */
+    public void broadcast(FlowContext flowContext, long userId) {
+        ResponseMessage response = this.getResponseMessage(flowContext);
+
+        this.internalBroadcast(response, userId);
     }
 
-    public void invokeWithCallback(Object request) throws RemotingException {
-        this.rpcClient.invokeWithCallback(connection, request, null, timeoutMillis);
+    private ResponseMessage getResponseMessage(FlowContext flowContext) {
+        // 业务方法的返回值
+        Object methodResult = flowContext.getMethodResult();
+
+        if (Objects.isNull(methodResult)) {
+            throw new RuntimeException("broadcast result is null");
+        }
+
+        BarSkeleton barSkeleton = flowContext.getBarSkeleton();
+        ActionMethodResultWrap actionMethodResultWrap = barSkeleton.getActionMethodResultWrap();
+        actionMethodResultWrap.wrap(flowContext);
+
+        return flowContext.getResponse();
     }
 
-    public void broadcast(ResponseMessage data) {
-        broadcast(data.getUserId(), data);
-    }
 
-    public void broadcast(ResponseMessage responseMessage, List<Long> userIdList) {
+    private void internalBroadcast(ResponseMessage responseMessage, Collection<Long> userIdList) {
         // 广播上下文
         BroadcastMessage broadcastMessage = new BroadcastMessage();
         broadcastMessage.setChannel(BroadcastCont.defaultChannel);
@@ -98,10 +130,10 @@ public class BoltClientProxy implements ServerContext, ServerSender {
     /**
      * 给单个用户广播
      *
-     * @param userId          userId -1 给全体广播
      * @param responseMessage 消息
+     * @param userId          userId -1 给全体广播
      */
-    public void broadcast(long userId, ResponseMessage responseMessage) {
+    private void internalBroadcast(ResponseMessage responseMessage, long userId) {
         if (userId > 0) {
             responseMessage.setUserId(userId);
         }
@@ -116,6 +148,22 @@ public class BoltClientProxy implements ServerContext, ServerSender {
         // 广播小部件
         MessageQueueWidget messageQueueWidget = widgetComponents.option(MessageQueueWidget.class);
         messageQueueWidget.publish(broadcastMessage);
+    }
+
+    public Object invokeSync(final Object request, final int timeoutMillis) throws RemotingException, InterruptedException {
+        return rpcClient.invokeSync(connection, request, timeoutMillis);
+    }
+
+    public Object invokeSync(final Object request) throws RemotingException, InterruptedException {
+        return invokeSync(request, timeoutMillis);
+    }
+
+    public void oneway(final Object request) throws RemotingException {
+        this.rpcClient.oneway(connection, request);
+    }
+
+    public void invokeWithCallback(Object request) throws RemotingException {
+        this.rpcClient.invokeWithCallback(connection, request, null, timeoutMillis);
     }
 
     /**

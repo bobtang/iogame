@@ -49,6 +49,10 @@ public class TankConfigService {
         }
     }
 
+    public TankBulletConfig getByBulletId(int bulletId) {
+        return this.tankBulletConfigMap.get(bulletId);
+    }
+
 
     public static TankConfigService me() {
         return Holder.ME;
