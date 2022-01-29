@@ -24,7 +24,6 @@
 
         <!-- 小部件  -->
         <module>widget/widget-common</module>
-        <module>widget/widget-broadcast</module>
 
         <!-- 轻量小部件  -->
         <module>widget/light-timer-task</module>

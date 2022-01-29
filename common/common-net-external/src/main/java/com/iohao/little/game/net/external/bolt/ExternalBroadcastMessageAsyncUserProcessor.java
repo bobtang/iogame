@@ -7,7 +7,7 @@ import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.external.bootstrap.ExternalKit;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import com.iohao.little.game.net.external.session.UserSession;
-import com.iohao.little.game.widget.broadcast.BroadcastMessage;
+import com.iohao.little.game.net.message.common.BroadcastMessage;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
@@ -22,7 +22,7 @@ import java.util.Objects;
 public class ExternalBroadcastMessageAsyncUserProcessor extends AsyncUserProcessor<BroadcastMessage> {
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, BroadcastMessage message) {
-
+        log.info("对外服接收网关的数据：{}", message);
         ResponseMessage responseMessage = message.getResponseMessage();
         ExternalMessage externalMessage = ExternalKit.convertExternalMessage(responseMessage);
 

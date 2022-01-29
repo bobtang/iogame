@@ -47,7 +47,6 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
         }
 
         // 5 ---- after 一般用于响应数据到 请求端
-        // TODO: 2022/1/17 验证
         ActionAfter actionAfter = barSkeleton.getActionAfter();
         actionAfter.execute(flowContext);
 
@@ -71,6 +70,11 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
         BarSkeleton barSkeleton = flowContext.getBarSkeleton();
 
         if (barSkeleton.isOpenOut()) {
+
+            ResponseMessage response = flowContext.getResponse();
+            Object methodResult = flowContext.getMethodResult();
+            response.setData(methodResult);
+
             for (ActionMethodInOut inOut : barSkeleton.getInOuts()) {
                 inOut.fuckOut(flowContext);
             }

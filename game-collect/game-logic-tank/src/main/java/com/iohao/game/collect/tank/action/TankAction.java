@@ -68,6 +68,7 @@ public class TankAction {
      * @param tankLocation tankLocation
      */
     @ActionMethod(TankCmd.tankMove)
+    @DocActionBroadcast
     public void tankMove(FlowContext flowContext, TankLocation tankLocation) {
         long userId = flowContext.getUserId();
         tankLocation.playerId = userId;

@@ -95,7 +95,7 @@ class DocInfo {
             }
 
             if (StrUtil.isNotEmpty(paramMap.get("docActionBroadcast"))) {
-                format = StrUtil.format("    广播: {docActionBroadcast}", paramMap);
+                format = StrUtil.format("    广播推送: {docActionBroadcast}", paramMap);
                 lineList.add(format);
             }
 

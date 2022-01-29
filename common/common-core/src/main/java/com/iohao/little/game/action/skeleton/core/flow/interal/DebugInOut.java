@@ -77,7 +77,8 @@ public class DebugInOut implements ActionMethodInOut {
         methodResponseData(flowContext, paramMap);
 
         ActionCommand actionCommand = flowContext.getActionCommand();
-        if (actionCommand.getActionMethodReturnInfo().getReturnTypeClazz() == Void.TYPE) {
+
+        if (actionCommand.getActionMethodReturnInfo().isVoid()) {
             paramMap.put("returnData", "void");
         }
 

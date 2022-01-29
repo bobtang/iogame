@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -14,6 +15,8 @@ import java.io.Serializable;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ModuleMessage implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -1570849960266785140L;
     /** 模块key */
     ModuleKey moduleKey;
     /** 模块名 */

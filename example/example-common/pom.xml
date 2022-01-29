@@ -23,12 +23,12 @@
     </properties>
     <dependencies>
 
-
         <dependency>
             <groupId>com.iohao.game</groupId>
-            <artifactId>widget-broadcast</artifactId>
+            <artifactId>common-message</artifactId>
             <version>${project-revision.version}</version>
         </dependency>
+
 
         <!-- EL实现。在Java SE环境中，您必须将实现作为依赖项添加到POM文件中-->
         <dependency>

@@ -28,7 +28,7 @@
 
         <dependency>
             <groupId>com.iohao.game</groupId>
-            <artifactId>widget-broadcast</artifactId>
+            <artifactId>widget-common</artifactId>
             <version>${project-revision.version}</version>
         </dependency>
 

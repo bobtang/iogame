@@ -5,6 +5,7 @@ import com.iohao.game.collect.common.room.AbstractRoom;
 import com.iohao.game.collect.proto.tank.TankLocation;
 import com.iohao.game.collect.tank.config.TankKit;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
+import com.iohao.little.game.broadcast.Broadcast;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -59,6 +60,7 @@ public class TankRoomEntity extends AbstractRoom {
         flowContext.setMethodResult(methodResult);
 
         Collection<Long> listPlayerId = this.listPlayerId();
-        TankKit.boltClientProxy.broadcast(flowContext, listPlayerId);
+        Broadcast broadcast = TankKit.boltClientProxy.getBroadcast();
+        broadcast.broadcast(flowContext, listPlayerId);
     }
 }

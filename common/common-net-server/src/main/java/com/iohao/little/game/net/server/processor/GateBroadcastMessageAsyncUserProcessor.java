@@ -6,34 +6,31 @@ import com.alipay.remoting.exception.RemotingException;
 import com.alipay.remoting.rpc.RpcServer;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
 import com.iohao.little.game.net.common.BoltServer;
+import com.iohao.little.game.net.message.common.BroadcastMessage;
 import com.iohao.little.game.net.server.module.ModuleInfoManager;
 import com.iohao.little.game.net.server.module.ModuleInfoProxy;
-import com.iohao.little.game.widget.broadcast.BroadcastMessage;
-import com.iohao.little.game.widget.config.WidgetComponents;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 把逻辑服的广播转发到对外服
+ * 网关：把逻辑服的广播转发到对外服
  *
  * @author 洛朱
  * @date 2022-01-12
  */
 @Slf4j
 public class GateBroadcastMessageAsyncUserProcessor extends AsyncUserProcessor<BroadcastMessage> {
-    final WidgetComponents widgetComponents;
     final BoltServer boltServer;
 
-    public GateBroadcastMessageAsyncUserProcessor(BoltServer boltServer, WidgetComponents widgetComponents) {
-        this.widgetComponents = widgetComponents;
+    public GateBroadcastMessageAsyncUserProcessor(BoltServer boltServer) {
         this.boltServer = boltServer;
     }
 
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, BroadcastMessage broadcastMessage) {
-        log.info("把逻辑服的广播转发到对外服 {}", broadcastMessage);
-        // TODO: 2022/1/18 广播上下文是有问题的
 
-        // 转发 给 对外服务器
+        log.info("Broadcast 网关 转发到对外服务器 {}", broadcastMessage);
+
+        //  转发到对外服务器
         ModuleInfoProxy externalModuleInfo = ModuleInfoManager.me().getExternalModuleInfo();
         String address = externalModuleInfo.getModuleMessage().getAddress();
 

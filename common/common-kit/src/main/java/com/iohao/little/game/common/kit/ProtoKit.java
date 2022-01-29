@@ -4,7 +4,6 @@ import com.baidu.bjf.remoting.protobuf.Codec;
 import com.baidu.bjf.remoting.protobuf.ProtobufProxy;
 import lombok.experimental.UtilityClass;
 
-import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -33,7 +32,7 @@ public class ProtoKit {
 
         try {
             return codec.encode(data);
-        } catch (IOException e) {
+        } catch (Throwable e) {
             e.printStackTrace();
         }
 
@@ -58,7 +57,7 @@ public class ProtoKit {
 
         try {
             return codec.decode(dataContent);
-        } catch (IOException e) {
+        } catch (Throwable e) {
             e.printStackTrace();
         }
 

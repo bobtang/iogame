@@ -7,6 +7,7 @@ import com.iohao.little.game.action.skeleton.core.DefaultParamContext;
 import com.iohao.little.game.action.skeleton.core.flow.ActionAfter;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
@@ -16,6 +17,7 @@ import java.util.Objects;
  * @author 洛朱
  * @Date 2021-12-20
  */
+@Slf4j
 public class DefaultActionAfter implements ActionAfter {
     @Override
     public void execute(FlowContext flowContext) {
@@ -39,6 +41,8 @@ public class DefaultActionAfter implements ActionAfter {
             return;
         }
 
+        // 防止 data 对象数据没有实现 Serializable 接口引发的异常
+        response.setData(null);
         // 将数据回传给掉用方
         asyncCtx.sendResponse(response);
     }

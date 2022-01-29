@@ -37,12 +37,13 @@ public class ModuleInfoProxy {
         return result;
     }
 
-    public void oneway(RequestMessage requestMessage) throws RemotingException, InterruptedException {
-        rpcServer.oneway(address, requestMessage);
+    public void oneway(Object request) throws RemotingException, InterruptedException {
+        rpcServer.oneway(address, request);
     }
 
     public Object invokeSync(ResponseMessage responseMessage) throws RemotingException, InterruptedException {
-        Object result = rpcServer.invokeSync(address, responseMessage, 1000);
+        Object result;
+        result = rpcServer.invokeSync(address, responseMessage, 1000);
 
         return result;
     }

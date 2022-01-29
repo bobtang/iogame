@@ -39,7 +39,5 @@ public class ProtoActionMethodResultWrap implements ActionMethodResultWrap {
         // 业务方法返回值
         byte[] dataContent = ProtoKit.toBytes(result);
         responseMessage.setDataContent(dataContent);
-        responseMessage.setData(result);
-
     }
 }
