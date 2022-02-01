@@ -1,3 +1,3 @@
 #!/bin/sh
-mvn clean
-mvn compile
+mvnd clean
+mvnd compile

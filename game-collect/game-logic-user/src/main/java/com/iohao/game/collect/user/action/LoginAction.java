@@ -7,13 +7,15 @@ import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.little.game.net.client.kit.ChangeUserIdKit;
 import lombok.extern.slf4j.Slf4j;
+import org.jctools.maps.NonBlockingHashMap;
 
+import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.LongAdder;
 
 /**
  * 登录相关
+ *
  * @author 洛朱
  * @date 2022-01-11
  */
@@ -21,7 +23,7 @@ import java.util.concurrent.atomic.LongAdder;
 @ActionController(UserCmd.cmd)
 public class LoginAction {
 
-    final ConcurrentHashMap<String, Long> userMap = new ConcurrentHashMap<>();
+    final Map<String, Long> userMap = new NonBlockingHashMap<>();
 
     LongAdder userIdAdder = new LongAdder();
 

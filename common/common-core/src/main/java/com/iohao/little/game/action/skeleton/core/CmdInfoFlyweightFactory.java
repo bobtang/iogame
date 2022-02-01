@@ -1,8 +1,9 @@
 package com.iohao.little.game.action.skeleton.core;
 
+import org.jctools.maps.NonBlockingHashMap;
+
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 享元工厂
@@ -17,7 +18,7 @@ public final class CmdInfoFlyweightFactory {
      * value : cmdInfo
      * </pre>
      */
-    final Map<Integer, CmdInfo> cmdInfoMap = new ConcurrentHashMap<>();
+    final Map<Integer, CmdInfo> cmdInfoMap = new NonBlockingHashMap<>();
 
     /**
      * 获取路由信息

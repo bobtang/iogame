@@ -2,12 +2,13 @@ package com.iohao.little.game.action.skeleton.core.flow.interal;
 
 import cn.hutool.core.util.StrUtil;
 import com.iohao.little.game.action.skeleton.core.ActionCommand;
-import com.iohao.little.game.action.skeleton.core.doc.ActionCommandDoc;
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
+import com.iohao.little.game.action.skeleton.core.doc.ActionCommandDoc;
 import com.iohao.little.game.action.skeleton.core.flow.ActionMethodInOut;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
+import com.iohao.little.game.common.kit.attr.AttrOption;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,11 +48,11 @@ import java.util.Objects;
  */
 public class DebugInOut implements ActionMethodInOut {
 
-    String timeKey = "ExecuteTimeInOutStartTime";
+    AttrOption<Long> timeKey = AttrOption.valueOf("ExecuteTimeInOutStartTime");
 
     @Override
     public void fuckIn(FlowContext flowContext) {
-        flowContext.setAttr(timeKey, System.currentTimeMillis());
+        flowContext.option(timeKey, System.currentTimeMillis());
     }
 
     private void printValidate(FlowContext flowContext, Map<String, Object> paramMap) {
@@ -97,7 +98,10 @@ public class DebugInOut implements ActionMethodInOut {
     @Override
     public void fuckOut(FlowContext flowContext) {
 
-        long ms = System.currentTimeMillis() - flowContext.getAttrLong(timeKey);
+        long currentTimeMillis = System.currentTimeMillis();
+        Long time = flowContext.optionValue(timeKey, currentTimeMillis);
+
+        long ms = System.currentTimeMillis() - time;
 
         ActionCommand actionCommand = flowContext.getActionCommand();
         ActionCommandDoc actionCommandDoc = actionCommand.getActionCommandDoc();
@@ -152,7 +156,6 @@ public class DebugInOut implements ActionMethodInOut {
         for (ActionCommand.ParamInfo paramInfo : paramInfos) {
             Class<?> paramClazz = paramInfo.getParamClazz();
 
-            // 这里可以使用策略模式 （但现在还不着急）
             if (FlowContext.class.equals(paramClazz)) {
                 continue;
             }

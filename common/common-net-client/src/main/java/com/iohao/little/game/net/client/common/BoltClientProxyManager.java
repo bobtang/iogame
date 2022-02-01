@@ -3,10 +3,10 @@ package com.iohao.little.game.net.client.common;
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.net.message.common.ModuleKey;
 import com.iohao.little.game.net.message.common.ModuleKeyKit;
+import org.jctools.maps.NonBlockingHashMap;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 客户端代理管理器
@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Date 2021-12-20
  */
 public class BoltClientProxyManager {
-    private final Map<ModuleKey, BoltClientProxy> boltClientMap = new ConcurrentHashMap<>();
+    private final Map<ModuleKey, BoltClientProxy> boltClientMap = new NonBlockingHashMap<>();
     private BoltClientProxy gateProxy;
 
     public BoltClientProxy getBoltClientProxy(ModuleKey moduleKey) {

@@ -1,15 +1,20 @@
 package com.iohao.game.collect.common.room;
 
+import com.iohao.game.collect.common.send.AbstractFlowContextSend;
+import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
+import org.jctools.maps.NonBlockingHashMap;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -35,7 +40,7 @@ public abstract class AbstractRoom implements Serializable {
      *     value is player
      * </pre>
      */
-    final ConcurrentHashMap<Long, AbstractPlayer> playerMap = new ConcurrentHashMap<>();
+    final Map<Long, AbstractPlayer> playerMap = new NonBlockingHashMap<>();
 
     /**
      * 玩家位置
@@ -58,6 +63,8 @@ public abstract class AbstractRoom implements Serializable {
 
     /** 房间状态 */
     RoomStatusEnum roomStatusEnum = RoomStatusEnum.wait;
+
+    protected abstract <T extends AbstractFlowContextSend> T createSend(FlowContext flowContext);
 
     /**
      * 玩家列表: 所有玩家信息
@@ -108,5 +115,70 @@ public abstract class AbstractRoom implements Serializable {
 
     public boolean isStatus(RoomStatusEnum roomStatusEnum) {
         return this.roomStatusEnum == roomStatusEnum;
+    }
+
+    /**
+     * 广播业务数据给房间内的所有玩家
+     *
+     * @param flowContext  flow 上下文
+     * @param methodResult 广播的业务数据
+     */
+    public void broadcast(FlowContext flowContext, Object methodResult) {
+        this.broadcast(flowContext, methodResult, this.listPlayerId());
+    }
+
+    /**
+     * 广播业务数据给用户列表
+     *
+     * @param flowContext  flow 上下文
+     * @param methodResult 广播的业务数据
+     * @param userIdList   用户列表
+     */
+    public void broadcast(FlowContext flowContext, Object methodResult, Collection<Long> userIdList) {
+        this.broadcast(flowContext, methodResult, userIdList, 0);
+    }
+
+    /**
+     * 广播业务数据给房间内的所有玩家， 排除指定用户
+     *
+     * @param flowContext   flow 上下文
+     * @param methodResult  广播的业务数据
+     * @param excludeUserId 排除的用户
+     */
+    public void broadcast(FlowContext flowContext, Object methodResult, long excludeUserId) {
+        this.broadcast(flowContext, methodResult, this.listPlayerId(), excludeUserId);
+    }
+
+    /**
+     * 广播业务数据给用户列表, 并排除一个用户
+     *
+     * @param flowContext   flow 上下文
+     * @param methodResult  广播的业务数据
+     * @param userIdList    用户列表
+     * @param excludeUserId 排除的用户
+     */
+    public void broadcast(FlowContext flowContext, Object methodResult, Collection<Long> userIdList, long excludeUserId) {
+        flowContext.setMethodResult(methodResult);
+
+        AbstractFlowContextSend send = this.createSend(flowContext)
+                .addUserId(userIdList, excludeUserId);
+
+        send.execute();
+    }
+
+    /**
+     * 广播业务数据给指定的用户
+     *
+     * @param flowContext  flow 上下文
+     * @param methodResult 广播的业务数据
+     * @param userId       指定的用户
+     */
+    public void broadcastUser(FlowContext flowContext, Object methodResult, long userId) {
+        flowContext.setMethodResult(methodResult);
+
+        AbstractFlowContextSend send = this.createSend(flowContext)
+                .addUserId(userId);
+
+        send.execute();
     }
 }

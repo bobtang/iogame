@@ -42,26 +42,23 @@ public class ProtoActionMethodParamParser implements ActionMethodParamParser {
             if (FlowContext.class.equals(paramClazz)) {
                 // flow 上下文
                 pars[i] = flowContext;
-            } else if ("userId".equals(paramInfo.getName())) {
-                // userId
-                pars[i] = flowContext.getUserId();
-            } else {
-                // 业务参数
-                byte[] dataContent = request.getDataContent();
+                continue;
+            }
 
-                if (Objects.isNull(dataContent)) {
-                    continue;
-                }
+            // 业务参数
+            byte[] dataContent = request.getDataContent();
 
-                // 把字节解析成 pb 对象
-                pars[i] = ProtoKit.parseProtoByte(dataContent, paramClazz);
-                request.setData(pars[i]);
+            if (Objects.isNull(dataContent)) {
+                continue;
+            }
 
-                if (paramInfo.isValidator()) {
-                    String validateMsg = ValidatorKit.validate(pars[i]);
-                    response.setValidatorMsg(validateMsg);
-                }
+            // 把字节解析成 pb 对象
+            pars[i] = ProtoKit.parseProtoByte(dataContent, paramClazz);
+            request.setData(pars[i]);
 
+            if (paramInfo.isValidator()) {
+                String validateMsg = ValidatorKit.validate(pars[i]);
+                response.setValidatorMsg(validateMsg);
             }
 
         }

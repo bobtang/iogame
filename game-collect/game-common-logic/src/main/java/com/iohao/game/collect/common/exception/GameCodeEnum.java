@@ -11,15 +11,15 @@ import lombok.experimental.FieldDefaults;
  */
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public enum MsgCodeEnum implements MsgExceptionInfo {
-    CLASS_NOT_EXIST(-1, "");
+public enum GameCodeEnum implements MsgExceptionInfo {
+    CLASS_NOT_EXIST(-1, "class 不存在");
 
     /** 消息码 */
     final int code;
     /** 消息模板 */
     final String msg;
 
-    MsgCodeEnum(int code, String msg) {
+    GameCodeEnum(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }

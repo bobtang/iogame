@@ -10,11 +10,11 @@ import com.iohao.little.game.action.skeleton.core.doc.ActionCommandDoc;
 import com.iohao.little.game.action.skeleton.core.doc.ActionCommandDocKit;
 import com.iohao.little.game.action.skeleton.core.doc.JavaClassDocInfo;
 import lombok.Getter;
+import org.jctools.maps.NonBlockingHashMap;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
 /**
@@ -30,7 +30,7 @@ import java.util.function.Predicate;
 public final class ActionCommandInfoBuilder {
 
     @Getter
-    private final ConcurrentHashMap<Integer, Map<Integer, ActionCommand>> map = new ConcurrentHashMap<>();
+    private final Map<Integer, Map<Integer, ActionCommand>> map = new NonBlockingHashMap<>();
 
     private final BarSkeletonSetting setting;
 
@@ -47,7 +47,7 @@ public final class ActionCommandInfoBuilder {
 
         // 无锁理念
         if (Objects.isNull(subActionMap)) {
-            subActionMap = new ConcurrentHashMap<>();
+            subActionMap = new NonBlockingHashMap<>();
             subActionMap = map.putIfAbsent(cmd, subActionMap);
             if (Objects.isNull(subActionMap)) {
                 subActionMap = map.get(cmd);

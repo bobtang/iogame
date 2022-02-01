@@ -92,11 +92,7 @@ public record Broadcast(BoltClientProxy boltClientProxy) {
 
     private ResponseMessage getResponseMessage(FlowContext flowContext) {
         // 业务方法的返回值
-        Object methodResult = flowContext.getMethodResult();
-
-        if (Objects.isNull(methodResult)) {
-            throw new RuntimeException("broadcast result is null");
-        }
+        Objects.requireNonNull(flowContext.getMethodResult());
 
         BarSkeleton barSkeleton = flowContext.getBarSkeleton();
         ActionMethodResultWrap actionMethodResultWrap = barSkeleton.getActionMethodResultWrap();

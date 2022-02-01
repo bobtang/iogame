@@ -1,9 +1,9 @@
 package com.iohao.little.game.net.message.common;
 
 import lombok.experimental.UtilityClass;
+import org.jctools.maps.NonBlockingHashMap;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @UtilityClass
 public class ModuleKeyKit {
@@ -12,7 +12,7 @@ public class ModuleKeyKit {
      * key : cmdMerge
      * value : moduleKey
      */
-    final Map<Integer, ModuleKey> cmdMergeModuleKeyMap = new ConcurrentHashMap<>();
+    final Map<Integer, ModuleKey> cmdMergeModuleKeyMap = new NonBlockingHashMap<>();
 
     /**
      * cmdMerge 与 moduleKey 关联

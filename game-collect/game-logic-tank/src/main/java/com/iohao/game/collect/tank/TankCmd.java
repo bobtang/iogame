@@ -1,6 +1,6 @@
-package com.iohao.game.collect.tank.action;
+package com.iohao.game.collect.tank;
 
-import com.iohao.game.collect.common.ActionCont;
+import com.iohao.game.collect.common.ActionModuleCmd;
 
 /**
  * 游戏 - 坦克模块
@@ -8,11 +8,11 @@ import com.iohao.game.collect.common.ActionCont;
  * @author 洛朱
  * @date 2022-01-14
  */
-public interface TankCmd extends ActionCont.Info {
+public interface TankCmd extends ActionModuleCmd.Info {
     /** 模块 - 主 cmd : 2 */
-    int cmd = ActionCont.tankModuleCmd;
+    int cmd = ActionModuleCmd.tankModuleCmd;
 
-    ActionCont.Info info = () -> cmd;
+    ActionModuleCmd.Info info = () -> cmd;
 
     /** 创建房间 */
     int createRoom = 1;

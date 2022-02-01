@@ -2,7 +2,7 @@ package com.iohao.game.collect.external.tester.module.tank;
 
 import com.iohao.game.collect.external.tester.module.OnMessage;
 import com.iohao.game.collect.proto.tank.TankLocation;
-import com.iohao.game.collect.tank.action.TankCmd;
+import com.iohao.game.collect.tank.TankCmd;
 import com.iohao.little.game.action.skeleton.core.CmdKit;
 import com.iohao.little.game.common.kit.ProtoKit;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;

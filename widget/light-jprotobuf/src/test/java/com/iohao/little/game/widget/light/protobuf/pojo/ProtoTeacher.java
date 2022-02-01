@@ -31,7 +31,4 @@ public class ProtoTeacher {
     byte[] bytesF;
 
     Boolean boolF;
-
-//    Object student;
-
 }

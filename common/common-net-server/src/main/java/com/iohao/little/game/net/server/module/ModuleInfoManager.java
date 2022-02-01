@@ -2,10 +2,10 @@ package com.iohao.little.game.net.server.module;
 
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.net.message.common.ModuleMessage;
+import org.jctools.maps.NonBlockingHashMap;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 模块信息管理
@@ -18,8 +18,8 @@ public class ModuleInfoManager {
      * key : cmdMerge
      * value : moduleId
      */
-    Map<Integer, Integer> moduleIdMap = new ConcurrentHashMap<>();
-    Map<Integer, ModuleInfoRegion> moduleInfoRegionMap = new ConcurrentHashMap<>();
+    Map<Integer, Integer> moduleIdMap = new NonBlockingHashMap<>();
+    Map<Integer, ModuleInfoRegion> moduleInfoRegionMap = new NonBlockingHashMap<>();
     ModuleInfoRegion externalModuleInfoRegion = new ModuleInfoRegion();
 
     public ModuleInfoProxy getModuleInfo(CmdInfo cmdInfo) {

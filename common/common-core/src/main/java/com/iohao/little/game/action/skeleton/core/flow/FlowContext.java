@@ -5,16 +5,13 @@ import com.iohao.little.game.action.skeleton.core.BarSkeleton;
 import com.iohao.little.game.action.skeleton.core.ParamContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
-import com.iohao.little.game.common.kit.attr.AttrDynamic;
+import com.iohao.little.game.common.kit.attr.AttrOptionDynamic;
+import com.iohao.little.game.common.kit.attr.AttrOptions;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * 业务框架 flow 上下文
@@ -29,9 +26,9 @@ import java.util.Objects;
 @Getter
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class FlowContext implements AttrDynamic {
+public class FlowContext implements AttrOptionDynamic {
     /** 动态属性 */
-    Map<String, Object> attr;
+    final AttrOptions options = new AttrOptions();
     /** 业务框架 */
     BarSkeleton barSkeleton;
     /** 参数上下文 */
@@ -50,16 +47,6 @@ public class FlowContext implements AttrDynamic {
     Object methodResult;
     /** userId */
     long userId;
-
-    @Override
-    public Map<String, Object> getAttr() {
-
-        if (Objects.isNull(attr)) {
-            attr = new HashMap<>();
-        }
-
-        return attr;
-    }
 
     @SuppressWarnings("unchecked")
     public <T extends ParamContext> T getParamContext() {

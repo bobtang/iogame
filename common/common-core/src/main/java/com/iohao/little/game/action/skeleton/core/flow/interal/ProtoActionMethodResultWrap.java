@@ -31,8 +31,8 @@ public class ProtoActionMethodResultWrap implements ActionMethodResultWrap {
             responseMessage.setErrorCode(code);
         }
 
-        if (Objects.isNull(result)) {
-            log.info("result is null");
+        if (Objects.isNull(result) && !flowContext.getActionCommand().getActionMethodReturnInfo().isVoid()) {
+            log.info("result is null {}", actionCommand);
             return;
         }
 

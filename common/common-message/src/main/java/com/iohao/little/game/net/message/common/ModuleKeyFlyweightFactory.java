@@ -1,8 +1,9 @@
 package com.iohao.little.game.net.message.common;
 
+import org.jctools.maps.NonBlockingHashMap;
+
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * ModuleInfoKey 享元工厂
@@ -14,7 +15,7 @@ final class ModuleKeyFlyweightFactory {
      * value : ModuleInfoKeyRegion
      * </pre>
      */
-    private final Map<Integer, ModuleKeyRegion> regionMap = new ConcurrentHashMap<>();
+    private final Map<Integer, ModuleKeyRegion> regionMap = new NonBlockingHashMap<>();
 
     /**
      * 确保只有一个服的时候，可以使用该方法
@@ -59,7 +60,7 @@ final class ModuleKeyFlyweightFactory {
          * value : ModuleInfoKey
          * </pre>
          */
-        private final Map<Integer, ModuleKey> map = new ConcurrentHashMap<>();
+        private final Map<Integer, ModuleKey> map = new NonBlockingHashMap<>();
 
         final int moduleId;
 

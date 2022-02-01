@@ -7,7 +7,7 @@ import com.iohao.little.game.action.skeleton.core.CmdInfoFlyweightFactory;
  * @author 洛朱
  * @date 2022-01-11
  */
-public interface ActionCont {
+public interface ActionModuleCmd {
     interface Info {
         int cmd();
 

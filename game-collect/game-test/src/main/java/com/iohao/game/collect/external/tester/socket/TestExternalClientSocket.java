@@ -1,6 +1,6 @@
 package com.iohao.game.collect.external.tester.socket;
 
-import com.iohao.game.collect.common.ActionCont;
+import com.iohao.game.collect.common.ActionModuleCmd;
 import com.iohao.game.collect.common.GameConfig;
 import com.iohao.game.collect.proto.common.LoginVerify;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
@@ -109,7 +109,7 @@ public class TestExternalClientSocket {
         request.setCmdCode((short) 1);
 
         // 路由
-        int cmd = ActionCont.userModuleCmd;
+        int cmd = ActionModuleCmd.userModuleCmd;
         int subCmd = 1;
         request.setCmdMerge(cmd, subCmd);
 

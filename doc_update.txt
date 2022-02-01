@@ -1,4 +1,20 @@
 
+2022-02-01
+新增抽象推送 AbstractFlowContextSend
+新增推送文档注解
+    用于补充推送相关的文档，因为推送是不是用户主动发起的请求，
+    所以需要单独标记，以便业务框架生成推送文档。
+    文档在生成还未实现
+
+新增动态属性 AttrOptionDynamic 接口
+    配合 AttrOption 可以更明确动态属性的类型
+
+FlowContext 的动态属性由 AttrDynamic 改为 AttrOptionDynamic
+    可以更明确动态属性的类型
+
+移除业务框架参数解析器的 userId 解析，全部由 FlowContext 接管，
+因为 FlowContext 是流程上下文。
+
 2022-01-30
 移除广播小部件 模块 (感觉设计过于凌乱)
 独立广播操作，将广播内嵌到（逻辑服、网关、对外服）中

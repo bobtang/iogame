@@ -1,13 +1,13 @@
 package com.iohao.game.collect.common.room.operation;
 
-import com.iohao.game.collect.common.exception.MsgCodeEnum;
+import com.iohao.game.collect.common.exception.GameCodeEnum;
 import com.iohao.little.game.action.skeleton.core.exception.MsgException;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.jctools.maps.NonBlockingHashMap;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 玩法操作的处理对象, 享元工厂
@@ -19,12 +19,12 @@ import java.util.concurrent.ConcurrentHashMap;
 @UtilityClass
 public class OperationFlyweightFactory {
     @Getter
-    private final Map<Integer, OperationHandler> map = new ConcurrentHashMap<>();
+    private final Map<Integer, OperationHandler> map = new NonBlockingHashMap<>();
 
     OperationHandler get(int operation) throws MsgException {
         OperationHandler operationHandler = map.get(operation);
 
-        MsgCodeEnum.CLASS_NOT_EXIST.assertNonNull(operationHandler);
+        GameCodeEnum.CLASS_NOT_EXIST.assertNonNull(operationHandler);
 
         return operationHandler;
     }

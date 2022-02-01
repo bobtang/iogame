@@ -6,17 +6,19 @@ import com.alipay.remoting.rpc.RpcClient;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.action.skeleton.core.ServerContext;
+import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.broadcast.Broadcast;
 import com.iohao.little.game.net.client.BoltClientServer;
-import com.iohao.little.game.net.common.ServerSender;
 import com.iohao.little.game.net.message.common.InnerModuleMessage;
 import com.iohao.little.game.widget.config.WidgetComponents;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Collection;
 
 /**
  * 客户端服务器代理, 持有一些属性
@@ -32,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 @Accessors(chain = true)
 @Slf4j
-public class BoltClientProxy implements ServerContext, ServerSender {
+public class BoltClientProxy implements ServerContext {
 
     Connection connection;
 
@@ -131,5 +133,10 @@ public class BoltClientProxy implements ServerContext, ServerSender {
         } catch (RemotingException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void broadcast(FlowContext flowContext, Collection<Long> userIdList) {
+        this.broadcast.broadcast(flowContext, userIdList);
     }
 }

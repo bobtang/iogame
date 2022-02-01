@@ -3,10 +3,10 @@ package com.iohao.little.game.common.kit.asm;
 import com.esotericsoftware.reflectasm.ConstructorAccess;
 import com.esotericsoftware.reflectasm.MethodAccess;
 import lombok.experimental.UtilityClass;
+import org.jctools.maps.NonBlockingHashMap;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 类信息工具
@@ -23,7 +23,7 @@ public class ClassRefInfoKit {
      * key: 类信息
      * value: 类反射信息
      */
-    private final Map<Class<?>, ClassRefInfo> classRefInfoMap = new ConcurrentHashMap<>();
+    private final Map<Class<?>, ClassRefInfo> classRefInfoMap = new NonBlockingHashMap<>();
 
     /**
      * 获取类信息

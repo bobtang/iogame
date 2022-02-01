@@ -2,19 +2,17 @@ package com.iohao.game.collect.tank.room;
 
 import com.iohao.game.collect.common.FrameKit;
 import com.iohao.game.collect.common.room.AbstractRoom;
+import com.iohao.game.collect.common.send.AbstractFlowContextSend;
 import com.iohao.game.collect.proto.tank.TankLocation;
-import com.iohao.game.collect.tank.config.TankKit;
+import com.iohao.game.collect.tank.send.TankSend;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
-import com.iohao.little.game.broadcast.Broadcast;
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
+import org.jctools.maps.NonBlockingHashMap;
 
 import java.io.Serial;
-import java.util.Collection;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -23,7 +21,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author 洛朱
  * @date 2022-01-14
  */
-@Data
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TankRoomEntity extends AbstractRoom {
@@ -33,7 +30,13 @@ public class TankRoomEntity extends AbstractRoom {
     int frameId;
 
     /** 房间最大帧数 */
-    private final int maxFrameId;
+    final int maxFrameId;
+    /**
+     * <pre>
+     *     key : frame
+     * </pre>
+     */
+    final Map<Integer, CopyOnWriteArrayList<TankLocation>> moveMap = new NonBlockingHashMap<>();
 
     public TankRoomEntity(int maxFrameId) {
         this.maxFrameId = maxFrameId;
@@ -43,24 +46,9 @@ public class TankRoomEntity extends AbstractRoom {
         this.maxFrameId = 60 * FrameKit.MINUTE;
     }
 
-    /**
-     * <pre>
-     *     key : frame
-     * </pre>
-     */
-    Map<Integer, CopyOnWriteArrayList<TankLocation>> moveMap = new ConcurrentHashMap<>();
-
-    /**
-     * 广播
-     *
-     * @param flowContext  flow 上下文
-     * @param methodResult 广播的业务数据
-     */
-    public void broadcast(FlowContext flowContext, Object methodResult) {
-        flowContext.setMethodResult(methodResult);
-
-        Collection<Long> listPlayerId = this.listPlayerId();
-        Broadcast broadcast = TankKit.boltClientProxy.getBroadcast();
-        broadcast.broadcast(flowContext, listPlayerId);
+    @Override
+    @SuppressWarnings("unchecked")
+    protected <T extends AbstractFlowContextSend> T createSend(FlowContext flowContext) {
+        return (T) new TankSend(flowContext);
     }
 }

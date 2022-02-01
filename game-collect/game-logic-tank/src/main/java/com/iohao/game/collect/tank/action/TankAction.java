@@ -6,6 +6,7 @@ import com.iohao.game.collect.proto.tank.TankBullet;
 import com.iohao.game.collect.proto.tank.TankBulletConfigRes;
 import com.iohao.game.collect.proto.tank.TankEnterRoom;
 import com.iohao.game.collect.proto.tank.TankLocation;
+import com.iohao.game.collect.tank.TankCmd;
 import com.iohao.game.collect.tank.mapstruct.TankMapstruct;
 import com.iohao.game.collect.tank.room.TankPlayerEntity;
 import com.iohao.game.collect.tank.room.TankRoomEntity;
@@ -98,12 +99,13 @@ public class TankAction {
     /**
      * 玩家进入房间
      *
-     * @param userId    userId
-     * @param enterRoom enterRoom
+     * @param flowContext flowContext
+     * @param enterRoom   enterRoom
      * @return TankEnterRoom
      */
     @ActionMethod(TankCmd.enterRoom)
-    public TankEnterRoom enterRoom(long userId, TankEnterRoom enterRoom) {
+    public TankEnterRoom enterRoom(FlowContext flowContext, TankEnterRoom enterRoom) {
+
         // TODO: 2022/1/14 开发阶段，只用一个房间
         enterRoom.roomId = tempRoomId;
 
@@ -121,6 +123,7 @@ public class TankAction {
             roomService.addRoom(room);
         }
 
+        long userId = flowContext.getUserId();
         TankPlayerEntity player = room.getPlayerById(userId);
 
         // 如果检查是否在房间内

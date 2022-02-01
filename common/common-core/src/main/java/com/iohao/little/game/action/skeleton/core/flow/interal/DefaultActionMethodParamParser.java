@@ -41,15 +41,13 @@ public class DefaultActionMethodParamParser implements ActionMethodParamParser {
             if (FlowContext.class.equals(paramClazz)) {
                 // flow 上下文
                 pars[i] = flowContext;
-            } else if ("userId".equals(paramInfo.getName())) {
-                // userId
-                pars[i] = flowContext.getUserId();
-            } else {
-                pars[i] = request.getData();
-                if (paramInfo.isValidator()) {
-                    String validateMsg = ValidatorKit.validate(pars[i]);
-                    response.setValidatorMsg(validateMsg);
-                }
+                continue;
+            }
+
+            pars[i] = request.getData();
+            if (paramInfo.isValidator()) {
+                String validateMsg = ValidatorKit.validate(pars[i]);
+                response.setValidatorMsg(validateMsg);
             }
 
         }
