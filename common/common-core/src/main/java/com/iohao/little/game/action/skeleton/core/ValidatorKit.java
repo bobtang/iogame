@@ -1,8 +1,5 @@
 package com.iohao.little.game.action.skeleton.core;
 
-import com.alipay.remoting.AsyncContext;
-import com.alipay.remoting.BizContext;
-import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -68,22 +65,6 @@ public class ValidatorKit {
     }
 
     /**
-     * 过滤不需要验证的参数
-     *
-     * @param paramInfo paramInfo
-     * @return true 不需要验证
-     */
-    private boolean filterParamClazz(ActionCommand.ParamInfo paramInfo) {
-        Class<?> paramClazz = paramInfo.getParamClazz();
-        return BizContext.class.equals(paramClazz)
-                || AsyncContext.class.equals(paramClazz)
-                || ServerContext.class.equals(paramClazz)
-                || CmdInfo.class.equals(paramClazz)
-                || RequestMessage.class.equals(paramClazz)
-                || "userId".equals(paramInfo.getName());
-    }
-
-    /**
      * 业务方法参数验证
      * <pre>
      *     提前查看参数是否需要验证
@@ -108,7 +89,8 @@ public class ValidatorKit {
 
         for (ActionCommand.ParamInfo paramInfo : paramInfos) {
 
-            if (ValidatorKit.filterParamClazz(paramInfo)) {
+
+            if (paramInfo.isExtension()) {
                 // 过滤不需要验证的参数
                 continue;
             }

@@ -5,6 +5,7 @@ import com.iohao.game.collect.common.GameBarSkeletonConfig;
 import com.iohao.game.collect.common.GameConfig;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
 import com.iohao.little.game.action.skeleton.core.BarSkeletonBuilder;
+import com.iohao.little.game.action.skeleton.core.BarSkeletonBuilderParamConfig;
 import com.iohao.little.game.net.client.BoltClientServer;
 import com.iohao.little.game.net.client.core.ClientStartupConfig;
 import com.iohao.little.game.net.client.core.RemoteAddress;
@@ -24,12 +25,11 @@ import com.iohao.little.game.widget.config.WidgetComponents;
 public class GameExternalClientStartupConfig implements ClientStartupConfig {
     @Override
     public BarSkeleton createBarSkeleton() {
+        BarSkeletonBuilderParamConfig config = new BarSkeletonBuilderParamConfig();
 
-        // 扫描 GameExternalClientStartupConfig.class 所在包
-        BarSkeletonBuilder builder = GameBarSkeletonConfig.createBuilder(GameExternalClientStartupConfig.class);
+        BarSkeletonBuilder builder = GameBarSkeletonConfig.createBuilder(config);
 
         return builder.build();
-//        return null;
     }
 
     @Override

@@ -1,4 +1,12 @@
 
+2022-02-02
+删除 DocActionBroadcast 统一使用 DocActionSends 来生成推送文档
+
+新增 BarSkeletonBuilderParamConfig 构建参数的配置
+
+新增注解 DocActionSends 消息推送文档的生成
+    配合 DocActionSend 生成多条推送文档
+
 2022-02-01
 新增抽象推送 AbstractFlowContextSend
 新增推送文档注解

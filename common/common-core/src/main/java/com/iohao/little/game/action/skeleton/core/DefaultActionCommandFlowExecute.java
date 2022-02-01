@@ -59,7 +59,7 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
         BarSkeleton barSkeleton = flowContext.getBarSkeleton();
 
         if (barSkeleton.isOpenIn()) {
-            for (ActionMethodInOut inOut : barSkeleton.getInOuts()) {
+            for (ActionMethodInOut inOut : barSkeleton.getInOutList()) {
                 inOut.fuckIn(flowContext);
             }
         }
@@ -75,7 +75,7 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
             Object methodResult = flowContext.getMethodResult();
             response.setData(methodResult);
 
-            for (ActionMethodInOut inOut : barSkeleton.getInOuts()) {
+            for (ActionMethodInOut inOut : barSkeleton.getInOutList()) {
                 inOut.fuckOut(flowContext);
             }
         }

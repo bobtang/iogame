@@ -163,7 +163,7 @@ public abstract class AbstractRoom implements Serializable {
         AbstractFlowContextSend send = this.createSend(flowContext)
                 .addUserId(userIdList, excludeUserId);
 
-        send.execute();
+        send.send();
     }
 
     /**
@@ -179,6 +179,6 @@ public abstract class AbstractRoom implements Serializable {
         AbstractFlowContextSend send = this.createSend(flowContext)
                 .addUserId(userId);
 
-        send.execute();
+        send.send();
     }
 }

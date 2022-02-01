@@ -1,14 +1,14 @@
 package com.iohao.little.game.action.skeleton.core.doc;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.system.SystemUtil;
 import com.iohao.little.game.action.skeleton.core.ActionCommand;
 import com.iohao.little.game.action.skeleton.core.ActionCommandManager;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -19,7 +19,7 @@ import java.util.function.Consumer;
  */
 public class BarSkeletonDoc {
 
-    List<BarSkeleton> skeletonList = new LinkedList<>();
+    final List<BarSkeleton> skeletonList = new LinkedList<>();
     String docFileName = "doc_game.txt";
 
     public void addSkeleton(BarSkeleton barSkeleton) {
@@ -27,22 +27,33 @@ public class BarSkeletonDoc {
     }
 
     public void buildDoc() {
-        this.buildDoc(null);
+        String docPath = SystemUtil.getUserInfo().getCurrentDir() + docFileName;
+        this.buildDoc(docPath);
+    }
+
+    private ActionSendDocsRegion createActionSendDocsRegion() {
+        ActionSendDocsRegion actionSendDocsRegion = new ActionSendDocsRegion();
+
+        skeletonList.stream()
+                .map(BarSkeleton::getActionSendDocs)
+                .forEach(actionSendDocsRegion::addActionSendDocs);
+
+        return actionSendDocsRegion;
+
     }
 
     public void buildDoc(String docPath) {
 
-        if (Objects.isNull(docPath)) {
-            docPath = SystemUtil.getUserInfo().getCurrentDir() + docFileName;
-        }
+        Objects.requireNonNull(docPath);
 
         if (FileUtil.isDirectory(docPath)) {
             throw new RuntimeException("file is Directory ");
 
         }
 
-        StringBuilder stringBuilder = new StringBuilder(8000);
+        ActionSendDocsRegion actionSendDocsRegion = this.createActionSendDocsRegion();
 
+        List<String> docContentList = new ArrayList<>();
 
         Consumer<ActionCommand[][]> consumer = behaviors -> {
             for (ActionCommand[] subBehaviors : behaviors) {
@@ -51,6 +62,7 @@ public class BarSkeletonDoc {
                 }
 
                 DocInfo docInfo = new DocInfo();
+                docInfo.actionSendDocsRegion = actionSendDocsRegion;
 
                 for (ActionCommand subBehavior : subBehaviors) {
                     if (Objects.isNull(subBehavior)) {
@@ -62,8 +74,7 @@ public class BarSkeletonDoc {
                 }
 
                 String render = docInfo.render();
-
-                stringBuilder.append(render);
+                docContentList.add(render);
             }
         };
 
@@ -73,111 +84,48 @@ public class BarSkeletonDoc {
                 .map(ActionCommandManager::getActionCommands)
                 .forEach(consumer);
 
-        FileUtil.writeUtf8String(stringBuilder.toString(), docPath);
+        extractedActionSend(actionSendDocsRegion, docContentList);
+
+
+        String docText = String.join("", docContentList);
+        FileUtil.writeUtf8String(docText.toString(), docPath);
     }
 
-//    public void buildDoc(String docPath) {
-//
-//        if (Objects.isNull(docPath)) {
-//            docPath = SystemUtil.getUserInfo().getCurrentDir() + docFileName;
-//        }
-//
-//        if (FileUtil.isDirectory(docPath)) {
-//            throw new RuntimeException("file is Directory ");
-//
-//        }
-//
-//        StringBuilder stringBuilder = new StringBuilder(8000);
-//
-//        Consumer<ActionCommand[][]> consumer = behaviors -> {
-//            Map<String, Object> paramMap = new HashMap<>();
-//
-//            for (int cmd = 0; cmd < behaviors.length; cmd++) {
-//                ActionCommand[] subBehaviors = behaviors[cmd];
-//
-//                if (Objects.isNull(subBehaviors)) {
-//                    continue;
-//                }
-//
-//                boolean first = true;
-//
-//                for (int subCmd = 0; subCmd < subBehaviors.length; subCmd++) {
-//                    ActionCommand subBehavior = subBehaviors[subCmd];
-//
-//                    if (Objects.isNull(subBehavior)) {
-//                        continue;
-//                    }
-//
-//                    paramMap.clear();
-//                    ActionCommandDoc actionCommandDoc = subBehavior.getActionCommandDoc();
-//
-//                    if (first) {
-//                        first = false;
-//
-//                        String template = """
-//                                ==================== {actionSimpleName} {classComment} ====================
-//                                """;
-//                        paramMap.put("actionSimpleName", subBehavior.getActionControllerClazz().getSimpleName());
-//                        paramMap.put("classComment", actionCommandDoc.getClassComment());
-//                        String message = StrUtil.format(template, paramMap);
-//                        stringBuilder.append(message);
-//
-//                    }
-//
-//                    var actionMethodReturnInfo = subBehavior.getActionMethodReturnInfo();
-//
-//                    paramMap.put("cmd", cmd);
-//                    paramMap.put("subCmd", subCmd);
-//                    paramMap.put("actionSimpleName", subBehavior.getActionControllerClazz().getSimpleName());
-//                    paramMap.put("methodName", subBehavior.getActionMethodName());
-//                    paramMap.put("methodComment", actionCommandDoc.getComment());
-//                    paramMap.put("methodParam", "");
-//                    paramMap.put("returnTypeClazz", actionMethodReturnInfo.isVoid() ? "" : actionMethodReturnInfo.getReturnTypeClazz().getName());
-//                    paramMap.put("lineNumber", actionCommandDoc.getLineNumber());
-//
-//                    paramMap.put("docActionBroadcast", "");
-//                    DocActionBroadcastInfo broadcastInfo = new DocActionBroadcastInfo(subBehavior);
-//
-//                    // 方法参数
-//                    for (ActionCommand.ParamInfo paramInfo : subBehavior.getParamInfos()) {
-//
-//                        Class<?> paramClazz = paramInfo.getParamClazz();
-//
-//                        if (FlowContext.class.equals(paramClazz) || "userId".equals(paramInfo.getName())) {
-//                            continue;
-//                        }
-//
-//                        paramMap.put("methodParam", paramClazz.getName());
-//                        broadcastInfo.setMethodParam(paramClazz.getName());
-//                    }
-//
-//                    paramMap.put("docActionBroadcast", broadcastInfo.methodParam);
-//
-//                    String template = """
-//                            路由: {cmd} - {subCmd}  --- 【{methodComment}】 --- 【{actionSimpleName}:{lineNumber}】【{methodName}】
-//                                方法参数: {methodParam}
-//                                方法返回值: {returnTypeClazz}
-//                                广播: {docActionBroadcast}
-//
-//                            """;
-//
-//                    String message = StrUtil.format(template, paramMap);
-//                    stringBuilder.append(message);
-//                }
-//
-//            }
-//        };
-//
-//        // 生成文档
-//        skeletonList.stream()
-//                .map(BarSkeleton::getActionCommandManager)
-//                .map(ActionCommandManager::getActionCommands)
-//                .forEach(consumer);
-//
-//        FileUtil.writeUtf8String(stringBuilder.toString(), docPath);
-//
-//    }
+    private void extractedActionSend(ActionSendDocsRegion actionSendDocsRegion, List<String> docContentList) {
+        // 生成剩余的推送文档
+        List<ActionSendDoc> actionSendDocList = actionSendDocsRegion.listActionSendDoc();
 
+        if (actionSendDocList.isEmpty()) {
+            return;
+        }
+
+        String separator = System.getProperty("line.separator");
+
+        docContentList.add("==================== 其它广播推送 ====================");
+        docContentList.add(separator);
+
+        for (ActionSendDoc actionSendDoc : actionSendDocList) {
+
+            Map<String, Object> stringObjectMap = BeanUtil.beanToMap(actionSendDoc);
+            stringObjectMap.put("dataClass", actionSendDoc.getDataClass().getName());
+
+            String template = "路由: {cmd} - {subCmd}  --- 广播推送: {dataClass}";
+
+            if (StrUtil.isNotEmpty(actionSendDoc.getDescription())) {
+                template = "路由: {cmd} - {subCmd}  --- 广播推送: {dataClass} ({description})";
+            }
+
+            String format = StrUtil.format(template, stringObjectMap);
+
+            docContentList.add(format);
+            docContentList.add(separator);
+        }
+    }
+
+
+    private BarSkeletonDoc() {
+
+    }
 
     public static BarSkeletonDoc me() {
         return Holder.ME;

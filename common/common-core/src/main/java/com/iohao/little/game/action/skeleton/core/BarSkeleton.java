@@ -1,5 +1,6 @@
 package com.iohao.little.game.action.skeleton.core;
 
+import com.iohao.little.game.action.skeleton.core.doc.ActionSendDocs;
 import com.iohao.little.game.action.skeleton.core.flow.*;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import lombok.Getter;
@@ -31,9 +32,9 @@ public class BarSkeleton {
     /** ActionCommandManager */
     final ActionCommandManager actionCommandManager = new ActionCommandManager();
     /** handlerList */
-    final List<Handler> handlers = new ArrayList<>();
+    final List<Handler> handlerList = new ArrayList<>();
     /** inoutList */
-    final List<ActionMethodInOut> inOuts = new ArrayList<>();
+    final List<ActionMethodInOut> inOutList = new ArrayList<>();
 
     /** true : 开放拦截 in */
     boolean openIn;
@@ -57,13 +58,10 @@ public class BarSkeleton {
 
     /** 响应对象的创建 */
     ResponseMessageCreate responseMessageCreate;
+    /** 推送相关的文档 */
+    ActionSendDocs actionSendDocs;
 
-    /**
-     * true 只有一个 handler
-     *
-     * @see Handler
-     */
-    boolean singleHandler;
+    /** handler not null, 表示只有一个 handler */
     Handler handler;
 
     BarSkeleton() {
@@ -75,10 +73,10 @@ public class BarSkeleton {
     }
 
     public void handle(ParamContext paramContext, RequestMessage request) {
-        if (singleHandler) {
+        if (handler != null) {
             handler.handler(paramContext, request, this);
         } else {
-            for (Handler handler : handlers) {
+            for (Handler handler : handlerList) {
                 if (!handler.handler(paramContext, request, this)) {
                     return;
                 }

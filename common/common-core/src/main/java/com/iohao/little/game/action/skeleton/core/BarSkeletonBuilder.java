@@ -1,5 +1,6 @@
 package com.iohao.little.game.action.skeleton.core;
 
+import com.iohao.little.game.action.skeleton.core.doc.ActionSendDocs;
 import com.iohao.little.game.action.skeleton.core.doc.BarSkeletonDoc;
 import com.iohao.little.game.action.skeleton.core.flow.*;
 import com.iohao.little.game.action.skeleton.core.flow.interal.*;
@@ -29,7 +30,9 @@ public final class BarSkeletonBuilder {
     /** inout 列表 */
     final List<ActionMethodInOut> inOuts = new LinkedList<>();
     /** action class */
-    final List<Class<?>> controllerClazzList = new LinkedList<>();
+    final List<Class<?>> actionControllerClazzList = new LinkedList<>();
+    /** action send class */
+    final List<Class<?>> actionSendClazzList = new LinkedList<>();
 
     /** 命令执行器 */
     ActionCommandFlowExecute actionCommandFlowExecute = new DefaultActionCommandFlowExecute();
@@ -48,8 +51,8 @@ public final class BarSkeletonBuilder {
 
     /** 响应对象的创建 */
     ResponseMessageCreate responseMessageCreate = new DefaultResponseMessageCreate();
-
-    String currentDir;
+    /** 推送相关的文档 */
+    ActionSendDocs actionSendDocs = new ActionSendDocs();
 
     BarSkeletonBuilder() {
     }
@@ -60,8 +63,6 @@ public final class BarSkeletonBuilder {
             this.actionMethodParamParser = new ProtoActionMethodParamParser();
             this.actionMethodResultWrap = new ProtoActionMethodResultWrap();
         }
-
-
     }
 
     /**
@@ -89,15 +90,19 @@ public final class BarSkeletonBuilder {
                 .setActionMethodResultWrap(this.actionMethodResultWrap)
                 // action after 对action最后的处理; 一般用于把结果 write 到掉用端
                 .setActionAfter(this.actionAfter)
-
                 // 响应对象的创建
-                .setResponseMessageCreate(this.responseMessageCreate);
+                .setResponseMessageCreate(this.responseMessageCreate)
+                // 推送相关的文档
+                .setActionSendDocs(this.actionSendDocs);
+
+        // 构建推送相关的文档信息
+        this.actionSendDocs.buildActionSendDoc(this.actionSendClazzList);
 
         // handler
         extractedHandler(barSkeleton);
 
         // inout
-        barSkeleton.inOuts.addAll(this.inOuts);
+        barSkeleton.inOutList.addAll(this.inOuts);
 
         // 构建 actionMapping
         extractedActionCommand(barSkeleton);
@@ -109,10 +114,42 @@ public final class BarSkeletonBuilder {
         return barSkeleton;
     }
 
+
+    public BarSkeletonBuilder addActionController(Class<?> controller) {
+        Objects.requireNonNull(controller);
+        this.actionControllerClazzList.add(controller);
+        return this;
+    }
+
+    public BarSkeletonBuilder addActionSendController(Class<?> actionSend) {
+        Objects.requireNonNull(actionSend);
+        this.actionSendClazzList.add(actionSend);
+        return this;
+    }
+
+    public BarSkeletonBuilder addHandler(Handler handler) {
+        Objects.requireNonNull(handler);
+        // 先进先执行
+        this.handlers.add(handler);
+        return this;
+    }
+
+    /**
+     * 添加 inOut
+     *
+     * @param inOut inOut
+     * @return this
+     */
+    public BarSkeletonBuilder addInOut(ActionMethodInOut inOut) {
+        Objects.requireNonNull(inOut);
+        this.inOuts.add(inOut);
+        return this;
+    }
+
     private void extractedActionCommand(BarSkeleton barSkeleton) {
         // 命令信息构建器
         var actionCommandInfoBuilder = new ActionCommandInfoBuilder(setting)
-                .buildAction(this.controllerClazzList);
+                .buildAction(this.actionControllerClazzList);
 
         var map = actionCommandInfoBuilder.getMap();
 
@@ -127,64 +164,31 @@ public final class BarSkeletonBuilder {
         actionCommandInfoBuilder.clean();
     }
 
+
     private void extractedHandler(BarSkeleton barSkeleton) {
         // 如果没有配置handler, 那么使用默认的
         if (this.handlers.isEmpty()) {
-            barSkeleton.handlers.add(new ActionCommandHandler());
+            barSkeleton.handlerList.add(new ActionCommandHandler());
         } else {
-            barSkeleton.handlers.addAll(this.handlers);
+            barSkeleton.handlerList.addAll(this.handlers);
         }
 
-        if (barSkeleton.handlers.size() == 1) {
-            barSkeleton.singleHandler = true;
-            barSkeleton.handler = barSkeleton.handlers.get(0);
+        if (barSkeleton.handlerList.size() == 1) {
+            barSkeleton.handler = barSkeleton.handlerList.get(0);
         }
     }
 
     private void log(BarSkeleton barSkeleton) {
         if (setting.isPrintHandler()) {
-            PrintActionKit.printHandler(barSkeleton.getHandlers());
+            PrintActionKit.printHandler(barSkeleton.getHandlerList());
         }
 
         if (setting.isPrintInout()) {
-            PrintActionKit.printInout(barSkeleton.getInOuts());
+            PrintActionKit.printInout(barSkeleton.getInOutList());
         }
 
         if (setting.isPrintAction()) {
             PrintActionKit.printActionCommand(barSkeleton.actionCommandManager.actionCommands, setting.printActionShort);
         }
     }
-
-    private void n(Object o) {
-        if (Objects.isNull(o)) {
-            throw new NullPointerException("must not null 小sb !");
-        }
-    }
-
-    public BarSkeletonBuilder addActionController(Class<?> controller) {
-        n(controller);
-        this.controllerClazzList.add(controller);
-        return this;
-    }
-
-    public BarSkeletonBuilder addHandler(Handler handler) {
-        n(handler);
-        // 先进先执行
-        this.handlers.add(handler);
-        return this;
-    }
-
-    /**
-     * 添加 inOut
-     *
-     * @param inOut inOut
-     * @return this
-     */
-    public BarSkeletonBuilder addInOut(ActionMethodInOut inOut) {
-        n(inOut);
-        this.inOuts.add(inOut);
-        return this;
-    }
-
-
 }

@@ -14,7 +14,6 @@ import com.iohao.game.collect.tank.room.flow.*;
 import com.iohao.game.collect.tank.service.TankConfigService;
 import com.iohao.little.game.action.skeleton.annotation.ActionController;
 import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
-import com.iohao.little.game.action.skeleton.annotation.DocActionBroadcast;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import lombok.extern.slf4j.Slf4j;
 
@@ -52,7 +51,6 @@ public class TankAction {
      * @param tankBullet  tankBullet
      */
     @ActionMethod(TankCmd.shooting)
-    @DocActionBroadcast
     public void shooting(FlowContext flowContext, TankBullet tankBullet) {
         long userId = flowContext.getUserId();
         tankBullet.tankLocation.playerId = userId;
@@ -69,7 +67,6 @@ public class TankAction {
      * @param tankLocation tankLocation
      */
     @ActionMethod(TankCmd.tankMove)
-    @DocActionBroadcast
     public void tankMove(FlowContext flowContext, TankLocation tankLocation) {
         long userId = flowContext.getUserId();
         tankLocation.playerId = userId;

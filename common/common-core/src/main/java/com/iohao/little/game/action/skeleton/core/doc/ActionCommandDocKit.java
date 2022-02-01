@@ -21,6 +21,16 @@ import java.util.Map;
 @UtilityClass
 public class ActionCommandDocKit {
 
+    /**
+     * java class doc map
+     * <pre>
+     *     key : java class name (YourJavaFile.class)
+     *     value : {@link JavaClassDocInfo}
+     * </pre>
+     *
+     * @param controllerList classList
+     * @return map
+     */
     public Map<String, JavaClassDocInfo> getJavaClassDocInfoMap(List<Class<?>> controllerList) {
         JavaProjectBuilder javaProjectBuilder = new JavaProjectBuilder();
         final Map<String, JavaClassDocInfo> javaClassDocInfoMap = new HashMap<>();

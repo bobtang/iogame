@@ -4,6 +4,9 @@ import java.lang.annotation.*;
 
 /**
  * 文档相关
+ * <pre>
+ *     仅用于推送文档生成
+ * </pre>
  *
  * @author 洛朱
  * @date 2022-01-31
@@ -21,4 +24,7 @@ public @interface DocActionSend {
 
     /** 业务类型 */
     Class<?> dataClass();
+
+    /** 推送描述 */
+    String description() default "";
 }

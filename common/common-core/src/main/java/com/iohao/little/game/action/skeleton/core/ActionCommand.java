@@ -183,10 +183,11 @@ public final class ActionCommand {
 
         /**
          * 是否扩展属性
+         *
          * @return true 是扩展属性
          */
         public boolean isExtension() {
-            return FlowContext.class.equals(paramClazz) || "userId".equals(this.name);
+            return FlowContext.class.equals(paramClazz);
         }
     }
 

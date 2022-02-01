@@ -4,10 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.iohao.little.game.action.skeleton.core.ActionCommand;
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author 洛朱
@@ -17,6 +14,8 @@ import java.util.Map;
 class DocInfo {
     String actionSimpleName;
     String classComment;
+    ActionSendDocsRegion actionSendDocsRegion;
+
     final List<Map<String, String>> subBehaviorList = new ArrayList<>();
 
     public void setHead(ActionCommand subBehavior) {
@@ -47,23 +46,15 @@ class DocInfo {
         paramMap.put("returnTypeClazz", actionMethodReturnInfo.isVoid() ? "" : actionMethodReturnInfo.getReturnTypeClazz().getName());
         paramMap.put("lineNumber", String.valueOf(actionCommandDoc.getLineNumber()));
 
-        paramMap.put("docActionBroadcast", null);
-
-        DocActionBroadcastInfo broadcastInfo = new DocActionBroadcastInfo(subBehavior);
-
         // 方法参数
         for (ActionCommand.ParamInfo paramInfo : subBehavior.getParamInfos()) {
-
             if (paramInfo.isExtension()) {
                 continue;
             }
 
             Class<?> paramClazz = paramInfo.getParamClazz();
             paramMap.put("methodParam", paramClazz.getName());
-            broadcastInfo.setMethodParam(paramClazz.getName());
         }
-
-        paramMap.put("docActionBroadcast", broadcastInfo.methodParam);
     }
 
     String render() {
@@ -72,6 +63,7 @@ class DocInfo {
         }
 
         String separator = System.getProperty("line.separator");
+
         List<String> lineList = new ArrayList<>();
 
         String templateHead = "==================== {} {} ====================";
@@ -81,21 +73,31 @@ class DocInfo {
                 "路由: {cmd} - {subCmd}  --- 【{methodComment}】 --- 【{actionSimpleName}:{lineNumber}】【{methodName}】";
 
         for (Map<String, String> paramMap : subBehaviorList) {
+
+            int cmd = Integer.parseInt(paramMap.get("cmd"));
+            int subCmd = Integer.parseInt(paramMap.get("subCmd"));
+
+            ActionSendDoc actionSendDoc = this.actionSendDocsRegion.getActionSendDoc(cmd, subCmd);
+
             String format = StrUtil.format(subActionCommandTemplate, paramMap);
             lineList.add(format);
 
+            // 方法参数
             if (StrUtil.isNotEmpty(paramMap.get("methodParam"))) {
                 format = StrUtil.format("    方法参数: {methodParam}", paramMap);
                 lineList.add(format);
             }
 
+            // 方法返回值
             if (StrUtil.isNotEmpty(paramMap.get("returnTypeClazz"))) {
                 format = StrUtil.format("    方法返回值: {returnTypeClazz}", paramMap);
                 lineList.add(format);
             }
 
-            if (StrUtil.isNotEmpty(paramMap.get("docActionBroadcast"))) {
-                format = StrUtil.format("    广播推送: {docActionBroadcast}", paramMap);
+            // 广播推送
+            if (Objects.nonNull(actionSendDoc)) {
+                Class<?> dataClass = actionSendDoc.getDataClass();
+                format = StrUtil.format("    广播推送: {}", dataClass.getName());
                 lineList.add(format);
             }
 

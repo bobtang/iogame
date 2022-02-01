@@ -6,6 +6,7 @@ import com.iohao.game.collect.logic.GameLogicCommonInit;
 import com.iohao.game.collect.user.action.LoginAction;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
 import com.iohao.little.game.action.skeleton.core.BarSkeletonBuilder;
+import com.iohao.little.game.action.skeleton.core.BarSkeletonBuilderParamConfig;
 import com.iohao.little.game.net.client.core.ClientStartupConfig;
 import com.iohao.little.game.net.client.core.RemoteAddress;
 import com.iohao.little.game.net.message.common.ModuleKeyKit;
@@ -18,8 +19,12 @@ import com.iohao.little.game.net.message.common.ModuleMessage;
 public class UserClientStartupConfig implements ClientStartupConfig {
     @Override
     public BarSkeleton createBarSkeleton() {
+        BarSkeletonBuilderParamConfig config = new BarSkeletonBuilderParamConfig()
+                // ActionController
+                .addActionController(LoginAction.class);
+
         // 扫描 LoginAction.class 所在包
-        BarSkeletonBuilder builder = GameBarSkeletonConfig.createBuilder(LoginAction.class);
+        BarSkeletonBuilder builder = GameBarSkeletonConfig.createBuilder(config);
 
         return builder.build();
     }

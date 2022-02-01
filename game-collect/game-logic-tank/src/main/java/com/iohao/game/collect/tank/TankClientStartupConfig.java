@@ -5,8 +5,10 @@ import com.iohao.game.collect.common.ModuleKeyCont;
 import com.iohao.game.collect.logic.GameLogicCommonInit;
 import com.iohao.game.collect.tank.action.TankAction;
 import com.iohao.game.collect.tank.config.TankKit;
+import com.iohao.game.collect.tank.send.TankSend;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
 import com.iohao.little.game.action.skeleton.core.BarSkeletonBuilder;
+import com.iohao.little.game.action.skeleton.core.BarSkeletonBuilderParamConfig;
 import com.iohao.little.game.net.client.BoltClientServer;
 import com.iohao.little.game.net.client.core.ClientStartupConfig;
 import com.iohao.little.game.net.client.core.RemoteAddress;
@@ -18,11 +20,23 @@ import com.iohao.little.game.net.message.common.ModuleMessage;
  * @date 2022-01-14
  */
 public class TankClientStartupConfig implements ClientStartupConfig {
+
+    public static void main(String[] args) {
+        TankClientStartupConfig config = new TankClientStartupConfig();
+        config.createBarSkeleton();
+    }
+
     @Override
     public BarSkeleton createBarSkeleton() {
 
+        BarSkeletonBuilderParamConfig config = new BarSkeletonBuilderParamConfig()
+                // ActionController
+                .addActionController(TankAction.class)
+                // 推送消息
+                .addActionSend(TankSend.class);
+
         // 扫描 TankAction.class 所在包
-        BarSkeletonBuilder builder = GameBarSkeletonConfig.createBuilder(TankAction.class);
+        BarSkeletonBuilder builder = GameBarSkeletonConfig.createBuilder(config);
 
 
         return builder.build();
