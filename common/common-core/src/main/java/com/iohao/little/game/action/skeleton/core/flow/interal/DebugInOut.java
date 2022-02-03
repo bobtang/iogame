@@ -62,7 +62,7 @@ public class DebugInOut implements ActionMethodInOut {
         paramMap.put("validatorMsg", responseMessage.getValidatorMsg());
 
         String template = """
-                ┏━━不符合验证━━━ Debug [{className}.java] ━━━ [.({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo}
+                ┏━━不符合验证━━━ Debug [{className}.java] ━━━ [({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo}
                 ┣ 参数: {paramName} : {paramData}
                 ┣ 错误码: {errorCode}
                 ┣ 验证信息: {validatorMsg}
@@ -84,7 +84,7 @@ public class DebugInOut implements ActionMethodInOut {
         }
 
         String template = """
-                ┏━━━━━ Debug [{className}.java] ━━━ [.({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo}
+                ┏━━━━━ Debug [{className}.java] ━━━ [({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo}
                 ┣ 参数: {paramName} : {paramData}
                 ┣ 响应: {returnData}
                 ┣ 时间: {time} ms (业务方法总耗时)

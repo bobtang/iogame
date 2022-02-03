@@ -1,5 +1,6 @@
-package com.iohao.game.collect.user.action;
+package com.iohao.game.collect.hall.action;
 
+import com.iohao.game.collect.hall.HallCmd;
 import com.iohao.game.collect.proto.common.LoginVerify;
 import com.iohao.game.collect.proto.common.UserInfo;
 import com.iohao.little.game.action.skeleton.annotation.ActionController;
@@ -17,10 +18,10 @@ import java.util.concurrent.atomic.LongAdder;
  * 登录相关
  *
  * @author 洛朱
- * @date 2022-01-11
+ * @date 2022-02-02
  */
 @Slf4j
-@ActionController(UserCmd.cmd)
+@ActionController(HallCmd.cmd)
 public class LoginAction {
 
     final Map<String, Long> userMap = new NonBlockingHashMap<>();
@@ -34,7 +35,7 @@ public class LoginAction {
      * @param flowContext f
      * @return 用户信息
      */
-    @ActionMethod(UserCmd.loginVerify)
+    @ActionMethod(HallCmd.loginVerify)
     public UserInfo loginVerify(LoginVerify loginVerify, FlowContext flowContext) {
         log.info("loginVerify {} ", loginVerify);
 

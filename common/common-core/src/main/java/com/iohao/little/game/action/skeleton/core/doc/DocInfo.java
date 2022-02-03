@@ -25,7 +25,6 @@ class DocInfo {
         this.classComment = actionCommandDoc.getClassComment();
     }
 
-
     void add(ActionCommand subBehavior) {
         Map<String, String> paramMap = new HashMap<>();
         subBehaviorList.add(paramMap);
@@ -46,6 +45,7 @@ class DocInfo {
         paramMap.put("returnTypeClazz", actionMethodReturnInfo.isVoid() ? "" : actionMethodReturnInfo.getReturnTypeClazz().getName());
         paramMap.put("lineNumber", String.valueOf(actionCommandDoc.getLineNumber()));
 
+
         // 方法参数
         for (ActionCommand.ParamInfo paramInfo : subBehavior.getParamInfos()) {
             if (paramInfo.isExtension()) {
@@ -54,6 +54,11 @@ class DocInfo {
 
             Class<?> paramClazz = paramInfo.getParamClazz();
             paramMap.put("methodParam", paramClazz.getName());
+        }
+
+        if (subBehavior.isThrowException()) {
+            paramMap.put("error", "");
+
         }
     }
 
@@ -81,6 +86,10 @@ class DocInfo {
 
             String format = StrUtil.format(subActionCommandTemplate, paramMap);
             lineList.add(format);
+
+            if (paramMap.containsKey("error")) {
+                lineList.add("    触发异常: (方法有可能会触发异常)");
+            }
 
             // 方法参数
             if (StrUtil.isNotEmpty(paramMap.get("methodParam"))) {

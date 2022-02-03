@@ -20,7 +20,7 @@ public class ActionSendDocs {
     @Getter
     Map<Integer, ActionSendDoc> actionSendDocMap = new NonBlockingHashMap<>();
 
-    public void put(ActionSendDoc actionSendDoc) {
+    private void put(ActionSendDoc actionSendDoc) {
         int cmdMerge = CmdKit.merge(actionSendDoc.getCmd(), actionSendDoc.getSubCmd());
         actionSendDocMap.put(cmdMerge, actionSendDoc);
     }

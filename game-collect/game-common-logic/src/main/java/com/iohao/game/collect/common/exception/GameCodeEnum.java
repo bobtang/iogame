@@ -12,7 +12,9 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public enum GameCodeEnum implements MsgExceptionInfo {
-    CLASS_NOT_EXIST(-1, "class 不存在");
+    CLASS_NOT_EXIST(-1, "class 不存在"),
+    tankBulletDeficiency(201, "子弹不存在或不足"),
+    ;
 
     /** 消息码 */
     final int code;

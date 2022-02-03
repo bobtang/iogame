@@ -14,11 +14,14 @@ import com.iohao.game.collect.tank.room.flow.*;
 import com.iohao.game.collect.tank.service.TankConfigService;
 import com.iohao.little.game.action.skeleton.annotation.ActionController;
 import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
+import com.iohao.little.game.action.skeleton.core.exception.MsgException;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.LongAdder;
 
 /**
  * 坦克相关
@@ -35,6 +38,8 @@ public class TankAction {
     // TODO: 2022/1/14 开发阶段，只用一个房间
     public static long tempRoomId = 10000;
 
+    static final LongAdder bulletShootIdAdder = new LongAdder();
+
     static {
         gameFlowService.setRoomRuleInfoCustom(new TankRoomRuleInfoCustom());
         gameFlowService.setRoomGameStartCustom(new TankRoomGameStartCustom());
@@ -44,6 +49,21 @@ public class TankAction {
     }
 
 
+//    @ActionMethod(TankCmd.hurt)
+//    public void hurt(FlowContext flowContext) {
+//
+//    }
+//
+//    /**
+//     * 子弹消失（死亡）
+//     *
+//     * @param flowContext flowContext
+//     */
+//    @ActionMethod(TankCmd.bulletDead)
+//    public void bulletDead(FlowContext flowContext) {
+//        long userId = flowContext.getUserId();
+//    }
+
     /**
      * 坦克射击(发射子弹)
      *
@@ -51,12 +71,23 @@ public class TankAction {
      * @param tankBullet  tankBullet
      */
     @ActionMethod(TankCmd.shooting)
-    public void shooting(FlowContext flowContext, TankBullet tankBullet) {
+    public void shooting(FlowContext flowContext, TankBullet tankBullet) throws MsgException {
         long userId = flowContext.getUserId();
-        tankBullet.tankLocation.playerId = userId;
 
         // 广播这颗子弹的消息
         TankRoomEntity room = roomService.getRoomByUserId(userId);
+
+        TankPlayerEntity player = room.getPlayerById(userId);
+
+        player.shooting(tankBullet);
+
+        bulletShootIdAdder.increment();
+        tankBullet.shootId = bulletShootIdAdder.longValue();
+
+
+        Map<Integer, Integer> tankBulletMap = player.getTankBulletMap();
+
+
         room.broadcast(flowContext, tankBullet);
     }
 
@@ -127,7 +158,7 @@ public class TankAction {
         if (Objects.isNull(player)) {
             // 如果不在房间内先加入房间
             player = gameFlowService.getRoomPlayerCreateCustom().createPlayer();
-            player.setId(userId);
+            player.setUserId(userId);
             player.setRoomId(roomId);
 
             roomService.addPlayer(room, player);

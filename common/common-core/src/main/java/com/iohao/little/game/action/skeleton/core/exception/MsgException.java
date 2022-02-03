@@ -25,4 +25,8 @@ public class MsgException extends Exception {
         this.msgCode = msgCode;
     }
 
+    public MsgException(MsgExceptionInfo msgExceptionInfo) {
+        this(msgExceptionInfo.getCode(), msgExceptionInfo.getMsg());
+    }
+
 }

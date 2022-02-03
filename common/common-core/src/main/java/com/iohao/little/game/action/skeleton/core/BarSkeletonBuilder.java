@@ -2,12 +2,15 @@ package com.iohao.little.game.action.skeleton.core;
 
 import com.iohao.little.game.action.skeleton.core.doc.ActionSendDocs;
 import com.iohao.little.game.action.skeleton.core.doc.BarSkeletonDoc;
+import com.iohao.little.game.action.skeleton.core.doc.ErrorCodeDocs;
+import com.iohao.little.game.action.skeleton.core.exception.MsgExceptionInfo;
 import com.iohao.little.game.action.skeleton.core.flow.*;
 import com.iohao.little.game.action.skeleton.core.flow.interal.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +36,8 @@ public final class BarSkeletonBuilder {
     final List<Class<?>> actionControllerClazzList = new LinkedList<>();
     /** action send class */
     final List<Class<?>> actionSendClazzList = new LinkedList<>();
+    /** 错误码 */
+    final List<MsgExceptionInfo> msgExceptionInfoList = new ArrayList<>();
 
     /** 命令执行器 */
     ActionCommandFlowExecute actionCommandFlowExecute = new DefaultActionCommandFlowExecute();
@@ -53,6 +58,8 @@ public final class BarSkeletonBuilder {
     ResponseMessageCreate responseMessageCreate = new DefaultResponseMessageCreate();
     /** 推送相关的文档 */
     ActionSendDocs actionSendDocs = new ActionSendDocs();
+    /** 错误码相关的文档 */
+    ErrorCodeDocs errorCodeDocs = new ErrorCodeDocs();
 
     BarSkeletonBuilder() {
     }
@@ -93,7 +100,10 @@ public final class BarSkeletonBuilder {
                 // 响应对象的创建
                 .setResponseMessageCreate(this.responseMessageCreate)
                 // 推送相关的文档
-                .setActionSendDocs(this.actionSendDocs);
+                .setActionSendDocs(this.actionSendDocs)
+                // 错误码相关的文档
+                .setErrorCodeDocs(this.errorCodeDocs)
+                ;
 
         // 构建推送相关的文档信息
         this.actionSendDocs.buildActionSendDoc(this.actionSendClazzList);
@@ -114,6 +124,11 @@ public final class BarSkeletonBuilder {
         return barSkeleton;
     }
 
+    public BarSkeletonBuilder addMsgExceptionInfo(MsgExceptionInfo msgExceptionInfo) {
+        Objects.requireNonNull(msgExceptionInfo);
+        this.errorCodeDocs.addMsgExceptionInfo(msgExceptionInfo);
+        return this;
+    }
 
     public BarSkeletonBuilder addActionController(Class<?> controller) {
         Objects.requireNonNull(controller);

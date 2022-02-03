@@ -1,6 +1,6 @@
 package com.iohao.little.game.action.skeleton.protocol;
 
-import com.iohao.little.game.action.skeleton.core.exception.BarErrorCode;
+import com.iohao.little.game.action.skeleton.core.exception.ActionErrorEnum;
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.action.skeleton.core.CmdInfoFlyweightFactory;
 import com.iohao.little.game.action.skeleton.core.CmdKit;
@@ -101,7 +101,7 @@ public abstract class BarMessage implements Serializable {
     public void setValidatorMsg(String validatorMsg) {
         if (validatorMsg != null) {
             this.validatorMsg = validatorMsg;
-            this.errorCode = BarErrorCode.validateErrCode;
+            this.errorCode = ActionErrorEnum.validateErrCode.getCode();
         }
     }
 

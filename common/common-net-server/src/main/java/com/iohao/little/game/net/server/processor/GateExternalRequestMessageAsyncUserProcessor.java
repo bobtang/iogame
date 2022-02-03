@@ -6,7 +6,7 @@ import com.alipay.remoting.Connection;
 import com.alipay.remoting.exception.RemotingException;
 import com.alipay.remoting.rpc.RpcServer;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
-import com.iohao.little.game.action.skeleton.core.exception.BarErrorCode;
+import com.iohao.little.game.action.skeleton.core.exception.ActionErrorEnum;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.common.BoltServer;
@@ -57,8 +57,10 @@ public class GateExternalRequestMessageAsyncUserProcessor extends AsyncUserProce
         // 路由不存在
         Connection connection = bizCtx.getConnection();
         ResponseMessage responseMessage = requestMessage.createResponseMessage();
-        responseMessage.setValidatorMsg("路由不存在");
-        responseMessage.setErrorCode(BarErrorCode.cmdInfoErrorCode);
+
+        ActionErrorEnum errorCode = ActionErrorEnum.cmdInfoErrorCode;
+        responseMessage.setValidatorMsg(errorCode.getMsg());
+        responseMessage.setErrorCode(errorCode.getCode());
 
         RpcServer rpcServer = boltServer.getRpcServer();
         try {

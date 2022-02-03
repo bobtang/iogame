@@ -42,6 +42,16 @@ public class BarSkeletonDoc {
 
     }
 
+    private ErrorCodeDocsRegion createErrorCodeDocsRegion() {
+        ErrorCodeDocsRegion region = new ErrorCodeDocsRegion();
+        skeletonList.stream()
+                .map(BarSkeleton::getErrorCodeDocs)
+                .forEach(region::addErrorCodeDocs);
+
+        return region;
+    }
+
+
     public void buildDoc(String docPath) {
 
         Objects.requireNonNull(docPath);
@@ -84,11 +94,32 @@ public class BarSkeletonDoc {
                 .map(ActionCommandManager::getActionCommands)
                 .forEach(consumer);
 
+        // 生成剩余的推送文档
         extractedActionSend(actionSendDocsRegion, docContentList);
 
+        // 错误码相关的文档
+        extractedErrorCode(docContentList);
 
         String docText = String.join("", docContentList);
         FileUtil.writeUtf8String(docText.toString(), docPath);
+    }
+
+    private void extractedErrorCode(List<String> docContentList) {
+        ErrorCodeDocsRegion errorCodeDocsRegion = this.createErrorCodeDocsRegion();
+
+
+        String separator = System.getProperty("line.separator");
+
+        docContentList.add("==================== 错误码 ====================");
+        docContentList.add(separator);
+
+        for (ErrorCodeDoc errorCodeDoc : errorCodeDocsRegion.listErrorCodeDoc()) {
+            String template = " {} : {} ";
+
+            String format = StrUtil.format(template, errorCodeDoc.getCode(), errorCodeDoc.getMsg());
+            docContentList.add(format);
+            docContentList.add(separator);
+        }
     }
 
     private void extractedActionSend(ActionSendDocsRegion actionSendDocsRegion, List<String> docContentList) {

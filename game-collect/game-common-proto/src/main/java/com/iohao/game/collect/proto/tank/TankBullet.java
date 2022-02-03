@@ -26,4 +26,8 @@ public class TankBullet {
     int id;
     /** 子弹的位置 */
     TankLocation tankLocation;
+    /** 所属玩家 */
+    long playerId;
+    /** 射击id (由服务器生成的唯一id) */
+    long shootId;
 }

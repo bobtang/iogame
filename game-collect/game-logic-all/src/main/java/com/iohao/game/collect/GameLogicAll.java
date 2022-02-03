@@ -1,7 +1,7 @@
 package com.iohao.game.collect;
 
+import com.iohao.game.collect.hall.HallClientStartupConfig;
 import com.iohao.game.collect.tank.TankClientStartupConfig;
-import com.iohao.game.collect.user.UserClientStartupConfig;
 
 /**
  * @author 洛朱
@@ -15,11 +15,13 @@ public class GameLogicAll {
 
     public void init() {
         // 启动用户逻辑服
-        UserClientStartupConfig userClientStartupConfig = new UserClientStartupConfig();
-        userClientStartupConfig.startup();
 
+        // 大厅
+        HallClientStartupConfig hallClientStartupConfig = new HallClientStartupConfig();
+        hallClientStartupConfig.startup();
+
+        // 坦克游戏
         TankClientStartupConfig tankClientStartupConfig = new TankClientStartupConfig();
         tankClientStartupConfig.startup();
-
     }
 }

@@ -109,7 +109,7 @@ public class TestExternalClientSocket {
         request.setCmdCode((short) 1);
 
         // 路由
-        int cmd = ActionModuleCmd.userModuleCmd;
+        int cmd = ActionModuleCmd.hallModuleCmd;
         int subCmd = 1;
         request.setCmdMerge(cmd, subCmd);
 

@@ -1,6 +1,7 @@
 package com.iohao.little.game.action.skeleton.core;
 
 import com.iohao.little.game.action.skeleton.core.doc.ActionSendDocs;
+import com.iohao.little.game.action.skeleton.core.doc.ErrorCodeDocs;
 import com.iohao.little.game.action.skeleton.core.flow.*;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import lombok.Getter;
@@ -60,6 +61,8 @@ public class BarSkeleton {
     ResponseMessageCreate responseMessageCreate;
     /** 推送相关的文档 */
     ActionSendDocs actionSendDocs;
+    /** 错误码相关的文档 */
+    ErrorCodeDocs errorCodeDocs;
 
     /** handler not null, 表示只有一个 handler */
     Handler handler;

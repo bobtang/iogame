@@ -2,15 +2,14 @@ package com.iohao.little.game.action.skeleton.core;
 
 import com.iohao.little.game.action.skeleton.annotation.ActionController;
 import com.iohao.little.game.action.skeleton.annotation.DocActionSends;
+import com.iohao.little.game.action.skeleton.core.exception.MsgExceptionInfo;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Predicate;
 
 /**
@@ -31,6 +30,8 @@ public class BarSkeletonBuilderParamConfig {
     final List<Class<?>> actionControllerClassList = new ArrayList<>();
     /** action send class. class has @DocActionSend */
     final List<Class<?>> actionSendClassList = new ArrayList<>();
+    /** 错误码 class */
+    final List<MsgExceptionInfo> msgExceptionInfoList = new ArrayList<>();
 
     /** ActionController filter */
     Predicate<Class<?>> actionControllerPredicateFilter = (clazz) -> Objects.nonNull(clazz.getAnnotation(ActionController.class));
@@ -44,6 +45,11 @@ public class BarSkeletonBuilderParamConfig {
 
     public BarSkeletonBuilderParamConfig addActionSend(Class<?> actionSendClass) {
         this.actionSendClassList.add(actionSendClass);
+        return this;
+    }
+
+    public BarSkeletonBuilderParamConfig addErrorCode(MsgExceptionInfo[] msgExceptionInfoArray) {
+        msgExceptionInfoList.addAll(Arrays.asList(msgExceptionInfoArray));
         return this;
     }
 

@@ -1,8 +1,8 @@
 package com.iohao.game.collect.external.tester.module;
 
+import com.iohao.game.collect.hall.HallCmd;
 import com.iohao.game.collect.proto.common.LoginVerify;
 import com.iohao.game.collect.proto.common.UserInfo;
-import com.iohao.game.collect.user.action.UserCmd;
 import com.iohao.little.game.action.skeleton.core.CmdKit;
 import com.iohao.little.game.common.kit.ProtoKit;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
@@ -24,7 +24,7 @@ public class LoginVerifyOnMessage implements OnMessage {
 
     @Override
     public int getCmdMerge() {
-        return CmdKit.merge(UserCmd.cmd, UserCmd.loginVerify);
+        return CmdKit.merge(HallCmd.cmd, HallCmd.loginVerify);
     }
 
     @Override

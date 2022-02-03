@@ -13,7 +13,12 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public enum ActionErrorEnum implements MsgExceptionInfo {
-    
+    /** 系统其它错误 */
+    systemOtherErrCode(-1000, "系统其它错误"),
+    /** 参数验错误码 */
+    validateErrCode(-1001, "参数验错误码"),
+    /** 路由错误码 */
+    cmdInfoErrorCode(-1002, "路由错误码,一般是客户端请求了不存在的路由引起的"),
     ;
 
     /** 消息码 */

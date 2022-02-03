@@ -35,6 +35,8 @@ public class GameBarSkeletonConfig {
         // action controller class. class has @ActionController
         scanClass(config.getActionControllerClassList(), config.getActionControllerPredicateFilter(), builder::addActionController);
 
+        // 错误码相关的
+        config.getMsgExceptionInfoList().forEach(builder::addMsgExceptionInfo);
 
         return builder;
     }

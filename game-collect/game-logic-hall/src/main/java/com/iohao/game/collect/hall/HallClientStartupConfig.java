@@ -1,9 +1,9 @@
-package com.iohao.game.collect.user;
+package com.iohao.game.collect.hall;
 
 import com.iohao.game.collect.common.GameBarSkeletonConfig;
 import com.iohao.game.collect.common.ModuleKeyCont;
+import com.iohao.game.collect.hall.action.LoginAction;
 import com.iohao.game.collect.logic.GameLogicCommonInit;
-import com.iohao.game.collect.user.action.LoginAction;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
 import com.iohao.little.game.action.skeleton.core.BarSkeletonBuilder;
 import com.iohao.little.game.action.skeleton.core.BarSkeletonBuilderParamConfig;
@@ -14,9 +14,9 @@ import com.iohao.little.game.net.message.common.ModuleMessage;
 
 /**
  * @author 洛朱
- * @date 2022-01-12
+ * @date 2022-02-02
  */
-public class UserClientStartupConfig implements ClientStartupConfig {
+public class HallClientStartupConfig implements ClientStartupConfig {
     @Override
     public BarSkeleton createBarSkeleton() {
         BarSkeletonBuilderParamConfig config = new BarSkeletonBuilderParamConfig()

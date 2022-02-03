@@ -17,7 +17,7 @@ public interface ActionModuleCmd {
     }
 
     /** 用户模块 */
-    int userModuleCmd = 1;
+    int hallModuleCmd = 1;
     /** 游戏 坦克模块 */
     int tankModuleCmd = 2;
 
