@@ -102,8 +102,7 @@ public final class BarSkeletonBuilder {
                 // 推送相关的文档
                 .setActionSendDocs(this.actionSendDocs)
                 // 错误码相关的文档
-                .setErrorCodeDocs(this.errorCodeDocs)
-                ;
+                .setErrorCodeDocs(this.errorCodeDocs);
 
         // 构建推送相关的文档信息
         this.actionSendDocs.buildActionSendDoc(this.actionSendClazzList);
@@ -136,7 +135,7 @@ public final class BarSkeletonBuilder {
         return this;
     }
 
-    public BarSkeletonBuilder addActionSendController(Class<?> actionSend) {
+    public BarSkeletonBuilder addActionSend(Class<?> actionSend) {
         Objects.requireNonNull(actionSend);
         this.actionSendClazzList.add(actionSend);
         return this;

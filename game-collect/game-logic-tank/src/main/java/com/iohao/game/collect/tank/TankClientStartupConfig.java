@@ -32,18 +32,17 @@ public class TankClientStartupConfig implements ClientStartupConfig {
     public BarSkeleton createBarSkeleton() {
 
         BarSkeletonBuilderParamConfig config = new BarSkeletonBuilderParamConfig()
-                // ActionController
+                // 需要扫描的 action 类
                 .addActionController(TankAction.class)
-                // 推送消息
+                // 推送消息-用于文档的生成
                 .addActionSend(TankSend.class)
-                // 错误码
+                // 错误码-用于文档的生成
                 .addErrorCode(ActionErrorEnum.values())
-                .addErrorCode(GameCodeEnum.values())
-                ;
+                // 错误码-用于文档的生成
+                .addErrorCode(GameCodeEnum.values());
 
         // 扫描 TankAction.class 所在包
         BarSkeletonBuilder builder = GameBarSkeletonConfig.createBuilder(config);
-
 
         return builder.build();
     }
@@ -73,6 +72,4 @@ public class TankClientStartupConfig implements ClientStartupConfig {
                 .getBoltClientServerSetting()
                 .getBoltClientProxy();
     }
-
-
 }

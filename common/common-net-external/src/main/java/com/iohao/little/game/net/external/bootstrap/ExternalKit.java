@@ -31,7 +31,7 @@ public class ExternalKit {
         ExternalMessage externalMessage = new ExternalMessage();
         externalMessage.setCmdCode((short) 1);
         externalMessage.setCmdMerge(responseMessage.getCmdMerge());
-        externalMessage.setResponseStatus((short) responseMessage.getErrorCode());
+        externalMessage.setResponseStatus((short) responseMessage.getResponseStatus());
         externalMessage.setData(responseMessage.getDataContent());
 
         return externalMessage;

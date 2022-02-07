@@ -42,7 +42,7 @@ public class BarSkeletonSetting {
     /** inOut 的 out 。 true 开启 */
     boolean openOut = true;
     /** 解析类型 */
-    ParseType parseType = ParseType.JAVA;
+    ParseType parseType = ParseType.PB;
 
     /**
      * true : 业务参数开启 JSR303、JSR 349、JSR 380 验证规范

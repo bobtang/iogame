@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * 抽象房间
@@ -80,13 +79,13 @@ public abstract class AbstractRoom implements Serializable {
     public List<AbstractPlayer> listPlayer(Predicate<AbstractPlayer> predicate) {
         return listPlayer().stream()
                 .filter(predicate)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public Collection<Long> listPlayerId(long excludePlayerId) {
         return listPlayerId().stream()
                 .filter(playerId -> playerId != excludePlayerId)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public Collection<Long> listPlayerId() {

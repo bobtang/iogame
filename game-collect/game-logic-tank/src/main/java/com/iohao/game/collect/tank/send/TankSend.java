@@ -1,6 +1,7 @@
 package com.iohao.game.collect.tank.send;
 
 import com.iohao.game.collect.common.send.AbstractFlowContextSend;
+import com.iohao.game.collect.proto.common.UserInfo;
 import com.iohao.game.collect.proto.tank.TankBullet;
 import com.iohao.game.collect.proto.tank.TankLocation;
 import com.iohao.game.collect.tank.TankCmd;
@@ -19,16 +20,12 @@ import lombok.extern.slf4j.Slf4j;
 @DocActionSends({
         @DocActionSend(cmd = TankCmd.cmd, subCmd = TankCmd.shooting, dataClass = TankBullet.class),
         @DocActionSend(cmd = TankCmd.cmd, subCmd = TankCmd.tankMove, dataClass = TankLocation.class),
+        @DocActionSend(cmd = TankCmd.cmd, subCmd = 11, dataClass = UserInfo.class),
 })
 public class TankSend extends AbstractFlowContextSend {
 
     public TankSend(FlowContext flowContext) {
         super(flowContext);
-    }
-
-    @Override
-    protected void trick() {
-        log.info("推送 {}", this.flowContext.getMethodResult());
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.iohao.example.common.AppleValidPOJO;
 import com.iohao.example.common.ExampleAppleCmd;
 import com.iohao.little.game.action.skeleton.annotation.ActionController;
 import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
+import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -16,7 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 public class AppleAction {
 
     @ActionMethod(ExampleAppleCmd.validate)
-    public int validate(AppleValidPOJO validPOJO) {
+    public int validate(AppleValidPOJO validPOJO, FlowContext flowContext) {
+        long userId = flowContext.getUserId();
         // 从这里可以看出，参数与返回值可以是任意类型
         log.info("validate");
         return 0;

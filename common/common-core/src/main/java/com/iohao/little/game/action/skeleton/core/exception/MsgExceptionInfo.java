@@ -24,6 +24,18 @@ public interface MsgExceptionInfo {
     int getCode();
 
     /**
+     * 断言为 true, 就抛出异常
+     *
+     * @param v1 断言值
+     * @throws MsgException e
+     */
+    default void assertTrueThrows(boolean v1) throws MsgException {
+        if (v1) {
+            throw new MsgException(this);
+        }
+    }
+
+    /**
      * 断言必须是 true, 否则抛出异常
      *
      * @param v1 断言值
@@ -34,8 +46,7 @@ public interface MsgExceptionInfo {
             return;
         }
 
-        String msg = this.getMsg();
-        this.assertTrue(true, msg);
+        throw new MsgException(this);
     }
 
     /**
@@ -62,7 +73,7 @@ public interface MsgExceptionInfo {
      * 断言必须是 false, 否则抛出异常
      *
      * @param v1  断言值
-     * @param msg 自定议消息
+     * @param msg 自定义消息
      * @throws MsgException e
      */
     default void assertFalse(boolean v1, String msg) throws MsgException {
@@ -74,7 +85,7 @@ public interface MsgExceptionInfo {
      * 断言必须是 true, 否则抛出异常
      *
      * @param v1  断言值
-     * @param msg 自定议消息
+     * @param msg 自定义消息
      * @throws MsgException e
      */
     default void assertTrue(boolean v1, String msg) throws MsgException {

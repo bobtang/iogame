@@ -60,7 +60,7 @@ public class GateExternalRequestMessageAsyncUserProcessor extends AsyncUserProce
 
         ActionErrorEnum errorCode = ActionErrorEnum.cmdInfoErrorCode;
         responseMessage.setValidatorMsg(errorCode.getMsg());
-        responseMessage.setErrorCode(errorCode.getCode());
+        responseMessage.setResponseStatus(errorCode.getCode());
 
         RpcServer rpcServer = boltServer.getRpcServer();
         try {

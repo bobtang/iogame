@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
+ * 错误码文档
+ *
  * @author 洛朱
  * @date 2022-02-03
  */

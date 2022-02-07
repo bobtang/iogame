@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 错误码文档相关
+ *
  * @author 洛朱
  * @date 2022-02-03
  */

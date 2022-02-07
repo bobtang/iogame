@@ -9,7 +9,6 @@ import lombok.Data;
  * <pre>
  *     bolt 中获取的一些上下文
  *     目前只使用了 AsyncContext 来推送数据
- *
  * </pre>
  *
  * @author 洛朱

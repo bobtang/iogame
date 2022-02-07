@@ -25,7 +25,7 @@ public class DefaultActionMethodResultWrap implements ActionMethodResultWrap {
         // 异常处理
         if (actionCommand.isThrowException() && result instanceof MsgException msgException) {
             int code = msgException.getMsgCode();
-            responseMessage.setErrorCode(code);
+            responseMessage.setResponseStatus(code);
         }
 
     }

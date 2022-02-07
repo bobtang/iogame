@@ -19,12 +19,13 @@ class CommonClientStartupConfig {
     }
 
     public static void registerUserProcessor(BoltClientServer boltClientServer) {
-        BoltClientServerSetting boltClientServerSetting = boltClientServer.getBoltClientServerSetting();
+        RpcClient rpcClient = boltClientServer.getRpcClient();
 
+        BoltClientServerSetting boltClientServerSetting = boltClientServer.getBoltClientServerSetting();
         ClientRequestMessageAsyncUserProcessor processor = new ClientRequestMessageAsyncUserProcessor();
         processor.setBoltClientServerSetting(boltClientServerSetting);
 
-        RpcClient rpcClient = boltClientServer.getRpcClient();
+
         rpcClient.registerUserProcessor(processor);
     }
 

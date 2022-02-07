@@ -22,7 +22,7 @@ public @interface DocActionSend {
     /** 子路由 */
     int subCmd();
 
-    /** 业务类型 */
+    /** 业务对象class */
     Class<?> dataClass();
 
     /** 推送描述 */

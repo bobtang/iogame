@@ -64,8 +64,8 @@ public abstract class BarMessage implements Serializable {
      */
     byte rpcCommandType;
 
-    /** 响应错误码 */
-    int errorCode;
+    /** 响应码: 0:成功, 其他表示有错误 */
+    int responseStatus;
     /** JSR303、JSR 349 验证信息 */
     String validatorMsg;
 
@@ -101,7 +101,7 @@ public abstract class BarMessage implements Serializable {
     public void setValidatorMsg(String validatorMsg) {
         if (validatorMsg != null) {
             this.validatorMsg = validatorMsg;
-            this.errorCode = ActionErrorEnum.validateErrCode.getCode();
+            this.responseStatus = ActionErrorEnum.validateErrCode.getCode();
         }
     }
 
@@ -114,6 +114,6 @@ public abstract class BarMessage implements Serializable {
      * @return true 有错误码
      */
     public boolean hasError() {
-        return this.errorCode != 0;
+        return this.responseStatus != 0;
     }
 }

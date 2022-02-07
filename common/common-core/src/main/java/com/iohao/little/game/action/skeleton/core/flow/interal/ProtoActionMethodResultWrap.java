@@ -28,7 +28,7 @@ public class ProtoActionMethodResultWrap implements ActionMethodResultWrap {
         if (actionCommand.isThrowException() && result instanceof MsgException msgException) {
             // 异常处理
             int code = msgException.getMsgCode();
-            responseMessage.setErrorCode(code);
+            responseMessage.setResponseStatus(code);
         }
 
         if (Objects.isNull(result) && !flowContext.getActionCommand().getActionMethodReturnInfo().isVoid()) {

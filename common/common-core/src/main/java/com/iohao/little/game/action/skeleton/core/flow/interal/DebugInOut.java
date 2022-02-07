@@ -58,7 +58,7 @@ public class DebugInOut implements ActionMethodInOut {
     private void printValidate(FlowContext flowContext, Map<String, Object> paramMap) {
 
         ResponseMessage responseMessage = flowContext.getResponse();
-        paramMap.put("errorCode", responseMessage.getErrorCode());
+        paramMap.put("errorCode", responseMessage.getResponseStatus());
         paramMap.put("validatorMsg", responseMessage.getValidatorMsg());
 
         String template = """

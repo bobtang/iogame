@@ -1,6 +1,7 @@
 package com.iohao.little.game.net.external.bootstrap.initializer;
 
 import com.iohao.little.game.net.external.bootstrap.ExternalChannelInitializerCallback;
+import com.iohao.little.game.net.external.bootstrap.handler.ExternalBizHandler;
 import com.iohao.little.game.net.external.bootstrap.handler.codec.ExternalCodecWebsocketProto;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -80,6 +81,9 @@ public class ExternalChannelInitializerCallbackWebsocket extends ChannelInitiali
 
         // websocket 编解码
         pipeline.addLast("codec", new ExternalCodecWebsocketProto());
+
+        // websocket 业务处理器
+        pipeline.addLast("ExternalBizHandler", new ExternalBizHandler());
 
         // 心跳
         option.idleHandler(pipeline);
