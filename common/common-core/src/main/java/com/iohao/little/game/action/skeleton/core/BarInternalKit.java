@@ -20,7 +20,7 @@ import java.util.stream.Stream;
  * @Date 2021-12-12
  */
 @UtilityClass
-public class BarInternalKit {
+class BarInternalKit {
 
     private final ActionCommand[][] EMPTY = new ActionCommand[0][0];
 
@@ -79,6 +79,7 @@ public class BarInternalKit {
             var subActionMap = map.get(cmd);
             // 子路由最大值
             int subCmdMax = (subActionMap.keySet().stream().max(Integer::compareTo).orElse(0)) + 1;
+
             ActionCommand[] subBehaviors = new ActionCommand[subCmdMax];
 
             for (Map.Entry<Integer, ActionCommand> subEntry : subActionMap.entrySet()) {
@@ -94,9 +95,11 @@ public class BarInternalKit {
     private int getMaxCmd(Map<Integer, Map<Integer, ActionCommand>> map, BarSkeletonSetting barSkeletonSetting) {
         // 获取最大的路由数字 并且+1
         int max = (map.keySet().stream().max(Integer::compareTo).get()) + 1;
-        if (max > barSkeletonSetting.getActionMaxLen()) {
+
+        if (max > barSkeletonSetting.getCmdMaxLen()) {
+
             String info = String.format("cmd 超过最大默认值! 如果有需要, 请手动设置容量!  默认最大容量 %s. 当前容量 %s"
-                    , barSkeletonSetting.getActionMaxLen(), max
+                    , barSkeletonSetting.getCmdMaxLen(), max
             );
 
             throw new RuntimeException(info);
@@ -105,14 +108,17 @@ public class BarInternalKit {
         // subCmd
         for (Map<Integer, ActionCommand> subActionMap : map.values()) {
             int subCmdMax = (subActionMap.keySet().stream().max(Integer::compareTo).orElse(0)) + 1;
-            if (subCmdMax > barSkeletonSetting.getSubActionMaxLen()) {
+
+            if (subCmdMax > barSkeletonSetting.getSubCmdMaxLen()) {
+
                 String info = String.format("subCmd 超过最大默认值! 如果有需要, 请手动设置容量!  默认最大容量 %s. 当前容量 %s"
-                        , barSkeletonSetting.getSubActionMaxLen(), subCmdMax
+                        , barSkeletonSetting.getSubCmdMaxLen(), subCmdMax
                 );
 
                 throw new RuntimeException(info);
             }
         }
+
         return max;
     }
 

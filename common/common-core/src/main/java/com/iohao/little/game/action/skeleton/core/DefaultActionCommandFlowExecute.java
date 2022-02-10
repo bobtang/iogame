@@ -95,7 +95,7 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
         responseMessage.setUserId(userId);
         responseMessage.setRpcCommandType(request.getRpcCommandType());
 
-        // flow 上下文
+        // 创建 flow 上下文
         FlowContext flowContext = new FlowContext()
                 .setBarSkeleton(barSkeleton)
                 .setParamContext(paramContext)
@@ -104,9 +104,9 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
                 .setResponse(responseMessage)
                 .setUserId(userId);
 
-        // 解析参数器
+        // 参数解析器
         ActionMethodParamParser paramParser = barSkeleton.getActionMethodParamParser();
-        // 业务方法参数列表 , 并验证
+        // 得到业务方法的参数列表 , 并验证
         var pars = paramParser.listParam(flowContext);
         // 业务方法参数 save to flowContext
         flowContext.setMethodParams(pars);
@@ -115,7 +115,7 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
     }
 
     /**
-     * 响应是否的错
+     * 响应是否有错误码
      *
      * @param flowContext flow 上下文
      * @return true 没有错误

@@ -13,7 +13,7 @@ import com.iohao.little.game.widget.config.WidgetComponents;
 import java.util.Objects;
 
 /**
- * client server 启动流程
+ * 逻辑服 启动流程
  *
  * @author 洛朱
  * @Date 2021-12-17

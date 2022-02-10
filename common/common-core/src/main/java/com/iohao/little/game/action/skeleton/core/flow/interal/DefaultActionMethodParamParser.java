@@ -6,15 +6,17 @@ import com.iohao.little.game.action.skeleton.core.flow.ActionMethodParamParser;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
+import com.iohao.little.game.common.kit.ProtoKit;
+
+import java.util.Objects;
 
 /**
- * action 方法参数解析器 actionCommand
+ * pb 参数解析器
  *
  * @author 洛朱
- * @Date 2021-12-17
+ * @date 2022-01-12
  */
 public class DefaultActionMethodParamParser implements ActionMethodParamParser {
-    private static final Object[] METHOD_PARAMS = new Object[0];
 
     @Override
     public Object[] listParam(final FlowContext flowContext) {
@@ -37,15 +39,26 @@ public class DefaultActionMethodParamParser implements ActionMethodParamParser {
             Class<?> paramClazz = paramInfo.getParamClazz();
 
             // 这里可以使用策略模式 （但现在还不着急）
-            // 这里可以使用策略模式 （但现在还不着急）
             if (FlowContext.class.equals(paramClazz)) {
                 // flow 上下文
                 pars[i] = flowContext;
                 continue;
             }
 
-            pars[i] = request.getData();
+            // 业务参数
+            byte[] dataContent = request.getDataContent();
+
+            if (Objects.isNull(dataContent)) {
+                continue;
+            }
+
+            // 把字节解析成 pb 对象
+            pars[i] = ProtoKit.parseProtoByte(dataContent, paramClazz);
+            request.setData(pars[i]);
+
+            // 如果开启了验证
             if (paramInfo.isValidator()) {
+                // 进行 JSR303+ 相关的验证
                 String validateMsg = ValidatorKit.validate(pars[i]);
                 response.setValidatorMsg(validateMsg);
             }

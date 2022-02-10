@@ -20,10 +20,10 @@ public class BarSkeletonSetting {
      */
     boolean createSingleActionCommandController = true;
 
-    /** action 的默认长度 (一级 cmd) */
-    int actionMaxLen = 127;
-    /** 子 action 的默认长度 (二级 subCmd) */
-    int subActionMaxLen = 127;
+    /** action 的默认长度 (一级 cmd; 主路由) */
+    int cmdMaxLen = 127;
+    /** 子 action 的默认长度 (二级 subCmd; 子路由) */
+    int subCmdMaxLen = 127;
 
     /** 是否保留 action Map */
     boolean keepActionMap = true;

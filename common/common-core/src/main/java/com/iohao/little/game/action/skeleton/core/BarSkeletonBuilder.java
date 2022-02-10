@@ -65,10 +65,10 @@ public final class BarSkeletonBuilder {
     }
 
     private void before() {
-        // 如果是 pb 协议
-        if (setting.parseType == ParseType.PB) {
-            this.actionMethodParamParser = new ProtoActionMethodParamParser();
-            this.actionMethodResultWrap = new ProtoActionMethodResultWrap();
+        // 如果是 java 协议
+        if (setting.parseType == ParseType.JAVA) {
+            this.actionMethodParamParser = new ObjectActionMethodParamParser();
+            this.actionMethodResultWrap = new ObjectActionMethodResultWrap();
         }
     }
 

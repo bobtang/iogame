@@ -10,13 +10,15 @@
 
 ## 游戏框架简介
 
-基于 [sofa-bolt](https://www.sofastack.tech/projects/sofa-bolt/overview/) 的游戏框架，游戏框架由 [通讯框架 - [sofa-bolt](https://www.sofastack.tech/projects/sofa-bolt/overview/)] 和 [业务框架] 组成。
+基于 [sofa-bolt](https://www.sofastack.tech/projects/sofa-bolt/overview/) 的游戏框架，游戏框架由 [通讯框架] 和 [业务框架] 组成。
 
-通讯框架( [sofa-bolt](https://www.sofastack.tech/projects/sofa-bolt/overview/))：负责端端之间的传输数据
+通讯框架：负责端端之间的传输数据
 
 业务框架：负责业务类的处理方式和编写方式
 
 致力于为游戏服务端程序员提供：稳定、高性能的服务、高可扩展、简单上手。即使之前没有游戏编程的经验，也能参与到游戏编程中。游戏框架致力于屏蔽通信细节，为了让 Java 程序员能将更多的精力放在基于游戏框架的业务逻辑实现上！
+
+如果你之前具备一些游戏开发或者 web MVC 的知识会更容易的上手游戏服务端的开发。
 
 ## 通讯框架 - SOFABolt
 
@@ -29,21 +31,17 @@ Bolt 名字取自迪士尼动画-闪电狗，是一个基于 Netty 最佳实践�
 
 ## 业务框架
 
-### 简介
+    如果你之前具备一些游戏开发或者 web MVC 的知识会更好的上手游戏服务端的开发。
 
-如果你之前具备一些游戏开发或 web MVC 的知识会更好的上手游戏服务端的开发。
+    如果说SOFABolt为了让 Java 程序员能将更多的精力放在基于网络通信的业务逻辑实现上。而业务框架正是解决业务逻辑如何方便的实现这一问题上。
 
-与SOFABolt配合，如果说SOFABolt为了让 Java 程序员能将更多的精力放在基于网络通信的业务逻辑实现上。
-
-而业务框架正是解决业务逻辑如何实现的这一问题上。
-
-业务框架是游戏框架的业务核心，处理程序员的业务逻辑实现。易上手，使程序员能快速开始编写业务。在开发阶段可快速定位业务代码，请求响应监控 方便日志定位（插件实现）。
+业务框架是游戏框架的一部份，职责是简化程序员的业务逻辑实现。业务框架使程序员能够快速的开始编写游戏业务。在开发阶段可快速定位业务代码，请求响应监控 方便日志定位（插件实现）。
 
 ### 特点：
 
 - 跨NIO框架（屏蔽 NIO）, 可以做到业务代码不做任何的改动，就能轻松实现NIO框架的切换.(netty mina 这些都属于NIO框架)
 
-- 线程模型，基于disruptor环形数组来消费业务（可灵活的定制业务线程模型）
+- 线程模型，基于[disruptor](https://www.yuque.com/iohao/game/gmfy1k)环形数组来消费业务
 
 - [注重开发体验](https://www.yuque.com/iohao/game/wotnhl)
 
@@ -55,6 +53,10 @@ Bolt 名字取自迪士尼动画-闪电狗，是一个基于 Netty 最佳实践�
 
 - [支持 JSR303+](https://www.yuque.com/iohao/game/ghng6g)
 
+- [业务文档的生成](https://www.yuque.com/iohao/game/irth38)
+
+- [jprotobuf通信协议的友好支持](https://www.yuque.com/iohao/game/mbr9in)
+
 ## 快速入门-业务代码
 
 下面定义一个普通的 java类，并在这个类中定义了一个方法.
@@ -64,8 +66,6 @@ Bolt 名字取自迪士尼动画-闪电狗，是一个基于 Netty 最佳实践�
 1. @ActionController 主路由 （作用在业务类上）
 2. @ActionMethod 子路由（作用在业务方法上）
 
-
-
 ```java
 @ActionController(1)
 public class DemoAction {
@@ -74,7 +74,6 @@ public class DemoAction {
         helloReq.name = helloReq.name + ", I'm here ";
         return helloReq;
     }
-
 }
 ```
 
@@ -90,8 +89,6 @@ public class DemoAction {
 
 这是一个 [jprotobuf](https://www.yuque.com/iohao/game/vpe2t6) 的 pb 对象。jprotobuf 是对 google protobuf 的简化使用，性能同等。
 
-
-
 ```java
 /** 请求 */
 @ProtobufClass
@@ -101,9 +98,9 @@ public class HelloReq {
 }
 ```
 
-
-
 ## 其它参考
+
+[什么是Action ？](https://www.yuque.com/iohao/game/sqcevl)
 
 [什么是 路由 ？](https://www.yuque.com/iohao/game/soxp4u)
 
