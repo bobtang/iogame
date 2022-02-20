@@ -107,7 +107,7 @@ public abstract class AbstractRoom implements Serializable {
      * @param player 玩家
      */
     public void addPlayer(AbstractPlayer player) {
-        long userId = player.getUserId();
+        long userId = player.getId();
         this.playerMap.put(userId, player);
         this.playerSeatMap.put(player.getSeat(), userId);
     }

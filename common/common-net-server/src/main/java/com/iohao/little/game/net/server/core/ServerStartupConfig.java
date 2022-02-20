@@ -93,6 +93,6 @@ public interface ServerStartupConfig {
         startBefore(boltServer);
 
         // 启动服务端
-        boltServer.start();
+        boltServer.startup();
     }
 }

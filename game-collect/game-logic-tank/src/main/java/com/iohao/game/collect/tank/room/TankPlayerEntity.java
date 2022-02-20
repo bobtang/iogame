@@ -10,9 +10,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
-import org.jctools.maps.NonBlockingHashMap;
 
 import java.io.Serial;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -47,7 +47,7 @@ public class TankPlayerEntity extends AbstractPlayer {
      *     value : 数量
      * </pre>
      */
-    Map<Integer, Integer> tankBulletMap = new NonBlockingHashMap<>();
+    Map<Integer, Integer> tankBulletMap = new HashMap<>();
 
     /** 房间 id */
     long roomId;
@@ -55,8 +55,8 @@ public class TankPlayerEntity extends AbstractPlayer {
     public void shooting(TankBullet tankBullet) throws MsgException {
         int bulletId = tankBullet.id;
 
-        tankBullet.tankLocation.playerId = this.userId;
-        tankBullet.playerId = this.userId;
+        tankBullet.tankLocation.playerId = this.id;
+        tankBullet.playerId = this.id;
 
         this.removeBullet(bulletId);
     }

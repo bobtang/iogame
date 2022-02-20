@@ -158,7 +158,7 @@ public class TankAction {
         if (Objects.isNull(player)) {
             // 如果不在房间内先加入房间
             player = gameFlowService.getRoomPlayerCreateCustom().createPlayer();
-            player.setUserId(userId);
+            player.setId(userId);
             player.setRoomId(roomId);
 
             roomService.addPlayer(room, player);

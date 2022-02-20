@@ -15,7 +15,7 @@ public class TankMapstructTest {
     public void testCon() {
         TankPlayerEntity tankPlayerEntity = new TankPlayerEntity();
         tankPlayerEntity.setHp(1000);
-        tankPlayerEntity.setUserId(200);
+        tankPlayerEntity.setId(200);
         tankPlayerEntity.setTeam(20);
 
         log.info("{}", tankPlayerEntity);

@@ -53,13 +53,13 @@ public class BoltServer {
         this.server = new RpcServer(this.port, manageFeatureEnabled, syncStop);
     }
 
-    public boolean start() {
+    public boolean startup() {
         this.server.startup();
         return true;
     }
 
-    public void stop() {
-        this.server.stop();
+    public void shutdown() {
+        this.server.shutdown();
     }
 
     public RpcServer getRpcServer() {

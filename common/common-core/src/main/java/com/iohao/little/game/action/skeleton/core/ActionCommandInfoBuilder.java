@@ -92,7 +92,7 @@ public final class ActionCommandInfoBuilder {
             // 遍历所有方法上有 ActionMethod 注解的方法对象
             BarInternalKit.getMethodStream(controllerClazz).forEach(method -> {
 
-                ActionCommandDoc actionCommandDoc = javaClassDocInfo.createActionCommandDoc(method);
+                ActionCommandDoc actionCommandDoc = getActionCommandDoc(javaClassDocInfo, method);
 
                 // 目标子路由 (方法上的路由)
                 int subCmd = method.getAnnotation(ActionMethod.class).value();
@@ -138,6 +138,14 @@ public final class ActionCommandInfoBuilder {
         });
 
         return this;
+    }
+
+    private ActionCommandDoc getActionCommandDoc(JavaClassDocInfo javaClassDocInfo, Method method) {
+        if (javaClassDocInfo != null) {
+            return javaClassDocInfo.createActionCommandDoc(method);
+        }
+
+        return new ActionCommandDoc();
     }
 
 

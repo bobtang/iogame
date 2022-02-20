@@ -56,7 +56,7 @@ public class ExternalServerBuilder {
 
     /** 连接方式 */
     @Setter
-    ExternalJoinEnum externalJoinEnum = ExternalJoinEnum.SOCKET;
+    ExternalJoinEnum externalJoinEnum = ExternalJoinEnum.WEBSOCKET;
 
 
     ExternalServerBuilder(int port) {
@@ -85,7 +85,7 @@ public class ExternalServerBuilder {
             bootstrapOption = createServerBootstrapOption();
         }
 
-        // 如果没有 handler 默认给一个
+        // 如果没有 handler 默认给一个 业务处理器
         if (channelHandlerProcessors.isEmpty()) {
             registerChannelHandler("ExternalBizHandler", new ExternalBizHandler());
         }

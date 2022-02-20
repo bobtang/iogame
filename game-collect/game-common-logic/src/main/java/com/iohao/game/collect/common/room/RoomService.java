@@ -58,7 +58,7 @@ public class RoomService {
 
     public void addPlayer(AbstractRoom room, AbstractPlayer player) {
         room.addPlayer(player);
-        this.userRoomMap.put(player.getUserId(), room.getRoomId());
+        this.userRoomMap.put(player.getId(), room.getRoomId());
     }
 
     @SuppressWarnings("unchecked")
