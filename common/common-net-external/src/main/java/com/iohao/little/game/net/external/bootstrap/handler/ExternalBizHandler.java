@@ -27,7 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 public class ExternalBizHandler extends SimpleChannelInboundHandler<ExternalMessage> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ExternalMessage message) {
-        log.info("x 接收客户端消息 {}", message);
 
         // 将 message 转换成 RequestMessage
         RequestMessage requestMessage = ExternalKit.convertRequestMessage(message);

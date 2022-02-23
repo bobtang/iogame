@@ -1,5 +1,6 @@
 package com.iohao.little.game.net.external.bootstrap.handler.codec;
 
+import cn.hutool.core.util.ArrayUtil;
 import com.iohao.little.game.common.kit.ProtoKit;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import io.netty.buffer.ByteBuf;
@@ -30,11 +31,11 @@ public class ExternalCodecWebsocketProto extends MessageToMessageCodec<BinaryWeb
 
         // 编码器 - ExternalMessage ---> 字节数组
         byte[] bytes = ProtoKit.toBytes(msg);
-
+        log.info("=== array 发送 客户端消息=== {}", ArrayUtil.toString(bytes));
+        log.info("=== array 发送 客户端消息=== {}", msg);
         ByteBuf byteBuf = Unpooled.wrappedBuffer(bytes);
 
         BinaryWebSocketFrame socketFrame = new BinaryWebSocketFrame(byteBuf);
-
         out.add(socketFrame);
     }
 
@@ -46,7 +47,8 @@ public class ExternalCodecWebsocketProto extends MessageToMessageCodec<BinaryWeb
         content.readBytes(msgBytes);
 
         ExternalMessage message = ProtoKit.parseProtoByte(msgBytes, ExternalMessage.class);
-
+        log.info("=== array 接收 客户端消息=== {}", ArrayUtil.toString(msgBytes));
+        log.info("=== array 接收 客户端消息=== {}", message);
         out.add(message);
     }
 

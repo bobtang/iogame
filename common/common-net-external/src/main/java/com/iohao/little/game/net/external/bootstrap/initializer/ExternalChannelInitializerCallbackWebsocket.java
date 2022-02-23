@@ -30,8 +30,7 @@ public class ExternalChannelInitializerCallbackWebsocket extends ChannelInitiali
 
     @Override
     public void initChannelPipeline(SocketChannel ch) {
-
-        // 编排网关业务
+        // 业务编排
         ChannelPipeline pipeline = ch.pipeline();
 
         /*
@@ -53,16 +52,6 @@ public class ExternalChannelInitializerCallbackWebsocket extends ChannelInitiali
         // WebSocket 数据压缩
         pipeline.addLast("compression", new WebSocketServerCompressionHandler());
 
-        WebSocketServerProtocolConfig config = WebSocketServerProtocolConfig.newBuilder()
-                // 验证 URL
-                .websocketPath(option.websocketPath)
-                // 默认数据包大小
-                .maxFramePayloadLength(option.packageMaxSize)
-                .checkStartsWith(true)
-                // 开启 WebSocket 扩展
-                .allowExtensions(true)
-                .build();
-
         /*
          * 处理 websocket 的解码器
          * 1 协议包长度限制
@@ -76,10 +65,21 @@ public class ExternalChannelInitializerCallbackWebsocket extends ChannelInitiali
          *
          * 移除 HTTPRequest HTTPResponse
          */
+        WebSocketServerProtocolConfig config = WebSocketServerProtocolConfig.newBuilder()
+                // 验证 URL
+                .websocketPath(option.websocketPath)
+                // 默认数据包大小
+                .maxFramePayloadLength(option.packageMaxSize)
+                .checkStartsWith(true)
+                // 开启 WebSocket 扩展
+                .allowExtensions(true)
+                .build();
+
         pipeline.addLast("WebSocketServerProtocolHandler", new WebSocketServerProtocolHandler(config));
 
         // websocket 编解码
         pipeline.addLast("codec", new ExternalCodecWebsocketProto());
+//        pipeline.addLast("codec", new ExternalCodecWebsocketProtoForCSharp());
 
         // 心跳
         option.idleHandler(pipeline);

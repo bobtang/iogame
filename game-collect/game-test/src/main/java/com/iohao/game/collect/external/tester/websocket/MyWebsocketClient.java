@@ -50,8 +50,11 @@ public class MyWebsocketClient {
         Object requestData = onMessage.requestData();
 
         log.info("requestData : {}", requestData);
-        ExternalMessage request = onMessage.createExternalMessage();
-        byte[] bytes = ProtoKit.toBytes(request);
+        ExternalMessage externalMessage = onMessage.createExternalMessage();
+//        externalMessage.setCmdMerge(0);
+//        externalMessage.dataContent = null;
+
+        byte[] bytes = ProtoKit.toBytes(externalMessage);
         webSocketClient.send(bytes);
     }
 
