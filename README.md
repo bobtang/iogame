@@ -67,7 +67,7 @@ Bolt 名字取自迪士尼动画-闪电狗，是一个基于 Netty 最佳实践�
 
 
 
-![img](https://gitee.com/iohao/xmindpic/tree/master/game/interaction.jpeg)
+![img](https://gitee.com/iohao/xmindpic/raw/master/game/interaction.jpeg)
 
 
 
@@ -180,4 +180,4 @@ public class DemoAction {
 
 ### QQ
 
-![img](https://gitee.com/iohao/xmindpic/tree/master/game/QQ1.jpeg)
+![img](https://gitee.com/iohao/xmindpic/raw/master/game/QQ1.jpeg)
