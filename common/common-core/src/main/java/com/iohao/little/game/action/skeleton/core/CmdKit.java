@@ -34,9 +34,9 @@ public class CmdKit {
      * <pre>
      *     cmd - 高16
      *     subCmd - 低16
-     *     例如 cmd = 600; subCmd = 700;
-     *     mergeCmd 的结果: 39322300
-     *     那么 mergeCmd 对应的二进制是: [0000 0010 0101 1000] [0000 0010 1011 1100]
+     *     例如 cmd = 1; subCmd = 1;
+     *     mergeCmd 的结果: 65537
+     *     那么 mergeCmd 对应的二进制是: [0000 0000 0000 0001] [0000 0000 0000 0001]
      * </pre>
      *
      * @param cmd    主 cmd 存放于合并结果的高16位, 该参数不得大于 32767

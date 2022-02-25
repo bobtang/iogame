@@ -8,7 +8,7 @@ import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
  * @date 2021-12-24
  */
 @ActionController(ExampleActionCont.DemoActionCont.cmd)
-public class DemoAction {
+public class TempAction {
     @ActionMethod(ExampleActionCont.DemoActionCont.hello)
     public String hello(String name) {
         return name + ", I'm here ";

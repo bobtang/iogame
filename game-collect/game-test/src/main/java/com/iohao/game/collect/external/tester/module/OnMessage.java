@@ -16,8 +16,8 @@ public interface OnMessage {
     default ExternalMessage createExternalMessage() {
 
         ExternalMessage request = new ExternalMessage();
-        request.setCmdCode((short) 1);
-        request.setProtocolSwitch((byte) 0);
+        request.setCmdCode( 1);
+        request.setProtocolSwitch(0);
 
         request.setCmdMerge(this.getCmdMerge());
 

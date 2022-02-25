@@ -1,6 +1,6 @@
 package com.iohao.little.game.action.skeleton.core;
 
-import com.iohao.little.game.action.skeleton.core.action.DemoAction;
+import com.iohao.little.game.action.skeleton.core.action.TempAction;
 import com.iohao.little.game.action.skeleton.core.flow.interal.DebugInOut;
 import org.junit.Test;
 
@@ -16,7 +16,7 @@ public class BarSkeletonBuilderTest {
         BarSkeletonBuilder builder = BarSkeleton.newBuilder();
         // 添加(请求响应)处理类. 用户可以定义自己的业务控制器
         builder
-                .addActionController(DemoAction.class)
+                .addActionController(TempAction.class)
                 .addInOut(new DebugInOut())
         ;
 

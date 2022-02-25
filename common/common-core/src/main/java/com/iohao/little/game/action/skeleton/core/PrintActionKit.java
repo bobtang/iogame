@@ -99,38 +99,49 @@ public class PrintActionKit {
                 params.put("actionName", subBehavior.getActionControllerClazz().getName());
                 params.put("methodName", subBehavior.getActionMethodName());
                 params.put("paramInfo", paramInfo);
-
                 params.put("paramInfoShort", paramInfoShort);
                 params.put("actionNameShort", subBehavior.getActionControllerClazz().getSimpleName());
+                params.put("throw", subBehavior.isThrowException() ? "throws" : "");
 
                 shortName(params, shortName);
-                String template = "@|red 路由: {cmd} - {subCmd}|@ @|WHITE --- tcp action 类.方法(参数):|@ @|BLUE {actionName}|@.@|green {methodName}|@(@|RED {paramInfo}|@)";
-                String info = StrUtil.format(template, params);
 
                 // 返回类型
-                String returnInfoTemplate = " --- @|DEFAULT return|@ @|MAGENTA {returnTypeClazz}|@";
                 ActionCommand.ActionMethodReturnInfo actionMethodReturnInfo = subBehavior.getActionMethodReturnInfo();
                 final Class<?> returnTypeClazz = actionMethodReturnInfo.getReturnTypeClazz();
                 params.put("returnTypeClazz", returnTypeClazz.getName());
                 params.put("returnTypeClazzShort", returnTypeClazz.getSimpleName());
 
-                if (List.class.isAssignableFrom(returnTypeClazz)) {
-                    returnInfoTemplate = returnInfoTemplate + "<@|RED {actualTypeArgumentClazz}|@>";
-                    params.put("actualTypeArgumentClazz", actionMethodReturnInfo.getActualTypeArgumentClazz());
-                    params.put("actualTypeArgumentClazzShort", actionMethodReturnInfo.getActualTypeArgumentClazz().getSimpleName());
-                }
+                checkReturnType(returnTypeClazz);
 
                 shortName(params, shortName);
-                String returnInfo = StrUtil.format(returnInfoTemplate, params);
 
                 params.put("actionSimpleName", subBehavior.getActionControllerClazz().getSimpleName());
                 params.put("lineNumber", subBehavior.actionCommandDoc.getLineNumber());
 
-                String jumpTemplate = " ~~~ see.({actionSimpleName}.java:{lineNumber}).{methodName}";
-                String jumpInfo = StrUtil.format(jumpTemplate, params);
+                String routeCell = Color.red.format("路由: {cmd} - {subCmd}", params);
+                String actionCell = Color.white.wrap("--- action :");
+                String actionNameCell = Color.blue.format("{actionName}", params);
+                String methodNameCell = Color.blue.format("{methodName}", params);
+                String paramInfoCell = Color.green.format("{paramInfo}", params);
 
-                String text = info + returnInfo + jumpInfo;
+                String returnCell = Color.defaults.wrap("return");
+                String returnValueCell = Color.magenta.format("{returnTypeClazz}", params);
+                String throwCell = Color.red.format("{throw}", params);
+
+
+                params.put("routeCell", routeCell);
+                params.put("actionCell", actionCell);
+                params.put("actionNameCell", actionNameCell);
+                params.put("methodNameCell", methodNameCell);
+                params.put("returnCell", returnCell);
+                params.put("returnValueCell", returnValueCell);
+                params.put("throwCell", throwCell);
+                params.put("paramInfoCell", paramInfoCell);
+
+                String lineTemplate = "{routeCell} {actionCell} {actionNameCell}.{methodNameCell}({paramInfoCell}) {throwCell} --- return {returnValueCell}  ~~~ see.({actionSimpleName}.java:{lineNumber})";
+                String text = StrUtil.format(lineTemplate, params);
                 System.out.println(Ansi.ansi().eraseScreen().render(text));
+
             }
         }
         System.out.println();
@@ -146,5 +157,44 @@ public class PrintActionKit {
         params.put("returnTypeClazz", params.get("returnTypeClazzShort"));
         params.put("actualTypeArgumentClazz", params.get("actualTypeArgumentClazzShort"));
 
+    }
+
+    private void checkReturnType(final Class<?> returnTypeClazz) {
+        // list 之后将不被支持，这里是临时的代码。
+//                if (List.class.isAssignableFrom(returnTypeClazz)) {
+//                    returnInfoTemplate = returnInfoTemplate + "<@|RED {actualTypeArgumentClazz}|@>";
+//                    params.put("actualTypeArgumentClazz", actionMethodReturnInfo.getActualTypeArgumentClazz());
+//                    params.put("actualTypeArgumentClazzShort", actionMethodReturnInfo.getActualTypeArgumentClazz().getSimpleName());
+//                }
+
+        if (Collection.class.isAssignableFrom(returnTypeClazz) || Map.class.isAssignableFrom(returnTypeClazz)) {
+            // 参数的不支持不写逻辑了，这里告诉一下就行了。看之后的需要在考虑是否支持吧
+            throw new RuntimeException("action 返回值和参数不支持 list、set、map !");
+        }
+    }
+
+
+    private static class Color {
+        String start;
+        static final Color red = new Color("@|red");
+        static final Color white = new Color("@|white");
+        static final Color blue = new Color("@|blue");
+        static final Color green = new Color("@|green");
+        static final Color defaults = new Color("@|default");
+        static final Color magenta = new Color("@|magenta");
+
+        public Color(String start) {
+            this.start = start;
+        }
+
+        String wrap(String str) {
+            return start + " " + str + "|@";
+        }
+
+        String format(String template, Map<String, Object> params) {
+            String str = StrUtil.format(template, params);
+            str = wrap(str);
+            return str;
+        }
     }
 }

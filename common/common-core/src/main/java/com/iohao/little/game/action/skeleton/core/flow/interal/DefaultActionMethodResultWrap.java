@@ -3,6 +3,7 @@ package com.iohao.little.game.action.skeleton.core.flow.interal;
 import com.iohao.little.game.action.skeleton.core.ActionCommand;
 import com.iohao.little.game.action.skeleton.core.exception.MsgException;
 import com.iohao.little.game.action.skeleton.core.flow.ActionMethodResultWrap;
+import com.iohao.little.game.action.skeleton.core.flow.FlowAttr;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.common.kit.ProtoKit;
@@ -29,10 +30,11 @@ public class DefaultActionMethodResultWrap implements ActionMethodResultWrap {
             // 异常处理
             int code = msgException.getMsgCode();
             responseMessage.setResponseStatus(code);
+            flowContext.option(FlowAttr.msgException, msgException.getMessage());
+            return;
         }
 
         if (Objects.isNull(result) && !flowContext.getActionCommand().getActionMethodReturnInfo().isVoid()) {
-            log.info("result is null {}", actionCommand);
             return;
         }
 

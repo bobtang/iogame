@@ -49,20 +49,14 @@
         <module>game-collect/game-gateway</module>
         <module>game-collect/game-external</module>
         <module>game-collect/game-logic-all</module>
-        <module>game-collect/game-test</module>
-        <module>game-collect/game-one</module>
+
         <module>game-collect/game-logic-tank</module>
         <module>game-collect/game-logic-hall</module>
 
+        <module>game-collect/game-test</module>
+        <module>game-collect/game-one</module>
 
     </modules>
-
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.2</version>
-        <relativePath/>
-    </parent>
 
     <!--统一管理版本 的一个父 pom-->
     <properties>
@@ -78,11 +72,11 @@
         <encoding>UTF-8</encoding>
 
         <!-- 网络库 : https://mvnrepository.com/artifact/io.netty/netty-all -->
-        <netty.version>4.1.73.Final</netty.version>
+        <netty.version>4.1.74.Final</netty.version>
         <!--  bolt https://mvnrepository.com/artifact/com.alipay.sofa/bolt  -->
         <bolt.version>1.6.4</bolt.version>
         <!-- pb 数据描述语言 : https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
-        <protobuf-java.version>3.19.3</protobuf-java.version>
+        <protobuf-java.version>3.19.4</protobuf-java.version>
         <!-- pb 格式化 https://www.oschina.net/p/protobuf-java-format -->
         <protobuf-java-format.version>1.4</protobuf-java-format.version>
         <!-- hessian 格式化 https://mvnrepository.com/artifact/com.caucho/hessian -->
@@ -93,20 +87,20 @@
         <qdox.version>2.0.1</qdox.version>
 
         <!-- Hutool是一个Java工具包 see https://www.hutool.cn/ https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
-        <hutool.version>5.7.16</hutool.version>
+        <hutool.version>5.7.21</hutool.version>
         <!-- JCTools 是一款对jdk并发数据结构进行增强的并发工具 see http://jctools.github.io/JCTools/ https://mvnrepository.com/artifact/org.jctools/jctools-core -->
         <jctools-core.version>3.3.0</jctools-core.version>
         <!-- 新一代 Java 模板引擎 see https://www.kancloud.cn/xiandafu/beetl3_guide/1992542 https://mvnrepository.com/artifact/com.ibeetl/beetl -->
-        <beetl.version>3.9.3.RELEASE</beetl.version>
+        <beetl.version>3.10.0.RELEASE</beetl.version>
         <!-- lombok 消除冗长的 Java 代码 https://www.oschina.net/p/lombok https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <lombok.version>1.18.22</lombok.version>
 
         <!-- redis internal : https://www.oschina.net/p/redisson https://mvnrepository.com/artifact/org.redisson/redisson -->
-        <redisson.version>3.16.7</redisson.version>
+        <redisson.version>3.16.8</redisson.version>
         <!-- json 解析器 : https://mvnrepository.com/artifact/com.alibaba/fastjson -->
         <fastjson.version>1.2.79</fastjson.version>
         <!-- 对象池 : https://www.oschina.net/p/beeop https://mvnrepository.com/artifact/com.github.chris2018998/beeop -->
-        <beeop.version>1.1.0</beeop.version>
+        <beeop.version>1.2.0</beeop.version>
         <!-- 对象池 :  https://mvnrepository.com/artifact/org.apache.commons/commons-pool2 -->
         <commons-pool.version>2.11.1</commons-pool.version>
         <!--  JSR-107 高性能缓存库 https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine -->
@@ -114,7 +108,7 @@
         <!--  reflectasm 高性能的反射处理 https://www.oschina.net/p/reflectasm https://mvnrepository.com/artifact/com.esotericsoftware/reflectasm  -->
         <reflectasm.version>1.11.9</reflectasm.version>
         <!-- jprotobuf是针对Java程序开发一套简易类库，目的是简化java语言对protobuf类库的使用 https://github.com/jhunters/jprotobuf/ https://mvnrepository.com/artifact/com.baidu/jprotobuf -->
-        <jprotobuf.version>2.4.13</jprotobuf.version>
+        <jprotobuf.version>2.4.14</jprotobuf.version>
         <!-- ==============轻量小部件============== -->
         <!--  cache2k https://mvnrepository.com/artifact/org.cache2k -->
         <!--        <cache2k.version>2.4.1.Final</cache2k.version>-->
@@ -213,6 +207,8 @@
                     <compilerVersion>${java.version}</compilerVersion>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <!-- maven 3.6.2及之后加上编译参数，可以让我们在运行期获取方法参数名称。 -->
+                    <parameters>true</parameters>
                     <skip>true</skip>
                     <!-- JDK9+ with module-info.java -->
                     <annotationProcessorPaths>

@@ -31,7 +31,6 @@ public class DefaultActionMethodInvoke implements ActionMethodInvoke {
             try {
                 return actionMethodAccess.invoke(controller, actionMethodIndex, pars);
             } catch (Throwable e) {
-                e.printStackTrace();
                 // 异常处理
                 final BarSkeleton barSkeleton = flowContext.getBarSkeleton();
                 ActionMethodExceptionProcess exceptionProcess = barSkeleton.getActionMethodExceptionProcess();

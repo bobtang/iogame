@@ -32,7 +32,7 @@ public class TankClientStartupConfig implements ClientStartupConfig {
     public BarSkeleton createBarSkeleton() {
 
         BarSkeletonBuilderParamConfig config = new BarSkeletonBuilderParamConfig()
-                // 需要扫描的 action 类
+                // 扫描 TankAction.class 所在包
                 .addActionController(TankAction.class)
                 // 推送消息-用于文档的生成
                 .addActionSend(TankSend.class)
@@ -41,7 +41,6 @@ public class TankClientStartupConfig implements ClientStartupConfig {
                 // 错误码-用于文档的生成
                 .addErrorCode(GameCodeEnum.values());
 
-        // 扫描 TankAction.class 所在包
         BarSkeletonBuilder builder = GameBarSkeletonConfig.createBuilder(config);
 
         return builder.build();
@@ -49,10 +48,11 @@ public class TankClientStartupConfig implements ClientStartupConfig {
 
     @Override
     public ModuleMessage createModuleMessage() {
-
+        // 逻辑服的模块id，标记不同的逻辑服模块。
         int moduleId = ModuleKeyCont.gameTankModuleId;
         var moduleKey = ModuleKeyKit.getModuleKey(moduleId);
 
+        // 逻辑服的信息描述
         ModuleMessage moduleMessage = new ModuleMessage();
         moduleMessage.setModuleKey(moduleKey);
         moduleMessage.setName("游戏服 坦克");

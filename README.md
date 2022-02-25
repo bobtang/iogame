@@ -1,16 +1,18 @@
+开源地址: [基于 sofa-bolt 的游戏框架-源码](https://gitee.com/iohao/bolt-game-sun)	
+
+在线文档: [基于 sofa-bolt 的游戏框架-文档](https://www.yuque.com/iohao/game/wwvg7z)
+
+
+
 ## 愿景
 
 让游戏服务端的编程变得轻松简单！
 
 
 
-开源地址: [基于 sofa-bolt 的游戏框架-源码](https://gitee.com/iohao/bolt-game-sun)
-
-在线文档: [基于 sofa-bolt 的游戏框架-文档](https://gitee.com/link?target=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame)
-
 ## 游戏框架简介
 
-基于 [sofa-bolt](https://www.sofastack.tech/projects/sofa-bolt/overview/) 的游戏框架，游戏框架由 [通讯框架] 和 [业务框架] 组成。
+基于蚂蚁金服 [sofa-bolt](https://www.sofastack.tech/projects/sofa-bolt/overview/) 的游戏框架，游戏框架由 [通讯框架] 和 [业务框架] 组成。
 
 通讯框架：负责端端之间的数据传输
 
@@ -18,11 +20,25 @@
 
 
 
-致力于为游戏服务端程序员提供：稳定、高性能的服务、高可扩展、简单上手。即使之前没有游戏编程的经验，也能参与到游戏编程中。
+这是一个注重开发体验、稳定、高性能的服务、高可扩展、简单上手的游戏框架。
+
+游戏框架借助于蚂蚁金服 sofa-bolt 通信框架来提供稳定、高性能。
+
+即使之前没有游戏编程的经验，也能参与到游戏编程中。
 
 游戏框架致力于屏蔽通信细节，为了让 Java 程序员能将更多的精力放在基于游戏框架的业务逻辑实现上！
 
+业务框架注重开发体验，提供异常机制、游戏业务文档生成、支持 JSR303+、业务线程编排、屏蔽 NIO 等细节。
+
+让游戏开发者做尽可能少的事。
+
 如果你之前具备一些游戏开发或者 web MVC 的知识会更容易的上手游戏服务端的开发。
+
+
+
+游戏框架名称：渔民小镇
+
+
 
 ## 通讯框架 - SOFABolt
 
@@ -155,12 +171,65 @@ public class DemoAction {
 
 
 
+#### 访问示例（控制台）
+
+当我们访问 here 方法时（通常由游戏前端来请求），控制台将会打印
+
+```basic
+┏━━━━━ Debug. [(DemoAction.java:4).here]
+┣ 参数: helloReq : HelloReq(name=塔姆)
+┣ 响应: HelloReq(name=塔姆, I'm here )
+┣ 时间: 0 ms (业务方法总耗时)
+┗━━━━━ Debug [DemoAction.java] ━━━
+```
+
+Debug. [(DemoAction.java:14).here]：
+
+表示执行业务的是 DemoAction 类下的 here 方法，14 表示业务方法所在的代码行数。在工具中点击控制台的 DemoAction.java:4 这条信息，就可以跳转到对应的代码中（快速导航到对应的代码）。
+
+这是一个开发良好体验的开始！
+
+参数 :  
+
+通常是游戏前端传入的值。
+
+响应：
+
+通常是业务方法返回的值 ，业务框架会把这个返回值推送到游戏前端。
+
+时间：
+
+执行业务方法总耗时，我们可根据业务方法总耗时的时长来优化业务。
+
+路由信息：
+
+[路由](https://www.yuque.com/iohao/game/soxp4u)是唯一的访问地址。
+
+
+
+有了以上信息，游戏开发者可以很快的定位问题。
+
+如果没有可视化的信息，开发中会浪费很多时间在前后端的沟通上。
+
+问题包括：
+
+- 是否传参问题 （游戏前端说传了）
+- 是否响应问题（游戏后端说返回了）
+
+- 业务执行时长问题 （游戏前端说没收到响应， 游戏后端说早就响应了）
+
+
+
+其中代码导航可以让开发者快速的跳转到业务类对应代码中，在多人合作的项目中，可以快速的知道业务经过了哪些方法的执行，使得我们可以快速的进行阅读或修改；
+
+
+
 ## 适合人群？
 
 1. 长期从事 web 内部系统开发人员， 想了解游戏的
 2. 刚从事游戏开发的
-
 1. 未从事过游戏开发但却对其感兴趣的
+1. 对设计模式在实践中的应用和 sofa-bolt 有兴趣的学习者
 
 
 
@@ -168,16 +237,19 @@ public class DemoAction {
 
 
 
+## 维护周期
+
+我们的承诺项目的维护周期是十年起步， 十年只是一个起步！由于还未正式发布，所以现在还没开始计时。
+
 ## 参考
 
 什么是 [Action](https://www.yuque.com/iohao/game/sqcevl)。
 
+[快速从零编写服务器完整示例](https://www.yuque.com/iohao/game/zm6qg2)
 
 
-## 加群
-
+## 交流群
 
 
 ### QQ
-
-![img](https://gitee.com/iohao/xmindpic/raw/master/game/QQ1.jpeg)
+![img](https://gitee.com/iohao/xmindpic/raw/master/game/QQ1.png)

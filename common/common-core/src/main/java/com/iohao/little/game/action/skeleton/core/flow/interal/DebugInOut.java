@@ -5,6 +5,7 @@ import com.iohao.little.game.action.skeleton.core.ActionCommand;
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.action.skeleton.core.doc.ActionCommandDoc;
 import com.iohao.little.game.action.skeleton.core.flow.ActionMethodInOut;
+import com.iohao.little.game.action.skeleton.core.flow.FlowAttr;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
@@ -16,12 +17,12 @@ import java.util.Objects;
 
 
 /**
- * debug info 开发阶段推荐
+ * debug info 开发阶段推荐, see beetlsql DebugInterceptor
  *
  * <pre>
  * 日志输出
  *
- * ┏━━━━━ Debug [ActivityAction.java] ━━━ [.(ActivityAction.java:1).hello]
+ * ┏━━━━━ Debug [.(ActivityAction.java:1).hello] ━━━ [cmd:1 - subCmd:0 - cmdMerge:65536]
  * ┣ 参数: active : Active(id=101, name=塔姆)
  * ┣ 响应: 塔姆, I'm here
  * ┣ 时间: 1 ms (业务方法总耗时)
@@ -34,13 +35,20 @@ import java.util.Objects;
  * (ActivityAction.java:1).hello ：表示运行的业务方法名是 hello
  *
  * 有了以上信息，游戏开发者可以很快的定位问题。
- * 如果没有可视化的信息，开发中会浪费很多时间在前后端的沟通上。
- * 问题包括：
- * ● 是否传参问题 （游戏前端说传了）
- * ● 是否响应问题（游戏后端说返回了）
- * ● 业务执行时长问题 （游戏前端说没收到响应， 游戏后端说早就响应了）
+ * 控制台会打印方法所在的类，包括方法所在的代码行数。
+ * 这样可以使得开发者在开发工具中快速的导航到对应的代码；
+ * 这是一个在开发阶段很有用的功能。
  *
- * see beetlsql DebugInterceptor
+ * 如果没有可视化的信息，开发中会浪费很多时间在前后端的沟通上，问题包括：
+ * <ul>
+ *     <li>是否传参问题 （游戏前端说传了）</li>
+ *     <li>是否响应问题（游戏后端说返回了）</li>
+ *     <li>业务执行时长问题 （游戏前端说没收到响应， 游戏后端说早就响应了）</li>
+ *     <li>代码导航</li>
+ * </ul>
+ *
+ * 其中代码导航可以让开发者快速的跳转到业务类对应代码中，在多人合作的项目中，可以快速的知道业务经过了哪些方法的执行，使得我们可以快速的进行阅读或修改；
+ *
  * </pre>
  *
  * @author 洛朱
@@ -61,11 +69,15 @@ public class DebugInOut implements ActionMethodInOut {
         paramMap.put("errorCode", responseMessage.getResponseStatus());
         paramMap.put("validatorMsg", responseMessage.getValidatorMsg());
 
+        if (StrUtil.isEmpty(responseMessage.getValidatorMsg())) {
+            paramMap.put("validatorMsg", flowContext.option(FlowAttr.msgException));
+        }
+
         String template = """
-                ┏━━不符合验证━━━ Debug [{className}.java] ━━━ [({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo}
+                ┏━━不符合验证━━━ Debug. [({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo}
                 ┣ 参数: {paramName} : {paramData}
                 ┣ 错误码: {errorCode}
-                ┣ 验证信息: {validatorMsg}
+                ┣ 错误信息: {validatorMsg}
                 ┣ 时间: {time} ms (业务方法总耗时)
                 ┗━━━━━ Debug [{className}.java] ━━━
                 """;
@@ -84,7 +96,7 @@ public class DebugInOut implements ActionMethodInOut {
         }
 
         String template = """
-                ┏━━━━━ Debug [{className}.java] ━━━ [({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo}
+                ┏━━━━━ Debug. [({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo}
                 ┣ 参数: {paramName} : {paramData}
                 ┣ 响应: {returnData}
                 ┣ 时间: {time} ms (业务方法总耗时)

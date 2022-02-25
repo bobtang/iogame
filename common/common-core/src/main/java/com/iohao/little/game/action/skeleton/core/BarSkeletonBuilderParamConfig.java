@@ -41,6 +41,26 @@ public class BarSkeletonBuilderParamConfig {
     Predicate<Class<?>> actionSendPredicate = (clazz) -> Objects.nonNull(clazz.getAnnotation(DocActionSends.class));
 
     /**
+     * 创建业务框架构建器
+     * @return 业务框架构建器
+     */
+    public BarSkeletonBuilder createBuilder() {
+        // 业务框架构建器
+        BarSkeletonBuilder builder = BarSkeleton.newBuilder();
+
+        // action send class. class has @DocActionSend
+        this.scanClassActionSend(builder::addActionSend);
+
+        // action controller class. class has @ActionController
+        this.scanClassActionController(builder::addActionController);
+
+        // 错误码相关的
+        this.getMsgExceptionInfoList().forEach(builder::addMsgExceptionInfo);
+
+        return builder;
+    }
+
+    /**
      * 业务 action 类
      * <pre>
      *     需要扫描的类

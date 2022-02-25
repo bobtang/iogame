@@ -18,6 +18,9 @@ public class DefaultActionMethodExceptionProcess implements ActionMethodExceptio
             return msgException;
         }
 
+        // 到这里，一般不是用户自定义的错误，很可能是用户引入的第三方包的错误
+        e.printStackTrace();
+
         return new MsgException(ActionErrorEnum.systemOtherErrCode);
     }
 }

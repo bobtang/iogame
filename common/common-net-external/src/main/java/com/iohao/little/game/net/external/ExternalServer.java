@@ -36,7 +36,7 @@ public class ExternalServer {
             InetSocketAddress localAddress = (InetSocketAddress) channelFuture.channel()
                     .localAddress();
             builder.port = localAddress.getPort();
-            log.info("rpc server start with random port: {}!", builder.port);
+            log.debug("rpc server start with random port: {}!", builder.port);
         }
 
         return channelFuture.isSuccess();

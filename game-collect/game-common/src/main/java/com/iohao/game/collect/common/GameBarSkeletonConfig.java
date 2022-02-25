@@ -1,6 +1,5 @@
 package com.iohao.game.collect.common;
 
-import com.iohao.little.game.action.skeleton.core.BarSkeleton;
 import com.iohao.little.game.action.skeleton.core.BarSkeletonBuilder;
 import com.iohao.little.game.action.skeleton.core.BarSkeletonBuilderParamConfig;
 import com.iohao.little.game.action.skeleton.core.flow.interal.DebugInOut;
@@ -17,17 +16,10 @@ public class GameBarSkeletonConfig {
 
     public BarSkeletonBuilder createBuilder(BarSkeletonBuilderParamConfig config) {
         // 尽量做到所有操作是可插拔的. (InOut 插件)
-        BarSkeletonBuilder builder = BarSkeleton.newBuilder();
+        BarSkeletonBuilder builder = config.createBuilder();
+
+        // 添加控制台输出插件
         builder.addInOut(new DebugInOut());
-
-        // action send class. class has @DocActionSend
-        config.scanClassActionSend(builder::addActionSend);
-
-        // action controller class. class has @ActionController
-        config.scanClassActionController(builder::addActionController);
-
-        // 错误码相关的
-        config.getMsgExceptionInfoList().forEach(builder::addMsgExceptionInfo);
 
         return builder;
     }

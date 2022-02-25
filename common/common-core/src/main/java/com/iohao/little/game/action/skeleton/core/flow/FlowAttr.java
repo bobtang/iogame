@@ -9,5 +9,8 @@ import com.iohao.little.game.common.kit.attr.AttrOption;
  * @date 2022-01-31
  */
 public interface FlowAttr {
+    /** 路由 */
     AttrOption<Integer> cmdMerge = AttrOption.valueOf("cmdMerge");
+    /** 异常消息 */
+    AttrOption<String> msgException = AttrOption.valueOf("msgException");
 }

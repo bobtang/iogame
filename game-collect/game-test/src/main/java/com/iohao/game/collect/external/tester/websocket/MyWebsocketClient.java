@@ -35,6 +35,14 @@ public class MyWebsocketClient {
         websocketClient.start();
     }
 
+    private MyWebsocketClient() {
+        put(LoginVerifyOnMessage.me());
+
+        put(TankEnterRoomOnMessage.me());
+
+        put(TankMoveOnMessage.me());
+    }
+
     public void start() throws Exception {
         this.init();
         webSocketClient.connect();
@@ -116,13 +124,7 @@ public class MyWebsocketClient {
 
     }
 
-    private MyWebsocketClient() {
-        put(LoginVerifyOnMessage.me());
 
-        put(TankEnterRoomOnMessage.me());
-
-        put(TankMoveOnMessage.me());
-    }
 
     private void put(OnMessage onMessage) {
         onMessageMap.put(onMessage.getCmdMerge(), onMessage);
