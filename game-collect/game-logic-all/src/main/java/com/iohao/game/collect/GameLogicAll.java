@@ -2,6 +2,9 @@ package com.iohao.game.collect;
 
 import com.iohao.game.collect.hall.HallClientStartupConfig;
 import com.iohao.game.collect.tank.TankClientStartupConfig;
+import com.iohao.little.game.net.client.core.ClientStartupConfig;
+
+import java.util.List;
 
 /**
  * @author 洛朱
@@ -15,13 +18,15 @@ public class GameLogicAll {
 
     public void init() {
         // 启动用户逻辑服
+        listLogicServer().forEach(ClientStartupConfig::startup);
+    }
 
-        // 大厅
-        HallClientStartupConfig hallClientStartupConfig = new HallClientStartupConfig();
-        hallClientStartupConfig.startup();
-
-        // 坦克游戏
-        TankClientStartupConfig tankClientStartupConfig = new TankClientStartupConfig();
-        tankClientStartupConfig.startup();
+    public List<ClientStartupConfig> listLogicServer() {
+        return List.of(
+                // 大厅
+                new HallClientStartupConfig(),
+                // 坦克游戏
+                new TankClientStartupConfig()
+        );
     }
 }

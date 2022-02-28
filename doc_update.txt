@@ -1,3 +1,8 @@
+2022-03-01
+新增简单的启动器 SimpleRunOne
+简化对外服 ExternalServer 的内部逻辑服启动
+文档更新
+
 2022-02-25
 文档更新:快速从零编写服务器完整示例
 DebugInOut

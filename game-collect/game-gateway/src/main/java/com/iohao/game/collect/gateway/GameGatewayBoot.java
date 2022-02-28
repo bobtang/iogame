@@ -1,5 +1,7 @@
 package com.iohao.game.collect.gateway;
 
+import com.iohao.little.game.net.server.core.ServerStartupConfig;
+
 /**
  * @author 洛朱
  * @date 2022-01-12
@@ -12,8 +14,12 @@ public class GameGatewayBoot {
 
     public void init() {
         // 启动网关
-        GameGateServerStartupConfig gameGateServerStartupConfig = new GameGateServerStartupConfig();
-        gameGateServerStartupConfig.startup();
+        createGateway().startup();
+
         System.out.println("网关启动 ok!");
+    }
+
+    public ServerStartupConfig createGateway() {
+        return new GameGateServerStartupConfig();
     }
 }

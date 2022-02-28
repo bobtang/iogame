@@ -1,10 +1,14 @@
 package com.iohao.little.game.net.external;
 
+import com.iohao.little.game.common.kit.ExecutorKit;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -14,15 +18,22 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @date 2022-01-09
  */
 @Slf4j
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ExternalServer {
-    ExternalServerBuilder builder;
-    private final AtomicBoolean isStarted = new AtomicBoolean(false);
+    final ExternalServerBuilder builder;
+    final AtomicBoolean isStarted = new AtomicBoolean(false);
+    final ScheduledExecutorService singleScheduled = ExecutorKit.newSingleScheduled("ExternalServer-Gateway");
 
     ExternalServer(ExternalServerBuilder builder) {
         this.builder = builder;
     }
 
-    protected boolean doStart() throws InterruptedException {
+    /**
+     * 启动对外服
+     *
+     * @throws InterruptedException e
+     */
+    private void doStart() throws InterruptedException {
 
         ServerBootstrap bootstrap = builder.bootstrap;
 
@@ -39,13 +50,27 @@ public class ExternalServer {
             log.debug("rpc server start with random port: {}!", builder.port);
         }
 
-        return channelFuture.isSuccess();
+        channelFuture.isSuccess();
     }
 
+    /**
+     * 启动内部逻辑服 连接网关服务器，与网关通信
+     */
+    private void startupExternalClientStartupConfig() {
+        singleScheduled.execute(() -> this.builder.externalClientStartupConfig.startup());
+        System.out.println("external 启动内部逻辑服, 用于连接网关服务器");
+
+    }
+
+    /**
+     * 启动对外服
+     */
     public void startup() {
-//        this.isStarted.compareAndSet(false, true);
+        // 启动内部逻辑服, 用于连接网关服务器
+        startupExternalClientStartupConfig();
 
         try {
+            // 启动对外服
             doStart();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -53,6 +78,7 @@ public class ExternalServer {
     }
 
     public void shutdown() {
+        singleScheduled.shutdown();
 
     }
 

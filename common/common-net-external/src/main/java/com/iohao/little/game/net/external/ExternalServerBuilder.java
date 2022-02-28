@@ -2,6 +2,7 @@ package com.iohao.little.game.net.external;
 
 import cn.hutool.system.OsInfo;
 import cn.hutool.system.SystemUtil;
+import com.iohao.little.game.net.external.bolt.AbstractExternalClientStartupConfig;
 import com.iohao.little.game.net.external.bootstrap.BootstrapOption;
 import com.iohao.little.game.net.external.bootstrap.ExternalChannelInitializerCallback;
 import com.iohao.little.game.net.external.bootstrap.ExternalJoinEnum;
@@ -18,6 +19,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
@@ -38,6 +40,7 @@ import java.util.Objects;
  * @date 2022-01-09
  */
 @Slf4j
+@Accessors(chain = true)
 public class ExternalServerBuilder {
 
     /** 服务器 */
@@ -53,11 +56,12 @@ public class ExternalServerBuilder {
     /** Bootstrap 优化项 */
     @Setter
     BootstrapOption bootstrapOption;
-
     /** 连接方式 */
     @Setter
     ExternalJoinEnum externalJoinEnum = ExternalJoinEnum.WEBSOCKET;
-
+    /** 内部逻辑服 连接网关服务器，与网关通信 */
+    @Setter
+    AbstractExternalClientStartupConfig externalClientStartupConfig;
 
     ExternalServerBuilder(int port) {
         this.port = port;
@@ -110,6 +114,10 @@ public class ExternalServerBuilder {
         if (Objects.isNull(externalJoinEnum)) {
             throw new RuntimeException("externalJoinEnum expected: " + Arrays.toString(ExternalJoinEnum.values()));
         }
+
+        if (Objects.isNull(externalClientStartupConfig)) {
+            throw new RuntimeException("必须设置一个内部逻辑服 （externalClientStartupConfig），与网关通信！");
+        }
     }
 
     public ExternalServer build() {
@@ -144,6 +152,7 @@ public class ExternalServerBuilder {
         switch (externalJoinEnum) {
             case SOCKET -> log.info("启动方式========================tcp socket========================");
             case WEBSOCKET -> log.info("启动方式========================websocket========================");
+            default -> throw new RuntimeException("请设置连接方式!");
         }
     }
 

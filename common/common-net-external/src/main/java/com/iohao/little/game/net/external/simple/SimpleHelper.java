@@ -1,13 +1,12 @@
 package com.iohao.little.game.net.external.simple;
 
-import com.iohao.little.game.action.skeleton.core.doc.BarSkeletonDoc;
-import com.iohao.little.game.common.kit.ExecutorKit;
 import com.iohao.little.game.net.client.core.ClientStartupConfig;
 import com.iohao.little.game.net.client.core.RemoteAddress;
 import com.iohao.little.game.net.common.BoltServer;
 import com.iohao.little.game.net.external.ExternalServer;
 import com.iohao.little.game.net.external.ExternalServerBuilder;
 import com.iohao.little.game.net.external.bolt.AbstractExternalClientStartupConfig;
+import com.iohao.little.game.net.external.bootstrap.ExternalJoinEnum;
 import com.iohao.little.game.net.message.common.ModuleKeyKit;
 import com.iohao.little.game.net.message.common.ModuleMessage;
 import com.iohao.little.game.net.message.common.ModuleType;
@@ -15,8 +14,6 @@ import com.iohao.little.game.net.server.core.ServerStartupConfig;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 简单的快速启动工具： 对外服、网关服
@@ -30,7 +27,6 @@ import java.util.concurrent.TimeUnit;
  */
 @UtilityClass
 public class SimpleHelper {
-    ScheduledExecutorService executorService = ExecutorKit.newScheduled(4, "SimpleHelper");
 
     /**
      * 简单的快速启动
@@ -41,62 +37,44 @@ public class SimpleHelper {
      *          逻辑服
      * </pre>
      *
-     * @param port        游戏对外服端口
-     * @param gatewayPort 游戏网关端口
-     * @param logicList   逻辑服列表
+     * @param externalPort 游戏对外服端口
+     * @param gatewayPort  游戏网关端口
+     * @param logicList    逻辑服列表
      */
-    public void run(int port, int gatewayPort, List<ClientStartupConfig> logicList) {
-        // 启动网关
-        startupGateway(gatewayPort);
+    public void run(int externalPort, int gatewayPort, List<ClientStartupConfig> logicList) {
 
-        executorService.schedule(() -> {
+        // 对外服
+        ExternalServer externalServer = createExternalServer(externalPort, gatewayPort);
 
-            // 启动逻辑服
-            logicList.forEach(ClientStartupConfig::startup);
+        // 网关服务器
+        ServerStartupConfig gatewayServer = () -> new BoltServer(gatewayPort);
 
-            // 启动对外服
-            startupExternal(port, gatewayPort);
+        SimpleRunOne simpleRunOne = new SimpleRunOne()
+                // 网关服务器
+                .setGatewayServer(gatewayServer)
+                // 对外服
+                .setExternalServer(externalServer)
+                // 逻辑服列表
+                .setLogicServerList(logicList);
 
-            // 生成游戏文档
-            BarSkeletonDoc.me().buildDoc();
-
-        }, 1, TimeUnit.SECONDS);
-
-        try {
-            TimeUnit.SECONDS.sleep(2);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        simpleRunOne.startup();
     }
 
-    private void startupExternal(int port, int gatewayPort) {
-        // 启动内部逻辑服 连接网关服务器
-        executorService.execute(() -> {
-            new InternalExternalClientStartupConfig(gatewayPort).startup();
-            System.out.println("external 启动内部逻辑服, 用于连接网关服务器");
-        });
-
-        // 对外服连接网关服务器
+    private ExternalServer createExternalServer(int externalPort, int gatewayPort) {
+        // 内部逻辑服 连接网关服务器
+        var externalClientStartupConfig = new InternalExternalClientStartupConfig(gatewayPort);
 
         // 游戏对外服 - 构建器
-        ExternalServerBuilder builder = ExternalServer.newBuilder(port);
+        ExternalServerBuilder builder = ExternalServer.newBuilder(externalPort)
+                // websocket 方式连接
+                .setExternalJoinEnum(ExternalJoinEnum.WEBSOCKET)
+                // 内部逻辑服 连接网关服务器
+                .setExternalClientStartupConfig(externalClientStartupConfig);
+
         // 构建游戏对外服
-        ExternalServer externalServer = builder.build();
-        // 启动游戏对外服
-        externalServer.startup();
-
-        System.out.println("external 启动游戏对外服 !");
-
+        return builder.build();
     }
 
-    private void startupGateway(int port) {
-
-        executorService.execute(() -> {
-            ServerStartupConfig gateway = () -> new BoltServer(port);
-            gateway.startup();
-            System.out.println("网关启动 ok!");
-        });
-    }
 
     static class InternalExternalClientStartupConfig extends AbstractExternalClientStartupConfig {
         int port;

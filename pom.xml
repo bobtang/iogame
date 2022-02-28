@@ -180,6 +180,12 @@
             <groupId>com.baidu</groupId>
             <artifactId>jprotobuf</artifactId>
             <version>${jprotobuf.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
     </dependencies>
