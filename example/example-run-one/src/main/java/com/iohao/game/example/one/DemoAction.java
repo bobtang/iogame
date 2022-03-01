@@ -1,4 +1,4 @@
-package com.iohao.game.collect.external.demo;
+package com.iohao.game.example.one;
 
 import com.iohao.little.game.action.skeleton.annotation.ActionController;
 import com.iohao.little.game.action.skeleton.annotation.ActionMethod;

@@ -1,4 +1,4 @@
-package com.iohao.game.collect.external.demo;
+package com.iohao.game.example.one;
 
 import com.baidu.bjf.remoting.protobuf.annotation.EnableZigZap;
 import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;

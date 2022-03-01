@@ -55,6 +55,7 @@
 
         <module>game-collect/game-test</module>
         <module>game-collect/game-one</module>
+        <module>example/example-run-one</module>
 
     </modules>
 
