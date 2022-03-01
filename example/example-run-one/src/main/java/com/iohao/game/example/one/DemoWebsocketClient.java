@@ -31,8 +31,8 @@ public class DemoWebsocketClient {
 
                 // 路由, 对应服务端逻辑服的业务类路由地址
                 int cmd = 1;
-//                int subCmd = 1;
-                int subCmd = 0;
+                int subCmd = 1;
+//                int subCmd = 0;
 
                 // 游戏框架内置的协议， 与游戏前端相互通讯的协议
                 ExternalMessage externalMessage = new ExternalMessage();

@@ -34,12 +34,7 @@
         <module>widget/light-all</module>
 
         <!-- 示例  -->
-        <module>example/example-common</module>
-        <module>example/example-client-common</module>
-        <module>example/example-client-game-A</module>
-        <module>example/example-client-game-B</module>
-        <module>example/example-gateway</module>
-        <module>example/example-client-game-ALL</module>
+        <module>example/example-run-one</module>
 
         <!-- 实践案例  -->
         <module>game-collect/game-common-proto</module>
@@ -55,7 +50,6 @@
 
         <module>game-collect/game-test</module>
         <module>game-collect/game-one</module>
-        <module>example/example-run-one</module>
 
     </modules>
 

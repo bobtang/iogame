@@ -27,6 +27,7 @@ public class BarSkeletonDoc {
     }
 
     public void buildDoc() {
+        // 路径为当前项目
         String docPath = SystemUtil.getUserInfo().getCurrentDir() + docFileName;
         this.buildDoc(docPath);
     }
@@ -101,7 +102,7 @@ public class BarSkeletonDoc {
         extractedErrorCode(docContentList);
 
         String docText = String.join("", docContentList);
-        FileUtil.writeUtf8String(docText.toString(), docPath);
+        FileUtil.writeUtf8String(docText, docPath);
     }
 
     private void extractedErrorCode(List<String> docContentList) {

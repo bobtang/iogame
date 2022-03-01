@@ -35,6 +35,8 @@ public class SimpleHelper {
      *          对外服
      *          网关服
      *          逻辑服
+     *
+     *      包括游戏业务文档的生成
      * </pre>
      *
      * @param externalPort 游戏对外服端口

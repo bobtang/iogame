@@ -19,7 +19,7 @@ public class DemoApplication {
         // 逻辑服
         DemoLogicServer demoLogicServer = new DemoLogicServer(gatewayPort);
 
-        // 启动 对外服、网关服、逻辑服
+        // 启动 对外服、网关服、逻辑服; 并生成游戏业务文档
         SimpleHelper.run(port, gatewayPort, List.of(demoLogicServer));
     }
 }

@@ -10,16 +10,30 @@ import com.iohao.little.game.action.skeleton.core.exception.MsgException;
  */
 @ActionController(1)
 public class DemoAction {
+    /**
+     * 示例 here 方法
+     *
+     * @param helloReq helloReq
+     * @return HelloReq
+     */
     @ActionMethod(0)
     public HelloReq here(HelloReq helloReq) {
-        helloReq.name = helloReq.name + ", I'm here ";
-        return helloReq;
+        HelloReq newHelloReq = new HelloReq();
+        newHelloReq.name = helloReq.name + ", I'm here ";
+        return newHelloReq;
     }
 
+    /**
+     * 示例 异常机制演示
+     *
+     * @param helloReq helloReq
+     * @return HelloReq
+     * @throws MsgException e
+     */
     @ActionMethod(1)
     public HelloReq jackson(HelloReq helloReq) throws MsgException {
-
-        if (!"jackson".equals(helloReq.name)) {
+        String jacksonName = "jackson";
+        if (!jacksonName.equals(helloReq.name)) {
             throw new MsgException(100, "异常机制测试，name 必需是 jackson !");
         }
 
