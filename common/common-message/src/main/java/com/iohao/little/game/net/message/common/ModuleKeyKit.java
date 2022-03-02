@@ -5,6 +5,11 @@ import org.jctools.maps.NonBlockingHashMap;
 
 import java.util.Map;
 
+/**
+ * 模块相关工具
+ *
+ * @author 洛朱
+ */
 @UtilityClass
 public class ModuleKeyKit {
 

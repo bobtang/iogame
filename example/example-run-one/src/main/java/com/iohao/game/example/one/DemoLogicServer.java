@@ -1,7 +1,6 @@
 package com.iohao.game.example.one;
 
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
-import com.iohao.little.game.action.skeleton.core.BarSkeletonBuilder;
 import com.iohao.little.game.action.skeleton.core.BarSkeletonBuilderParamConfig;
 import com.iohao.little.game.action.skeleton.core.flow.interal.DebugInOut;
 import com.iohao.little.game.net.client.core.ClientStartupConfig;
@@ -28,12 +27,12 @@ public class DemoLogicServer implements ClientStartupConfig {
     @Override
     public BarSkeleton createBarSkeleton() {
         // 业务框架构建器 配置
-        BarSkeletonBuilderParamConfig config = new BarSkeletonBuilderParamConfig()
+        var config = new BarSkeletonBuilderParamConfig()
                 // 扫描 DemoAction.class 所在包
                 .addActionController(DemoAction.class);
 
         // 业务框架构建器
-        BarSkeletonBuilder builder = config.createBuilder();
+        var builder = config.createBuilder();
 
         // 添加控制台输出插件
         builder.addInOut(new DebugInOut());
@@ -47,21 +46,17 @@ public class DemoLogicServer implements ClientStartupConfig {
         int moduleId = 1;
         var moduleKey = ModuleKeyKit.getModuleKey(moduleId);
 
-        // 逻辑服的信息描述
-        ModuleMessage moduleMessage = new ModuleMessage();
-        moduleMessage.setModuleKey(moduleKey);
-        moduleMessage.setName("游戏逻辑服 demo");
-        moduleMessage.setDescription("demo业务");
-
-        // 子模块 逻辑服信息
-        return moduleMessage;
+        // 子模块 逻辑服的信息描述
+        return new ModuleMessage(moduleKey)
+                .setName("游戏逻辑服 demo")
+                .setDescription("demo业务");
     }
 
     @Override
     public RemoteAddress createRemoteAddress() {
         // 游戏网关 ip
-        String ip = "127.0.0.1";
+        String gatewayIp = "127.0.0.1";
         // 游戏网关 ip 和 游戏网关端口
-        return new RemoteAddress(ip, gatewayPort);
+        return new RemoteAddress(gatewayIp, gatewayPort);
     }
 }

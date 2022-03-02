@@ -51,15 +51,16 @@ public class SimpleHelper {
         // 网关服务器
         ServerStartupConfig gatewayServer = () -> new BoltServer(gatewayPort);
 
-        SimpleRunOne simpleRunOne = new SimpleRunOne()
+        // 简单的启动器
+        new SimpleRunOne()
                 // 网关服务器
                 .setGatewayServer(gatewayServer)
                 // 对外服
                 .setExternalServer(externalServer)
                 // 逻辑服列表
-                .setLogicServerList(logicList);
-
-        simpleRunOne.startup();
+                .setLogicServerList(logicList)
+                // 启动
+                .startup();
     }
 
     private ExternalServer createExternalServer(int externalPort, int gatewayPort) {
@@ -79,10 +80,11 @@ public class SimpleHelper {
 
 
     static class InternalExternalClientStartupConfig extends AbstractExternalClientStartupConfig {
-        int port;
+        /** 游戏网关端口 */
+        int gatewayPort;
 
-        public InternalExternalClientStartupConfig(int port) {
-            this.port = port;
+        public InternalExternalClientStartupConfig(int gatewayPort) {
+            this.gatewayPort = gatewayPort;
         }
 
         @Override
@@ -90,19 +92,18 @@ public class SimpleHelper {
             int moduleId = 0;
             var moduleKey = ModuleKeyKit.getModuleKey(moduleId);
 
-            ModuleMessage moduleMessage = new ModuleMessage();
-            moduleMessage.setModuleType(ModuleType.EXTERNAL);
-            moduleMessage.setModuleKey(moduleKey);
-            moduleMessage.setName("对外服务器(external)");
-            moduleMessage.setDescription("对接真实的游戏用户");
-
-            return moduleMessage;
+            // 对外服模块信息
+            return new ModuleMessage(moduleKey)
+                    .setModuleType(ModuleType.EXTERNAL)
+                    .setName("对外服务器(external)")
+                    .setDescription("对接真实的游戏用户");
         }
 
         @Override
         public RemoteAddress createRemoteAddress() {
-            String ip = "127.0.0.1";
-            return new RemoteAddress(ip, port);
+            // 游戏网关 ip， 实际开发中写你的游戏网关具体地址。
+            String gatewayIp = "127.0.0.1";
+            return new RemoteAddress(gatewayIp, gatewayPort);
         }
     }
 }

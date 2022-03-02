@@ -3,6 +3,7 @@ package com.iohao.little.game.net.message.common;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serial;
@@ -10,9 +11,12 @@ import java.io.Serializable;
 
 /**
  * 子模块信息 （子游戏服的信息、逻辑服）
+ *
+ * @author 洛朱
  */
 @Getter
 @Setter
+@Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ModuleMessage implements Serializable {
     @Serial
@@ -29,8 +33,11 @@ public class ModuleMessage implements Serializable {
     /** 逻辑服类型 */
     ModuleType moduleType = ModuleType.LOGIC;
 
-    public void setModuleKey(ModuleKey moduleKey) {
+    public ModuleMessage(ModuleKey moduleKey) {
         this.moduleKey = moduleKey;
+    }
+
+    public ModuleMessage() {
     }
 
     @Override

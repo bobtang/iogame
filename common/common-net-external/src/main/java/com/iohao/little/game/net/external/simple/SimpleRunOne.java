@@ -5,8 +5,10 @@ import com.iohao.little.game.common.kit.ExecutorKit;
 import com.iohao.little.game.net.client.core.ClientStartupConfig;
 import com.iohao.little.game.net.external.ExternalServer;
 import com.iohao.little.game.net.server.core.ServerStartupConfig;
+import lombok.AccessLevel;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
@@ -18,13 +20,15 @@ import java.util.concurrent.TimeUnit;
  *     注意：
  *          这个工具只适合单机的开发或本地一体化的开发, 对于分步式不适合。
  * </pre>
+ *
  * @author 洛朱
  * @date 2022-02-28
  */
 @Setter
 @Accessors(chain = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class SimpleRunOne {
-    final ScheduledExecutorService executorService = ExecutorKit.newScheduled(2, "SimpleRunOne");
+    final ScheduledExecutorService executorService = ExecutorKit.newScheduled(2, SimpleRunOne.class.getSimpleName());
 
     /** 网关 */
     ServerStartupConfig gatewayServer;
@@ -44,8 +48,16 @@ public class SimpleRunOne {
      */
     public void startup() {
         // 启动网关
-        startupGateway();
+        executorService.execute(() -> {
+            gatewayServer.startup();
+            System.out.println("网关启动 ok!");
+        });
 
+        // 启动逻辑服、对外服
+        startupLogic();
+    }
+
+    private void startupLogic() {
         executorService.schedule(() -> {
 
             // 启动逻辑服
@@ -68,11 +80,4 @@ public class SimpleRunOne {
         }
     }
 
-    private void startupGateway() {
-
-        executorService.execute(() -> {
-            gatewayServer.startup();
-            System.out.println("网关启动 ok!");
-        });
-    }
 }

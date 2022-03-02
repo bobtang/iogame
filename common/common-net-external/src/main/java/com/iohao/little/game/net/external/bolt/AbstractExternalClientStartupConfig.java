@@ -2,7 +2,6 @@ package com.iohao.little.game.net.external.bolt;
 
 import com.alipay.remoting.rpc.RpcClient;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
-import com.iohao.little.game.action.skeleton.core.BarSkeletonBuilder;
 import com.iohao.little.game.net.client.BoltClientServer;
 import com.iohao.little.game.net.client.core.ClientStartupConfig;
 import com.iohao.little.game.net.external.bootstrap.ExternalServerKit;
@@ -16,8 +15,9 @@ import com.iohao.little.game.net.external.bootstrap.ExternalServerKit;
 public abstract class AbstractExternalClientStartupConfig implements ClientStartupConfig {
     @Override
     public BarSkeleton createBarSkeleton() {
-        BarSkeletonBuilder builder = BarSkeleton.newBuilder();
-        return builder.build();
+        return BarSkeleton
+                .newBuilder()
+                .build();
     }
 
     @Override

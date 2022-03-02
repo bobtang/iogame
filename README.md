@@ -6,17 +6,17 @@
 
 ## 愿景
 
-让游戏服务端的编程变得轻松简单！
+让网络游戏服务端的编程变得轻松简单！
 
 
 
-## 游戏框架简介
+## 网络游戏框架简介
 
 游戏框架：ioGame
 
-基于蚂蚁金服 [sofa-bolt](https://www.sofastack.tech/projects/sofa-bolt/overview/) 的游戏框架，游戏框架由 [通讯框架] 和 [业务框架] 组成。
+ioGame 是基于蚂蚁金服 [sofa-bolt](https://www.sofastack.tech/projects/sofa-bolt/overview/) 的网络游戏框架，游戏框架由 [网络通信框架] 和 [业务框架] 组成。
 
-通讯框架：负责服用器之间的网络通信
+网络通信框架：负责服用器之间的网络通信
 
 业务框架：负责业务逻辑的处理方式和编写方式
 
@@ -39,7 +39,7 @@
 
 
 
-## 通讯框架 - SOFABolt
+## 网络通信框架 - SOFABolt
 
 [SOFABolt](https://www.sofastack.tech/projects/sofa-bolt/overview/) 是蚂蚁金融服务集团开发的一套基于 Netty 实现的网络通信框架。
 
