@@ -35,7 +35,6 @@ public class TankRoomTask {
 
     }
 
-
     static class TaskRoomStart implements Runnable {
         RoomService roomService = RoomService.me();
 

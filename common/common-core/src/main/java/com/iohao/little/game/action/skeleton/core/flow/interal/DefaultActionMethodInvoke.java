@@ -27,19 +27,17 @@ public class DefaultActionMethodInvoke implements ActionMethodInvoke {
         MethodAccess actionMethodAccess = actionCommand.getActionMethodAccess();
 
         // 方法声明了异常的处理方式
-        if (actionCommand.isThrowException()) {
-            try {
-                return actionMethodAccess.invoke(controller, actionMethodIndex, pars);
-            } catch (Throwable e) {
-                // 异常处理
-                final BarSkeleton barSkeleton = flowContext.getBarSkeleton();
-                ActionMethodExceptionProcess exceptionProcess = barSkeleton.getActionMethodExceptionProcess();
-                // 把业务方法抛出的异常,交由异常处理类来处理
-                return exceptionProcess.processException(e);
-            }
-        } else {
-            // 方法没有声明会抛异常，走这里的逻辑, 少 try 一次
+        try {
             return actionMethodAccess.invoke(controller, actionMethodIndex, pars);
+        } catch (Throwable e) {
+            // true 业务方法有异常
+            flowContext.setError(true);
+            
+            // 异常处理
+            final BarSkeleton barSkeleton = flowContext.getBarSkeleton();
+            ActionMethodExceptionProcess exceptionProcess = barSkeleton.getActionMethodExceptionProcess();
+            // 把业务方法抛出的异常,交由异常处理类来处理
+            return exceptionProcess.processException(e);
         }
     }
 }

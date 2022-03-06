@@ -36,7 +36,7 @@ public class ExternalBizHandler extends SimpleChannelInboundHandler<ExternalMess
         requestMessage.setUserId(userId);
 
         try {
-            log.info("external 转发到网关");
+//            log.info("external 转发到网关");
             String address = ExternalServerKit.address();
             RpcClient rpcClient = ExternalServerKit.rpcClient;
             // 由内部逻辑服转发用户请求到网关服，在由网关服转到具体的业务逻辑服

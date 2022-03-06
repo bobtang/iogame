@@ -36,9 +36,9 @@ public class RoomService {
     @SuppressWarnings("unchecked")
     public <T extends AbstractRoom> T getRoomByUserId(long userId) {
         // 通过 userId 得到 roomId
-        long roomId = userRoomMap.get(userId);
+        Long roomId = userRoomMap.get(userId);
 
-        if (roomId == 0) {
+        if (Objects.isNull(roomId)) {
             return null;
         }
 

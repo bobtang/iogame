@@ -20,14 +20,8 @@ public interface TankCmd extends ActionModuleCmd.Info {
     int enterRoom = 2;
     /** 游戏开始 */
     int gameStart = 3;
-    /** 子弹配置 */
-    int getTankBulletConfigRes = 4;
     /** 坦克移动 */
     int tankMove = 5;
     /** 坦克射击(发射子弹) */
     int shooting = 6;
-    /** 子弹消失（死亡） */
-    int bulletDead = 7;
-    /** 坦克受伤 */
-    int hurt = 8;
 }

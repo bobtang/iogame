@@ -62,6 +62,8 @@ public class LoginAction {
             // TODO: 2022/1/19 抛异常码
         }
 
+        userMap.clear();
+
         return userInfo;
     }
 

@@ -3,7 +3,6 @@ package com.iohao.game.collect.tank.action;
 import com.iohao.game.collect.common.room.GameFlowService;
 import com.iohao.game.collect.common.room.RoomService;
 import com.iohao.game.collect.proto.tank.TankBullet;
-import com.iohao.game.collect.proto.tank.TankBulletConfigRes;
 import com.iohao.game.collect.proto.tank.TankEnterRoom;
 import com.iohao.game.collect.proto.tank.TankLocation;
 import com.iohao.game.collect.tank.TankCmd;
@@ -11,15 +10,12 @@ import com.iohao.game.collect.tank.mapstruct.TankMapstruct;
 import com.iohao.game.collect.tank.room.TankPlayerEntity;
 import com.iohao.game.collect.tank.room.TankRoomEntity;
 import com.iohao.game.collect.tank.room.flow.*;
-import com.iohao.game.collect.tank.service.TankConfigService;
 import com.iohao.little.game.action.skeleton.annotation.ActionController;
 import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
-import com.iohao.little.game.action.skeleton.core.exception.MsgException;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.LongAdder;
 
@@ -32,37 +28,25 @@ import java.util.concurrent.atomic.LongAdder;
 @Slf4j
 @ActionController(TankCmd.cmd)
 public class TankAction {
-    /*=============== 暂时不加 spring 进来， 后面在加入 spring ===============*/
+    /** 游戏流程 */
     static GameFlowService gameFlowService = GameFlowService.me();
     RoomService roomService = RoomService.me();
-    // TODO: 2022/1/14 开发阶段，只用一个房间
+    /** 开发阶段，只用一个房间 */
     public static long tempRoomId = 10000;
-
-    static final LongAdder bulletShootIdAdder = new LongAdder();
+    LongAdder shootAdder = new LongAdder();
 
     static {
+        // 游戏规则
         gameFlowService.setRoomRuleInfoCustom(new TankRoomRuleInfoCustom());
+        // 游戏开始
         gameFlowService.setRoomGameStartCustom(new TankRoomGameStartCustom());
+        // 创建玩家
         gameFlowService.setRoomPlayerCreateCustom(new TankRoomPlayerCreateCustom());
+        // 房间创建
         gameFlowService.setRoomCreateCustom(new TankRoomCreateCustom());
+        // 进入房间
         gameFlowService.setRoomEnterCustom(new TankRoomEnterCustom());
     }
-
-
-//    @ActionMethod(TankCmd.hurt)
-//    public void hurt(FlowContext flowContext) {
-//
-//    }
-//
-//    /**
-//     * 子弹消失（死亡）
-//     *
-//     * @param flowContext flowContext
-//     */
-//    @ActionMethod(TankCmd.bulletDead)
-//    public void bulletDead(FlowContext flowContext) {
-//        long userId = flowContext.getUserId();
-//    }
 
     /**
      * 坦克射击(发射子弹)
@@ -71,22 +55,18 @@ public class TankAction {
      * @param tankBullet  tankBullet
      */
     @ActionMethod(TankCmd.shooting)
-    public void shooting(FlowContext flowContext, TankBullet tankBullet) throws MsgException {
+    public void shooting(FlowContext flowContext, TankBullet tankBullet) {
+
+        shootAdder.increment();
+        int amount = 100;
+        if (tankBullet.amount == amount) {
+            log.info("------------ shootAdder : {} ", shootAdder);
+        }
+
         long userId = flowContext.getUserId();
 
         // 广播这颗子弹的消息
         TankRoomEntity room = roomService.getRoomByUserId(userId);
-
-        TankPlayerEntity player = room.getPlayerById(userId);
-
-        player.shooting(tankBullet);
-
-        bulletShootIdAdder.increment();
-        tankBullet.shootId = bulletShootIdAdder.longValue();
-
-
-        Map<Integer, Integer> tankBulletMap = player.getTankBulletMap();
-
 
         room.broadcast(flowContext, tankBullet);
     }
@@ -110,18 +90,6 @@ public class TankAction {
 
         //  广播坦克移动
         room.broadcast(flowContext, tankLocation);
-    }
-
-    /**
-     * 子弹的配置
-     *
-     * @return 子弹的配置列表
-     * @apiNote 子弹配置
-     */
-    @ActionMethod(TankCmd.getTankBulletConfigRes)
-    public TankBulletConfigRes getTankBulletConfigRes() {
-        // 子弹配置
-        return TankConfigService.me().getTankBulletConfigRes();
     }
 
     /**
@@ -167,7 +135,6 @@ public class TankAction {
         // 进入房间
         Collection<TankPlayerEntity> players = room.listPlayer();
         enterRoom.tankPlayerList = TankMapstruct.ME.convertList(players);
-
 
         return enterRoom;
     }

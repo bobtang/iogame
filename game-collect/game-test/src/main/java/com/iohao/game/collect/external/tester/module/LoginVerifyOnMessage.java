@@ -1,5 +1,6 @@
 package com.iohao.game.collect.external.tester.module;
 
+import cn.hutool.core.util.RandomUtil;
 import com.iohao.game.collect.hall.HallCmd;
 import com.iohao.game.collect.proto.common.LoginVerify;
 import com.iohao.game.collect.proto.common.UserInfo;
@@ -31,6 +32,7 @@ public class LoginVerifyOnMessage implements OnMessage {
     public Object requestData() {
         LoginVerify loginVerify = new LoginVerify();
         loginVerify.jwt = "test";
+        loginVerify.jwt = RandomUtil.randomInt(10000) + "";
 
         log.info("建立连接后 执行的方法 {}", loginVerify);
         return loginVerify;

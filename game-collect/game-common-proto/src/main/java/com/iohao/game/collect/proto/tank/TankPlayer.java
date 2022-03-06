@@ -22,7 +22,7 @@ import java.util.Map;
 @EnableZigZap
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @ToString
-@ProtoFileMerge(fileName = GameProtoFile.tankFileName, filePackage = GameProtoFile.tankFilePackage)
+@ProtoFileMerge(fileName = GameProtoFile.TANK_FILE_NAME, filePackage = GameProtoFile.TANK_FILE_PACKAGE)
 public class TankPlayer {
     /** 玩家id */
     long id;

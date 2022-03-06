@@ -24,7 +24,7 @@ import java.io.Serializable;
 @EnableZigZap
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @ToString
-@ProtoFileMerge(fileName = GameProtoFile.commonFileName, filePackage = GameProtoFile.commonFilePackage)
+@ProtoFileMerge(fileName = GameProtoFile.COMMON_FILE_NAME, filePackage = GameProtoFile.COMMON_FILE_PACKAGE)
 public class UserInfo implements Serializable {
     @Serial
     @Ignore

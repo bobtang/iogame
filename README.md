@@ -4,6 +4,10 @@
 
 
 
+> 推荐大家看在线文档，排版好一些。gitee 上看 README 有点乱！
+
+
+
 ## 愿景
 
 让网络游戏服务端的编程变得轻松简单！
@@ -16,7 +20,7 @@
 
 ioGame 是基于蚂蚁金服 [sofa-bolt](https://www.sofastack.tech/projects/sofa-bolt/overview/) 的网络游戏框架，游戏框架由 [网络通信框架] 和 [业务框架] 组成。
 
-网络通信框架：负责服用器之间的网络通信
+网络通信框架：负责服务器之间的网络通信
 
 业务框架：负责业务逻辑的处理方式和编写方式
 
@@ -138,14 +142,9 @@ public class HelloReq {
 public class DemoAction {
     @ActionMethod(0)
     public HelloReq here(HelloReq helloReq) {
-        helloReq.name = helloReq.name + ", I'm here ";
-        return helloReq;
-    }
-    
-	@ActionMethod(1)
-    public HelloReq say(HelloReq helloReq) {
-        helloReq.name = helloReq.name + ", I'm say ";
-        return helloReq;
+        HelloReq newHelloReq = new HelloReq();
+        newHelloReq.name = helloReq.name + ", I'm here ";
+        return newHelloReq;
     }
 }
 ```
@@ -173,22 +172,29 @@ public class DemoAction {
 当我们访问 here 方法时（通常由游戏前端来请求），控制台将会打印
 
 ```basic
-┏━━━━━ Debug. [(DemoAction.java:4).here]
+┏━━━━━ Debug. [(DemoAction.java:4).here] ━━━ [cmd:1 - subCmd:0 - cmdMerge:65536]
 ┣ 参数: helloReq : HelloReq(name=塔姆)
 ┣ 响应: HelloReq(name=塔姆, I'm here )
 ┣ 时间: 0 ms (业务方法总耗时)
 ┗━━━━━ Debug [DemoAction.java] ━━━
 ```
 
-Debug. [(DemoAction.java:14).here]：表示执行业务的是 DemoAction 类下的 here 方法，14 表示业务方法所在的代码行数。在工具中点击控制台的 DemoAction.java:4 这条信息，就可以跳转到对应的代码中（快速导航到对应的代码）。
 
-参数 :  通常是游戏前端传入的值。
 
-响应：通常是业务方法返回的值 ，业务框架会把这个返回值推送到游戏前端。
-
-时间：执行业务方法总耗时，我们可根据业务方法总耗时的时长来优化业务。
-
-路由信息：[路由](https://www.yuque.com/iohao/game/soxp4u)是唯一的访问地址。
+> Debug. [(DemoAction.java:4).here]：
+    表示执行业务的是 DemoAction 类下的 here 方法，4 表示业务方法所在的代码行数。在工具中点击控制台的 DemoAction.java:4 这条信息，就可以跳转到对应的代码中（快速导航到对应的代码）。
+>
+> 参数 :  
+    通常是游戏前端传入的值。
+>
+> 响应：
+    通常是业务方法返回的值 ，业务框架会把这个返回值推送到游戏前端。
+>
+> 时间：
+    执行业务方法总耗时，我们可根据业务方法总耗时的时长来优化业务。
+>
+> 路由信息：
+> 	[路由](https://www.yuque.com/iohao/game/soxp4u)是唯一的访问地址。
 
 
 
@@ -222,15 +228,38 @@ Debug. [(DemoAction.java:14).here]：表示执行业务的是 DemoAction 类下�
 
 
 
+## 快速从零编写服务器完整示例
+
+如果觉得 ioGame 适合你，可以看一下 [快速从零编写服务器完整示例](https://www.yuque.com/iohao/game/zm6qg2) 。在这个示例中，你可以用很少的代码实现一个完整的、可运行的、高性能的、稳定的服务器。
+
+
+
+## 坦克游戏示例
+
+ioGame 内提供了一个基于 [FXGL](https://www.oschina.net/p/fxgl) 游戏引擎的游戏示例 （[坦克射击](https://www.yuque.com/iohao/game/gqossg)启动文档），FXGL 是纯 java 开发的一个游戏引擎，可以在项目中直接运行。
+
+运行 TankApp.java 文件就可以启动游戏了。
+
+原计划用 [U3D](https://unity.cn/) 来做游戏示例的，但想到大伙还得安装 [u3d](https://unity.cn/) 的环境，就用  [FXGL](https://www.oschina.net/p/fxgl) 来做游戏示例了。
+
+
+
+
 ## 维护周期
 
-我们的承诺项目的维护周期是十年起步， 十年只是一个起步！由于还未正式发布，所以现在还没开始计时。
+我们的承诺项目的维护周期是十年起步， 2022-03-01起，十年维护期！
+
+
 
 ## 参考
 
 什么是 [Action](https://www.yuque.com/iohao/game/sqcevl)。
 
 [快速从零编写服务器完整示例](https://www.yuque.com/iohao/game/zm6qg2)
+
+[坦克示例](https://www.yuque.com/iohao/game/gqossg)（游戏前端）。
+
+
 
 
 ## 交流群

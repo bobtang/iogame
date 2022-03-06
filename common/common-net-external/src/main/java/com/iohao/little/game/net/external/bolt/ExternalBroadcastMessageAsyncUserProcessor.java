@@ -22,7 +22,7 @@ import java.util.Objects;
 public class ExternalBroadcastMessageAsyncUserProcessor extends AsyncUserProcessor<BroadcastMessage> {
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, BroadcastMessage message) {
-        log.info("对外服接收网关的数据：{}", message);
+//        log.info("对外服接收网关的数据：{}", message);
         ResponseMessage responseMessage = message.getResponseMessage();
         ExternalMessage externalMessage = ExternalKit.convertExternalMessage(responseMessage);
 

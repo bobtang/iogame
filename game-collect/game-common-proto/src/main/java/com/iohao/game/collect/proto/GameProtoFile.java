@@ -5,11 +5,9 @@ package com.iohao.game.collect.proto;
  * @date 2022-01-25
  */
 public interface GameProtoFile {
-    String commonFileName = "common.proto";
-    String commonFilePackage = "pb.common";
+    String COMMON_FILE_NAME = "common.proto";
+    String COMMON_FILE_PACKAGE = "pb.common";
 
-    String tankFileName = "tank.proto";
-    String tankFilePackage = "pb.tank";
-
-
+    String TANK_FILE_NAME = "tank.proto";
+    String TANK_FILE_PACKAGE = "pb.tank";
 }

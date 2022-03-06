@@ -47,6 +47,8 @@ public class FlowContext implements AttrOptionDynamic {
     Object methodResult;
     /** userId */
     long userId;
+    /** true 业务方法有异常 */
+    boolean error;
 
     @SuppressWarnings("unchecked")
     public <T extends ParamContext> T getParamContext() {

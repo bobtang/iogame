@@ -28,7 +28,7 @@ public class GateBroadcastMessageAsyncUserProcessor extends AsyncUserProcessor<B
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, BroadcastMessage broadcastMessage) {
 
-        log.info("Broadcast 网关 转发到对外服务器 {}", broadcastMessage);
+//        log.info("Broadcast 网关 转发到对外服务器 {}", broadcastMessage);
 
         //  转发到对外服务器
         ModuleInfoProxy externalModuleInfo = ModuleInfoManager.me().getExternalModuleInfo();

@@ -20,14 +20,12 @@ import lombok.experimental.FieldDefaults;
 @EnableZigZap
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @ToString
-@ProtoFileMerge(fileName = GameProtoFile.tankFileName, filePackage = GameProtoFile.tankFilePackage)
+@ProtoFileMerge(fileName = GameProtoFile.TANK_FILE_NAME, filePackage = GameProtoFile.TANK_FILE_PACKAGE)
 public class TankBullet {
-    /** id */
-    int id;
     /** 子弹的位置 */
     TankLocation tankLocation;
     /** 所属玩家 */
     long playerId;
-    /** 射击id (由服务器生成的唯一id) */
-    long shootId;
+    /** 测试字段 */
+    int amount;
 }

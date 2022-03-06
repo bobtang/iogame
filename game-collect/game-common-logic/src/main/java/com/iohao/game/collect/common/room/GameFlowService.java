@@ -7,7 +7,7 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 /**
- * 游戏流
+ * 游戏流程
  * <pre>
  *     游戏规则
  *     创建玩家

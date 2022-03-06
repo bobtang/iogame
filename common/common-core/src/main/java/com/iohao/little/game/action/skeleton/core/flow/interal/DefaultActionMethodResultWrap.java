@@ -26,7 +26,8 @@ public class DefaultActionMethodResultWrap implements ActionMethodResultWrap {
         // 业务方法的返回值
         final Object result = flowContext.getMethodResult();
 
-        if (actionCommand.isThrowException() && result instanceof MsgException msgException) {
+        if (flowContext.isError()) {
+            MsgException msgException = (MsgException) result;
             // 异常处理
             int code = msgException.getMsgCode();
             responseMessage.setResponseStatus(code);
