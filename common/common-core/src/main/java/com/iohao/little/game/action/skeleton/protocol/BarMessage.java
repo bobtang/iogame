@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serial;
@@ -23,6 +24,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PROTECTED)
+@Accessors(chain = true)
 public abstract class BarMessage implements Serializable {
     @Serial
     private static final long serialVersionUID = 562068269463876111L;
@@ -77,32 +79,39 @@ public abstract class BarMessage implements Serializable {
     /** 实际请求的业务参数 byte[] */
     byte[] dataContent;
 
-    public void setCmdInfo(CmdInfo cmdInfo) {
+    public BarMessage setCmdInfo(CmdInfo cmdInfo) {
         this.cmd = cmdInfo.getCmd();
         this.subCmd = cmdInfo.getSubCmd();
         this.cmdMerge = cmdInfo.getCmdMerge();
+
+        return this;
     }
 
     public CmdInfo getCmdInfo() {
         return CmdInfoFlyweightFactory.me().getCmdInfo(this.cmd, this.subCmd);
     }
 
-    public void setCmdMerge(int cmdMerge) {
+    public BarMessage setCmdMerge(int cmdMerge) {
         this.cmdMerge = cmdMerge;
         this.cmd = CmdKit.getCmd(cmdMerge);
         this.subCmd = CmdKit.getSubCmd(cmdMerge);
+
+        return this;
     }
 
     /**
      * 设置验证的错误信息
      *
      * @param validatorMsg 错误信息
+     * @return this
      */
-    public void setValidatorMsg(String validatorMsg) {
+    public BarMessage setValidatorMsg(String validatorMsg) {
         if (validatorMsg != null) {
             this.validatorMsg = validatorMsg;
             this.responseStatus = ActionErrorEnum.validateErrCode.getCode();
         }
+
+        return this;
     }
 
     /**

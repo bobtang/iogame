@@ -81,8 +81,7 @@ public final class BarSkeletonBuilder {
 
         // 参数设置
         var barSkeleton = new BarSkeleton()
-                .setOpenIn(setting.openIn)
-                .setOpenOut(setting.openOut)
+
                 // action command 命令执行器流程
                 .setActionCommandFlowExecute(this.actionCommandFlowExecute)
                 // action 工厂
@@ -111,7 +110,7 @@ public final class BarSkeletonBuilder {
         extractedHandler(barSkeleton);
 
         // inout
-        barSkeleton.inOutList.addAll(this.inOuts);
+        extractedInout(barSkeleton);
 
         // 构建 actionMapping
         extractedActionCommand(barSkeleton);
@@ -160,6 +159,14 @@ public final class BarSkeletonBuilder {
         return this;
     }
 
+    private void extractedInout(BarSkeleton barSkeleton) {
+
+        InOutInfo inOutInfo = new InOutInfo(this.setting, this.inOuts);
+
+        barSkeleton.setInOutInfo(inOutInfo);
+
+    }
+
     private void extractedActionCommand(BarSkeleton barSkeleton) {
         // 命令信息构建器
         var actionCommandInfoBuilder = new ActionCommandInfoBuilder(setting)
@@ -198,7 +205,7 @@ public final class BarSkeletonBuilder {
         }
 
         if (setting.isPrintInout()) {
-            PrintActionKit.printInout(barSkeleton.getInOutList());
+            PrintActionKit.printInout(barSkeleton.inOutInfo.getInOutList());
         }
 
         if (setting.isPrintAction()) {

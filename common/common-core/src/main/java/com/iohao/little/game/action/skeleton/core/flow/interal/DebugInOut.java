@@ -145,11 +145,9 @@ public class DebugInOut implements ActionMethodInOut {
     }
 
     private void methodResponseData(FlowContext flowContext, Map<String, Object> paramMap) {
-        ResponseMessage responseMessage = flowContext.getResponse();
-        Object data = responseMessage.getData();
-        if (flowContext.getActionCommand().getActionMethodReturnInfo().isVoid()) {
-            data = "void";
-        } else if (Objects.isNull(data)) {
+        Object data = flowContext.getMethodResult();
+
+        if (Objects.isNull(data)) {
             data = "null";
         }
 

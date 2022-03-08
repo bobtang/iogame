@@ -1,16 +1,42 @@
-开源地址: [基于 sofa-bolt 的游戏框架-源码](https://gitee.com/iohao/iogame)	
+开源地址: [基于 sofa-bolt 的网络游戏框架-源码](https://gitee.com/iohao/iogame)	
 
-在线文档: [基于 sofa-bolt 的游戏框架-文档](https://www.yuque.com/iohao/game/wwvg7z)
+在线文档: [基于 sofa-bolt 的网络游戏框架-在线文档](https://www.yuque.com/iohao/game/wwvg7z)
 
 
 
-> 推荐大家看在线文档，排版好一些。gitee 上看 README 有点乱！
+> 推荐大家看在线文档，排版好一些，README 上看有点乱！
 
 
 
 ## 愿景
 
 让网络游戏服务端的编程变得轻松简单！
+
+> 通过 ioGame，可以快速的搭建一个稳定的、高性能的网络游戏服务端，与游戏前端进行通信！
+>
+> 源码内置了一个坦克射击游戏的示例，可直接运行。
+>
+> 坦克射击游戏是基于FXGL引擎（纯java的游戏引擎）开发的。
+>
+> 通过示例，可以快速的掌握网络游戏编程！
+>
+> 更多细节可看在线文档!
+
+
+
+[游戏示例在线文档](https://www.yuque.com/iohao/game/gqossg)
+
+
+
+内置多种可选工具，可按需选择，以方便应用开发：
+
+- [领域事件](https://www.yuque.com/iohao/game/gmfy1k) （类似Spring事件驱动模型 ApplicationEvent）
+- [任务延时器](https://www.yuque.com/iohao/game/niflk0) （将来某个时间执行该任务）
+
+- [多环境切换](https://www.yuque.com/iohao/game/ekx6ve) （不同运行环境下的配置支持）
+- [light-jprotobuf ](https://www.yuque.com/iohao/game/vpe2t6) （补足 jprotobuf 不能让多个对象在单个 .proto 源文件中生成的需求，并简化jprotobuf对源文件的注释）
+
+
 
 
 

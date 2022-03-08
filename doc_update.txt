@@ -1,3 +1,8 @@
+2022-03-08
+业务框架新增 InOutInfo 管理插件相关
+    把插件的执行放入 InOutInfo 中。
+    当只有一个插件时，不走 foreach
+
 2022-03-07
 新增基于 FXGL游戏引擎的游戏示例(坦克射击)
     TankApp.java

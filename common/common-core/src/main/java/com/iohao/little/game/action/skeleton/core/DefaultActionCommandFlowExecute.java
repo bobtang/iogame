@@ -1,8 +1,8 @@
 package com.iohao.little.game.action.skeleton.core;
 
-import com.iohao.little.game.action.skeleton.core.flow.*;
+import com.iohao.little.game.action.skeleton.core.flow.ActionAfter;
+import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
-import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 
 /**
  * 默认的 action 命令流程执行器
@@ -27,8 +27,9 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
         // 1 ---- fuck前 在调用控制器对应处理方法前, 执行inout的in.
         fuckIn(flowContext);
 
-        // 在这里有错误码，一般是业务参数验证得到的错误 （既开启了业务框架的验证）
-        if (notError(flowContext)) {
+        // true 没有错误码 。在这里有错误码，一般是业务参数验证得到的错误 （既开启了业务框架的验证）
+        boolean notError = !flowContext.getResponse().hasError();
+        if (notError) {
             // 2 ---- ActionController 工厂
             var factoryBean = barSkeleton.getActionControllerFactoryBean();
             var controller = factoryBean.getBean(actionCommand);
@@ -56,30 +57,15 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
     }
 
     private void fuckIn(FlowContext flowContext) {
-
         BarSkeleton barSkeleton = flowContext.getBarSkeleton();
-
-        if (barSkeleton.isOpenIn()) {
-            for (ActionMethodInOut inOut : barSkeleton.getInOutList()) {
-                inOut.fuckIn(flowContext);
-            }
-        }
+        InOutInfo inOutInfo = barSkeleton.inOutInfo;
+        inOutInfo.fuckIn(flowContext);
     }
 
     private void fuckOut(FlowContext flowContext) {
-
         BarSkeleton barSkeleton = flowContext.getBarSkeleton();
-
-        if (barSkeleton.isOpenOut()) {
-
-            ResponseMessage response = flowContext.getResponse();
-            Object methodResult = flowContext.getMethodResult();
-            response.setData(methodResult);
-
-            for (ActionMethodInOut inOut : barSkeleton.getInOutList()) {
-                inOut.fuckOut(flowContext);
-            }
-        }
+        InOutInfo inOutInfo = barSkeleton.inOutInfo;
+        inOutInfo.fuckOut(flowContext);
     }
 
     private FlowContext createFlowContext(ParamContext paramContext
@@ -87,17 +73,18 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
             , RequestMessage request
             , BarSkeleton barSkeleton) {
 
+        // 当前用户 id
         long userId = request.getUserId();
 
         // 创建响应对象
-        ResponseMessageCreate responseMessageCreate = barSkeleton.getResponseMessageCreate();
-        ResponseMessage responseMessage = responseMessageCreate.createResponseMessage();
-        responseMessage.setCmdInfo(request.getCmdInfo());
-        responseMessage.setUserId(userId);
-        responseMessage.setRpcCommandType(request.getRpcCommandType());
+        var responseMessageCreate = barSkeleton.getResponseMessageCreate();
+
+        // 响应
+        var responseMessage = responseMessageCreate.createResponseMessage();
+        request.settingCommonAttr(responseMessage);
 
         // 创建 flow 上下文
-        FlowContext flowContext = new FlowContext()
+        var flowContext = new FlowContext()
                 .setBarSkeleton(barSkeleton)
                 .setParamContext(paramContext)
                 .setActionCommand(actionCommand)
@@ -106,23 +93,13 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
                 .setUserId(userId);
 
         // 参数解析器
-        ActionMethodParamParser paramParser = barSkeleton.getActionMethodParamParser();
+        var paramParser = barSkeleton.getActionMethodParamParser();
         // 得到业务方法的参数列表 , 并验证
         var pars = paramParser.listParam(flowContext);
         // 业务方法参数 save to flowContext
         flowContext.setMethodParams(pars);
 
         return flowContext;
-    }
-
-    /**
-     * 响应是否有错误码
-     *
-     * @param flowContext flow 上下文
-     * @return true 没有错误
-     */
-    private boolean notError(FlowContext flowContext) {
-        return !flowContext.getResponse().hasError();
     }
 
 }

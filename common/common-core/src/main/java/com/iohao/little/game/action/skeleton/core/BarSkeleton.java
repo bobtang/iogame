@@ -34,14 +34,8 @@ public class BarSkeleton {
     final ActionCommandManager actionCommandManager = new ActionCommandManager();
     /** handlerList */
     final List<Handler> handlerList = new ArrayList<>();
-    /** inoutList */
-    final List<ActionMethodInOut> inOutList = new ArrayList<>();
-
-    /** true : 开放拦截 in */
-    boolean openIn;
-    /** true : 开放拦截 out */
-    boolean openOut;
-
+    /** InOut 插件相关  */
+    InOutInfo inOutInfo;
     /** 命令执行器 */
     ActionCommandFlowExecute actionCommandFlowExecute;
     /** tcp action 对象创建工厂 */

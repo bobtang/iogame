@@ -14,9 +14,15 @@ public class RequestMessage extends BarMessage {
 
     public ResponseMessage createResponseMessage() {
         ResponseMessage responseMessage = new ResponseMessage();
-        responseMessage.setCmdInfo(this.getCmdInfo());
-        responseMessage.setUserId(this.userId);
-        responseMessage.setRpcCommandType(this.rpcCommandType);
+
+        this.settingCommonAttr(responseMessage);
+
         return responseMessage;
+    }
+
+    public void settingCommonAttr(final ResponseMessage responseMessage) {
+        responseMessage.setCmdInfo(this.getCmdInfo())
+                .setUserId(this.userId)
+                .setRpcCommandType(this.rpcCommandType);
     }
 }
