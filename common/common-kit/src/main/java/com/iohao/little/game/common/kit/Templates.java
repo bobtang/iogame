@@ -45,7 +45,6 @@ public class Templates {
             Configuration cfg = Configuration.defaultConfiguration();
             strGt = new GroupTemplate(resourceLoader, cfg);
 
-
             // 初始化 文件模板
             String root = "templates";
             ClasspathResourceLoader classpathResourceLoader = new ClasspathResourceLoader(root);

@@ -29,6 +29,7 @@ import java.io.Serializable;
  * 子模块信息 （子游戏服的信息、逻辑服）
  *
  * @author 洛朱
+ * @date 2022-03-10
  */
 @Getter
 @Setter

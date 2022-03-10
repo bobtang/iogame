@@ -23,6 +23,9 @@ import java.util.Objects;
 
 /**
  * ModuleInfoKey 享元工厂
+ *
+ * @author 洛朱
+ * @date 2022-03-10
  */
 final class ModuleKeyFlyweightFactory {
     /**

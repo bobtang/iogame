@@ -223,8 +223,7 @@ public interface AttrDynamic {
      */
     default <T> Optional<T> getAttrOptional(String attrName) {
         T prop = (T) getAttr().get(attrName);
-        Optional<T> optional = Optional.ofNullable(prop);
-        return optional;
+        return Optional.ofNullable(prop);
     }
 
     /**
@@ -241,7 +240,7 @@ public interface AttrDynamic {
     /**
      * 移除成员动态属性
      * <pre>
-     * 并返回被移除的值
+     * 并返回被移除的值`
      * 如果移除的属性不存在, 返回值从 supplier 中获取
      * </pre>
      *

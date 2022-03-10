@@ -18,11 +18,11 @@ package com.iohao.little.game.common.kit.asm;
 
 import com.esotericsoftware.reflectasm.ConstructorAccess;
 import com.esotericsoftware.reflectasm.MethodAccess;
-import com.iohao.little.game.common.kit.StrKit;
 import lombok.AccessLevel;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.UtilityClass;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -72,7 +72,7 @@ class ClassRefInfoBuilder {
             String fieldName = field.getName();
 
             // 首字母转换为大写
-            fieldName = StrKit.firstCharToUpperCase(fieldName);
+            fieldName = InternalStr.firstCharToUpperCase(fieldName);
 
             // method 对应的 getter setter
             String methodGetName = "get" + fieldName;
@@ -127,7 +127,7 @@ class ClassRefInfoBuilder {
      */
     private List<Field> listField() {
         // 类信息
-        Class nextClass = this.clazz;
+        Class<?> nextClass = this.clazz;
         // bean 字段列表
         List<Field> fieldList = new ArrayList<>();
 
@@ -159,7 +159,7 @@ class ClassRefInfoBuilder {
      */
     private List<Method> listMethod() {
         // 类信息
-        Class nextClass = this.clazz;
+        Class<?> nextClass = this.clazz;
         // bean 方法列表
         List<Method> methodList = new ArrayList<>();
 
@@ -179,5 +179,29 @@ class ClassRefInfoBuilder {
         }
 
         return methodList;
+    }
+
+    @UtilityClass
+    private static class InternalStr {
+        private final char A_LOWER = 'a';
+        private final char A_UPPER = 'A';
+        private final char Z_LOWER = 'z';
+        private final int x = A_LOWER - A_UPPER;
+
+        /**
+         * 首字母转换为大写
+         *
+         * @param str 字符串
+         * @return 转换后的字符串
+         */
+        public String firstCharToUpperCase(String str) {
+            char firstChar = str.charAt(0);
+            if (firstChar >= A_LOWER && firstChar <= Z_LOWER) {
+                char[] arr = str.toCharArray();
+                arr[0] -= x;
+                return String.valueOf(arr);
+            }
+            return str;
+        }
     }
 }

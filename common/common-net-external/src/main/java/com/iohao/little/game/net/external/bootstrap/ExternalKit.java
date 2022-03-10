@@ -68,9 +68,6 @@ public class ExternalKit {
     }
 
     public long newId() {
-
-        IdUtil.getSnowflake().nextId();
-
         return IdUtil.getSnowflake().nextId();
     }
 

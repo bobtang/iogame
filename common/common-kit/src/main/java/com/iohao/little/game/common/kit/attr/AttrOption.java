@@ -19,6 +19,8 @@ package com.iohao.little.game.common.kit.attr;
 import java.util.Objects;
 
 /**
+ * 属性项
+ *
  * @author 洛朱
  * @date 2022-01-31
  */

@@ -53,7 +53,7 @@ public class GateExternalRequestMessageAsyncUserProcessor extends AsyncUserProce
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, RequestMessage requestMessage) {
         // 把对外服的请求转发到逻辑服 处理
 
-//        log.info("把对外服的请求转发到逻辑服 处理 {}", requestMessage);
+        log.debug("把对外服的请求转发到逻辑服 处理 {}", requestMessage);
         ModuleInfoProxy moduleInfo = GateKit.getModuleInfo(requestMessage);
 
         if (Objects.isNull(moduleInfo)) {

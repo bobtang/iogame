@@ -16,6 +16,8 @@
  */
 package com.iohao.little.game.common.kit;
 
+import lombok.experimental.UtilityClass;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +28,7 @@ import java.util.List;
  * @author 洛朱
  * @date 2022-01-14
  */
+@UtilityClass
 public class ArrayKit {
 
     /**
@@ -33,18 +36,18 @@ public class ArrayKit {
      *
      * @return 数量
      */
-    public static int sum(int[] cards) {
+    public int sum(int[] cards) {
         return Arrays.stream(cards).sum();
     }
 
-    public static int[] copy(int[] cards) {
+    public int[] copy(int[] cards) {
         int length = cards.length;
         int[] copyCards = new int[length];
         System.arraycopy(cards, 0, copyCards, 0, length);
         return copyCards;
     }
 
-    public static List<Integer> toList(int[] cards) {
+    public List<Integer> toList(int[] cards) {
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < cards.length; i++) {
             int num = cards[i];
@@ -60,25 +63,25 @@ public class ArrayKit {
         return list;
     }
 
-    public static void subtract(int[] cards, int[] beCards) {
+    public void subtract(int[] cards, int[] beCards) {
         for (int i = 0; i < cards.length; i++) {
             cards[i] = cards[i] - beCards[i];
         }
     }
 
-    public static void plus(int[] cards, int[] beCards) {
+    public void plus(int[] cards, int[] beCards) {
         for (int i = 0; i < cards.length; i++) {
             cards[i] = cards[i] + beCards[i];
         }
     }
 
-    public static void plus(int[] cards, List<Integer> beCards) {
+    public void plus(int[] cards, List<Integer> beCards) {
         for (Integer value : beCards) {
             cards[value]++;
         }
     }
 
-    public static List<Integer> random(int[] cards, int size) {
+    public List<Integer> random(int[] cards, int size) {
         List<Integer> list = toList(cards);
         list = list.subList(0, size);
         return list;

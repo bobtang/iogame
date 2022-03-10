@@ -29,6 +29,7 @@ import com.iohao.little.game.net.server.module.ModuleInfoProxy;
 import lombok.extern.slf4j.Slf4j;
 
 /**
+ * 改变用户 id
  * @author 洛朱
  * @date 2022-01-18
  */
@@ -50,14 +51,14 @@ public class GateChangeUserIdMessageAsyncUserProcessor extends AsyncUserProcesso
         ModuleInfoProxy externalModuleInfo = ModuleInfoManager.me().getExternalModuleInfo();
         String address = externalModuleInfo.getModuleMessage().getAddress();
 
-        log.info(" 用户 id 变更 （逻辑服 --> 网关 --> 对外服 --> 网关 --> 逻辑服） : {}", changeUserIdMessage);
+        log.debug(" 用户 id 变更 （逻辑服 --> 网关 --> 对外服 --> 网关 --> 逻辑服） : {}", changeUserIdMessage);
 
         try {
-            log.info("2 网关");
+            log.debug("2 网关");
             ChangeUserIdMessageResponse messageResponse = (ChangeUserIdMessageResponse) rpcServer
                     .invokeSync(address, changeUserIdMessage, 1000);
 
-            log.info("4 网关");
+            log.debug("4 网关");
             asyncCtx.sendResponse(messageResponse);
 
         } catch (RemotingException | InterruptedException e) {

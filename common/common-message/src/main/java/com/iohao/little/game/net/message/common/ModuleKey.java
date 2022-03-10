@@ -31,6 +31,9 @@ import java.util.Objects;
  *     sequenceId : 相同业务模块启动了多个服务器
  *     如： 天气预报模块，启动了N台服务器提供查询
  * </pre>
+ *
+ * @author 洛朱
+ * @date 2022-03-10
  */
 @ToString
 public class ModuleKey implements Serializable {

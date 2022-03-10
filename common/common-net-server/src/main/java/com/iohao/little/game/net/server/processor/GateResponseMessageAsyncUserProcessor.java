@@ -44,7 +44,7 @@ public class GateResponseMessageAsyncUserProcessor extends AsyncUserProcessor<Re
 
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, ResponseMessage responseMessage) {
-        log.info("把逻辑服的响应转发到对外服 {}", responseMessage);
+        log.debug("把逻辑服的响应转发到对外服 {}", responseMessage);
 
         // 转发 给 对外服务器
         ModuleInfoProxy externalModuleInfo = ModuleInfoManager.me().getExternalModuleInfo();

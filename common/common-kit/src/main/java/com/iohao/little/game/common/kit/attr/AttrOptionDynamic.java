@@ -19,7 +19,7 @@ package com.iohao.little.game.common.kit.attr;
 import java.util.Objects;
 
 /**
- * 动态属性
+ * 动态属性 (类型明确的)
  * <pre>
  *     实现该接口的对象, 都会提供动态属性机制
  *     避免类型转换

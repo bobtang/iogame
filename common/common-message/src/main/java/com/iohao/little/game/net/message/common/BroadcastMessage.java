@@ -25,6 +25,9 @@ import java.util.Collection;
 
 /**
  * 广播消息
+ *
+ * @author 洛朱
+ * @date 2022-03-10
  */
 @Data
 public class BroadcastMessage implements Serializable {
