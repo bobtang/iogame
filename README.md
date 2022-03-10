@@ -1,3 +1,5 @@
+[![JDK 17](https://img.shields.io/badge/JDK-17-green.svg "JDK 17")]()
+
 开源地址: [基于 sofa-bolt 的网络游戏框架-源码](https://gitee.com/iohao/iogame)	
 
 在线文档: [基于 sofa-bolt 的网络游戏框架-在线文档](https://www.yuque.com/iohao/game/wwvg7z)
@@ -12,6 +14,10 @@
 
 让网络游戏服务端的编程变得轻松简单！
 
+
+
+> ioGame 是国内首个基于蚂蚁金服 [sofa-bolt](https://www.sofastack.tech/projects/sofa-bolt/overview/) 的网络游戏框架。
+>
 > 通过 ioGame，可以快速的搭建一个稳定的、高性能的网络游戏服务端，与游戏前端进行通信！
 >
 > 源码内置了一个坦克射击游戏的示例，可直接运行。
@@ -38,13 +44,11 @@
 
 
 
-
-
 ## 网络游戏框架简介
 
 游戏框架：ioGame
 
-ioGame 是基于蚂蚁金服 [sofa-bolt](https://www.sofastack.tech/projects/sofa-bolt/overview/) 的网络游戏框架，游戏框架由 [网络通信框架] 和 [业务框架] 组成。
+ioGame 是国内首个基于蚂蚁金服 [sofa-bolt](https://www.sofastack.tech/projects/sofa-bolt/overview/) 的网络游戏框架，游戏框架由 [网络通信框架] 和 [业务框架] 组成。
 
 网络通信框架：负责服务器之间的网络通信
 

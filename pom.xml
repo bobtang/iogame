@@ -73,8 +73,6 @@
         <bolt.version>1.6.4</bolt.version>
         <!-- pb 数据描述语言 : https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
         <protobuf-java.version>3.19.4</protobuf-java.version>
-        <!-- pb 格式化 https://www.oschina.net/p/protobuf-java-format -->
-        <protobuf-java-format.version>1.4</protobuf-java-format.version>
         <!-- hessian 格式化 https://mvnrepository.com/artifact/com.caucho/hessian -->
         <hessian.version>4.0.65</hessian.version>
         <!--  Jansi 控制台输出彩色文字 https://www.oschina.net/p/jansi https://mvnrepository.com/artifact/org.fusesource.jansi/jansi  -->
