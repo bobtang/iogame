@@ -17,6 +17,7 @@
 package com.iohao.little.game.net.external;
 
 import com.iohao.little.game.common.kit.ExecutorKit;
+import com.iohao.little.game.net.external.bolt.AbstractExternalClientStartupConfig;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import lombok.AccessLevel;
@@ -25,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 对外的服务器
@@ -36,12 +36,21 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ExternalServer {
-    final ExternalServerBuilder builder;
-    final AtomicBoolean isStarted = new AtomicBoolean(false);
-    final ScheduledExecutorService singleScheduled = ExecutorKit.newSingleScheduled("ExternalServer-Gateway");
+    final ScheduledExecutorService singleScheduled = ExecutorKit.newSingleScheduled("iohao.com:ExternalServer-Gateway");
+    /** netty 服务器，与真实用户对接 */
+    final ServerBootstrap bootstrap;
+    /** 内部逻辑服 连接网关服务器，与网关通信 */
+    final AbstractExternalClientStartupConfig externalClientStartupConfig;
+    /** ip */
+    final String ip;
+    /** 对外服端口 */
+    final int port;
 
     ExternalServer(ExternalServerBuilder builder) {
-        this.builder = builder;
+        this.port = builder.port;
+        this.ip = builder.ip;
+        this.bootstrap = builder.bootstrap;
+        this.externalClientStartupConfig = builder.externalClientStartupConfig;
     }
 
     /**
@@ -50,32 +59,18 @@ public class ExternalServer {
      * @throws InterruptedException e
      */
     private void doStart() throws InterruptedException {
-
-        ServerBootstrap bootstrap = builder.bootstrap;
-
-        int port = builder.port;
-        String ip = builder.ip;
-
         // channelFuture
         ChannelFuture channelFuture = bootstrap.bind(new InetSocketAddress(ip, port)).sync();
-
-        if (port == 0 && channelFuture.isSuccess()) {
-            InetSocketAddress localAddress = (InetSocketAddress) channelFuture.channel()
-                    .localAddress();
-            builder.port = localAddress.getPort();
-            log.debug("rpc server start with random port: {}!", builder.port);
-        }
-
-        channelFuture.isSuccess();
+        System.out.println("external 启动游戏对外服 ! port: " + port);
+        channelFuture.channel().closeFuture().sync();
     }
 
     /**
      * 启动内部逻辑服 连接网关服务器，与网关通信
      */
     private void startupExternalClientStartupConfig() {
-        singleScheduled.execute(() -> this.builder.externalClientStartupConfig.startup());
+        singleScheduled.execute(this.externalClientStartupConfig::startup);
         System.out.println("external 启动内部逻辑服, 用于连接网关服务器");
-
     }
 
     /**
@@ -83,11 +78,11 @@ public class ExternalServer {
      */
     public void startup() {
         // 启动内部逻辑服, 用于连接网关服务器
-        startupExternalClientStartupConfig();
+        this.startupExternalClientStartupConfig();
 
         try {
             // 启动对外服
-            doStart();
+            this.doStart();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

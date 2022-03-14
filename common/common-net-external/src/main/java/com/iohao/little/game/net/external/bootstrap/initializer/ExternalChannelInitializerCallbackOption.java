@@ -16,25 +16,22 @@
  */
 package com.iohao.little.game.net.external.bootstrap.initializer;
 
+import com.iohao.little.game.net.external.bootstrap.heart.IdleProcessSetting;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelPipeline;
-import io.netty.handler.timeout.IdleStateHandler;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author 洛朱
  * @date 2022-01-13
  */
 @Setter
+@Accessors(chain = true)
 public class ExternalChannelInitializerCallbackOption {
-    /** 心跳 */
-    ChannelHandler idleHandler;
-    /** 心跳时间 */
-    int idleTime = 10;
 
     /** user processors of rpc server */
     Map<String, ChannelHandler> channelHandlerProcessors;
@@ -42,17 +39,32 @@ public class ExternalChannelInitializerCallbackOption {
     int packageMaxSize = 1024 * 1024;
     /** http 升级 websocket 协议地址 */
     String websocketPath = "/websocket";
+    /** 心跳相关的构建器 */
+    IdleProcessSetting idleProcessSetting;
 
-    void idleHandler(ChannelPipeline pipeline) {
-        // 心跳处理
-        if (Objects.nonNull(this.idleHandler)) {
-            pipeline.addLast("idleStateHandler",
-                    new IdleStateHandler(0, 0, this.idleTime, TimeUnit.MILLISECONDS));
-            pipeline.addLast("idleHandler", this.idleHandler);
-        }
+    /**
+     * 添加其他 handler 到 pipeline 中
+     *
+     * @param pipeline pipeline
+     */
+    void channelHandler(ChannelPipeline pipeline) {
+        // 心跳
+        this.idleHandler(pipeline);
+
+        // 业务 handler
+        this.channelHandlerProcessors(pipeline);
     }
 
-    void channelHandlerProcessors(ChannelPipeline pipeline) {
+    private void idleHandler(ChannelPipeline pipeline) {
+        // 心跳处理
+        if (Objects.isNull(idleProcessSetting)) {
+            return;
+        }
+
+        idleProcessSetting.idleHandler(pipeline);
+    }
+
+    private void channelHandlerProcessors(ChannelPipeline pipeline) {
         if (Objects.nonNull(this.channelHandlerProcessors)) {
             for (Map.Entry<String, ChannelHandler> entry : this.channelHandlerProcessors.entrySet()) {
                 pipeline.addLast(entry.getKey(), entry.getValue());

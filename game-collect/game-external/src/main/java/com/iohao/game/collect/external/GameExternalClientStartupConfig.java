@@ -17,8 +17,11 @@
 package com.iohao.game.collect.external;
 
 import com.iohao.game.collect.common.GameConfig;
+import com.iohao.little.game.net.client.BoltClientServer;
 import com.iohao.little.game.net.client.core.RemoteAddress;
 import com.iohao.little.game.net.external.bolt.AbstractExternalClientStartupConfig;
+import com.iohao.little.game.net.external.session.UserSession;
+import com.iohao.little.game.net.external.session.hook.UserHookDefault;
 import com.iohao.little.game.net.message.common.ModuleKeyKit;
 import com.iohao.little.game.net.message.common.ModuleMessage;
 import com.iohao.little.game.net.message.common.ModuleType;
@@ -53,5 +56,13 @@ public class GameExternalClientStartupConfig extends AbstractExternalClientStart
         int port = GameConfig.gatePort;
         String ip = GameConfig.gateIp;
         return new RemoteAddress(ip, port);
+    }
+
+    @Override
+    public void startupSuccess(BoltClientServer boltClientServer) {
+        super.startupSuccess(boltClientServer);
+
+        // 设置 用户钩子接口，用户上线时、下线时会触发
+        UserSession.me().setUserHook(new UserHookDefault());
     }
 }

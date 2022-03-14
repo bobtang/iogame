@@ -16,7 +16,7 @@
  */
 package com.iohao.little.game.net.external.bootstrap.option;
 
-import com.iohao.little.game.net.external.bootstrap.BootstrapOption;
+import com.iohao.little.game.net.external.bootstrap.ServerBootstrapEventLoopGroupOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.ServerChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -33,12 +33,12 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  * @author 洛朱
  * @date 2022-01-09
  */
-public class BootstrapOptionForOther implements BootstrapOption {
+public class ServerBootstrapEventLoopGroupOptionForOther implements ServerBootstrapEventLoopGroupOption {
     @Override
     public EventLoopGroup bossGroup() {
         return new NioEventLoopGroup(
                 1,
-                BootstrapOption.bossThreadFactory()
+                ServerBootstrapEventLoopGroupOption.bossThreadFactory()
         );
     }
 
@@ -48,7 +48,7 @@ public class BootstrapOptionForOther implements BootstrapOption {
 
         return new NioEventLoopGroup(
                 availableProcessors,
-                BootstrapOption.workerThreadFactory()
+                ServerBootstrapEventLoopGroupOption.workerThreadFactory()
         );
     }
 

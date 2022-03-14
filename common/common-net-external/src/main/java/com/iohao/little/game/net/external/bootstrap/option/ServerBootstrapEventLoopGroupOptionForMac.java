@@ -16,7 +16,7 @@
  */
 package com.iohao.little.game.net.external.bootstrap.option;
 
-import com.iohao.little.game.net.external.bootstrap.BootstrapOption;
+import com.iohao.little.game.net.external.bootstrap.ServerBootstrapEventLoopGroupOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.ServerChannel;
 import io.netty.channel.kqueue.KQueueEventLoopGroup;
@@ -28,12 +28,12 @@ import io.netty.channel.kqueue.KQueueServerSocketChannel;
  * @author 洛朱
  * @date 2022-01-09
  */
-public class BootstrapOptionForMac implements BootstrapOption {
+public class ServerBootstrapEventLoopGroupOptionForMac implements ServerBootstrapEventLoopGroupOption {
     @Override
     public EventLoopGroup bossGroup() {
         return new KQueueEventLoopGroup(
                 1,
-                BootstrapOption.bossThreadFactory()
+                ServerBootstrapEventLoopGroupOption.bossThreadFactory()
         );
     }
 
@@ -43,7 +43,7 @@ public class BootstrapOptionForMac implements BootstrapOption {
 
         return new KQueueEventLoopGroup(
                 availableProcessors,
-                BootstrapOption.workerThreadFactory()
+                ServerBootstrapEventLoopGroupOption.workerThreadFactory()
         );
     }
 

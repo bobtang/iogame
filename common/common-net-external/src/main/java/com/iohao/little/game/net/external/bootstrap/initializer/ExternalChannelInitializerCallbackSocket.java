@@ -18,11 +18,10 @@ package com.iohao.little.game.net.external.bootstrap.initializer;
 
 import com.iohao.little.game.net.external.bootstrap.ExternalChannelInitializerCallback;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 /**
  * ChannelPipeline 初始化 for tcp
@@ -33,10 +32,7 @@ import lombok.experimental.Accessors;
  * @author 洛朱
  * @date 2022-01-09
  */
-@Setter
-@Accessors(chain = true)
 public class ExternalChannelInitializerCallbackSocket extends ChannelInitializer<SocketChannel> implements ExternalChannelInitializerCallback {
-
     ExternalChannelInitializerCallbackOption option;
 
     @Override
@@ -60,15 +56,45 @@ public class ExternalChannelInitializerCallbackSocket extends ChannelInitializer
 //        pipeline.addLast("decoder", new ExternalDecoder());
 //        pipeline.addLast("encoder", new ExternalEncoder());
 
-        // 心跳
-        option.idleHandler(pipeline);
-
-        // 业务 handler
-        option.channelHandlerProcessors(pipeline);
+        // 添加其他 handler 到 pipeline 中 (业务编排)
+        option.channelHandler(pipeline);
     }
+
+    @Override
+    public ExternalChannelInitializerCallback setOption(ExternalChannelInitializerCallbackOption option) {
+        this.option = option;
+        return this;
+    }
+
 
     @Override
     protected void initChannel(SocketChannel ch) {
         this.initChannelPipeline(ch);
+    }
+
+    @Override
+    public ServerBootstrapOption createSocketServerBootstrapSetting() {
+        return serverBootstrap -> {
+            /*
+             * 是否启用心跳保活机制。在双方TCP套接字建立连接后（即都进入ESTABLISHED状态）
+             * 并且在两个小时左右上层没有任何数据传输的情况下，这套机制才会被激活
+             */
+            serverBootstrap.option(ChannelOption.SO_KEEPALIVE, true);
+
+            /*
+             * BACKLOG用于构造服务端套接字ServerSocket对象，标识当服务器请求处理线程全满时，
+             * 用于临时存放已完成三次握手的请求的队列的最大长度。如果未设置或所设置的值小于1，
+             * 使用默认值100
+             */
+            serverBootstrap.option(ChannelOption.SO_BACKLOG, 100);
+
+            /*
+             * 在TCP/IP协议中，无论发送多少数据，总是要在数据前面加上协议头，
+             * 同时，对方接收到数据，也需要发送ACK表示确认。
+             * 为了尽可能的利用网络带宽，TCP总是希望尽可能的发送足够大的数据。
+             * 这里就涉及到一个名为Nagle的算法，该算法的目的就是为了尽可能发送大块数据，避免网络中充斥着许多小数据块。
+             */
+            serverBootstrap.option(ChannelOption.TCP_NODELAY, true);
+        };
     }
 }

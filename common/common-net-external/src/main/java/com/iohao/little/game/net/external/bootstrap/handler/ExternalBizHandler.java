@@ -52,7 +52,7 @@ public class ExternalBizHandler extends SimpleChannelInboundHandler<ExternalMess
         requestMessage.setUserId(userId);
 
         try {
-//            log.info("external 转发到网关");
+            log.debug("external 转发到网关");
             String address = ExternalServerKit.address();
             RpcClient rpcClient = ExternalServerKit.rpcClient;
             // 由内部逻辑服转发用户请求到网关服，在由网关服转到具体的业务逻辑服
@@ -64,17 +64,11 @@ public class ExternalBizHandler extends SimpleChannelInboundHandler<ExternalMess
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
-        log.info("玩家下线");
         UserSession.me().remove(ctx.channel());
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        log.info("创建 websocket 链接玩家 {}", 1);
-
         UserSessionKit.channelActive(ctx);
-
-        log.info("当前玩家数量： {}", UserSession.me().countOnline());
-
     }
 }

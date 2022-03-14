@@ -45,7 +45,7 @@ public class AttrOptions {
             value = option.defaultValue();
         }
 
-        return value == null ? null : (T) value;
+        return (T) value;
     }
 
     /**

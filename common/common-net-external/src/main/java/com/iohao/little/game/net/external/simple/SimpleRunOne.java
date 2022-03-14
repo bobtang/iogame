@@ -82,7 +82,7 @@ public class SimpleRunOne {
             // 启动游戏对外服
             externalServer.startup();
 
-            System.out.println("external 启动游戏对外服 !");
+
 
             // 生成游戏文档
             BarSkeletonDoc.me().buildDoc();

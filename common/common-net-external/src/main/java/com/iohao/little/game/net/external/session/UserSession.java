@@ -16,11 +16,14 @@
  */
 package com.iohao.little.game.net.external.session;
 
+import com.iohao.little.game.net.external.session.hook.UserHook;
+import com.iohao.little.game.net.external.session.hook.UserHookDefault;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelId;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.jctools.maps.NonBlockingHashMapLong;
 
@@ -44,6 +47,10 @@ public class UserSession {
      * value is channelId
      */
     final NonBlockingHashMapLong<ChannelId> channelIdMap = new NonBlockingHashMapLong<>();
+
+    /** UserHook 上线时、下线时会触发 */
+    @Setter
+    UserHook userHook = new UserHookDefault();
 
     /**
      * 添加 channel 关联
@@ -80,7 +87,11 @@ public class UserSession {
 
         channel.attr(UserSessionAttr.userId).set(newUserId);
         channel.attr(UserSessionAttr.verifyIdentity).set(true);
+
         channelIdMap.putIfAbsent(newUserId, channelId);
+
+        // 上线通知
+        userHookInto(newUserId, channel);
 
         return true;
     }
@@ -90,13 +101,16 @@ public class UserSession {
             return;
         }
 
-        log.info("玩家退出 -- tcpSession. channel: {}", channel);
-
         long userId = this.getUserId(channel);
-        if (userId == 0) {
-            channelIdMap.remove(userId);
-            // TODO: 2022/1/11  离线通知
-            //  #offline(userId);
+
+
+        if (userId != 0) {
+            ChannelId remove = channelIdMap.remove(userId);
+
+            if (Objects.nonNull(remove)) {
+                // 离线通知
+                userHookQuit(userId, channel);
+            }
         }
 
         this.close(channel);
@@ -130,6 +144,7 @@ public class UserSession {
      * @return 用户id
      */
     public long getUserId(Channel channel) {
+
         Long userId = channel.attr(UserSessionAttr.userId).get();
 
         if (Objects.nonNull(userId)) {
@@ -179,6 +194,40 @@ public class UserSession {
         }
 
         channelGroup.remove(channel);
+    }
+
+    /**
+     * 上线通知。注意：只有进行身份验证通过的，才会触发此方法
+     *
+     * @param userId  userId
+     * @param channel channel
+     */
+    private void userHookInto(long userId, Channel channel) {
+        if (Objects.isNull(userHook)
+                || !channel.hasAttr(UserSessionAttr.verifyIdentity)
+                || !channel.attr(UserSessionAttr.verifyIdentity).get()
+        ) {
+            return;
+        }
+
+        this.userHook.into(userId, channel);
+    }
+
+    /**
+     * 离线通知。注意：只有进行身份验证通过的，才会触发此方法
+     *
+     * @param userId  userId
+     * @param channel channel
+     */
+    private void userHookQuit(long userId, Channel channel) {
+        if (Objects.isNull(userHook)
+                || !channel.hasAttr(UserSessionAttr.verifyIdentity)
+                || !channel.attr(UserSessionAttr.verifyIdentity).get()
+        ) {
+            return;
+        }
+
+        this.userHook.quit(userId, channel);
     }
 
     public static UserSession me() {

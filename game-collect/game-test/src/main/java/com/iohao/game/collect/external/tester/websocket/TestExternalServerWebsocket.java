@@ -38,11 +38,11 @@ public class TestExternalServerWebsocket {
         // 端口
         int port = GameConfig.externalPort;
         // 对外服务器 - 构建器
-        ExternalServerBuilder builder = ExternalServer.newBuilder(port);
-        // websocket 方式连接
-        builder.setExternalJoinEnum(ExternalJoinEnum.WEBSOCKET);
-        // websocket 业务处理器
-        builder.registerChannelHandler("TestExternalBizHandler", new TestExternalBizHandler());
+        ExternalServerBuilder builder = ExternalServer.newBuilder(port)
+                // websocket 方式连接
+                .externalJoinEnum(ExternalJoinEnum.WEBSOCKET)
+                // websocket 业务处理器
+                .registerChannelHandler("TestExternalBizHandler", new TestExternalBizHandler());
 //        builder.registerChannelHandler("TestExternalBizHandler", new ExternalTextHandler());
 
         // 构建对外服务器

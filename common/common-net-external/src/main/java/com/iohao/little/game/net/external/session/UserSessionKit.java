@@ -32,8 +32,7 @@ import java.util.concurrent.atomic.LongAdder;
 @UtilityClass
 public class UserSessionKit {
     /** 临时 userId 生成 */
-    final LongAdder tempUserIdAdder = new LongAdder();
-
+    private final LongAdder tempUserIdAdder = new LongAdder();
 
     public void channelActive(ChannelHandlerContext ctx) {
         if (tempUserIdAdder.longValue() == 0) {
@@ -47,7 +46,9 @@ public class UserSessionKit {
         long userId = tempUserIdAdder.longValue();
 
         Channel channel = ctx.channel();
+        // channel 加入到 session 中管理
         UserSession.me().add(userId, channel);
+        // false 没有进行身份验证
         channel.attr(UserSessionAttr.verifyIdentity).set(false);
 
         if (log.isDebugEnabled()) {

@@ -68,7 +68,7 @@
         <encoding>UTF-8</encoding>
 
         <!-- 网络库 : https://mvnrepository.com/artifact/io.netty/netty-all -->
-        <netty.version>4.1.74.Final</netty.version>
+        <netty.version>4.1.75.Final</netty.version>
         <!--  bolt https://mvnrepository.com/artifact/com.alipay.sofa/bolt  -->
         <bolt.version>1.6.4</bolt.version>
         <!-- pb 数据描述语言 : https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
@@ -81,7 +81,7 @@
         <qdox.version>2.0.1</qdox.version>
 
         <!-- Hutool是一个Java工具包 see https://www.hutool.cn/ https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
-        <hutool.version>5.7.21</hutool.version>
+        <hutool.version>5.7.22</hutool.version>
         <!-- JCTools 是一款对jdk并发数据结构进行增强的并发工具 see http://jctools.github.io/JCTools/ https://mvnrepository.com/artifact/org.jctools/jctools-core -->
         <jctools-core.version>3.3.0</jctools-core.version>
         <!-- 新一代 Java 模板引擎 see https://www.kancloud.cn/xiandafu/beetl3_guide/1992542 https://mvnrepository.com/artifact/com.ibeetl/beetl -->
@@ -93,8 +93,6 @@
         <redisson.version>3.16.8</redisson.version>
         <!-- json 解析器 : https://mvnrepository.com/artifact/com.alibaba/fastjson -->
         <fastjson.version>1.2.79</fastjson.version>
-        <!-- 对象池 : https://www.oschina.net/p/beeop https://mvnrepository.com/artifact/com.github.chris2018998/beeop -->
-        <beeop.version>1.2.0</beeop.version>
         <!-- 对象池 :  https://mvnrepository.com/artifact/org.apache.commons/commons-pool2 -->
         <commons-pool.version>2.11.1</commons-pool.version>
         <!--  JSR-107 高性能缓存库 https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine -->
@@ -117,15 +115,16 @@
         <!-- JSR-303、JSR 349 https://mvnrepository.com/artifact/org.glassfish/jakarta.el -->
         <jakarta.el.version>4.0.2</jakarta.el.version>
 
-        <!-- Hazelcast提供弹性可扩展的分布式内存计算 -->
+        <!-- Hazelcast提供弹性可扩展的分布式内存计算 https://mvnrepository.com/artifact/com.hazelcast/hazelcast -->
         <hazelcast.version>5.0.2</hazelcast.version>
 
         <!-- Java 实体映射工具 https://mvnrepository.com/artifact/org.mapstruct/mapstruct https://mapstruct.org/documentation/reference-guide/ -->
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 
-        <!-- temp spring boot -->
-        <spring.version>5.3.14</spring.version>
-        <springboot.version>2.6.2</springboot.version>
+        <!-- temp spring boot https://mvnrepository.com/artifact/org.springframework/spring-core -->
+        <spring.version>5.3.16</spring.version>
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter -->
+        <springboot.version>2.6.4</springboot.version>
         <!--  junit https://mvnrepository.com/artifact/junit/junit  -->
         <junit.version>4.13.2</junit.version>
 

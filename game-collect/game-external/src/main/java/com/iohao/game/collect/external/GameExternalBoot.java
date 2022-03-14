@@ -31,8 +31,6 @@ public class GameExternalBoot {
     public void init() {
         // 启动游戏对外服
         createExternalServer().startup();
-
-        System.out.println("external 启动游戏对外服 !");
     }
 
     public ExternalServer createExternalServer() {
@@ -41,9 +39,11 @@ public class GameExternalBoot {
         // 游戏对外服 - 构建器
         ExternalServerBuilder builder = ExternalServer.newBuilder(port)
                 // websocket 方式连接
-                .setExternalJoinEnum(ExternalJoinEnum.WEBSOCKET)
+                .externalJoinEnum(ExternalJoinEnum.WEBSOCKET)
+                // 开启心跳
+//                .enableIdle()
                 // 内部逻辑服 连接网关服务器
-                .setExternalClientStartupConfig(new GameExternalClientStartupConfig());
+                .externalClientStartupConfig(new GameExternalClientStartupConfig());
 
         // 构建游戏对外服
         return builder.build();

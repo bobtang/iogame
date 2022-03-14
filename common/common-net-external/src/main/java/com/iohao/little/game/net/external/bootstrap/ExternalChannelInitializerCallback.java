@@ -16,6 +16,8 @@
  */
 package com.iohao.little.game.net.external.bootstrap;
 
+import com.iohao.little.game.net.external.bootstrap.initializer.ExternalChannelInitializerCallbackOption;
+import com.iohao.little.game.net.external.bootstrap.initializer.ServerBootstrapOption;
 import io.netty.channel.socket.SocketChannel;
 
 /**
@@ -24,11 +26,26 @@ import io.netty.channel.socket.SocketChannel;
  * @author 洛朱
  * @date 2022-01-09
  */
-public interface ExternalChannelInitializerCallback  {
+public interface ExternalChannelInitializerCallback {
     /**
      * 编排业务
      *
      * @param ch ch
      */
     void initChannelPipeline(SocketChannel ch);
+
+    /**
+     * 设置选项
+     *
+     * @param option option
+     * @return me
+     */
+    ExternalChannelInitializerCallback setOption(ExternalChannelInitializerCallbackOption option);
+
+    /**
+     * ServerBootstrap
+     *
+     * @return ServerBootstrap
+     */
+    ServerBootstrapOption createSocketServerBootstrapSetting();
 }

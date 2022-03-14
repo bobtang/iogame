@@ -19,6 +19,7 @@ package com.iohao.little.game.net.external.bootstrap.initializer;
 import com.iohao.little.game.net.external.bootstrap.ExternalChannelInitializerCallback;
 import com.iohao.little.game.net.external.bootstrap.handler.codec.ExternalCodecWebsocketProto;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
@@ -26,8 +27,6 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolConfig;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 /**
  * ChannelPipeline 初始化 for Websocket
@@ -38,10 +37,7 @@ import lombok.experimental.Accessors;
  * @author 洛朱
  * @date 2022-01-13
  */
-@Setter
-@Accessors(chain = true)
 public class ExternalChannelInitializerCallbackWebsocket extends ChannelInitializer<SocketChannel> implements ExternalChannelInitializerCallback {
-
     ExternalChannelInitializerCallbackOption option;
 
     @Override
@@ -97,15 +93,32 @@ public class ExternalChannelInitializerCallbackWebsocket extends ChannelInitiali
         pipeline.addLast("codec", new ExternalCodecWebsocketProto());
 //        pipeline.addLast("codec", new ExternalCodecWebsocketProtoForCSharp());
 
-        // 心跳
-        option.idleHandler(pipeline);
+        // 添加其他 handler 到 pipeline 中 (业务编排)
+        option.channelHandler(pipeline);
+    }
 
-        // 业务 handler
-        option.channelHandlerProcessors(pipeline);
+    @Override
+    public ExternalChannelInitializerCallback setOption(ExternalChannelInitializerCallbackOption option) {
+        this.option = option;
+        return this;
     }
 
     @Override
     protected void initChannel(SocketChannel ch) {
         this.initChannelPipeline(ch);
+    }
+
+    @Override
+    public ServerBootstrapOption createSocketServerBootstrapSetting() {
+        return serverBootstrap -> {
+            /*
+             * BACKLOG用于构造服务端套接字ServerSocket对象，标识当服务器请求处理线程全满时，
+             * 用于临时存放已完成三次握手的请求的队列的最大长度。如果未设置或所设置的值小于1，
+             * 使用默认值100
+             */
+            serverBootstrap.option(ChannelOption.SO_BACKLOG, 100);
+
+            serverBootstrap.childOption(ChannelOption.SO_REUSEADDR, true);
+        };
     }
 }

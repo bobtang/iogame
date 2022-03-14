@@ -1,3 +1,20 @@
+2022-03-14
+新增心跳相关设置 IdleProcessSetting
+    心跳事件回调 IdleCallback
+    心跳 handler IdleHandler
+    (#I4XSCD)
+
+
+新增ExternalJoinEnum:
+    UDP (udp socket 预留扩展)
+    EXT_SOCKET (特殊的预留扩展)
+
+新增用户钩子接口 UserHook 上线时、下线时会触发
+    利用好该接口，可以把用户当前在线状态通知到逻辑服，比如使用 redis PubSub 之类的。
+    (#I4XSCH)
+
+简化对外服务器 - 构建器 ExternalServerBuilder
+
 2022-03-11
 动态属性示例
 

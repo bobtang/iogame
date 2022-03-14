@@ -30,6 +30,10 @@ import java.util.Objects;
 
 /**
  * 变更用户 id
+ * <pre>
+ *     用户连接登录编写 文档
+ *     https://www.yuque.com/iohao/game/tywkqv
+ * </pre>
  *
  * @author 洛朱
  * @date 2022-01-19
@@ -39,6 +43,9 @@ import java.util.Objects;
 public class ChangeUserIdKit {
     /**
      * 变更用户的 userId
+     * <pre>
+     *     玩家真正的登录
+     * </pre>
      *
      * @param flowContext 业务框架 flow上下文
      * @param newUserId   一般从数据库中获取
@@ -52,7 +59,7 @@ public class ChangeUserIdKit {
         userIdMessage.setUserId(userId);
         userIdMessage.setNewUserId(newUserId);
 
-        log.info("1 逻辑服 {}", userIdMessage);
+        log.debug("1 逻辑服 {}", userIdMessage);
 
         try {
             DefaultParamContext paramContext = flowContext.getParamContext();
@@ -60,7 +67,7 @@ public class ChangeUserIdKit {
             ChangeUserIdMessageResponse changeUserIdMessageResponse = (ChangeUserIdMessageResponse) boltClientProxy
                     .invokeSync(userIdMessage);
 
-            log.info("5 逻辑服 {}", changeUserIdMessageResponse);
+            log.debug("5 逻辑服 {}", changeUserIdMessageResponse);
 
             if (Objects.isNull(changeUserIdMessageResponse) || !changeUserIdMessageResponse.isSuccess()) {
                 return false;

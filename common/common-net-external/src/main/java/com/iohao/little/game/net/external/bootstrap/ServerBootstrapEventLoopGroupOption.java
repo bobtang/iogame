@@ -28,7 +28,7 @@ import java.util.concurrent.ThreadFactory;
  * @author 洛朱
  * @date 2022-01-09
  */
-public interface BootstrapOption {
+public interface ServerBootstrapEventLoopGroupOption {
     /**
      * EventLoopGroup bossGroup (连接处理组)
      *
@@ -57,7 +57,7 @@ public interface BootstrapOption {
      */
     static ThreadFactory workerThreadFactory() {
         return new NamedThreadFactory(
-                "external-netty-server-worker",
+                "iohao.com:external-netty-server-worker",
                 true);
     }
 
@@ -68,7 +68,7 @@ public interface BootstrapOption {
      */
     static ThreadFactory bossThreadFactory() {
         return new NamedThreadFactory(
-                "external-netty-server-boss",
+                "iohao.com:external-netty-server-boss",
                 false);
     }
 }

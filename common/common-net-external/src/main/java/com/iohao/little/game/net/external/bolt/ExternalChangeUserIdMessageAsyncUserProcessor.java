@@ -40,7 +40,7 @@ public class ExternalChangeUserIdMessageAsyncUserProcessor extends AsyncUserProc
 
         boolean result = userSession.changeUserId(userId, newUserId);
 
-        log.info("3 对外服变更用户id, 临时userId:{}, 真实userId:{}", userId, newUserId);
+        log.debug("3 对外服变更用户id, 临时userId:{}, 真实userId:{}", userId, newUserId);
 
         ChangeUserIdMessageResponse response = new ChangeUserIdMessageResponse();
         response.setSuccess(result);

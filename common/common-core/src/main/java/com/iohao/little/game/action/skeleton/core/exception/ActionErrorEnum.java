@@ -35,6 +35,8 @@ public enum ActionErrorEnum implements MsgExceptionInfo {
     validateErrCode(-1001, "参数验错误码"),
     /** 路由错误码 */
     cmdInfoErrorCode(-1002, "路由错误码,一般是客户端请求了不存在的路由引起的"),
+    /** 心跳错误码 */
+    idleErrorCode(-1003, "心跳超时相关"),
     ;
 
     /** 消息码 */
