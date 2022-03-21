@@ -19,38 +19,41 @@ package com.iohao.little.game.net.external.bolt;
 import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
-import com.iohao.little.game.net.external.session.UserSession;
-import com.iohao.little.game.net.message.common.ChangeUserIdMessage;
-import com.iohao.little.game.net.message.common.ChangeUserIdMessageResponse;
+import com.iohao.little.game.net.external.session.UserChannelId;
+import com.iohao.little.game.net.external.session.UserSessions;
+import com.iohao.little.game.net.message.common.SettingUserIdMessage;
+import com.iohao.little.game.net.message.common.SettingUserIdMessageResponse;
 import lombok.extern.slf4j.Slf4j;
 
 /**
+ * 设置 userId 业务
+ *
  * @author 洛朱
  * @date 2022-01-18
  */
 @Slf4j
-public class ExternalChangeUserIdMessageAsyncUserProcessor extends AsyncUserProcessor<ChangeUserIdMessage> {
+public class ExternalSettingUserIdMessageAsyncUserProcessor extends AsyncUserProcessor<SettingUserIdMessage> {
     @Override
-    public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, ChangeUserIdMessage request) {
+    public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, SettingUserIdMessage request) {
 
         long userId = request.getUserId();
-        long newUserId = request.getNewUserId();
+        String channelId = request.getUserChannelId();
 
-        UserSession userSession = UserSession.me();
+        UserChannelId userChannelId = new UserChannelId(channelId);
 
-        boolean result = userSession.changeUserId(userId, newUserId);
+        boolean result = UserSessions.me().settingUserId(userChannelId, userId);
 
-        log.debug("3 对外服变更用户id, 临时userId:{}, 真实userId:{}", userId, newUserId);
-
-        ChangeUserIdMessageResponse response = new ChangeUserIdMessageResponse();
+        SettingUserIdMessageResponse response = new SettingUserIdMessageResponse();
         response.setSuccess(result);
-        response.setUserNewId(newUserId);
+        response.setUserId(userId);
 
         asyncCtx.sendResponse(response);
+
+        log.debug("3 对外服设置用户id, userChannelId:{}, 真实userId:{}", userChannelId, userId);
     }
 
     @Override
     public String interest() {
-        return ChangeUserIdMessage.class.getName();
+        return SettingUserIdMessage.class.getName();
     }
 }

@@ -16,30 +16,29 @@
  */
 package com.iohao.little.game.net.external.bootstrap.heart;
 
+import com.iohao.little.game.net.external.session.UserSession;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleStateEvent;
 
 /**
- * 心跳事件回调
+ * 心跳钩子事件回调
  *
  * @author 洛朱
  * @date 2022-03-13
  */
-public interface IdleCallback {
+public interface IdleHook {
     /**
      * 心跳事件回调
      * <pre>
-     *     不需要关闭 ctx，框架的心跳机制会处理 ctx
-     *
      *     这里只需要做你的业务就可以了，比如通知房间内的其他玩家，该用户下线了。
      * </pre>
      *
-     * @param ctx    ctx
-     * @param event  event
-     * @param userId 当前触发的用户 id
-     * @return true : 会关闭 ctx （ctx.close()）
+     * @param ctx         ctx
+     * @param event       event
+     * @param userSession 当前触发的用户
+     * @return true : 通知游戏框架关闭 ctx （ctx.close()）
      */
-    default boolean callback(ChannelHandlerContext ctx, IdleStateEvent event, long userId) {
+    default boolean callback(ChannelHandlerContext ctx, IdleStateEvent event, UserSession userSession) {
         return false;
     }
 }

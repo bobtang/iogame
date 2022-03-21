@@ -22,17 +22,17 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * 变更 userId 响应
+ * 设置 userId 的响应
  *
  * @author 洛朱
  * @date 2022-01-19
  */
 @Data
-public class ChangeUserIdMessageResponse implements Serializable {
+public class SettingUserIdMessageResponse implements Serializable {
     @Serial
     private static final long serialVersionUID = -3776596417948970990L;
-    /** true: userId 变更成功 */
+    /** true: userId 设置成功 */
     boolean success;
     /** 变更后的 userId */
-    long userNewId;
+    long userId;
 }

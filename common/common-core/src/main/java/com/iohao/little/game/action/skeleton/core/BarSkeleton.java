@@ -19,7 +19,6 @@ package com.iohao.little.game.action.skeleton.core;
 import com.iohao.little.game.action.skeleton.core.doc.ActionSendDocs;
 import com.iohao.little.game.action.skeleton.core.doc.ErrorCodeDocs;
 import com.iohao.little.game.action.skeleton.core.flow.*;
-import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -85,16 +84,16 @@ public class BarSkeleton {
         return new BarSkeletonBuilder();
     }
 
-    public void handle(ParamContext paramContext, RequestMessage request) {
+    public void handle(FlowContext flowContext) {
+        flowContext.setBarSkeleton(this);
         if (handler != null) {
-            handler.handler(paramContext, request, this);
+            handler.handler(flowContext);
         } else {
             for (Handler handler : handlerList) {
-                if (!handler.handler(paramContext, request, this)) {
+                if (!handler.handler(flowContext)) {
                     return;
                 }
             }
         }
     }
-
 }

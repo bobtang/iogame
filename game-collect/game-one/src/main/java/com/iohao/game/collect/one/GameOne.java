@@ -16,10 +16,14 @@
  */
 package com.iohao.game.collect.one;
 
-import com.iohao.game.collect.GameLogicAll;
 import com.iohao.game.collect.external.GameExternalBoot;
 import com.iohao.game.collect.gateway.GameGateServerStartupConfig;
+import com.iohao.game.collect.hall.HallClientStartupConfig;
+import com.iohao.game.collect.tank.TankClientStartupConfig;
+import com.iohao.little.game.net.client.core.ClientStartupConfig;
 import com.iohao.little.game.net.external.simple.SimpleRunOne;
+
+import java.util.List;
 
 /**
  * 游戏启动
@@ -29,16 +33,28 @@ import com.iohao.little.game.net.external.simple.SimpleRunOne;
  */
 public class GameOne {
     public static void main(String[] args) {
-        // 简单启动器
-        SimpleRunOne simpleRunOne = new SimpleRunOne()
+
+        // 逻辑服列表
+        List<ClientStartupConfig> logicServer = List.of(
+                // 大厅
+                new HallClientStartupConfig(),
+                // 坦克游戏
+                new TankClientStartupConfig()
+        );
+
+        // 简单启动器 RunOne (谐音:拳皇97中的 round one ready go!)
+        new SimpleRunOne()
                 // 网关服务器
                 .setGatewayServer(new GameGateServerStartupConfig())
                 // 对外服
                 .setExternalServer(new GameExternalBoot().createExternalServer())
                 // 逻辑服列表
-                .setLogicServerList(new GameLogicAll().listLogicServer());
+                .setLogicServerList(logicServer)
+                // 启动 对外服、网关、逻辑服
+                .startup();
 
-        // 启动对外服、网关、逻辑服
-        simpleRunOne.startup();
+        // see : MyWebsocketClient.java (模拟登录启动类)
+        // see : TankApp.java  （坦克游戏启动类）
     }
+
 }

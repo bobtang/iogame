@@ -89,6 +89,8 @@ public abstract class BarMessage implements Serializable {
 
     /** userId */
     long userId;
+    /** 一般指用户的 channelId （来源于对外服的 channel 长连接） */
+    String userChannelId;
 
     /** 实际请求的业务参数 */
     Object data;

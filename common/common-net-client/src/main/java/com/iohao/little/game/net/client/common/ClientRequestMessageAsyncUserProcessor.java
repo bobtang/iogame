@@ -20,7 +20,8 @@ import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
-import com.iohao.little.game.action.skeleton.core.DefaultParamContext;
+import com.iohao.little.game.action.skeleton.core.flow.attr.FlowAttr;
+import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.net.client.BoltClientServerSetting;
 import lombok.Setter;
@@ -41,17 +42,18 @@ public class ClientRequestMessageAsyncUserProcessor extends AsyncUserProcessor<R
 
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, RequestMessage request) {
-        
+
         // TODO: 2021-12-14 这里可以使用对象池技术
-        DefaultParamContext paramContext = new DefaultParamContext();
-        paramContext.setBizCtx(bizCtx);
-        paramContext.setAsyncCtx(asyncCtx);
-        paramContext.setServerContext(boltClientServerSetting.getBoltClientProxy());
+        var flowContext = new FlowContext()
+                .setRequest(request);
+
+        flowContext.option(FlowAttr.asyncContext, asyncCtx);
+        flowContext.option(FlowAttr.serverContext, boltClientServerSetting.getBoltClientProxy());
 
         // TODO: 2021-12-14 这里可以使用领域事件
         BarSkeleton barSkeleton = boltClientServerSetting.getBarSkeleton();
         // 通过业务框架把请求派发给指定的业务类来处理
-        barSkeleton.handle(paramContext, request);
+        barSkeleton.handle(flowContext);
     }
 
     /**

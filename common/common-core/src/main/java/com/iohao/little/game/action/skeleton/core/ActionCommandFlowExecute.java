@@ -16,7 +16,7 @@
  */
 package com.iohao.little.game.action.skeleton.core;
 
-import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
+import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 
 /**
  * 命令流程执行器
@@ -49,13 +49,9 @@ public interface ActionCommandFlowExecute {
      * 提供了用户可配置的多个 (执行前的钩子, 执行后的钩子)
      * </pre>
      *
-     * @param paramContext  参数上下文
-     * @param actionCommand 命令对象
-     * @param request       请求参数
-     * @param barSkeleton   框架
+     * @param flowContext FlowContext
      */
-    void execute(final ParamContext paramContext
-            , final ActionCommand actionCommand
-            , final RequestMessage request
-            , final BarSkeleton barSkeleton);
+    default void execute(FlowContext flowContext) {
+
+    }
 }

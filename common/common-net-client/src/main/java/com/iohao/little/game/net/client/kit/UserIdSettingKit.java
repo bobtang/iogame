@@ -17,12 +17,13 @@
 package com.iohao.little.game.net.client.kit;
 
 import com.alipay.remoting.exception.RemotingException;
-import com.iohao.little.game.action.skeleton.core.DefaultParamContext;
+import com.iohao.little.game.action.skeleton.core.ServerContext;
+import com.iohao.little.game.action.skeleton.core.flow.attr.FlowAttr;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.client.common.BoltClientProxy;
-import com.iohao.little.game.net.message.common.ChangeUserIdMessage;
-import com.iohao.little.game.net.message.common.ChangeUserIdMessageResponse;
+import com.iohao.little.game.net.message.common.SettingUserIdMessage;
+import com.iohao.little.game.net.message.common.SettingUserIdMessageResponse;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,44 +41,46 @@ import java.util.Objects;
  */
 @Slf4j
 @UtilityClass
-public class ChangeUserIdKit {
+public class UserIdSettingKit {
     /**
-     * 变更用户的 userId
+     * 设置用户的 userId
      * <pre>
-     *     玩家真正的登录
+     *     玩家真正的登录，只有设置了用户的 id， 才算是验证通过
      * </pre>
      *
      * @param flowContext 业务框架 flow上下文
-     * @param newUserId   一般从数据库中获取
+     * @param userId      一般从数据库中获取
      * @return true 变更成功
      */
-    public boolean changeUserId(FlowContext flowContext, long newUserId) {
+    public boolean settingUserId(FlowContext flowContext, long userId) {
         // 这个 userId 一般是首次建立连接时，系统随机分配的临时 id
-        long userId = flowContext.getUserId();
+        String userChannelId = flowContext.getRequest().getUserChannelId();
 
-        ChangeUserIdMessage userIdMessage = new ChangeUserIdMessage();
-        userIdMessage.setUserId(userId);
-        userIdMessage.setNewUserId(newUserId);
+        SettingUserIdMessage userIdMessage = new SettingUserIdMessage()
+                .setUserId(userId)
+                .setUserChannelId(userChannelId);
 
         log.debug("1 逻辑服 {}", userIdMessage);
 
         try {
-            DefaultParamContext paramContext = flowContext.getParamContext();
-            BoltClientProxy boltClientProxy = (BoltClientProxy) paramContext.getServerContext();
-            ChangeUserIdMessageResponse changeUserIdMessageResponse = (ChangeUserIdMessageResponse) boltClientProxy
+            ServerContext serverContext = flowContext.option(FlowAttr.serverContext);
+            BoltClientProxy boltClientProxy = (BoltClientProxy) serverContext;
+            // 请求网关 （实际上是请求对外服，让对外服保存 userId）
+            SettingUserIdMessageResponse settingUserIdMessageResponse = (SettingUserIdMessageResponse) boltClientProxy
                     .invokeSync(userIdMessage);
 
-            log.debug("5 逻辑服 {}", changeUserIdMessageResponse);
+            log.debug("5 逻辑服 {}", settingUserIdMessageResponse);
 
-            if (Objects.isNull(changeUserIdMessageResponse) || !changeUserIdMessageResponse.isSuccess()) {
+            if (Objects.isNull(settingUserIdMessageResponse) || !settingUserIdMessageResponse.isSuccess()) {
                 return false;
             }
+
         } catch (RemotingException | InterruptedException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
 
         ResponseMessage response = flowContext.getResponse();
-        response.setUserId(newUserId);
+        response.setUserId(userId);
 
         return true;
     }

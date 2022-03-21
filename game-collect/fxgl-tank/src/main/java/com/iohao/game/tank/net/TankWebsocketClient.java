@@ -4,7 +4,6 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.iohao.game.collect.common.GameConfig;
 import com.iohao.game.collect.proto.common.LoginVerify;
-import com.iohao.game.tank.component.PlayerViewComponent;
 import com.iohao.game.tank.net.onmessage.TankEnterRoomOnMessage;
 import com.iohao.game.tank.net.onmessage.TankLoginVerifyOnMessage;
 import com.iohao.game.tank.net.onmessage.TankShootOnMessage;
@@ -12,7 +11,6 @@ import com.iohao.little.game.action.skeleton.core.CmdKit;
 import com.iohao.little.game.common.kit.ProtoKit;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft_6455;
@@ -91,8 +89,6 @@ public class TankWebsocketClient {
 
                 TankOnMessage onMessage = onMessageMap.get(cmdMerge);
 
-                log.info("client 收到消息 {}", message);
-
                 if (Objects.nonNull(onMessage)) {
                     Runnable runnable = actionMap.remove(cmdMerge);
                     if (runnable != null) {
@@ -102,7 +98,7 @@ public class TankWebsocketClient {
                         int cmd = CmdKit.getCmd(cmdMerge);
                         int subCmd = CmdKit.getSubCmd(cmdMerge);
                         String onMessageName = onMessage.getClass().getSimpleName();
-                        log.info("{}-{} {}  {}", cmd, subCmd, onMessageName, bizData);
+//                        log.info("client 收到消息{}\n {}-{} {}  {}", message, cmd, subCmd, onMessageName, bizData);
                     }
                 } else {
                     log.info("不存在处理类 onMessage: ");

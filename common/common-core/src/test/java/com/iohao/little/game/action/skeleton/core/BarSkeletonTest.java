@@ -20,6 +20,7 @@ import com.iohao.little.game.action.skeleton.core.action.ExampleActionCont;
 import com.iohao.little.game.action.skeleton.core.action.pojo.BeeApple;
 import com.iohao.little.game.action.skeleton.core.action.pojo.Bird;
 import com.iohao.little.game.action.skeleton.core.data.TestDataKit;
+import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -45,17 +46,19 @@ public class BarSkeletonTest {
         requestMessage.setData(beeApple);
 
         log.info("BarSkeleton");
-        DefaultParamContext paramContext = new DefaultParamContext();
 
         // 构建业务框架
         BarSkeleton barSkeleton = TestDataKit.newBarSkeleton();
 
+        var flowContext = new FlowContext()
+                .setRequest(requestMessage);
+
         // 业务框架处理用户请求
-        barSkeleton.handle(paramContext, requestMessage);
+        barSkeleton.handle(flowContext);
         System.out.println();
 
         // 业务框架处理用户请求
-        barSkeleton.handle(paramContext, requestMessage);
+        barSkeleton.handle(flowContext);
         System.out.println();
     }
 
@@ -76,12 +79,13 @@ public class BarSkeletonTest {
         // 把模拟请求的数据,放入请求对象中
         requestMessage.setData(bird);
 
-        DefaultParamContext paramContext = new DefaultParamContext();
-
         // 构建业务框架
         BarSkeleton barSkeleton = TestDataKit.newBarSkeleton();
+        var flowContext = new FlowContext()
+                .setRequest(requestMessage);
+
         // 业务框架处理用户请求
-        barSkeleton.handle(paramContext, requestMessage);
+        barSkeleton.handle(flowContext);
         System.out.println();
 
     }

@@ -21,11 +21,11 @@ import com.alipay.remoting.rpc.RpcCommandType;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
+import com.iohao.little.game.net.external.bootstrap.message.ExternalMessageCmdCode;
 import com.iohao.little.game.net.external.session.UserSession;
+import com.iohao.little.game.net.external.session.UserSessions;
 import io.netty.channel.Channel;
 import lombok.experimental.UtilityClass;
-
-import java.util.Objects;
 
 /**
  * @author 洛朱
@@ -45,7 +45,7 @@ public class ExternalKit {
     public ExternalMessage convertExternalMessage(ResponseMessage responseMessage) {
 
         ExternalMessage externalMessage = new ExternalMessage();
-        externalMessage.setCmdCode((short) 1);
+        externalMessage.setCmdCode(ExternalMessageCmdCode.biz);
         externalMessage.setCmdMerge(responseMessage.getCmdMerge());
         externalMessage.setResponseStatus((short) responseMessage.getResponseStatus());
         externalMessage.setData(responseMessage.getDataContent());
@@ -54,17 +54,12 @@ public class ExternalKit {
     }
 
     public void writeAndFlush(long userId, ExternalMessage message) {
-        UserSession session = UserSession.me();
-        Channel channel = session.getChannel(userId);
 
-        if (Objects.isNull(channel)) {
-            // TODO: 2022/1/16 用户不在线, 可以做点其他事
+        UserSession userSession = UserSessions.me().getUserSession(userId);
 
-            return;
-        }
+        Channel channel = userSession.getChannel();
 
         channel.writeAndFlush(message);
-
     }
 
     public long newId() {

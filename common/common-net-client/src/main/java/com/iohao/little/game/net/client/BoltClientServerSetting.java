@@ -38,10 +38,15 @@ import lombok.experimental.Accessors;
 public class BoltClientServerSetting implements ServerSetting {
     /** ip:port */
     final String address;
+    /** 模块 key */
     final ModuleKey moduleKey;
+    /** 当前客户端的业务框架 */
     final BarSkeleton barSkeleton;
+    /** 子模块信息 （子游戏服的信息、逻辑服） */
     final ModuleMessage moduleMessage;
+    /** 远程地址 */
     final RemoteAddress remoteAddress;
+    /** 客户端服务器代理, 持有一些属性；负责与网关通信 */
     BoltClientProxy boltClientProxy;
 
 

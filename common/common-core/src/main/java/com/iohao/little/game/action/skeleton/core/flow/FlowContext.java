@@ -18,16 +18,18 @@ package com.iohao.little.game.action.skeleton.core.flow;
 
 import com.iohao.little.game.action.skeleton.core.ActionCommand;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
-import com.iohao.little.game.action.skeleton.core.ParamContext;
+import com.iohao.little.game.action.skeleton.core.flow.attr.FlowOption;
+import com.iohao.little.game.action.skeleton.core.flow.attr.FlowOptionDynamic;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
-import com.iohao.little.game.common.kit.attr.AttrOptionDynamic;
-import com.iohao.little.game.common.kit.attr.AttrOptions;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
+import org.jctools.maps.NonBlockingHashMap;
+
+import java.util.Map;
 
 /**
  * 业务框架 flow 上下文
@@ -42,13 +44,12 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class FlowContext implements AttrOptionDynamic {
+public class FlowContext implements FlowOptionDynamic {
     /** 动态属性 */
-    final AttrOptions options = new AttrOptions();
+    final Map<FlowOption<?>, Object> options = new NonBlockingHashMap<>();
+
     /** 业务框架 */
     BarSkeleton barSkeleton;
-    /** 参数上下文 */
-    ParamContext paramContext;
     /** command */
     ActionCommand actionCommand;
     /** 控制器类对象 */
@@ -66,8 +67,4 @@ public class FlowContext implements AttrOptionDynamic {
     /** true 业务方法有异常 */
     boolean error;
 
-    @SuppressWarnings("unchecked")
-    public <T extends ParamContext> T getParamContext() {
-        return (T) this.paramContext;
-    }
 }

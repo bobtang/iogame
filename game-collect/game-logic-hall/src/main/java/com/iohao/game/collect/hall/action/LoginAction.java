@@ -22,7 +22,7 @@ import com.iohao.game.collect.proto.common.UserInfo;
 import com.iohao.little.game.action.skeleton.annotation.ActionController;
 import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
-import com.iohao.little.game.net.client.kit.ChangeUserIdKit;
+import com.iohao.little.game.net.client.kit.UserIdSettingKit;
 import lombok.extern.slf4j.Slf4j;
 import org.jctools.maps.NonBlockingHashMap;
 
@@ -62,7 +62,6 @@ public class LoginAction {
 
         if (Objects.isNull(newUserId)) {
             userIdAdder.increment();
-            userIdAdder.increment();
 
             newUserId = userIdAdder.longValue();
             userMap.put(jwt, newUserId);
@@ -72,7 +71,7 @@ public class LoginAction {
         userInfo.id = newUserId;
         userInfo.name = jwt;
 
-        boolean success = ChangeUserIdKit.changeUserId(flowContext, newUserId);
+        boolean success = UserIdSettingKit.settingUserId(flowContext, newUserId);
 
         if (!success) {
             // TODO: 2022/1/19 抛异常码

@@ -1,6 +1,7 @@
 package com.iohao.game.tank.net;
 
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
+import com.iohao.little.game.net.external.bootstrap.message.ExternalMessageCmdCode;
 
 /**
  * @author 洛朱
@@ -32,7 +33,7 @@ public interface TankOnMessage {
     private ExternalMessage createExternalMessage() {
 
         ExternalMessage request = new ExternalMessage();
-        request.setCmdCode(1);
+        request.setCmdCode(ExternalMessageCmdCode.biz);
         request.setProtocolSwitch(0);
 
         request.setCmdMerge(this.getCmdMerge());

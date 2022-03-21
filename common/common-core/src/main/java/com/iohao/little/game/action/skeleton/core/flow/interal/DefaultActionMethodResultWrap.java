@@ -18,7 +18,7 @@ package com.iohao.little.game.action.skeleton.core.flow.interal;
 
 import com.iohao.little.game.action.skeleton.core.exception.MsgException;
 import com.iohao.little.game.action.skeleton.core.flow.ActionMethodResultWrap;
-import com.iohao.little.game.action.skeleton.core.flow.FlowAttr;
+import com.iohao.little.game.action.skeleton.core.flow.attr.FlowAttr;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.common.kit.ProtoKit;

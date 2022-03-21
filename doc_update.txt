@@ -1,3 +1,20 @@
+2022-03-21
+新增 UserSession (与 channel 是 1:1 的关系，可取到对应的 userId、channel 等信息。 )
+
+FlowContext 新增动态属性
+    FlowOptionDynamic、FlowOption
+
+登录相关
+    用户登录相关移 除虚拟userId
+    新增 UserIdSettingKit，简化开发者登录业务
+
+优化业务框架
+    统一业务入口
+    优化 FlowContext
+
+删除一些遗留代码 game-logic-all 相关
+
+
 2022-03-14
 新增心跳相关设置 IdleProcessSetting
     心跳事件回调 IdleCallback

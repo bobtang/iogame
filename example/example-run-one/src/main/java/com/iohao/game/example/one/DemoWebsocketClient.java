@@ -18,6 +18,7 @@ package com.iohao.game.example.one;
 
 import com.iohao.little.game.common.kit.ProtoKit;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
+import com.iohao.little.game.net.external.bootstrap.message.ExternalMessageCmdCode;
 import lombok.extern.slf4j.Slf4j;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft_6455;
@@ -53,7 +54,7 @@ public class DemoWebsocketClient {
                 // 游戏框架内置的协议， 与游戏前端相互通讯的协议
                 ExternalMessage externalMessage = new ExternalMessage();
                 // 请求命令类型: 0 心跳，1 业务
-                externalMessage.setCmdCode(1);
+                externalMessage.setCmdCode(ExternalMessageCmdCode.biz);
                 // 路由
                 externalMessage.setCmdMerge(cmd, subCmd);
                 // 业务数据

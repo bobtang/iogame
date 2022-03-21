@@ -6,31 +6,23 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License..
+ * limitations under the License.
  */
-package com.iohao.little.game.net.message.common;
-
-import lombok.Data;
-
-import java.io.Serial;
-import java.io.Serializable;
+package com.iohao.little.game.net.external.bootstrap.message;
 
 /**
  * @author 洛朱
- * @date 2022-01-18
+ * @date 2022-03-16
  */
-@Data
-public class ChangeUserIdMessage implements Serializable {
-    @Serial
-    private static final long serialVersionUID = -7385687951893601229L;
-    /** user 临时的 userId */
-    long userId;
-    /** user 新的 userId, 一般从用户数据库获取 */
-    long newUserId;
+public interface ExternalMessageCmdCode {
+    /** 请求命令类型: 0 心跳 */
+    int idle = 0;
+    /** 请求命令类型: 1 业务 */
+    int biz = 1;
 }

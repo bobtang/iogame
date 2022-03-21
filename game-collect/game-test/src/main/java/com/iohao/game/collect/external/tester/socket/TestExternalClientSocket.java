@@ -20,6 +20,7 @@ import com.iohao.game.collect.common.ActionModuleCmd;
 import com.iohao.game.collect.common.GameConfig;
 import com.iohao.game.collect.proto.common.LoginVerify;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
+import com.iohao.little.game.net.external.bootstrap.message.ExternalMessageCmdCode;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -122,7 +123,7 @@ public class TestExternalClientSocket {
 
     private static ExternalMessage getExternalMessage() {
         ExternalMessage request = new ExternalMessage();
-        request.setCmdCode((short) 1);
+        request.setCmdCode(ExternalMessageCmdCode.biz);
 
         // 路由
         int cmd = ActionModuleCmd.hallModuleCmd;

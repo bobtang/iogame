@@ -6,27 +6,45 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License..
+ * limitations under the License.
  */
 package com.iohao.little.game.net.external.session;
 
-import io.netty.util.AttributeKey;
+import io.netty.channel.ChannelId;
+
+import java.util.Objects;
 
 /**
- * 扩展属性相关
+ * UserChannelId
+ * <pre>
+ *     see {@link ChannelId#asLongText()}
+ * </pre>
  *
  * @author 洛朱
- * @date 2022-01-11
+ * @date 2022-03-15
  */
-public interface UserSessionAttr {
-    /** false : 没有进行身份验证 */
-    AttributeKey<Boolean> verifyIdentity = AttributeKey.valueOf("verifyIdentity");
-    /** 用户 session，与channel是 1:1 的关系 */
-    AttributeKey<UserSession> userSession = AttributeKey.valueOf("userSession");
+public record UserChannelId(String channelId) {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof UserChannelId that)) {
+            return false;
+        }
+
+        return Objects.equals(channelId, that.channelId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(channelId);
+    }
 }

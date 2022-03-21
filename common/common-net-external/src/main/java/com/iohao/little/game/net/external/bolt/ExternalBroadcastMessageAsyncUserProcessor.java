@@ -22,7 +22,7 @@ import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.external.bootstrap.ExternalKit;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
-import com.iohao.little.game.net.external.session.UserSession;
+import com.iohao.little.game.net.external.session.UserSessions;
 import com.iohao.little.game.net.message.common.BroadcastMessage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -46,7 +46,7 @@ public class ExternalBroadcastMessageAsyncUserProcessor extends AsyncUserProcess
         if (message.isBroadcastAll()) {
             // 给全体推送
             // TODO: 2022/1/18 这里可以使用领域事件
-            UserSession.me().broadcast(externalMessage);
+            UserSessions.me().broadcast(externalMessage);
             return;
         }
 

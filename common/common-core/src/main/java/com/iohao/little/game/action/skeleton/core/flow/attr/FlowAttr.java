@@ -14,7 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License..
  */
+package com.iohao.little.game.action.skeleton.core.flow.attr;
+
+import com.alipay.remoting.AsyncContext;
+import com.iohao.little.game.action.skeleton.core.ServerContext;
+
 /**
- * 对象池包
+ * flow 上下文的一些扩展属性
+ *
+ * @author 洛朱
+ * @date 2022-01-31
  */
-package com.iohao.little.game.net.client.pool;
+public interface FlowAttr {
+    /** 异常消息 */
+    FlowOption<String> msgException = FlowOption.valueOf("msgException");
+    /** 当前项目启动的服务上下文 */
+    FlowOption<ServerContext> serverContext = FlowOption.valueOf("serverContext");
+    /** bolt async 上下文 */
+    FlowOption<AsyncContext> asyncContext = FlowOption.valueOf("asyncContext");
+}

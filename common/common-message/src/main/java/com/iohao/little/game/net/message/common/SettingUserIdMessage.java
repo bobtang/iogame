@@ -14,19 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License..
  */
-package com.iohao.little.game.action.skeleton.core;
+package com.iohao.little.game.net.message.common;
+
+import lombok.Data;
+import lombok.experimental.Accessors;
+
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
- * 参数上下文
+ * 设置用户id
  *
  * @author 洛朱
- * @Date 2021-12-20
+ * @date 2022-01-18
  */
-public interface ParamContext {
-    /**
-     * 当前项目启动的服务上下文
-     *
-     * @return 当前项目启动的服务上下文
-     */
-    ServerContext getServerContext();
+@Data
+@Accessors(chain = true)
+public class SettingUserIdMessage implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -7385687951893601229L;
+    /** userId */
+    long userId;
+    /** 一般指用户的 channelId （来源于对外服的 user channel） */
+    String userChannelId;
 }

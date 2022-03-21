@@ -22,8 +22,8 @@ import com.alipay.remoting.exception.RemotingException;
 import com.alipay.remoting.rpc.RpcServer;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
 import com.iohao.little.game.net.common.BoltServer;
-import com.iohao.little.game.net.message.common.ChangeUserIdMessage;
-import com.iohao.little.game.net.message.common.ChangeUserIdMessageResponse;
+import com.iohao.little.game.net.message.common.SettingUserIdMessage;
+import com.iohao.little.game.net.message.common.SettingUserIdMessageResponse;
 import com.iohao.little.game.net.server.module.ModuleInfoManager;
 import com.iohao.little.game.net.server.module.ModuleInfoProxy;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2022-01-18
  */
 @Slf4j
-public class GateChangeUserIdMessageAsyncUserProcessor extends AsyncUserProcessor<ChangeUserIdMessage> {
+public class GateChangeUserIdMessageAsyncUserProcessor extends AsyncUserProcessor<SettingUserIdMessage> {
 
     final BoltServer boltServer;
 
@@ -43,7 +43,7 @@ public class GateChangeUserIdMessageAsyncUserProcessor extends AsyncUserProcesso
     }
 
     @Override
-    public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, ChangeUserIdMessage changeUserIdMessage) {
+    public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, SettingUserIdMessage settingUserIdMessage) {
         // 用户 id 变更
         RpcServer rpcServer = boltServer.getRpcServer();
 
@@ -51,12 +51,12 @@ public class GateChangeUserIdMessageAsyncUserProcessor extends AsyncUserProcesso
         ModuleInfoProxy externalModuleInfo = ModuleInfoManager.me().getExternalModuleInfo();
         String address = externalModuleInfo.getModuleMessage().getAddress();
 
-        log.debug(" 用户 id 变更 （逻辑服 --> 网关 --> 对外服 --> 网关 --> 逻辑服） : {}", changeUserIdMessage);
+        log.debug(" 用户 id 变更 （逻辑服 --> 网关 --> 对外服 --> 网关 --> 逻辑服） : {}", settingUserIdMessage);
 
         try {
             log.debug("2 网关");
-            ChangeUserIdMessageResponse messageResponse = (ChangeUserIdMessageResponse) rpcServer
-                    .invokeSync(address, changeUserIdMessage, 1000);
+            SettingUserIdMessageResponse messageResponse = (SettingUserIdMessageResponse) rpcServer
+                    .invokeSync(address, settingUserIdMessage, 1000);
 
             log.debug("4 网关");
             asyncCtx.sendResponse(messageResponse);
@@ -68,6 +68,6 @@ public class GateChangeUserIdMessageAsyncUserProcessor extends AsyncUserProcesso
 
     @Override
     public String interest() {
-        return ChangeUserIdMessage.class.getName();
+        return SettingUserIdMessage.class.getName();
     }
 }

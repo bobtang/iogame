@@ -16,7 +16,7 @@
  */
 package com.iohao.little.game.action.skeleton.core;
 
-import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
+import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 
 /**
  * 业务框架处理器
@@ -28,10 +28,8 @@ public interface Handler {
     /**
      * 处理一个action请求
      *
-     * @param paramContext 参数上下文
-     * @param request      客户端请求信息
-     * @param barSkeleton  骨架
+     * @param flowContext flowContext
      * @return 如果返回 false 就不交给下一个链进行处理. 全剧终了.
      */
-    boolean handler(ParamContext paramContext, RequestMessage request, BarSkeleton barSkeleton);
+    boolean handler(FlowContext flowContext);
 }

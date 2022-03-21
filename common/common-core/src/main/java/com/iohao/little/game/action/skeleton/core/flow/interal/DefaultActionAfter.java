@@ -19,8 +19,8 @@ package com.iohao.little.game.action.skeleton.core.flow.interal;
 import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.rpc.RpcCommandType;
 import com.iohao.little.game.action.skeleton.core.ActionCommand;
-import com.iohao.little.game.action.skeleton.core.DefaultParamContext;
 import com.iohao.little.game.action.skeleton.core.flow.ActionAfter;
+import com.iohao.little.game.action.skeleton.core.flow.attr.FlowAttr;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -67,12 +67,10 @@ public class DefaultActionAfter implements ActionAfter {
         ResponseMessage response = flowContext.getResponse();
         byte rpcCommandType = response.getRpcCommandType();
 
-        DefaultParamContext paramContext = flowContext.getParamContext();
-
         if (rpcCommandType != RpcCommandType.REQUEST_ONEWAY) {
-            return paramContext.getAsyncCtx();
+            return flowContext.option(FlowAttr.asyncContext);
         } else {
-            return paramContext.getServerContext();
+            return flowContext.option(FlowAttr.serverContext);
         }
     }
 }

@@ -11,24 +11,26 @@
     <description>the little game sum</description>
 
     <modules>
+        <!-- 网络游戏框架 - 通用部份  -->
         <module>common/common-kit</module>
         <module>common/common-core</module>
         <module>common/common-message</module>
-        <!-- 服务器、客户端 -->
+        <!-- 网络游戏框架：服务器、客户端 部份-->
         <module>common/common-net</module>
         <module>common/common-net-server</module>
         <module>common/common-net-client</module>
-
-        <!-- 对外的服务器 （面向真实用户） -->
+        <!-- 网络游戏框架 : 对外的服务器 （面向真实用户） -->
         <module>common/common-net-external</module>
 
-        <!-- 小部件  -->
-        <module>widget/widget-common</module>
-
         <!-- 轻量小部件  -->
+        <module>widget/widget-common</module>
+        <!-- 小部件 : 任务延时器 -->
         <module>widget/light-timer-task</module>
+        <!-- 小部件 : 领域事件 -->
         <module>widget/light-domain-event</module>
+        <!-- 小部件 : 多环境切换 -->
         <module>widget/light-profile</module>
+        <!-- 小部件 : jprotobuf 增强 -->
         <module>widget/light-jprotobuf</module>
 
         <module>widget/light-all</module>
@@ -36,20 +38,27 @@
         <!-- 示例  -->
         <module>example/example-run-one</module>
 
-        <!-- 实践案例  -->
+        <!-- 实践案例 - 通用部份  -->
         <module>game-collect/game-common-proto</module>
         <module>game-collect/game-common</module>
         <module>game-collect/game-common-logic</module>
 
+        <!-- 网关服 -->
         <module>game-collect/game-gateway</module>
+        <!-- 对外服 -->
         <module>game-collect/game-external</module>
-        <module>game-collect/game-logic-all</module>
 
-        <module>game-collect/game-logic-tank</module>
+        <!-- 逻辑服 - 大厅 -->
         <module>game-collect/game-logic-hall</module>
+        <!-- 逻辑服 - 坦克 -->
+        <module>game-collect/game-logic-tank</module>
 
-        <module>game-collect/game-test</module>
+        <!-- 启动 对外服、网关、逻辑服 -->
         <module>game-collect/game-one</module>
+
+        <!-- 模拟客户端 -->
+        <module>game-collect/game-test</module>
+        <!-- java 坦克游戏 fxgl -->
         <module>game-collect/fxgl-tank</module>
 
     </modules>

@@ -17,6 +17,7 @@
 package com.iohao.game.collect.external.tester.module;
 
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
+import com.iohao.little.game.net.external.bootstrap.message.ExternalMessageCmdCode;
 
 import java.util.Objects;
 
@@ -38,7 +39,7 @@ public interface OnMessage {
     default ExternalMessage createExternalMessage() {
 
         ExternalMessage request = new ExternalMessage();
-        request.setCmdCode(1);
+        request.setCmdCode(ExternalMessageCmdCode.biz);
         request.setProtocolSwitch(0);
 
         request.setCmdMerge(this.getCmdMerge());

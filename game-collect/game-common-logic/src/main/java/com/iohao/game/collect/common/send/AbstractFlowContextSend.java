@@ -17,9 +17,8 @@
 package com.iohao.game.collect.common.send;
 
 import com.iohao.little.game.action.skeleton.core.ActionSend;
-import com.iohao.little.game.action.skeleton.core.ParamContext;
 import com.iohao.little.game.action.skeleton.core.ServerContext;
-import com.iohao.little.game.action.skeleton.core.flow.FlowAttr;
+import com.iohao.little.game.action.skeleton.core.flow.attr.FlowAttr;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.widget.light.domain.event.message.Eo;
@@ -126,8 +125,7 @@ public abstract class AbstractFlowContextSend implements Topic, Eo, ActionSend {
         this.trick();
 
         // 推送响应
-        ParamContext paramContext = this.flowContext.getParamContext();
-        ServerContext serverContext = paramContext.getServerContext();
+        ServerContext serverContext = flowContext.option(FlowAttr.serverContext);
         serverContext.broadcast(this.flowContext, this.userIds);
     }
 
@@ -173,12 +171,6 @@ public abstract class AbstractFlowContextSend implements Topic, Eo, ActionSend {
 
     @Override
     public int getCmdMerge() {
-
-        Integer cmdMerge = flowContext.option(FlowAttr.cmdMerge);
-        if (Objects.nonNull(cmdMerge)) {
-            return cmdMerge;
-        }
-
         return flowContext.getActionCommand().getCmdInfo().getCmdMerge();
     }
 

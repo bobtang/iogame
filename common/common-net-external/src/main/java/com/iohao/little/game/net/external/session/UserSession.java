@@ -6,236 +6,125 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License..
+ * limitations under the License.
  */
 package com.iohao.little.game.net.external.session;
 
-import com.iohao.little.game.net.external.session.hook.UserHook;
-import com.iohao.little.game.net.external.session.hook.UserHookDefault;
+import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelId;
-import io.netty.channel.group.ChannelGroup;
-import io.netty.channel.group.DefaultChannelGroup;
-import io.netty.util.concurrent.GlobalEventExecutor;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-import org.jctools.maps.NonBlockingHashMapLong;
+import lombok.ToString;
+import lombok.experimental.Accessors;
+import lombok.experimental.FieldDefaults;
 
 import java.net.InetSocketAddress;
 import java.util.Objects;
 
 /**
- * 用户 session 管理
+ * 用户的唯一 session 信息
  * <pre>
- *     channel
+ *     与 channel 是 1:1 的关系，可取到对应的 userId、channel 等信息
  * </pre>
  *
  * @author 洛朱
- * @date 2022-01-11
+ * @date 2022-03-15
  */
-@Slf4j
+@Getter
+@ToString
+@Accessors(chain = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserSession {
-    final ChannelGroup channelGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-    /**
-     * key is 玩家 id
-     * value is channelId
-     */
-    final NonBlockingHashMapLong<ChannelId> channelIdMap = new NonBlockingHashMapLong<>();
-
-    /** UserHook 上线时、下线时会触发 */
+    /** userId */
+    long userId;
+    /** user channel */
+    final Channel channel;
+    /** 用户状态 */
     @Setter
-    UserHook userHook = new UserHookDefault();
+    UserSessionState state;
 
-    /**
-     * 添加 channel 关联
-     *
-     * @param userId  用户主键
-     * @param channel channel
-     */
-    public void add(long userId, Channel channel) {
+    public UserSession(Channel channel) {
+        this.channel = channel;
 
-        if (userId == 0) {
-            throw new RuntimeException("userId is 0");
-        }
+        // false 没有进行身份验证
+        this.channel.attr(UserSessionAttr.verifyIdentity).set(false);
+        // channel 中也保存 UserSession 的引用
+        this.channel.attr(UserSessionAttr.userSession).set(this);
 
-        channel.attr(UserSessionAttr.userId).setIfAbsent(userId);
-
-        ChannelId channelId = channel.id();
-
-        channelIdMap.putIfAbsent(userId, channelId);
-        channelGroup.add(channel);
+        this.state = UserSessionState.ACTIVE;
     }
 
-    public boolean changeUserId(long userId, long newUserId) {
-        Channel channel = this.getChannel(userId);
+    public void employ(RequestMessage requestMessage) {
 
-        if (!isActive(channel)) {
-            return false;
+        if (!this.isVerifyIdentity()) {
+            // 只有没进行验证的，才给 userChannelId
+            String channelId = this.getChannelId();
+            requestMessage.setUserChannelId(channelId);
         }
 
-        ChannelId channelId = channelIdMap.remove(userId);
-
-        if (Objects.isNull(channelId)) {
-            return false;
-        }
-
-        channel.attr(UserSessionAttr.userId).set(newUserId);
-        channel.attr(UserSessionAttr.verifyIdentity).set(true);
-
-        channelIdMap.putIfAbsent(newUserId, channelId);
-
-        // 上线通知
-        userHookInto(newUserId, channel);
-
-        return true;
+        // 设置请求用户的id
+        requestMessage.setUserId(this.userId);
     }
 
-    public void remove(Channel channel) {
-        if (Objects.isNull(channel)) {
-            return;
-        }
-
-        long userId = this.getUserId(channel);
-
-
-        if (userId != 0) {
-            ChannelId remove = channelIdMap.remove(userId);
-
-            if (Objects.nonNull(remove)) {
-                // 离线通知
-                userHookQuit(userId, channel);
-            }
-        }
-
-        this.close(channel);
+    public void setUserId(long userId) {
+        this.userId = userId;
+        this.channel.attr(UserSessionAttr.verifyIdentity).set(true);
     }
 
-    /**
-     * 获取用户 channel
-     *
-     * @param userId 用户主键
-     * @return channel
-     */
-    public Channel getChannel(long userId) {
-        ChannelId channelId = channelIdMap.get(userId);
-        if (Objects.isNull(channelId)) {
-            return null;
-        }
-
-        Channel channel = channelGroup.find(channelId);
-        if (Objects.isNull(channel)) {
-            channelIdMap.remove(userId);
-        }
-
-        return channel;
-    }
-
-
-    /**
-     * channel 中获取用户主键
-     *
-     * @param channel channel
-     * @return 用户id
-     */
-    public long getUserId(Channel channel) {
-
-        Long userId = channel.attr(UserSessionAttr.userId).get();
-
-        if (Objects.nonNull(userId)) {
-            return userId;
-        }
-
-        return 0;
+    public UserChannelId getUserChannelId() {
+        String channelId = this.getChannelId();
+        return new UserChannelId(channelId);
     }
 
     /**
      * 获取玩家ip
      *
-     * @param userId 玩家
-     * @return ip地址
+     * @return 获取玩家ip
      */
-    public String getIp(long userId) {
-        Channel channel = this.getChannel(userId);
-        if (isActive(channel)) {
-            InetSocketAddress inetSocketAddress = (InetSocketAddress) channel.remoteAddress();
-            return inetSocketAddress.getHostString();
+    public String getIp() {
+        if (Boolean.FALSE.equals(isActiveChannel())) {
+            return "";
         }
 
-        return "";
+        InetSocketAddress inetSocketAddress = (InetSocketAddress) channel.remoteAddress();
+        return inetSocketAddress.getHostString();
     }
 
-    public long countOnline() {
-        return this.channelGroup.size();
+
+    private String getChannelId() {
+        return this.channel.id().asLongText();
     }
 
-    /**
-     * 全员消息广播
-     * 消息类型 response
-     *
-     * @param msg 消息
-     */
-    public void broadcast(Object msg) {
-        channelGroup.writeAndFlush(msg);
+    public boolean isVerifyIdentity() {
+        return this.channel.attr(UserSessionAttr.verifyIdentity).get();
     }
 
-    private boolean isActive(Channel channel) {
+    public boolean isActiveChannel() {
         return Objects.nonNull(channel) && channel.isActive();
     }
 
-    private void close(Channel channel) {
-        if (isActive(channel)) {
-            channel.close();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
         }
 
-        channelGroup.remove(channel);
-    }
-
-    /**
-     * 上线通知。注意：只有进行身份验证通过的，才会触发此方法
-     *
-     * @param userId  userId
-     * @param channel channel
-     */
-    private void userHookInto(long userId, Channel channel) {
-        if (Objects.isNull(userHook)
-                || !channel.hasAttr(UserSessionAttr.verifyIdentity)
-                || !channel.attr(UserSessionAttr.verifyIdentity).get()
-        ) {
-            return;
+        if (!(o instanceof UserSession that)) {
+            return false;
         }
 
-        this.userHook.into(userId, channel);
+        return userId == that.userId;
     }
 
-    /**
-     * 离线通知。注意：只有进行身份验证通过的，才会触发此方法
-     *
-     * @param userId  userId
-     * @param channel channel
-     */
-    private void userHookQuit(long userId, Channel channel) {
-        if (Objects.isNull(userHook)
-                || !channel.hasAttr(UserSessionAttr.verifyIdentity)
-                || !channel.attr(UserSessionAttr.verifyIdentity).get()
-        ) {
-            return;
-        }
-
-        this.userHook.quit(userId, channel);
-    }
-
-    public static UserSession me() {
-        return Holder.ME;
-    }
-
-    /** 通过 JVM 的类加载机制, 保证只加载一次 (singleton) */
-    private static class Holder {
-        static final UserSession ME = new UserSession();
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId);
     }
 }

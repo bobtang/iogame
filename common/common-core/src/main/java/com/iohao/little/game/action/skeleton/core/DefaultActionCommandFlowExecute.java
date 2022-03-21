@@ -32,18 +32,17 @@ import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 public final class DefaultActionCommandFlowExecute implements ActionCommandFlowExecute {
 
     @Override
-    public void execute(final ParamContext paramContext
-            , final ActionCommand actionCommand
-            , final RequestMessage request
-            , final BarSkeleton barSkeleton) {
-
-        // flow 上下文
-        final FlowContext flowContext = createFlowContext(paramContext, actionCommand, request, barSkeleton);
+    public void execute(FlowContext flowContext) {
+        this.settingFlowContext(flowContext);
+        // 业务框架
+        BarSkeleton barSkeleton = flowContext.getBarSkeleton();
+        // 命令对象
+        ActionCommand actionCommand = flowContext.getActionCommand();
 
         // 1 ---- fuck前 在调用控制器对应处理方法前, 执行inout的in.
         fuckIn(flowContext);
 
-        // true 没有错误码 。在这里有错误码，一般是业务参数验证得到的错误 （既开启了业务框架的验证）
+        // true 表示没有错误码 。如果在这里有错误码，一般是业务参数验证得到的错误 （既开启了业务框架的验证）
         boolean notError = !flowContext.getResponse().hasError();
         if (notError) {
             // 2 ---- ActionController 工厂
@@ -70,6 +69,35 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
 
         // 6 ---- fuck后 在调用控制器对应处理方法结束后, 执行inout的out.
         fuckOut(flowContext);
+
+    }
+
+    private void settingFlowContext(FlowContext flowContext) {
+        // 请求参数
+        RequestMessage request = flowContext.getRequest();
+        // 业务框架
+        BarSkeleton barSkeleton = flowContext.getBarSkeleton();
+
+        // 当前用户 id
+        long userId = request.getUserId();
+
+        // 创建响应对象
+        var responseMessageCreate = barSkeleton.getResponseMessageCreate();
+
+        // 响应
+        var responseMessage = responseMessageCreate.createResponseMessage();
+        request.settingCommonAttr(responseMessage);
+
+        flowContext
+                .setResponse(responseMessage)
+                .setUserId(userId);
+
+        // 参数解析器
+        var paramParser = barSkeleton.getActionMethodParamParser();
+        // 得到业务方法的参数列表 , 并验证
+        var pars = paramParser.listParam(flowContext);
+        // 业务方法参数 save to flowContext
+        flowContext.setMethodParams(pars);
     }
 
     private void fuckIn(FlowContext flowContext) {
@@ -82,40 +110,6 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
         BarSkeleton barSkeleton = flowContext.getBarSkeleton();
         InOutInfo inOutInfo = barSkeleton.inOutInfo;
         inOutInfo.fuckOut(flowContext);
-    }
-
-    private FlowContext createFlowContext(ParamContext paramContext
-            , ActionCommand actionCommand
-            , RequestMessage request
-            , BarSkeleton barSkeleton) {
-
-        // 当前用户 id
-        long userId = request.getUserId();
-
-        // 创建响应对象
-        var responseMessageCreate = barSkeleton.getResponseMessageCreate();
-
-        // 响应
-        var responseMessage = responseMessageCreate.createResponseMessage();
-        request.settingCommonAttr(responseMessage);
-
-        // 创建 flow 上下文
-        var flowContext = new FlowContext()
-                .setBarSkeleton(barSkeleton)
-                .setParamContext(paramContext)
-                .setActionCommand(actionCommand)
-                .setRequest(request)
-                .setResponse(responseMessage)
-                .setUserId(userId);
-
-        // 参数解析器
-        var paramParser = barSkeleton.getActionMethodParamParser();
-        // 得到业务方法的参数列表 , 并验证
-        var pars = paramParser.listParam(flowContext);
-        // 业务方法参数 save to flowContext
-        flowContext.setMethodParams(pars);
-
-        return flowContext;
     }
 
 }

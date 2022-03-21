@@ -16,9 +16,10 @@
  */
 package com.iohao.little.game.net.external.bootstrap.handler;
 
-import com.iohao.little.game.net.external.bootstrap.heart.IdleCallback;
+import com.iohao.little.game.net.external.bootstrap.heart.IdleHook;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
-import com.iohao.little.game.net.external.session.UserSession;
+import com.iohao.little.game.net.external.bootstrap.message.ExternalMessageCmdCode;
+import com.iohao.little.game.net.external.session.UserSessions;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -38,12 +39,12 @@ import java.util.Objects;
 public class IdleHandler extends ChannelInboundHandlerAdapter {
 
     /** 心跳事件回调 */
-    final IdleCallback idleCallback;
+    final IdleHook idleHook;
     /** true : 响应心跳给客户端 */
     final boolean pong;
 
-    public IdleHandler(IdleCallback idleCallback, boolean pong) {
-        this.idleCallback = idleCallback;
+    public IdleHandler(IdleHook idleHook, boolean pong) {
+        this.idleHook = idleHook;
         this.pong = pong;
     }
 
@@ -54,7 +55,8 @@ public class IdleHandler extends ChannelInboundHandlerAdapter {
 
         // 心跳处理
         int cmdCode = externalMessage.getCmdCode();
-        if (cmdCode == 0) {
+
+        if (cmdCode == ExternalMessageCmdCode.idle) {
 
             if (this.pong) {
                 ctx.writeAndFlush(externalMessage);
@@ -73,16 +75,16 @@ public class IdleHandler extends ChannelInboundHandlerAdapter {
 
             boolean close = true;
 
-            long userId = UserSession.me().getUserId(ctx.channel());
+            var userSession = UserSessions.me().getUserSession(ctx);
 
             // 执行用户定义的心跳回调事件处理
-            if (Objects.nonNull(idleCallback)) {
-                close = idleCallback.callback(ctx, event, userId);
+            if (Objects.nonNull(idleHook)) {
+                close = idleHook.callback(ctx, event, userSession);
             }
 
             // close ctx
             if (close) {
-                UserSession.me().remove(ctx.channel());
+                UserSessions.me().removeUserSession(userSession);
             }
 
         } else {

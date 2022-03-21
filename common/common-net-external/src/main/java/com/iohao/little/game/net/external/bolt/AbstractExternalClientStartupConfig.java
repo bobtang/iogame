@@ -46,7 +46,7 @@ public abstract class AbstractExternalClientStartupConfig implements ClientStart
         rpcClient.registerUserProcessor(broadcastMessageAsyncUserProcessor);
 
         // 注册 用户id变更处理
-        ExternalChangeUserIdMessageAsyncUserProcessor changeUserIdMessageAsyncUserProcessor = new ExternalChangeUserIdMessageAsyncUserProcessor();
+        ExternalSettingUserIdMessageAsyncUserProcessor changeUserIdMessageAsyncUserProcessor = new ExternalSettingUserIdMessageAsyncUserProcessor();
         rpcClient.registerUserProcessor(changeUserIdMessageAsyncUserProcessor);
 
         // 注册 接收网关消息处理

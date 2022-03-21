@@ -32,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 简单的启动器： 对外服、网关服、逻辑服
+ * 谐音:拳皇97中的 round one ready go!
  * <pre>
  *     注意：
  *          这个工具只适合单机的开发或本地一体化的开发, 对于分步式不适合。
@@ -81,7 +82,6 @@ public class SimpleRunOne {
 
             // 启动游戏对外服
             externalServer.startup();
-
 
 
             // 生成游戏文档

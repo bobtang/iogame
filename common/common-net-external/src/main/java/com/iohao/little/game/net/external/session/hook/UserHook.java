@@ -16,17 +16,27 @@
  */
 package com.iohao.little.game.net.external.session.hook;
 
-import com.iohao.little.game.net.client.kit.ChangeUserIdKit;
-import io.netty.channel.Channel;
+import com.iohao.little.game.net.client.kit.UserIdSettingKit;
+import com.iohao.little.game.net.external.session.UserSession;
 
 /**
- * UserHook 钩子接口。
- * 上线时、下线时会触发
+ * UserHook 钩子接口，上线时、下线时会触发
  * <pre>
  *     实际上需要真正登录过，才会触发 ：into和quit 方法
- *     see {@link ChangeUserIdKit#changeUserId}
+ *     see {@link UserIdSettingKit#settingUserId}
+ *
+ *     这里是改变用户的验证状态
+ *
+ *     验证状态变更为 true -------- 真正登录过
+ *     see {@link UserSession#setUserId}
+ *     channel.attr(UserSessionAttr.verifyIdentity).set(true);
  *
  *     利用好该接口，可以把用户当前在线状态通知到逻辑服，比如使用 redis PubSub 之类的。
+ * </pre>
+ *
+ * <pre>
+ *     参考 用户连接登录编写 文档
+ *     https://www.yuque.com/iohao/game/tywkqv
  * </pre>
  *
  * @author 洛朱
@@ -34,24 +44,16 @@ import io.netty.channel.Channel;
  */
 public interface UserHook {
     /**
-     * 用户进入
-     * <pre>
-     *     可以理解为上线
-     * </pre>
+     * 用户进入，可以理解为上线
      *
-     * @param userId  userId
-     * @param channel channel
+     * @param userSession userSession
      */
-    void into(long userId, Channel channel);
+    void into(UserSession userSession);
 
     /**
-     * 用户退出
-     * <pre>
-     *     可以理解为下线、离线通知等
-     * </pre>
+     * 用户退出，可以理解为下线、离线通知等
      *
-     * @param userId  userId
-     * @param channel channel
+     * @param userSession userSession
      */
-    void quit(long userId, Channel channel);
+    void quit(UserSession userSession);
 }

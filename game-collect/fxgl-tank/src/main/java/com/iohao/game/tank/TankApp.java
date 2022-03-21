@@ -56,6 +56,14 @@ public class TankApp extends GameApplication {
      */
     private TimerAction spawnEnemyTimerAction;
 
+
+    public static void main(String[] args) {
+        // TODO: 2022/3/6 注意，这个游戏示例需要先启动 GameOne.java (游戏服务器)
+
+        // 启动游戏
+        launch(args);
+    }
+
     @Override
     protected void onUpdate(double tpf) {
 
@@ -310,10 +318,4 @@ public class TankApp extends GameApplication {
     }
 
 
-    public static void main(String[] args) {
-        // TODO: 2022/3/6 注意，这个游戏示例需要先启动 GameOne.java (游戏服务器)
-
-        // 启动游戏
-        launch(args);
-    }
 }

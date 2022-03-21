@@ -49,16 +49,16 @@ public class IdleProcessSetting {
     long allIdleTime = idleTime;
     /** 心跳时间单位 - 默认秒单位 */
     TimeUnit timeUnit = TimeUnit.SECONDS;
-    /** 心跳事件回调， 如果有特殊业务，用户可以重写这个接口 */
-    IdleCallback idleCallback = new IdleCallbackDefault();
-    /** 心跳处理 */
+    /** 心跳钩子事件回调， 如果对触发心跳有特殊的业务，用户可以重写这个接口 */
+    IdleHook idleHook = new IdleHookDefault();
+    /** 心跳处理，默认使用 IdleHandler */
     ChannelHandler idleHandler;
     /** true : 响应心跳给客户端 */
     boolean pong = true;
 
     private void defaultSetting() {
         if (Objects.isNull(idleHandler)) {
-            idleHandler = new IdleHandler(this.idleCallback, this.pong);
+            idleHandler = new IdleHandler(this.idleHook, this.pong);
         }
     }
 

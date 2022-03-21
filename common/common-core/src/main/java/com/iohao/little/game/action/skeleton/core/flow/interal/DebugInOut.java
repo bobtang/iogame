@@ -21,11 +21,11 @@ import com.iohao.little.game.action.skeleton.core.ActionCommand;
 import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.action.skeleton.core.doc.ActionCommandDoc;
 import com.iohao.little.game.action.skeleton.core.flow.ActionMethodInOut;
-import com.iohao.little.game.action.skeleton.core.flow.FlowAttr;
+import com.iohao.little.game.action.skeleton.core.flow.attr.FlowAttr;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
+import com.iohao.little.game.action.skeleton.core.flow.attr.FlowOption;
 import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
-import com.iohao.little.game.common.kit.attr.AttrOption;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,7 +72,7 @@ import java.util.Objects;
  */
 public class DebugInOut implements ActionMethodInOut {
 
-    AttrOption<Long> timeKey = AttrOption.valueOf("ExecuteTimeInOutStartTime");
+    final FlowOption<Long> timeKey = FlowOption.valueOf("ExecuteTimeInOutStartTime");
 
     @Override
     public void fuckIn(FlowContext flowContext) {
@@ -91,6 +91,7 @@ public class DebugInOut implements ActionMethodInOut {
 
         String template = """
                 ┏━━不符合验证━━━ Debug. [({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo}
+                ┣ userId: {userId}
                 ┣ 参数: {paramName} : {paramData}
                 ┣ 错误码: {errorCode}
                 ┣ 错误信息: {validatorMsg}
@@ -113,6 +114,7 @@ public class DebugInOut implements ActionMethodInOut {
 
         String template = """
                 ┏━━━━━ Debug. [({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo}
+                ┣ userId: {userId}
                 ┣ 参数: {paramName} : {paramData}
                 ┣ 响应: {returnData}
                 ┣ 时间: {time} ms (业务方法总耗时)
@@ -127,7 +129,7 @@ public class DebugInOut implements ActionMethodInOut {
     public void fuckOut(FlowContext flowContext) {
 
         long currentTimeMillis = System.currentTimeMillis();
-        Long time = flowContext.optionValue(timeKey, currentTimeMillis);
+        Long time = flowContext.option(timeKey, currentTimeMillis);
 
         long ms = System.currentTimeMillis() - time;
 
@@ -143,6 +145,7 @@ public class DebugInOut implements ActionMethodInOut {
         // 路由信息
         CmdInfo cmdInfo = flowContext.getRequest().getCmdInfo();
         paramMap.put("cmdInfo", cmdInfo);
+        paramMap.put("userId", flowContext.getUserId());
 
         paramMap.put("paramName", "");
         paramMap.put("paramData", "");

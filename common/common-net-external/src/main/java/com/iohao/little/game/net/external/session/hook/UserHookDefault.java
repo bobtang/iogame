@@ -17,7 +17,7 @@
 package com.iohao.little.game.net.external.session.hook;
 
 import com.iohao.little.game.net.external.session.UserSession;
-import io.netty.channel.Channel;
+import com.iohao.little.game.net.external.session.UserSessions;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -28,14 +28,18 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class UserHookDefault implements UserHook {
+
     @Override
-    public void into(long userId, Channel channel) {
-        log.info("玩家 {} 上线 -- tcpSession. channel: {}", userId, channel);
-        log.info("当前玩家数量： {}", UserSession.me().countOnline());
+    public void into(UserSession userSession) {
+        long userId = userSession.getUserId();
+        log.info("玩家上线 userId: {} -- {}", userId, userSession.getUserChannelId());
+        log.info("当前在线玩家数量： {}", UserSessions.me().countOnline());
     }
 
     @Override
-    public void quit(long userId, Channel channel) {
-        log.info("玩家 {} 退出 -- tcpSession. channel: {}", userId, channel);
+    public void quit(UserSession userSession) {
+        long userId = userSession.getUserId();
+        log.info("玩家退出 userId: {} -- {}", userId, userSession.getUserChannelId());
+        log.info("当前在线玩家数量： {}", UserSessions.me().countOnline());
     }
 }

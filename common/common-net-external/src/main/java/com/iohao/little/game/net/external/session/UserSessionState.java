@@ -6,27 +6,23 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License..
+ * limitations under the License.
  */
-package com.iohao.little.game.action.skeleton.core.flow;
-
-import com.iohao.little.game.common.kit.attr.AttrOption;
+package com.iohao.little.game.net.external.session;
 
 /**
- * flow 上下文的一些扩展属性
- *
  * @author 洛朱
- * @date 2022-01-31
+ * @date 2022-03-15
  */
-public interface FlowAttr {
-    /** 路由 */
-    AttrOption<Integer> cmdMerge = AttrOption.valueOf("cmdMerge");
-    /** 异常消息 */
-    AttrOption<String> msgException = AttrOption.valueOf("msgException");
+public enum UserSessionState {
+    /** 活跃的 */
+    ACTIVE,
+    /** 死的 */
+    DEAD;
 }

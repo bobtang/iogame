@@ -23,6 +23,7 @@ import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.external.bootstrap.ExternalKit;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import com.iohao.little.game.net.external.session.UserSession;
+import com.iohao.little.game.net.external.session.UserSessions;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,7 +49,10 @@ public class ExternalResponseMessageAsyncUserProcessor extends AsyncUserProcesso
 
         // 响应结果给用户
         long userId = responseMessage.getUserId();
-        Channel channel = UserSession.me().getChannel(userId);
+
+        UserSession userSession = UserSessions.me().getUserSession(userId);
+
+        Channel channel = userSession.getChannel();
 
         channel.writeAndFlush(message);
     }

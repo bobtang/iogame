@@ -18,6 +18,8 @@ package com.iohao.little.game.net.external.bootstrap.heart;
 
 import com.iohao.little.game.action.skeleton.core.exception.ActionErrorEnum;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
+import com.iohao.little.game.net.external.bootstrap.message.ExternalMessageCmdCode;
+import com.iohao.little.game.net.external.session.UserSession;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -33,9 +35,9 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2022-03-14
  */
 @Slf4j
-public class IdleCallbackDefault implements IdleCallback {
+public class IdleHookDefault implements IdleHook {
     @Override
-    public boolean callback(ChannelHandlerContext ctx, IdleStateEvent event, long userId) {
+    public boolean callback(ChannelHandlerContext ctx, IdleStateEvent event, UserSession userSession) {
         IdleState state = event.state();
         if (state == IdleState.READER_IDLE) {
             /* 读超时 */
@@ -49,10 +51,13 @@ public class IdleCallbackDefault implements IdleCallback {
         }
 
         ExternalMessage externalMessage = new ExternalMessage();
-        externalMessage.setCmdCode(0);
+        externalMessage.setCmdCode(ExternalMessageCmdCode.idle);
+        // 错误码
         externalMessage.setResponseStatus(ActionErrorEnum.idleErrorCode.getCode());
+        // 错误消息
         externalMessage.setValidMsg(ActionErrorEnum.idleErrorCode.getMsg() + " : " + state.name());
 
+        // 通知客户端，触发了心跳事件
         ctx.writeAndFlush(externalMessage);
 
         return true;

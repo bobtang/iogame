@@ -20,6 +20,7 @@ import cn.hutool.core.util.ArrayUtil;
 import com.iohao.little.game.action.skeleton.core.CmdKit;
 import com.iohao.little.game.common.kit.ProtoKit;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
+import com.iohao.little.game.net.external.bootstrap.message.ExternalMessageCmdCode;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;
@@ -76,7 +77,7 @@ public class ExternalCodecWebsocketProtoForCSharp extends MessageToMessageCodec<
 [8, 1, 24, 129, 128, 4]
          */
         ExternalMessage externalMessage = new ExternalMessage();
-        externalMessage.setCmdCode(1);
+        externalMessage.setCmdCode(ExternalMessageCmdCode.biz);
         externalMessage.setProtocolSwitch(0);
         externalMessage.setCmdMerge(CmdKit.merge(1,1));
         externalMessage.setResponseStatus(0);
