@@ -22,6 +22,10 @@ import lombok.experimental.FieldDefaults;
 
 /**
  * action 错误码
+ * <pre>
+ *     关于异常机制的解释可以参考这里:
+ *     https://www.yuque.com/iohao/game/avlo99
+ * </pre>
  *
  * @author 洛朱
  * @date 2022-01-14
@@ -32,11 +36,13 @@ public enum ActionErrorEnum implements MsgExceptionInfo {
     /** 系统其它错误 */
     systemOtherErrCode(-1000, "系统其它错误"),
     /** 参数验错误码 */
-    validateErrCode(-1001, "参数验错误码"),
-    /** 路由错误码 */
-    cmdInfoErrorCode(-1002, "路由错误码,一般是客户端请求了不存在的路由引起的"),
+    validateErrCode(-1001, "参数验错误"),
+    /** 路由错误码，一般是客户端请求了不存在的路由引起的 */
+    cmdInfoErrorCode(-1002, "路由错误"),
     /** 心跳错误码 */
     idleErrorCode(-1003, "心跳超时相关"),
+    /** 需要登录后才能掉用业务方法 */
+    verifyIdentity(-1004, "请先登录"),
     ;
 
     /** 消息码 */

@@ -26,9 +26,10 @@ import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 默认的心跳事件回调
+ * 默认的心跳事件回调，只做简单打印
  * <pre>
- *     只做简单打印
+ *     关于心跳相关的可以参考这里：
+ *     https://www.yuque.com/iohao/game/uueq3i
  * </pre>
  *
  * @author 洛朱

@@ -1,3 +1,34 @@
+2022-03-27
+新增 spring 集成 (#I4Z2HS)
+
+移除 widget-common 模块
+
+业务框架优化
+    优化部份 list 结构改为 array
+    DefaultActionFactoryBean 新增创建 action 混合特性
+
+业务框架文档相关
+    自动生成系统错误码到 doc_game.txt 文件中，不需要在手动配置
+
+新增示例
+    example/example-for-spring
+    spring集成 相关 DemoSpringBootApplication.java
+
+    example/example-interaction
+    多逻辑服相互交互的 DemoInteractionApplication.java
+
+FlowContext 新增方法
+    getCmdInfo 路由信息
+    invokeModuleMessageData （请求其他子服务器（其他逻辑服）的数据）
+    broadcast (广播)
+
+changeName
+    ClientStartupConfig --> ClientStartup
+    ServerStartupConfig --> ServerStartup
+    ActionControllerFactoryBean --> ActionFactoryBean
+    InOutInfo --> InOutManager
+    AbstractExternalClientStartupConfig --> AbstractExternalClientStartup
+
 2022-03-21
 新增 UserSession (与 channel 是 1:1 的关系，可取到对应的 userId、channel 等信息。 )
 

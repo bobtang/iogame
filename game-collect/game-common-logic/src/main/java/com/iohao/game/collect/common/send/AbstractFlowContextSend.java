@@ -17,8 +17,6 @@
 package com.iohao.game.collect.common.send;
 
 import com.iohao.little.game.action.skeleton.core.ActionSend;
-import com.iohao.little.game.action.skeleton.core.ServerContext;
-import com.iohao.little.game.action.skeleton.core.flow.attr.FlowAttr;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.widget.light.domain.event.message.Eo;
@@ -53,8 +51,7 @@ public abstract class AbstractFlowContextSend implements Topic, Eo, ActionSend {
     /** 业务框架 flow 上下文 */
     protected final FlowContext flowContext;
 
-    public AbstractFlowContextSend(FlowContext flowContext) {
-
+    protected AbstractFlowContextSend(FlowContext flowContext) {
         this.flowContext = flowContext;
     }
 
@@ -125,8 +122,7 @@ public abstract class AbstractFlowContextSend implements Topic, Eo, ActionSend {
         this.trick();
 
         // 推送响应
-        ServerContext serverContext = flowContext.option(FlowAttr.serverContext);
-        serverContext.broadcast(this.flowContext, this.userIds);
+        flowContext.broadcast(this.userIds);
     }
 
     /**

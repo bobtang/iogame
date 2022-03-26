@@ -20,8 +20,6 @@ import com.iohao.little.game.action.skeleton.core.ActionCommand;
 import com.iohao.little.game.action.skeleton.core.ValidatorKit;
 import com.iohao.little.game.action.skeleton.core.flow.ActionMethodParamParser;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
-import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
-import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.common.kit.ProtoKit;
 
 import java.util.Objects;
@@ -37,13 +35,13 @@ public class DefaultActionMethodParamParser implements ActionMethodParamParser {
     @Override
     public Object[] listParam(final FlowContext flowContext) {
 
-        ActionCommand actionCommand = flowContext.getActionCommand();
+        var actionCommand = flowContext.getActionCommand();
         if (!actionCommand.isHasMethodParam()) {
             return METHOD_PARAMS;
         }
 
-        RequestMessage request = flowContext.getRequest();
-        ResponseMessage response = flowContext.getResponse();
+        var request = flowContext.getRequest();
+        var response = flowContext.getResponse();
 
         final var paramInfos = actionCommand.getParamInfos();
 
@@ -54,7 +52,6 @@ public class DefaultActionMethodParamParser implements ActionMethodParamParser {
             ActionCommand.ParamInfo paramInfo = paramInfos[i];
             Class<?> paramClazz = paramInfo.getParamClazz();
 
-            // 这里可以使用策略模式 （但现在还不着急）
             if (FlowContext.class.equals(paramClazz)) {
                 // flow 上下文
                 pars[i] = flowContext;
@@ -82,5 +79,19 @@ public class DefaultActionMethodParamParser implements ActionMethodParamParser {
         }
 
         return pars;
+    }
+
+
+    private DefaultActionMethodParamParser() {
+
+    }
+
+    public static DefaultActionMethodParamParser me() {
+    	return Holder.ME;
+    }
+
+    /** 通过 JVM 的类加载机制, 保证只加载一次 (singleton) */
+    private static class Holder {
+        static final DefaultActionMethodParamParser ME = new DefaultActionMethodParamParser();
     }
 }

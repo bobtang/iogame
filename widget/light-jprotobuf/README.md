@@ -11,3 +11,8 @@ protoc --java_out=. one.proto
 protoc --java_out=. common.proto
 
 ```
+
+
+see:
+
+https://www.yuque.com/iohao/game/vpe2t6

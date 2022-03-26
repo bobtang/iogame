@@ -19,13 +19,18 @@ package com.iohao.little.game.net.external.bolt;
 import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
+import com.iohao.little.game.action.skeleton.core.exception.ActionErrorEnum;
 import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.little.game.net.external.bootstrap.ExternalKit;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
+import com.iohao.little.game.net.external.config.ExternalOtherConfig;
+import com.iohao.little.game.net.external.session.UserChannelId;
 import com.iohao.little.game.net.external.session.UserSession;
 import com.iohao.little.game.net.external.session.UserSessions;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Objects;
 
 
 /**
@@ -47,13 +52,29 @@ public class ExternalResponseMessageAsyncUserProcessor extends AsyncUserProcesso
 
         ExternalMessage message = ExternalKit.convertExternalMessage(responseMessage);
 
+        UserSession userSession = null;
+
+        try {
+            // true 表示请求业务方法需要先登录
+            if (ExternalOtherConfig.verifyIdentity) {
+                long userId = responseMessage.getUserId();
+                userSession = UserSessions.me().getUserSession(userId);
+            } else {
+                String channelId = responseMessage.getUserChannelId();
+                userSession = UserSessions.me().getUserSession(new UserChannelId(channelId));
+            }
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            message.setResponseStatus(ActionErrorEnum.verifyIdentity.getCode());
+            message.setValidMsg(e.getMessage());
+        }
+
+        if (Objects.isNull(userSession)) {
+            return;
+        }
+
         // 响应结果给用户
-        long userId = responseMessage.getUserId();
-
-        UserSession userSession = UserSessions.me().getUserSession(userId);
-
         Channel channel = userSession.getChannel();
-
         channel.writeAndFlush(message);
     }
 

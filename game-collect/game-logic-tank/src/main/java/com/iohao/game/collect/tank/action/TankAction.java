@@ -84,6 +84,7 @@ public class TankAction {
         // 广播这颗子弹的消息
         TankRoomEntity room = roomService.getRoomByUserId(userId);
 
+        // 广播业务数据给房间内的所有玩家
         room.broadcast(flowContext, tankBullet);
     }
 

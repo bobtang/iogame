@@ -23,6 +23,10 @@ import java.io.Serial;
 
 /**
  * 业务框架 异常消息
+ * <pre>
+ *     关于异常机制的解释可以参考这里:
+ *     https://www.yuque.com/iohao/game/avlo99
+ * </pre>
  *
  * @author 洛朱
  * @Date 2021-12-20

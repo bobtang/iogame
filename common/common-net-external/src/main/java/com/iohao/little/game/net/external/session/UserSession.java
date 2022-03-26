@@ -32,6 +32,9 @@ import java.util.Objects;
  * 用户的唯一 session 信息
  * <pre>
  *     与 channel 是 1:1 的关系，可取到对应的 userId、channel 等信息
+ *
+ *     关于用户管理 UserSessions 和 UserSession 可以参考这里：
+ *     https://www.yuque.com/iohao/game/wg6lk7
  * </pre>
  *
  * @author 洛朱

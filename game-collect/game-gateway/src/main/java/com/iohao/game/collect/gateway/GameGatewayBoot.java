@@ -16,7 +16,7 @@
  */
 package com.iohao.game.collect.gateway;
 
-import com.iohao.little.game.net.server.core.ServerStartupConfig;
+import com.iohao.little.game.net.server.core.ServerStartup;
 
 /**
  * @author 洛朱
@@ -35,7 +35,7 @@ public class GameGatewayBoot {
         System.out.println("网关启动 ok!");
     }
 
-    public ServerStartupConfig createGateway() {
-        return new GameGateServerStartupConfig();
+    public ServerStartup createGateway() {
+        return new GameGateServerStartup();
     }
 }

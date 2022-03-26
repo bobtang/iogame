@@ -16,17 +16,17 @@
  */
 package com.iohao.little.game.net.external.simple;
 
-import com.iohao.little.game.net.client.core.ClientStartupConfig;
+import com.iohao.little.game.net.client.core.ClientStartup;
 import com.iohao.little.game.net.client.core.RemoteAddress;
 import com.iohao.little.game.net.common.BoltServer;
 import com.iohao.little.game.net.external.ExternalServer;
 import com.iohao.little.game.net.external.ExternalServerBuilder;
-import com.iohao.little.game.net.external.bolt.AbstractExternalClientStartupConfig;
+import com.iohao.little.game.net.external.bolt.AbstractExternalClientStartup;
 import com.iohao.little.game.net.external.bootstrap.ExternalJoinEnum;
 import com.iohao.little.game.net.message.common.ModuleKeyKit;
 import com.iohao.little.game.net.message.common.ModuleMessage;
 import com.iohao.little.game.net.message.common.ModuleType;
-import com.iohao.little.game.net.server.core.ServerStartupConfig;
+import com.iohao.little.game.net.server.core.ServerStartup;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
@@ -59,13 +59,13 @@ public class SimpleHelper {
      * @param gatewayPort  游戏网关端口
      * @param logicList    逻辑服列表
      */
-    public void run(int externalPort, int gatewayPort, List<ClientStartupConfig> logicList) {
+    public void run(int externalPort, int gatewayPort, List<ClientStartup> logicList) {
 
         // 对外服
         ExternalServer externalServer = createExternalServer(externalPort, gatewayPort);
 
         // 网关服务器
-        ServerStartupConfig gatewayServer = () -> new BoltServer(gatewayPort);
+        ServerStartup gatewayServer = () -> new BoltServer(gatewayPort);
 
         // 简单的启动器
         new SimpleRunOne()
@@ -81,25 +81,25 @@ public class SimpleHelper {
 
     private ExternalServer createExternalServer(int externalPort, int gatewayPort) {
         // 内部逻辑服 连接网关服务器
-        var externalClientStartupConfig = new InternalExternalClientStartupConfig(gatewayPort);
+        var externalClientStartup = new InternalExternalClientStartup(gatewayPort);
 
         // 游戏对外服 - 构建器
         ExternalServerBuilder builder = ExternalServer.newBuilder(externalPort)
                 // websocket 方式连接
                 .externalJoinEnum(ExternalJoinEnum.WEBSOCKET)
                 // 内部逻辑服 连接网关服务器
-                .externalClientStartupConfig(externalClientStartupConfig);
+                .externalClientStartup(externalClientStartup);
 
         // 构建游戏对外服
         return builder.build();
     }
 
 
-    static class InternalExternalClientStartupConfig extends AbstractExternalClientStartupConfig {
+    private static class InternalExternalClientStartup extends AbstractExternalClientStartup {
         /** 游戏网关端口 */
         int gatewayPort;
 
-        public InternalExternalClientStartupConfig(int gatewayPort) {
+        public InternalExternalClientStartup(int gatewayPort) {
             this.gatewayPort = gatewayPort;
         }
 

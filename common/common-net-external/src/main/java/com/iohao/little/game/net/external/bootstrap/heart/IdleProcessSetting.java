@@ -31,6 +31,10 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 心跳相关设置
+ * <pre>
+ *     关于心跳相关的可以参考这里：
+ *     https://www.yuque.com/iohao/game/uueq3i
+ * </pre>
  *
  * @author 洛朱
  * @date 2022-03-13

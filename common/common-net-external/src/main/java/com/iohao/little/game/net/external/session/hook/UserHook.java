@@ -22,6 +22,11 @@ import com.iohao.little.game.net.external.session.UserSession;
 /**
  * UserHook 钩子接口，上线时、下线时会触发
  * <pre>
+ *     参考 用户连接登录编写 文档
+ *     https://www.yuque.com/iohao/game/tywkqv
+ * </pre>
+ *
+ * <pre>
  *     实际上需要真正登录过，才会触发 ：into和quit 方法
  *     see {@link UserIdSettingKit#settingUserId}
  *
@@ -32,11 +37,6 @@ import com.iohao.little.game.net.external.session.UserSession;
  *     channel.attr(UserSessionAttr.verifyIdentity).set(true);
  *
  *     利用好该接口，可以把用户当前在线状态通知到逻辑服，比如使用 redis PubSub 之类的。
- * </pre>
- *
- * <pre>
- *     参考 用户连接登录编写 文档
- *     https://www.yuque.com/iohao/game/tywkqv
  * </pre>
  *
  * @author 洛朱

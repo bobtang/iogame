@@ -16,6 +16,8 @@
  */
 package com.iohao.game.example.one;
 
+import com.iohao.game.example.one.msg.HelloReq;
+import com.iohao.game.example.one.action.DemoCmd;
 import com.iohao.little.game.common.kit.ProtoKit;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
 import com.iohao.little.game.net.external.bootstrap.message.ExternalMessageCmdCode;
@@ -28,6 +30,8 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 
 /**
+ * 模拟游戏客户端
+ *
  * @author 洛朱
  * @date 2022-02-24
  */
@@ -41,15 +45,15 @@ public class DemoWebsocketClient {
 
         WebSocketClient webSocketClient = new WebSocketClient(new URI(wsUrl), new Draft_6455()) {
             @Override
-            public void onOpen(ServerHandshake handshakedata) {
+            public void onOpen(ServerHandshake serverHandshake) {
                 // 建立连接后 发送一条消息给游戏服务器
                 HelloReq helloReq = new HelloReq();
                 helloReq.setName("塔姆");
 
                 // 路由, 对应服务端逻辑服的业务类路由地址
-                int cmd = 1;
-                int subCmd = 1;
-//                int subCmd = 0;
+                int cmd = DemoCmd.cmd;
+                int subCmd = DemoCmd.here;
+//                subCmd = DemoCmd.jackson;
 
                 // 游戏框架内置的协议， 与游戏前端相互通讯的协议
                 ExternalMessage externalMessage = new ExternalMessage();

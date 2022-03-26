@@ -38,6 +38,9 @@ import java.util.Objects;
  * 用户 session 管理器
  * <pre>
  *     对所有用户UserSession的管理，统计在线用户等
+ *
+ *     关于用户管理 UserSessions 和 UserSession 可以参考这里：
+ *     https://www.yuque.com/iohao/game/wg6lk7
  * </pre>
  *
  * @author 洛朱
@@ -70,7 +73,7 @@ public class UserSessions {
      * @param ctx ctx
      * @return UserSession
      */
-    public UserSession getUserSession(ChannelHandlerContext ctx) {
+    public UserSession getUserSession(ChannelHandlerContext ctx) throws RuntimeException {
         return this.getUserSession(ctx.channel());
     }
 
@@ -80,7 +83,7 @@ public class UserSessions {
      * @param channel channel
      * @return UserSession
      */
-    public UserSession getUserSession(Channel channel) {
+    public UserSession getUserSession(Channel channel) throws RuntimeException {
         UserSession userSession = channel.attr(UserSessionAttr.userSession).get();
 
         if (Objects.isNull(userSession)) {
@@ -96,11 +99,21 @@ public class UserSessions {
      * @param userId userId
      * @return UserSession
      */
-    public UserSession getUserSession(long userId) {
+    public UserSession getUserSession(long userId) throws RuntimeException {
         UserSession userSession = this.userIdMap.get(userId);
 
         if (Objects.isNull(userSession)) {
             throw new RuntimeException("userSession 不存在，请先登录在使用此方法");
+        }
+
+        return userSession;
+    }
+
+    public UserSession getUserSession(UserChannelId userChannelId) throws RuntimeException {
+        UserSession userSession = this.userChannelIdMap.get(userChannelId);
+
+        if (Objects.isNull(userSession)) {
+            throw new RuntimeException("userSession 不存在");
         }
 
         return userSession;
@@ -137,7 +150,7 @@ public class UserSessions {
      */
     public boolean settingUserId(UserChannelId userChannelId, long userId) {
 
-        UserSession userSession = this.userChannelIdMap.get(userChannelId);
+        UserSession userSession = this.getUserSession(userChannelId);
         if (Objects.isNull(userSession)) {
             return false;
         }

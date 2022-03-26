@@ -20,13 +20,26 @@ import com.iohao.little.game.action.skeleton.core.CmdInfo;
 import com.iohao.little.game.action.skeleton.core.CmdInfoFlyweightFactory;
 
 /**
+ * 逻辑服 cmd 模块
+ *
  * @author 洛朱
  * @date 2022-01-11
  */
 public interface ActionModuleCmd {
     interface Info {
+        /**
+         * 主路由 cmd
+         *
+         * @return cmd
+         */
         int cmd();
 
+        /**
+         * cmdInfo
+         *
+         * @param subCmd subCmd
+         * @return CmdInfo
+         */
         default CmdInfo cmdInfo(int subCmd) {
             return CmdInfoFlyweightFactory.me().getCmdInfo(cmd(), subCmd);
         }

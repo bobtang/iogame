@@ -39,6 +39,8 @@ public class RequestMessage extends BarMessage {
     public void settingCommonAttr(final ResponseMessage responseMessage) {
         responseMessage.setCmdInfo(this.getCmdInfo())
                 .setUserId(this.userId)
-                .setRpcCommandType(this.rpcCommandType);
+                .setRpcCommandType(this.rpcCommandType)
+                .setUserChannelId(this.userChannelId)
+        ;
     }
 }

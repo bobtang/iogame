@@ -44,7 +44,7 @@ public class ServerBootstrapEventLoopGroupOptionForOther implements ServerBootst
 
     @Override
     public EventLoopGroup workerGroup() {
-        int availableProcessors = Runtime.getRuntime().availableProcessors() * 2;
+        int availableProcessors = Runtime.getRuntime().availableProcessors() << 1;
 
         return new NioEventLoopGroup(
                 availableProcessors,

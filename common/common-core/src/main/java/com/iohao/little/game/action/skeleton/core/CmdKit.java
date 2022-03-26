@@ -63,10 +63,10 @@ public class CmdKit {
         return (cmd << 16) + subCmd;
     }
 
-    public static String mergeToString(int merge) {
-        int cmd = getCmd(merge);
-        int subCmd = getSubCmd(merge);
-        String template = "[{}-{}-{}]";
-        return StrUtil.format(template, cmd, subCmd, merge);
+    public static String mergeToString(int cmdMerge) {
+        int cmd = getCmd(cmdMerge);
+        int subCmd = getSubCmd(cmdMerge);
+        String template = "[cmd:{} - subCmd:{} - cmdMerge:{}]";
+        return StrUtil.format(template, cmd, subCmd, cmdMerge);
     }
 }

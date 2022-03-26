@@ -33,20 +33,24 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
 
     @Override
     public void execute(FlowContext flowContext) {
+        // 设置 flowContext 的一些属性
         this.settingFlowContext(flowContext);
+
         // 业务框架
         BarSkeleton barSkeleton = flowContext.getBarSkeleton();
         // 命令对象
         ActionCommand actionCommand = flowContext.getActionCommand();
+        // inout manager
+        InOutManager inOutManager = barSkeleton.inOutManager;
 
         // 1 ---- fuck前 在调用控制器对应处理方法前, 执行inout的in.
-        fuckIn(flowContext);
+        inOutManager.fuckIn(flowContext);
 
         // true 表示没有错误码 。如果在这里有错误码，一般是业务参数验证得到的错误 （既开启了业务框架的验证）
         boolean notError = !flowContext.getResponse().hasError();
         if (notError) {
             // 2 ---- ActionController 工厂
-            var factoryBean = barSkeleton.getActionControllerFactoryBean();
+            var factoryBean = barSkeleton.getActionFactoryBean();
             var controller = factoryBean.getBean(actionCommand);
             // 业务 actionController
             flowContext.setActionController(controller);
@@ -68,8 +72,7 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
         actionAfter.execute(flowContext);
 
         // 6 ---- fuck后 在调用控制器对应处理方法结束后, 执行inout的out.
-        fuckOut(flowContext);
-
+        inOutManager.fuckOut(flowContext);
     }
 
     private void settingFlowContext(FlowContext flowContext) {
@@ -86,6 +89,7 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
 
         // 响应
         var responseMessage = responseMessageCreate.createResponseMessage();
+
         request.settingCommonAttr(responseMessage);
 
         flowContext
@@ -100,16 +104,17 @@ public final class DefaultActionCommandFlowExecute implements ActionCommandFlowE
         flowContext.setMethodParams(pars);
     }
 
-    private void fuckIn(FlowContext flowContext) {
-        BarSkeleton barSkeleton = flowContext.getBarSkeleton();
-        InOutInfo inOutInfo = barSkeleton.inOutInfo;
-        inOutInfo.fuckIn(flowContext);
+
+    private DefaultActionCommandFlowExecute() {
+
     }
 
-    private void fuckOut(FlowContext flowContext) {
-        BarSkeleton barSkeleton = flowContext.getBarSkeleton();
-        InOutInfo inOutInfo = barSkeleton.inOutInfo;
-        inOutInfo.fuckOut(flowContext);
+    public static DefaultActionCommandFlowExecute me() {
+        return Holder.ME;
     }
 
+    /** 通过 JVM 的类加载机制, 保证只加载一次 (singleton) */
+    private static class Holder {
+        static final DefaultActionCommandFlowExecute ME = new DefaultActionCommandFlowExecute();
+    }
 }

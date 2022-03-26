@@ -16,7 +16,6 @@
  */
 package com.iohao.little.game.action.skeleton.core;
 
-import cn.hutool.core.util.StrUtil;
 import lombok.Getter;
 
 /**
@@ -56,9 +55,7 @@ public final class CmdInfo {
         this.subCmd = subCmd;
         this.cmdMerge = CmdKit.merge(cmd, subCmd);
 
-        String template = "[cmd:{} - subCmd:{} - cmdMerge:{}]";
-        this.info = StrUtil.format(template, cmd, subCmd, cmdMerge);
-
+        this.info = CmdKit.mergeToString(this.cmdMerge);
     }
 
     @Override

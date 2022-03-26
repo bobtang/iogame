@@ -18,6 +18,7 @@ package com.iohao.little.game.action.skeleton.core;
 
 import com.iohao.little.game.action.skeleton.annotation.ActionController;
 import com.iohao.little.game.action.skeleton.annotation.DocActionSends;
+import com.iohao.little.game.action.skeleton.core.exception.ActionErrorEnum;
 import com.iohao.little.game.action.skeleton.core.exception.MsgExceptionInfo;
 import com.iohao.little.game.common.kit.ClassScanner;
 import lombok.AccessLevel;
@@ -58,9 +59,13 @@ public class BarSkeletonBuilderParamConfig {
 
     /**
      * 创建业务框架构建器
+     *
      * @return 业务框架构建器
      */
     public BarSkeletonBuilder createBuilder() {
+        // 错误码-用于文档的生成
+        this.addErrorCode(ActionErrorEnum.values());
+
         // 业务框架构建器
         BarSkeletonBuilder builder = BarSkeleton.newBuilder();
 
@@ -80,7 +85,7 @@ public class BarSkeletonBuilderParamConfig {
      * 业务 action 类
      * <pre>
      *     需要扫描的类
-     *     内部会扫描当前类路径和子包路径
+     *     内部会扫描当前类路径和子包路径 下的所有类
      *     类需要是 @ActionController 注解的
      * </pre>
      *

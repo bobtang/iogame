@@ -43,7 +43,7 @@ public class GameExternalBoot {
                 // 开启心跳
 //                .enableIdle()
                 // 内部逻辑服 连接网关服务器
-                .externalClientStartupConfig(new GameExternalClientStartupConfig());
+                .externalClientStartup(new GameExternalClientStartup());
 
         // 构建游戏对外服
         return builder.build();

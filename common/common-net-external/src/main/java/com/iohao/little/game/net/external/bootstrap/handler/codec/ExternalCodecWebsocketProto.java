@@ -46,7 +46,7 @@ public class ExternalCodecWebsocketProto extends MessageToMessageCodec<BinaryWeb
 
         // 编码器 - ExternalMessage ---> 字节数组
         byte[] bytes = ProtoKit.toBytes(msg);
-        log.debug("=== array 发送 客户端消息=== {}", msg);
+        log.debug("=== 【对外服】 发送消息 给 游戏客户端=== {}", msg);
         ByteBuf byteBuf = Unpooled.wrappedBuffer(bytes);
 
         BinaryWebSocketFrame socketFrame = new BinaryWebSocketFrame(byteBuf);
@@ -61,7 +61,7 @@ public class ExternalCodecWebsocketProto extends MessageToMessageCodec<BinaryWeb
         content.readBytes(msgBytes);
 
         ExternalMessage message = ProtoKit.parseProtoByte(msgBytes, ExternalMessage.class);
-        log.debug("=== array 接收 客户端消息=== {}", message);
+        log.debug("=== 【对外服】 接收 游戏客户端的消息 === {}", message);
         out.add(message);
     }
 

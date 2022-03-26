@@ -18,26 +18,10 @@
     </properties>
 
     <dependencies>
-
-        <!-- 对外服 -->
         <dependency>
             <groupId>com.iohao.game</groupId>
-            <artifactId>common-net-external</artifactId>
+            <artifactId>example-parent</artifactId>
             <version>${project-revision.version}</version>
-        </dependency>
-
-        <!-- 模拟客户端 https://mvnrepository.com/artifact/org.java-websocket/Java-WebSocket -->
-        <dependency>
-            <groupId>org.java-websocket</groupId>
-            <artifactId>Java-WebSocket</artifactId>
-            <version>1.5.2</version>
-        </dependency>
-
-        <!-- 这个不是必须的， 这里使用了 springboot 的控制台色彩相关日志 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <version>${springboot.version}</version>
         </dependency>
     </dependencies>
 

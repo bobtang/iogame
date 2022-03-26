@@ -22,8 +22,6 @@
         <!-- 网络游戏框架 : 对外的服务器 （面向真实用户） -->
         <module>common/common-net-external</module>
 
-        <!-- 轻量小部件  -->
-        <module>widget/widget-common</module>
         <!-- 小部件 : 任务延时器 -->
         <module>widget/light-timer-task</module>
         <!-- 小部件 : 领域事件 -->
@@ -36,7 +34,10 @@
         <module>widget/light-all</module>
 
         <!-- 示例  -->
+        <module>example/example-parent</module>
         <module>example/example-run-one</module>
+        <module>example/example-for-spring</module>
+        <module>example/example-interaction</module>
 
         <!-- 实践案例 - 通用部份  -->
         <module>game-collect/game-common-proto</module>
@@ -60,6 +61,7 @@
         <module>game-collect/game-test</module>
         <!-- java 坦克游戏 fxgl -->
         <module>game-collect/fxgl-tank</module>
+
 
     </modules>
 
@@ -131,11 +133,13 @@
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 
         <!-- temp spring boot https://mvnrepository.com/artifact/org.springframework/spring-core -->
-        <spring.version>5.3.16</spring.version>
+        <spring.version>5.3.17</spring.version>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter -->
         <springboot.version>2.6.4</springboot.version>
         <!--  junit https://mvnrepository.com/artifact/junit/junit  -->
         <junit.version>4.13.2</junit.version>
+        <!-- 模拟客户端 https://mvnrepository.com/artifact/org.java-websocket/Java-WebSocket -->
+        <java-websocket.version>1.5.2</java-websocket.version>
 
     </properties>
 

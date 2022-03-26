@@ -43,10 +43,9 @@ import java.util.Set;
  * @author 洛朱
  * @date 2022-01-16
  */
-@Setter
 @UtilityClass
 public class ValidatorKit {
-
+    @Setter
     private Validator validator;
 
     public Validator getValidator() {
@@ -104,7 +103,6 @@ public class ValidatorKit {
         }
 
         for (ActionCommand.ParamInfo paramInfo : paramInfos) {
-
 
             if (paramInfo.isExtension()) {
                 // 过滤不需要验证的参数

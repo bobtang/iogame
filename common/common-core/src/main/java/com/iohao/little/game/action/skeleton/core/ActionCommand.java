@@ -93,6 +93,9 @@ public final class ActionCommand {
     /** 打印信息 */
     final String toStringInfo;
 
+    /** true 表示交付给容器来管理 如 spring 等 */
+    boolean deliveryContainer;
+
     private ActionCommand(Builder builder, BarSkeletonSetting barSkeletonSetting) {
         // -------------- 路由相关 --------------
         this.cmdInfo = CmdInfoFlyweightFactory.me().getCmdInfo(builder.cmd, builder.subCmd);
@@ -116,6 +119,8 @@ public final class ActionCommand {
         this.actionMethodReturnInfo = new ActionMethodReturnInfo(builder);
 
         this.actionCommandDoc = builder.actionCommandDoc;
+
+        this.deliveryContainer = builder.deliveryContainer;
 
         this.toStringInfo = info();
     }
@@ -165,6 +170,8 @@ public final class ActionCommand {
         Class<?> returnTypeClazz;
         /** action command 文档 */
         ActionCommandDoc actionCommandDoc;
+        /** true 表示交付给容器来管理 如 spring 等 */
+        boolean deliveryContainer;
 
         ActionCommand build(BarSkeletonSetting barSkeletonSetting) {
             return new ActionCommand(this, barSkeletonSetting);

@@ -90,7 +90,7 @@ public class DebugInOut implements ActionMethodInOut {
         }
 
         String template = """
-                ┏━━不符合验证━━━ Debug. [({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo}
+                ┏━━错误━━━ Debug. [({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo}
                 ┣ userId: {userId}
                 ┣ 参数: {paramName} : {paramData}
                 ┣ 错误码: {errorCode}

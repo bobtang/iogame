@@ -28,7 +28,7 @@ import com.iohao.little.game.action.skeleton.core.ServerContext;
 public interface FlowAttr {
     /** 异常消息 */
     FlowOption<String> msgException = FlowOption.valueOf("msgException");
-    /** 当前项目启动的服务上下文 */
+    /** 当前项目启动的服务上下文（当前服务器） */
     FlowOption<ServerContext> serverContext = FlowOption.valueOf("serverContext");
     /** bolt async 上下文 */
     FlowOption<AsyncContext> asyncContext = FlowOption.valueOf("asyncContext");

@@ -17,7 +17,7 @@
 package com.iohao.little.game.net.external;
 
 import com.iohao.little.game.common.kit.ExecutorKit;
-import com.iohao.little.game.net.external.bolt.AbstractExternalClientStartupConfig;
+import com.iohao.little.game.net.external.bolt.AbstractExternalClientStartup;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import lombok.AccessLevel;
@@ -40,7 +40,7 @@ public class ExternalServer {
     /** netty 服务器，与真实用户对接 */
     final ServerBootstrap bootstrap;
     /** 内部逻辑服 连接网关服务器，与网关通信 */
-    final AbstractExternalClientStartupConfig externalClientStartupConfig;
+    final AbstractExternalClientStartup externalClientStartup;
     /** ip */
     final String ip;
     /** 对外服端口 */
@@ -50,7 +50,7 @@ public class ExternalServer {
         this.port = builder.port;
         this.ip = builder.ip;
         this.bootstrap = builder.bootstrap;
-        this.externalClientStartupConfig = builder.externalClientStartupConfig;
+        this.externalClientStartup = builder.externalClientStartup;
     }
 
     /**
@@ -68,8 +68,8 @@ public class ExternalServer {
     /**
      * 启动内部逻辑服 连接网关服务器，与网关通信
      */
-    private void startupExternalClientStartupConfig() {
-        singleScheduled.execute(this.externalClientStartupConfig::startup);
+    private void startupExternalClientStartup() {
+        singleScheduled.execute(this.externalClientStartup::startup);
         System.out.println("external 启动内部逻辑服, 用于连接网关服务器");
     }
 
@@ -78,7 +78,7 @@ public class ExternalServer {
      */
     public void startup() {
         // 启动内部逻辑服, 用于连接网关服务器
-        this.startupExternalClientStartupConfig();
+        this.startupExternalClientStartup();
 
         try {
             // 启动对外服

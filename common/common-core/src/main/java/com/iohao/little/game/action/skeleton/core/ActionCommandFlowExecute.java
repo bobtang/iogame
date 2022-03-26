@@ -51,7 +51,7 @@ public interface ActionCommandFlowExecute {
      *
      * @param flowContext FlowContext
      */
-    default void execute(FlowContext flowContext) {
+    void execute(FlowContext flowContext);
 
-    }
+
 }

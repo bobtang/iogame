@@ -19,12 +19,10 @@ package com.iohao.little.game.action.skeleton.core;
 import com.iohao.little.game.action.skeleton.core.doc.ActionSendDocs;
 import com.iohao.little.game.action.skeleton.core.doc.ErrorCodeDocs;
 import com.iohao.little.game.action.skeleton.core.flow.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -41,27 +39,33 @@ import java.util.List;
  * @Date 2021-12-12
  */
 @Accessors(chain = true)
-@Setter
-@Getter
+@Setter(AccessLevel.PACKAGE)
+@Getter(AccessLevel.PACKAGE)
 public class BarSkeleton {
 
     /** ActionCommandManager */
+    @Getter
     final ActionCommandManager actionCommandManager = new ActionCommandManager();
-    /** handlerList */
-    final List<Handler> handlerList = new ArrayList<>();
-    /** InOut 插件相关  */
-    InOutInfo inOutInfo;
+    /** handler array */
+    final Handler[] handlers;
+    /** handler not null, 表示只有一个 handler */
+    final Handler handler;
+
+    /** InOut 插件相关 */
+    InOutManager inOutManager;
     /** 命令执行器 */
     ActionCommandFlowExecute actionCommandFlowExecute;
     /** tcp action 对象创建工厂 */
-    ActionControllerFactoryBean<Object> actionControllerFactoryBean;
+    ActionFactoryBean<Object> actionFactoryBean;
     /** InvokeActionMethod */
     ActionMethodInvoke actionMethodInvoke;
     /** 方法参数解析器 */
     ActionMethodParamParser actionMethodParamParser;
     /** 异常处理 */
+    @Getter
     ActionMethodExceptionProcess actionMethodExceptionProcess;
     /** 结果包装器 */
+    @Getter
     ActionMethodResultWrap actionMethodResultWrap;
     /** 框架执行完后, 最后需要做的事. 一般用于write数据到客户端 */
     ActionAfter actionAfter;
@@ -69,15 +73,19 @@ public class BarSkeleton {
     /** 响应对象的创建 */
     ResponseMessageCreate responseMessageCreate;
     /** 推送相关的文档 */
+    @Getter
     ActionSendDocs actionSendDocs;
     /** 错误码相关的文档 */
+    @Getter
     ErrorCodeDocs errorCodeDocs;
 
-    /** handler not null, 表示只有一个 handler */
-    Handler handler;
-
-    BarSkeleton() {
-
+    BarSkeleton(Handler[] handlers) {
+        this.handlers = handlers;
+        if (this.handlers.length == 1) {
+            this.handler = handlers[0];
+        } else {
+            this.handler = null;
+        }
     }
 
     public static BarSkeletonBuilder newBuilder() {
@@ -86,13 +94,14 @@ public class BarSkeleton {
 
     public void handle(FlowContext flowContext) {
         flowContext.setBarSkeleton(this);
-        if (handler != null) {
-            handler.handler(flowContext);
-        } else {
-            for (Handler handler : handlerList) {
-                if (!handler.handler(flowContext)) {
-                    return;
-                }
+        if (this.handler != null) {
+            this.handler.handler(flowContext);
+            return;
+        }
+
+        for (Handler theHandler : handlers) {
+            if (!theHandler.handler(flowContext)) {
+                return;
             }
         }
     }

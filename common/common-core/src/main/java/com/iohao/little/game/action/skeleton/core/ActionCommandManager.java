@@ -45,7 +45,6 @@ public final class ActionCommandManager {
     @Getter
     ActionCommand[][] actionCommands;
 
-
     /**
      * 获取命令处理器
      *
@@ -87,12 +86,13 @@ public final class ActionCommandManager {
      * @return array
      */
     public int[] arrayCmdMerge() {
-        var actionCommands = this.listActionCommand();
-        var cmdMergeArray = new int[actionCommands.size()];
+        var actionCommandList = this.listActionCommand();
+        var cmdMergeArray = new int[actionCommandList.size()];
 
         var i = 0;
-        for (ActionCommand actionCommand : actionCommands) {
-            cmdMergeArray[i++] = actionCommand.getCmdInfo().getCmdMerge();
+        for (ActionCommand actionCommand : actionCommandList) {
+            cmdMergeArray[i] = actionCommand.getCmdInfo().getCmdMerge();
+            i++;
         }
 
         return cmdMergeArray;

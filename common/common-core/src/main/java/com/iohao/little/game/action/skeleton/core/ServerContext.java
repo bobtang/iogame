@@ -18,6 +18,8 @@ package com.iohao.little.game.action.skeleton.core;
 
 import com.alipay.remoting.AsyncContext;
 import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
+import com.iohao.little.game.action.skeleton.protocol.RequestMessage;
+import com.iohao.little.game.action.skeleton.protocol.ResponseMessage;
 
 import java.util.Collection;
 
@@ -28,5 +30,19 @@ import java.util.Collection;
  * @Date 2021-12-20
  */
 public interface ServerContext extends AsyncContext {
+    /**
+     * 广播消息给 userIdList
+     *
+     * @param flowContext flowContext
+     * @param userIdList  userIdList
+     */
     void broadcast(FlowContext flowContext, Collection<Long> userIdList);
+
+    /**
+     * 根据路由信息来请求其他子服务器（其他逻辑服）的数据
+     *
+     * @param requestMessage requestMessage
+     * @return ResponseMessage
+     */
+    ResponseMessage invokeModuleMessage(RequestMessage requestMessage);
 }

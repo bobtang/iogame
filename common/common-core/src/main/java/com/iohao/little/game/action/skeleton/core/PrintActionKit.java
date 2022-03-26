@@ -32,13 +32,30 @@ import java.util.*;
  * @Date 2021-12-12
  */
 @UtilityClass
-public class PrintActionKit {
+class PrintActionKit {
+
+    void print(BarSkeleton barSkeleton, BarSkeletonSetting setting) {
+        if (setting.isPrintHandler()) {
+            var list = List.of(barSkeleton.getHandlers());
+            PrintActionKit.printHandler(list);
+        }
+
+        if (setting.isPrintInout()) {
+            var list = List.of(barSkeleton.inOutManager.getInOuts());
+            PrintActionKit.printInout(list);
+        }
+
+        if (setting.isPrintAction()) {
+            PrintActionKit.printActionCommand(barSkeleton.actionCommandManager.actionCommands, setting.printActionShort);
+        }
+    }
+
     /**
      * 打印 inout
      *
      * @param inOuts inOuts
      */
-    public void printInout(List<ActionMethodInOut> inOuts) {
+    void printInout(List<ActionMethodInOut> inOuts) {
         String title = "@|CYAN ======================== InOut ========================= |@";
         System.out.println(Ansi.ansi().eraseScreen().render(title));
         System.out.println("如果需要关闭日志, 查看 BarSkeletonBuilder#setting#printInout");
@@ -48,7 +65,7 @@ public class PrintActionKit {
         }
     }
 
-    public void printHandler(List<Handler> handlers) {
+    void printHandler(List<Handler> handlers) {
         String iohaoTitle = "@|CYAN ======================== 业务框架 iohao ========================= |@";
         System.out.println(Ansi.ansi().eraseScreen().render(iohaoTitle));
         String colorStr = "@|BLACK BLACK|@ @|RED RED|@ @|GREEN GREEN|@ @|YELLOW YELLOW|@ @|BLUE BLUE|@ @|MAGENTA MAGENTA|@ @|CYAN CYAN|@ @|WHITE WHITE|@ @|DEFAULT DEFAULT|@";

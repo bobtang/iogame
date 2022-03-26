@@ -25,8 +25,11 @@ import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
 import com.iohao.little.game.action.skeleton.core.doc.ActionCommandDoc;
 import com.iohao.little.game.action.skeleton.core.doc.ActionCommandDocKit;
 import com.iohao.little.game.action.skeleton.core.doc.JavaClassDocInfo;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 import org.jctools.maps.NonBlockingHashMap;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -43,36 +46,17 @@ import java.util.function.Predicate;
  * @author 洛朱
  * @Date 2021-12-12
  */
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public final class ActionCommandInfoBuilder {
 
     @Getter
-    private final Map<Integer, Map<Integer, ActionCommand>> map = new NonBlockingHashMap<>();
+    final Map<Integer, Map<Integer, ActionCommand>> map = new NonBlockingHashMap<>();
 
-    private final BarSkeletonSetting setting;
+    final BarSkeletonSetting setting;
 
     ActionCommandInfoBuilder(BarSkeletonSetting setting) {
         this.setting = setting;
     }
-
-    void clean() {
-        map.clear();
-    }
-
-    private Map<Integer, ActionCommand> getSubCmdMap(int cmd) {
-        var subActionMap = map.get(cmd);
-
-        // 无锁理念
-        if (Objects.isNull(subActionMap)) {
-            subActionMap = new NonBlockingHashMap<>();
-            subActionMap = map.putIfAbsent(cmd, subActionMap);
-            if (Objects.isNull(subActionMap)) {
-                subActionMap = map.get(cmd);
-            }
-        }
-
-        return subActionMap;
-    }
-
 
     /**
      * 构建映射
@@ -103,6 +87,9 @@ public final class ActionCommandInfoBuilder {
             // 子路由 map
             var subActionMap = getSubCmdMap(cmd);
 
+            // true 表示交付给容器来管理 如 spring 等
+            boolean deliveryContainer = this.deliveryContainer(controllerClazz);
+
             JavaClassDocInfo javaClassDocInfo = javaClassDocInfoMap.get(controllerClazz.toString());
 
             // 遍历所有方法上有 ActionMethod 注解的方法对象
@@ -130,7 +117,8 @@ public final class ActionCommandInfoBuilder {
                         .setActionMethodIndex(methodIndex)
                         .setActionMethodAccess(methodAccess)
                         .setReturnTypeClazz(returnType)
-                        .setActionCommandDoc(actionCommandDoc);
+                        .setActionCommandDoc(actionCommandDoc)
+                        .setDeliveryContainer(deliveryContainer);
 
                 // 检测路由是否重复
                 checkExistSubCmd(controllerClazz, subCmd, subActionMap);
@@ -154,6 +142,14 @@ public final class ActionCommandInfoBuilder {
         });
 
         return this;
+    }
+
+    void clean() {
+        map.clear();
+    }
+
+    private boolean deliveryContainer(Class<?> controllerClazz) {
+        return controllerClazz.getAnnotation(Component.class) != null;
     }
 
     private ActionCommandDoc getActionCommandDoc(JavaClassDocInfo javaClassDocInfo, Method method) {
@@ -200,6 +196,21 @@ public final class ActionCommandInfoBuilder {
             String message = StrUtil.format("已经存在方法编号:{} : {} .请查看: {}", subCmd, controllerClass);
             throw new RuntimeException(message);
         }
+    }
+
+    private Map<Integer, ActionCommand> getSubCmdMap(int cmd) {
+        var subActionMap = map.get(cmd);
+
+        // 无锁理念
+        if (Objects.isNull(subActionMap)) {
+            subActionMap = new NonBlockingHashMap<>();
+            subActionMap = map.putIfAbsent(cmd, subActionMap);
+            if (Objects.isNull(subActionMap)) {
+                subActionMap = map.get(cmd);
+            }
+        }
+
+        return subActionMap;
     }
 
 }

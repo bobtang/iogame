@@ -18,7 +18,7 @@ package com.iohao.little.game.net.external;
 
 import cn.hutool.system.OsInfo;
 import cn.hutool.system.SystemUtil;
-import com.iohao.little.game.net.external.bolt.AbstractExternalClientStartupConfig;
+import com.iohao.little.game.net.external.bolt.AbstractExternalClientStartup;
 import com.iohao.little.game.net.external.bootstrap.ExternalChannelInitializerCallback;
 import com.iohao.little.game.net.external.bootstrap.ExternalJoinEnum;
 import com.iohao.little.game.net.external.bootstrap.ServerBootstrapEventLoopGroupOption;
@@ -30,6 +30,7 @@ import com.iohao.little.game.net.external.bootstrap.initializer.ServerBootstrapO
 import com.iohao.little.game.net.external.bootstrap.option.ServerBootstrapEventLoopGroupOptionForLinux;
 import com.iohao.little.game.net.external.bootstrap.option.ServerBootstrapEventLoopGroupOptionForMac;
 import com.iohao.little.game.net.external.bootstrap.option.ServerBootstrapEventLoopGroupOptionForOther;
+import com.iohao.little.game.net.external.config.ExternalOtherConfig;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelOption;
@@ -77,11 +78,39 @@ public class ExternalServerBuilder {
     ExternalJoinEnum externalJoinEnum = ExternalJoinEnum.WEBSOCKET;
     /** 内部逻辑服 连接网关服务器，与网关通信 */
     @Setter
-    AbstractExternalClientStartupConfig externalClientStartupConfig;
+    AbstractExternalClientStartup externalClientStartup;
 
     ExternalServerBuilder(int port) {
         this.port = port;
         this.ip = new InetSocketAddress(port).getAddress().getHostAddress();
+    }
+
+    public ExternalServer build() {
+
+        // 检查
+        this.check();
+
+        // 默认值设置
+        this.defaultSetting();
+
+        // 自定义 - 编排业务 to option
+        ExternalChannelInitializerCallback channelInitializerCallback = this.getExternalChannelInitializerCallback();
+
+        // bootstrap 优化项【对不同的操作系统进行优化 linux、mac、otherOs】
+        ServerBootstrapEventLoopGroupOption eventLoopGroupOption = this.createServerBootstrapEventLoopGroupOption();
+
+        bootstrap
+                // netty 核心组件. (1 连接创建线程组, 2 业务处理线程组)
+                .group(eventLoopGroupOption.bossGroup(), eventLoopGroupOption.workerGroup())
+                .channel(eventLoopGroupOption.channelClass())
+                .handler(new LoggingHandler(LogLevel.INFO))
+                //客户端保持活动连接
+                .childOption(ChannelOption.SO_KEEPALIVE, true)
+                // 自定义 - 编排业务
+                .childHandler((ChannelHandler) channelInitializerCallback)
+        ;
+
+        return new ExternalServer(this);
     }
 
     /**
@@ -97,6 +126,16 @@ public class ExternalServerBuilder {
     }
 
     /**
+     * 表示请求业务方法需要先登录
+     *
+     * @return me
+     */
+    public ExternalServerBuilder enableVerifyIdentity(boolean verifyIdentity) {
+        ExternalOtherConfig.verifyIdentity = verifyIdentity;
+        return this;
+    }
+
+    /**
      * 开启心跳机制
      *
      * @param idleProcessSetting idleBuilder
@@ -107,65 +146,15 @@ public class ExternalServerBuilder {
         return this;
     }
 
+
     /**
      * 开启心跳机制
      *
      * @return me
      */
     public ExternalServerBuilder enableIdle() {
-
         this.option.setIdleProcessSetting(new IdleProcessSetting());
-
         return this;
-    }
-
-    private void defaultSetting() {
-        // 如果没有 handler 默认给一个 业务处理器
-        if (channelHandlerProcessors.isEmpty()) {
-            registerChannelHandler("ExternalBizHandler", new ExternalBizHandler());
-        }
-    }
-
-    private void check() throws RuntimeException {
-        if (this.port == 0) {
-            throw new RuntimeException("port err , is zero");
-        }
-
-        if (Objects.isNull(externalJoinEnum)) {
-            throw new RuntimeException("externalJoinEnum expected: " + Arrays.toString(ExternalJoinEnum.values()));
-        }
-
-        if (Objects.isNull(externalClientStartupConfig)) {
-            throw new RuntimeException("必须设置一个内部逻辑服 （externalClientStartupConfig），与网关通信！");
-        }
-    }
-
-    public ExternalServer build() {
-
-        // 检查
-        this.check();
-
-        // 默认值设置
-        this.defaultSetting();
-
-        // 自定义 - 编排业务 to option
-        ExternalChannelInitializerCallback channelInitializerCallback = this.getExternalChannelInitializerCallback();
-
-        // bootstrap 优化项
-        ServerBootstrapEventLoopGroupOption eventLoopGroupOption = this.createServerBootstrapEventLoopGroupOption();
-
-        bootstrap
-                // netty 核心组件. (1 连接创建线程组, 2 业务处理线程组)
-                .group(eventLoopGroupOption.bossGroup(), eventLoopGroupOption.workerGroup())
-                .channel(eventLoopGroupOption.channelClass())
-                .handler(new LoggingHandler(LogLevel.INFO))
-                //客户端保持活动连接
-                .childOption(ChannelOption.SO_KEEPALIVE, true)
-                // 自定义 - 编排业务
-                .childHandler((ChannelHandler) channelInitializerCallback)
-        ;
-
-        return new ExternalServer(this);
     }
 
     private ExternalChannelInitializerCallback getExternalChannelInitializerCallback() {
@@ -196,6 +185,27 @@ public class ExternalServerBuilder {
 
         // other system
         return new ServerBootstrapEventLoopGroupOptionForOther();
+    }
+
+    private void defaultSetting() {
+        // 如果没有 handler 默认给一个 业务处理器
+        if (channelHandlerProcessors.isEmpty()) {
+            registerChannelHandler("ExternalBizHandler", new ExternalBizHandler());
+        }
+    }
+
+    private void check() throws RuntimeException {
+        if (this.port == 0) {
+            throw new RuntimeException("port err , is zero");
+        }
+
+        if (Objects.isNull(externalJoinEnum)) {
+            throw new RuntimeException("externalJoinEnum expected: " + Arrays.toString(ExternalJoinEnum.values()));
+        }
+
+        if (Objects.isNull(externalClientStartup)) {
+            throw new RuntimeException("必须设置一个内部逻辑服 （externalClientStartup），与网关通信！");
+        }
     }
 
 }

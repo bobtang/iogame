@@ -28,4 +28,18 @@ public class DefaultResponseMessageCreate implements ResponseMessageCreate {
     public ResponseMessage createResponseMessage() {
         return new ResponseMessage();
     }
+
+
+    private DefaultResponseMessageCreate() {
+
+    }
+
+    public static DefaultResponseMessageCreate me() {
+    	return Holder.ME;
+    }
+
+    /** 通过 JVM 的类加载机制, 保证只加载一次 (singleton) */
+    private static class Holder {
+        static final DefaultResponseMessageCreate ME = new DefaultResponseMessageCreate();
+    }
 }

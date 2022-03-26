@@ -17,6 +17,11 @@
 /**
  * 系统异常全局统一处理
  *
+ * <pre>
+ *     关于异常机制的解释可以参考这里:
+ *     https://www.yuque.com/iohao/game/avlo99
+ * </pre>
+ *
  * @author 洛朱
  * @date 2022-01-14
  */

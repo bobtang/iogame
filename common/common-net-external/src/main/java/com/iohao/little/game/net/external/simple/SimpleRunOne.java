@@ -18,9 +18,9 @@ package com.iohao.little.game.net.external.simple;
 
 import com.iohao.little.game.action.skeleton.core.doc.BarSkeletonDoc;
 import com.iohao.little.game.common.kit.ExecutorKit;
-import com.iohao.little.game.net.client.core.ClientStartupConfig;
+import com.iohao.little.game.net.client.core.ClientStartup;
 import com.iohao.little.game.net.external.ExternalServer;
-import com.iohao.little.game.net.server.core.ServerStartupConfig;
+import com.iohao.little.game.net.server.core.ServerStartup;
 import lombok.AccessLevel;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -48,11 +48,11 @@ public class SimpleRunOne {
     final ScheduledExecutorService executorService = ExecutorKit.newScheduled(2, SimpleRunOne.class.getSimpleName());
 
     /** 网关 */
-    ServerStartupConfig gatewayServer;
+    ServerStartup gatewayServer;
     /** 对外服 */
     ExternalServer externalServer;
     /** 逻辑服 */
-    List<ClientStartupConfig> logicServerList;
+    List<ClientStartup> logicServerList;
 
     /**
      * 简单的快速启动
@@ -76,16 +76,11 @@ public class SimpleRunOne {
 
     private void startupLogic() {
         executorService.schedule(() -> {
-
             // 启动逻辑服
-            logicServerList.forEach(ClientStartupConfig::startup);
+            logicServerList.forEach(ClientStartup::startup);
 
             // 启动游戏对外服
             externalServer.startup();
-
-
-            // 生成游戏文档
-            BarSkeletonDoc.me().buildDoc();
 
         }, 1, TimeUnit.SECONDS);
 
@@ -94,6 +89,9 @@ public class SimpleRunOne {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        // 生成游戏文档
+        BarSkeletonDoc.me().buildDoc();
     }
 
 }

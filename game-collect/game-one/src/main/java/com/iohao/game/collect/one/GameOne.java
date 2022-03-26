@@ -17,10 +17,10 @@
 package com.iohao.game.collect.one;
 
 import com.iohao.game.collect.external.GameExternalBoot;
-import com.iohao.game.collect.gateway.GameGateServerStartupConfig;
-import com.iohao.game.collect.hall.HallClientStartupConfig;
-import com.iohao.game.collect.tank.TankClientStartupConfig;
-import com.iohao.little.game.net.client.core.ClientStartupConfig;
+import com.iohao.game.collect.gateway.GameGateServerStartup;
+import com.iohao.game.collect.hall.HallClientStartup;
+import com.iohao.game.collect.tank.TankClientStartup;
+import com.iohao.little.game.net.client.core.ClientStartup;
 import com.iohao.little.game.net.external.simple.SimpleRunOne;
 
 import java.util.List;
@@ -35,17 +35,17 @@ public class GameOne {
     public static void main(String[] args) {
 
         // 逻辑服列表
-        List<ClientStartupConfig> logicServer = List.of(
+        List<ClientStartup> logicServer = List.of(
                 // 大厅
-                new HallClientStartupConfig(),
+                new HallClientStartup(),
                 // 坦克游戏
-                new TankClientStartupConfig()
+                new TankClientStartup()
         );
 
         // 简单启动器 RunOne (谐音:拳皇97中的 round one ready go!)
         new SimpleRunOne()
                 // 网关服务器
-                .setGatewayServer(new GameGateServerStartupConfig())
+                .setGatewayServer(new GameGateServerStartup())
                 // 对外服
                 .setExternalServer(new GameExternalBoot().createExternalServer())
                 // 逻辑服列表

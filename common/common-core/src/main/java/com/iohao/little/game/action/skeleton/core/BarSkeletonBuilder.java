@@ -32,7 +32,11 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 骨架构建器<BR>
+ * 骨架构建器
+ * <pre>
+ *     关于业务框架的构建器可以参考这里：
+ *     https://www.yuque.com/iohao/game/qiiaq3
+ * </pre>
  *
  * @author 洛朱
  * @Date 2021-12-12
@@ -45,9 +49,9 @@ public final class BarSkeletonBuilder {
     final BarSkeletonSetting setting = new BarSkeletonSetting();
 
     /** handler 列表 */
-    final List<Handler> handlers = new LinkedList<>();
+    final List<Handler> handlerList = new LinkedList<>();
     /** inout 列表 */
-    final List<ActionMethodInOut> inOuts = new LinkedList<>();
+    final List<ActionMethodInOut> inOutList = new LinkedList<>();
     /** action class */
     final List<Class<?>> actionControllerClazzList = new LinkedList<>();
     /** action send class */
@@ -56,22 +60,23 @@ public final class BarSkeletonBuilder {
     final List<MsgExceptionInfo> msgExceptionInfoList = new ArrayList<>();
 
     /** 命令执行器 */
-    ActionCommandFlowExecute actionCommandFlowExecute = new DefaultActionCommandFlowExecute();
+    ActionCommandFlowExecute actionCommandFlowExecute = DefaultActionCommandFlowExecute.me();
     /** action工厂 */
-    ActionControllerFactoryBean<Object> actionControllerFactoryBean = new DefaultActionControllerFactoryBean<>();
+    @SuppressWarnings("unchecked")
+    ActionFactoryBean<Object> actionFactoryBean = DefaultActionFactoryBean.me();
     /** 框架执行完后, 最后需要做的事. 一般用于write数据到掉用端端 */
     ActionAfter actionAfter = new DefaultActionAfter();
     /** 结果包装器 */
-    ActionMethodResultWrap actionMethodResultWrap = new DefaultActionMethodResultWrap();
+    ActionMethodResultWrap actionMethodResultWrap = DefaultActionMethodResultWrap.me();
     /** 异常处理 */
-    ActionMethodExceptionProcess actionMethodExceptionProcess = new DefaultActionMethodExceptionProcess();
+    ActionMethodExceptionProcess actionMethodExceptionProcess = DefaultActionMethodExceptionProcess.me();
     /** InvokeActionMethod */
-    ActionMethodInvoke actionMethodInvoke = new DefaultActionMethodInvoke();
+    ActionMethodInvoke actionMethodInvoke = DefaultActionMethodInvoke.me();
     /** ActionMethod 方法参数解析器 */
-    ActionMethodParamParser actionMethodParamParser = new DefaultActionMethodParamParser();
+    ActionMethodParamParser actionMethodParamParser = DefaultActionMethodParamParser.me();
 
     /** 响应对象的创建 */
-    ResponseMessageCreate responseMessageCreate = new DefaultResponseMessageCreate();
+    ResponseMessageCreate responseMessageCreate = DefaultResponseMessageCreate.me();
     /** 推送相关的文档 */
     ActionSendDocs actionSendDocs = new ActionSendDocs();
     /** 错误码相关的文档 */
@@ -96,12 +101,11 @@ public final class BarSkeletonBuilder {
         this.before();
 
         // 参数设置
-        var barSkeleton = new BarSkeleton()
-
+        var barSkeleton = this.createBarSkeleton()
                 // action command 命令执行器流程
                 .setActionCommandFlowExecute(this.actionCommandFlowExecute)
                 // action 工厂
-                .setActionControllerFactoryBean(this.actionControllerFactoryBean)
+                .setActionFactoryBean(this.actionFactoryBean)
                 // ActionMethod Invoke 方法回掉
                 .setActionMethodInvoke(this.actionMethodInvoke)
                 // ActionMethod 方法参数解析器
@@ -122,16 +126,14 @@ public final class BarSkeletonBuilder {
         // 构建推送相关的文档信息
         this.actionSendDocs.buildActionSendDoc(this.actionSendClazzList);
 
-        // handler
-        extractedHandler(barSkeleton);
-
         // inout
-        extractedInout(barSkeleton);
+        extractedInOut(barSkeleton);
 
         // 构建 actionMapping
         extractedActionCommand(barSkeleton);
 
-        log(barSkeleton);
+        // 日志打印
+        PrintActionKit.print(barSkeleton, this.setting);
 
         BarSkeletonDoc.me().addSkeleton(barSkeleton);
 
@@ -159,7 +161,7 @@ public final class BarSkeletonBuilder {
     public BarSkeletonBuilder addHandler(Handler handler) {
         Objects.requireNonNull(handler);
         // 先进先执行
-        this.handlers.add(handler);
+        this.handlerList.add(handler);
         return this;
     }
 
@@ -171,16 +173,13 @@ public final class BarSkeletonBuilder {
      */
     public BarSkeletonBuilder addInOut(ActionMethodInOut inOut) {
         Objects.requireNonNull(inOut);
-        this.inOuts.add(inOut);
+        this.inOutList.add(inOut);
         return this;
     }
 
-    private void extractedInout(BarSkeleton barSkeleton) {
-
-        InOutInfo inOutInfo = new InOutInfo(this.setting, this.inOuts);
-
-        barSkeleton.setInOutInfo(inOutInfo);
-
+    private void extractedInOut(BarSkeleton barSkeleton) {
+        var inOutManager = new InOutManager(this.setting, this.inOutList);
+        barSkeleton.setInOutManager(inOutManager);
     }
 
     private void extractedActionCommand(BarSkeleton barSkeleton) {
@@ -201,31 +200,16 @@ public final class BarSkeletonBuilder {
         actionCommandInfoBuilder.clean();
     }
 
+    private BarSkeleton createBarSkeleton() {
 
-    private void extractedHandler(BarSkeleton barSkeleton) {
         // 如果没有配置handler, 那么使用默认的
-        if (this.handlers.isEmpty()) {
-            barSkeleton.handlerList.add(new ActionCommandHandler());
-        } else {
-            barSkeleton.handlerList.addAll(this.handlers);
+        if (this.handlerList.isEmpty()) {
+            this.handlerList.add(new ActionCommandHandler());
         }
 
-        if (barSkeleton.handlerList.size() == 1) {
-            barSkeleton.handler = barSkeleton.handlerList.get(0);
-        }
-    }
+        var handlers = new Handler[this.handlerList.size()];
+        this.handlerList.toArray(handlers);
 
-    private void log(BarSkeleton barSkeleton) {
-        if (setting.isPrintHandler()) {
-            PrintActionKit.printHandler(barSkeleton.getHandlerList());
-        }
-
-        if (setting.isPrintInout()) {
-            PrintActionKit.printInout(barSkeleton.inOutInfo.getInOutList());
-        }
-
-        if (setting.isPrintAction()) {
-            PrintActionKit.printActionCommand(barSkeleton.actionCommandManager.actionCommands, setting.printActionShort);
-        }
+        return new BarSkeleton(handlers);
     }
 }

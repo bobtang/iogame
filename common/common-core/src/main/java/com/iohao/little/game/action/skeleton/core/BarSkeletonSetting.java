@@ -63,6 +63,10 @@ public class BarSkeletonSetting {
     /**
      * true : 业务参数开启 JSR303、JSR 349、JSR 380 验证规范
      *
+     * <pre>
+     *     关于启JSR303+验证规范可以参考这里：
+     *     https://www.yuque.com/iohao/game/ghng6g
+     * </pre>
      * <p>
      * 需要在你的项目 maven 中引入
      * <pre>

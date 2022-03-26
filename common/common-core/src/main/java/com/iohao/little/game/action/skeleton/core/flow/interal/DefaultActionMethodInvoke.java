@@ -16,8 +16,6 @@
  */
 package com.iohao.little.game.action.skeleton.core.flow.interal;
 
-import com.esotericsoftware.reflectasm.MethodAccess;
-import com.iohao.little.game.action.skeleton.core.ActionCommand;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
 import com.iohao.little.game.action.skeleton.core.flow.ActionMethodExceptionProcess;
 import com.iohao.little.game.action.skeleton.core.flow.ActionMethodInvoke;
@@ -33,14 +31,14 @@ public class DefaultActionMethodInvoke implements ActionMethodInvoke {
 
     @Override
     public Object invoke(FlowContext flowContext) {
-        final ActionCommand actionCommand = flowContext.getActionCommand();
+        final var actionCommand = flowContext.getActionCommand();
         final Object controller = flowContext.getActionController();
         final var pars = flowContext.getMethodParams();
 
         // 方法下标
         var actionMethodIndex = actionCommand.getActionMethodIndex();
         // 方法访问器
-        MethodAccess actionMethodAccess = actionCommand.getActionMethodAccess();
+        var actionMethodAccess = actionCommand.getActionMethodAccess();
 
         // 方法声明了异常的处理方式
         try {
@@ -55,5 +53,19 @@ public class DefaultActionMethodInvoke implements ActionMethodInvoke {
             // 把业务方法抛出的异常,交由异常处理类来处理
             return exceptionProcess.processException(e);
         }
+    }
+
+
+    private DefaultActionMethodInvoke() {
+
+    }
+
+    public static DefaultActionMethodInvoke me() {
+    	return Holder.ME;
+    }
+
+    /** 通过 JVM 的类加载机制, 保证只加载一次 (singleton) */
+    private static class Holder {
+        static final DefaultActionMethodInvoke ME = new DefaultActionMethodInvoke();
     }
 }
