@@ -38,6 +38,7 @@
         <module>example/example-run-one</module>
         <module>example/example-for-spring</module>
         <module>example/example-interaction</module>
+        <module>example/example-redisson-lock</module>
 
         <!-- 实践案例 - 通用部份  -->
         <module>game-collect/game-common-proto</module>
@@ -61,7 +62,6 @@
         <module>game-collect/game-test</module>
         <!-- java 坦克游戏 fxgl -->
         <module>game-collect/fxgl-tank</module>
-
 
     </modules>
 
