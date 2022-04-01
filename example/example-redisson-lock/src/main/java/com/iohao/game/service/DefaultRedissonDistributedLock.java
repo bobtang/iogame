@@ -57,7 +57,6 @@ public class DefaultRedissonDistributedLock implements DistributedLock {
                 log.info("{} 获取锁超时", key);
             }
         } finally {
-            System.out.println("当前线程：" + Thread.currentThread().getName());
             if(lock.isHeldByCurrentThread()) {
                 lock.unlock();
             }
