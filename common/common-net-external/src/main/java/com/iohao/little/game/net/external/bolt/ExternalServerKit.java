@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License..
  */
-package com.iohao.little.game.net.external.bootstrap;
+package com.iohao.little.game.net.external.bolt;
 
 import com.alipay.remoting.rpc.RpcClient;
 import com.iohao.little.game.net.client.BoltClientServer;

@@ -27,7 +27,7 @@
 
         <dependency>
             <groupId>com.iohao.game</groupId>
-            <artifactId>common-message</artifactId>
+            <artifactId>bolt-message</artifactId>
             <version>${project-revision.version}</version>
         </dependency>
 

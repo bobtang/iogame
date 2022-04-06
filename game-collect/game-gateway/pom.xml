@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>com.iohao.game</groupId>
-            <artifactId>common-net-server</artifactId>
+            <artifactId>bolt-server</artifactId>
             <version>${project-revision.version}</version>
         </dependency>
 

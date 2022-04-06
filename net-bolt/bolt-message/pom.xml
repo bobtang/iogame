@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>common-net-client</artifactId>
+    <artifactId>bolt-message</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -20,10 +20,9 @@
     <dependencies>
         <dependency>
             <groupId>com.iohao.game</groupId>
-            <artifactId>common-net</artifactId>
+            <artifactId>common-core</artifactId>
             <version>${project-revision.version}</version>
         </dependency>
-
     </dependencies>
 
 </project>

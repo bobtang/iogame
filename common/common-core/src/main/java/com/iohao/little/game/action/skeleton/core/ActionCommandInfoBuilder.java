@@ -72,11 +72,10 @@ public final class ActionCommandInfoBuilder {
         // java source
         Map<String, JavaClassDocInfo> javaClassDocInfoMap = ActionCommandDocKit.getJavaClassDocInfoMap(controllerList);
 
-        Set<Class<?>> controllerSet = new HashSet<>(controllerList);
-
         // 条件: 类上配置了 ActionController 注解
         Predicate<Class<?>> controllerPredicate = controllerClazz -> Objects.nonNull(controllerClazz.getAnnotation(ActionController.class));
 
+        Set<Class<?>> controllerSet = new HashSet<>(controllerList);
         controllerSet.stream().filter(controllerPredicate).forEach(controllerClazz -> {
             // 方法访问器: 获取类中自己定义的方法
             var methodAccess = MethodAccess.get(controllerClazz);

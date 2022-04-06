@@ -10,12 +10,17 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>common-net-server</artifactId>
+    <artifactId>bolt-server</artifactId>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.iohao.game</groupId>
-            <artifactId>common-net</artifactId>
+            <artifactId>bolt-common</artifactId>
             <version>${project-revision.version}</version>
         </dependency>
     </dependencies>
