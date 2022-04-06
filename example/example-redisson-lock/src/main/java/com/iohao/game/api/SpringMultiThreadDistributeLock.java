@@ -36,20 +36,38 @@ public class SpringMultiThreadDistributeLock {
      * 模拟等到超时的lock
      * 以下时间默认单位：秒
      */
-    public void testLockButWaitTimeOut() {
+    public void testTryLock() {
         UserWallet wallet = new UserWallet();
         wallet.setUserId("10086");
         wallet.setName("中国移动");
         wallet.setBalance(BigDecimal.valueOf(100000L));
 
         //等到锁时间
-        long waitTime = 1L;
+        long waitTime = 1000L;
 
         //执行时间
-        long leaseTime = 10L;
+        long leaseTime = -1L;
 
-        for (int i = 0; i < 100; i++) {
-            consumer.consumeWaitTimeout(wallet, waitTime, leaseTime);
+        for (int i = 0; i < 8; i++) {
+            consumer.consumeTryLock(wallet, waitTime, leaseTime);
+        }
+    }
+
+    /**
+     * 模拟等到超时的lock
+     * 以下时间默认单位：秒
+     */
+    public void testLock() {
+        UserWallet wallet = new UserWallet();
+        wallet.setUserId("10086");
+        wallet.setName("中国移动");
+        wallet.setBalance(BigDecimal.valueOf(100000L));
+
+        //执行时间
+        long leaseTime = -1L;
+
+        for (int i = 0; i < 8; i++) {
+            consumer.consumeLock(wallet, leaseTime);
         }
     }
 }

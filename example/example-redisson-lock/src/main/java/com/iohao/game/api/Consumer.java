@@ -34,13 +34,13 @@ public class Consumer {
     }
 
     @Async
-    public void consumeWaitTimeout(UserWallet wallet, long waitTime, long leaseTime) {
+    public void consumeTryLock(UserWallet wallet, long waitTime, long leaseTime) {
         RedissonLockAdptee redissonLockAdptee = SpringUtil.getBean(RedissonLockAdptee.class);
         try {
             redissonLockAdptee.tryLockAndExecute(wallet.getUserId(), waitTime, leaseTime, () -> {
                 System.out.println("线程：" + Thread.currentThread().getName() + "拿到锁了");
                 try {
-                    Thread.sleep(1000L);
+                    Thread.sleep(20000L);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -51,5 +51,21 @@ public class Consumer {
         } catch (InterruptedException e) {
             System.out.println("获取锁等待失败");
         }
+    }
+
+    @Async
+    public void consumeLock(UserWallet wallet, long leaseTime) {
+        RedissonLockAdptee redissonLockAdptee = SpringUtil.getBean(RedissonLockAdptee.class);
+        redissonLockAdptee.lockAndExecute(wallet.getUserId(), leaseTime, () -> {
+            System.out.println("线程：" + Thread.currentThread().getName() + "拿到锁了");
+            try {
+                Thread.sleep(20000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            BigDecimal sub = new BigDecimal(1d);
+            wallet.setBalance(wallet.getBalance().subtract(sub));
+            System.out.println("【" + wallet.getName() + "】当前余额【" + wallet.getBalance() + "】");
+        });
     }
 }
