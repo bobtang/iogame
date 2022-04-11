@@ -33,6 +33,11 @@ import com.iohao.little.game.net.message.common.ModuleMessage;
  * @date 2022-02-02
  */
 public class HallClientStartup implements ClientStartup {
+
+    public static void main(String[] args) {
+        new HallClientStartup().startup();
+    }
+
     @Override
     public BarSkeleton createBarSkeleton() {
         BarSkeletonBuilderParamConfig config = new BarSkeletonBuilderParamConfig()

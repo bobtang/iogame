@@ -27,6 +27,12 @@ import com.iohao.little.game.net.server.core.ServerStartup;
  * @date 2022-01-12
  */
 public class GameGateServerStartup implements ServerStartup {
+
+    public static void main(String[] args) {
+        System.out.println("网关启动 ok!");
+        new GameGateServerStartup().startup();
+    }
+
     @Override
     public BoltServer createBoltServer() {
         // 网关服端口 （可随便定义）

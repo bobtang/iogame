@@ -38,6 +38,10 @@ import com.iohao.little.game.net.message.common.ModuleMessage;
  */
 public class TankClientStartup implements ClientStartup {
 
+    public static void main(String[] args) {
+        new TankClientStartup().startup();
+    }
+
     @Override
     public BarSkeleton createBarSkeleton() {
 
