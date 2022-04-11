@@ -12,7 +12,7 @@ game-collect
 ├── game-gateway 网关服 示例目录
 ├── game-logic-hall 登录逻辑服 示例目录
 ├── game-logic-tank 坦克逻辑服 示例目录
-├── game-one 一键启动 网状、逻辑服（登录和坦克）、对外服 示例目录
+├── game-one 一键启动 网关、逻辑服（登录和坦克）、对外服 示例目录
 └── game-test 其他测试
 
 ```
@@ -25,6 +25,6 @@ game-collect
 > 
 > game-logic-tank 坦克逻辑服 【启动类 TankClientStartup】
 > 
-> 这几个都是可以单独启动的，但是开发阶段每次分别启动这几个太麻烦了。建议一键启动 game-one
+> 这几个都是可以单独启动的，启动顺序网关、逻辑服、对外服，但是开发阶段每次分别启动这几个太麻烦了。建议一键启动 game-one
 > 
-> game-one  【启动类 GameOne】
+> game-one  【启动类 GameOne.java】
