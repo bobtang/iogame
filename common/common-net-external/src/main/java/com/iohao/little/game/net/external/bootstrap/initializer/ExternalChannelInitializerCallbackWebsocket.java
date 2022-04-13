@@ -91,7 +91,6 @@ public class ExternalChannelInitializerCallbackWebsocket extends ChannelInitiali
 
         // websocket 编解码
         pipeline.addLast("codec", new ExternalCodecWebsocketProto());
-//        pipeline.addLast("codec", new ExternalCodecWebsocketProtoForCSharp());
 
         // 添加其他 handler 到 pipeline 中 (业务编排)
         option.channelHandler(pipeline);

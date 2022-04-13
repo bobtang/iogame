@@ -20,8 +20,10 @@ import com.iohao.little.game.action.skeleton.core.doc.BarSkeletonDoc;
 import com.iohao.little.game.common.kit.ExecutorKit;
 import com.iohao.little.game.net.client.core.ClientStartup;
 import com.iohao.little.game.net.external.ExternalServer;
+import com.iohao.little.game.net.external.bootstrap.ExternalJoinEnum;
 import com.iohao.little.game.net.server.core.ServerStartup;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
@@ -53,6 +55,9 @@ public class SimpleRunOne {
     ExternalServer externalServer;
     /** 逻辑服 */
     List<ClientStartup> logicServerList;
+    /** 连接方式 */
+    @Getter
+    ExternalJoinEnum externalJoinEnum = ExternalJoinEnum.WEBSOCKET;
 
     /**
      * 简单的快速启动

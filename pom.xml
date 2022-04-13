@@ -41,6 +41,7 @@
         <module>example/example-run-one</module>
         <module>example/example-for-spring</module>
         <module>example/example-interaction</module>
+        <module>example/example-for-tcp-socket</module>
 
         <!-- 实践案例 - 通用部份  -->
         <module>game-collect/game-common-proto</module>
@@ -59,10 +60,9 @@
         <!-- 启动 对外服、网关、逻辑服 -->
         <module>game-collect/game-one</module>
 
-        <!-- 模拟客户端 -->
-        <module>game-collect/game-test</module>
         <!-- java 坦克游戏 fxgl -->
         <module>game-collect/fxgl-tank</module>
+
     </modules>
 
     <!--统一管理版本 的一个父 pom-->

@@ -5,15 +5,15 @@
 示例目录说明
 ```text
 game-collect
-├── fxgl-tank 坦克游戏客户端目录
-├── game-common 一些能用的功能
+├── fxgl-tank 坦克游戏客户端 示例目录
+├── game-common 一些通用的功能
 ├── game-common-proto 示例 pb 示例目录
 ├── game-external 对外服 示例目录
 ├── game-gateway 网关服 示例目录
 ├── game-logic-hall 登录逻辑服 示例目录
 ├── game-logic-tank 坦克逻辑服 示例目录
 ├── game-one 一键启动 网关、逻辑服（登录和坦克）、对外服 示例目录
-└── game-test 其他测试
+└── game-test 将要废弃的 示例目录
 
 ```
 

@@ -28,10 +28,6 @@ import com.iohao.little.game.net.external.bootstrap.ExternalJoinEnum;
  * @date 2022-01-12
  */
 public class GameExternalBoot {
-    public void init() {
-        // 启动游戏对外服
-        createExternalServer().startup();
-    }
 
     public ExternalServer createExternalServer() {
         // 端口
@@ -50,7 +46,12 @@ public class GameExternalBoot {
     }
 
     public static void main(String[] args) {
-        new GameExternalBoot().init();
+        GameExternalBoot gameExternalBoot = new GameExternalBoot();
+
+        ExternalServer externalServer = gameExternalBoot.createExternalServer();
+        // 启动游戏对外服
+        externalServer.startup();
+
         System.out.println("对外服务器启动 ok!");
     }
 }
