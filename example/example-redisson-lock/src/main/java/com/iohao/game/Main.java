@@ -1,7 +1,5 @@
 package com.iohao.game;
 
-import com.iohao.game.api.ExecutorsDistributeLock;
-
 /**
  *
  *
@@ -11,8 +9,8 @@ import com.iohao.game.api.ExecutorsDistributeLock;
  */
 public class Main {
     public static void main(String[] args) throws InterruptedException {
-        ExecutorsDistributeLock lock = new ExecutorsDistributeLock();
-        lock.testRlock();
+//        ExecutorsDistributeLock lock = new ExecutorsDistributeLock();
+//        lock.testRlock();
 
         //沉睡一下，不然会结束进程
         Thread.sleep(10000L);

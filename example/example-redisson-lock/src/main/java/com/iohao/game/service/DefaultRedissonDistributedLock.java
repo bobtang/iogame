@@ -2,11 +2,11 @@ package com.iohao.game.service;
 
 import com.iohao.game.domain.common.lock.ReturnHandle;
 import com.iohao.game.domain.common.lock.VoidHandle;
-import com.iohao.game.domain.config.RedissonConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
 
@@ -22,14 +22,11 @@ import java.util.concurrent.TimeUnit;
  * @Slogan  慢慢变好，是给自己最好的礼物
  */
 @Slf4j
+@Component
 @RequiredArgsConstructor
 public class DefaultRedissonDistributedLock implements DistributedLock {
 
-    private static RedissonClient redissonClient;
-
-    static {
-        redissonClient = RedissonConfig.me();
-    }
+    private final RedissonClient redissonClient;
 
     @Override
     public <T> T tryLockAndExecute(String key, long waitTime, long leaseTime, TimeUnit unit, ReturnHandle<T> action) throws InterruptedException {

@@ -7,3 +7,6 @@ spring:
       pool:
         max-size: 16
         core-size: 8
+  redis:
+    redisson:
+      file: classpath:redisson-config.yml
