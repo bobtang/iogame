@@ -17,6 +17,7 @@
 package com.iohao.little.game.net.external.bootstrap.initializer;
 
 import com.iohao.little.game.net.external.bootstrap.ExternalChannelInitializerCallback;
+import com.iohao.little.game.net.external.bootstrap.handler.codec.ExternalCodecSocket;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
@@ -45,16 +46,15 @@ public class ExternalChannelInitializerCallbackSocket extends ChannelInitializer
         pipeline.addLast(new LengthFieldBasedFrameDecoder(option.packageMaxSize,
                 // 长度字段的偏移量， 从 0 开始
                 0,
-                // 长度字段的长度, 使用的是 short ，占用2位；（消息头用的 byteBuf.writeShort 来记录长度的）
-                2,
-                // 长度调整值： 这里不做任何调整
-                -2,
+                // 字段的长度, 使用的是 short ，占用2位；（消息头用的 byteBuf.writeShort 来记录长度的）
+                4,
+                // 要添加到长度字段值的补偿值：长度调整值 = 内容字段偏移量 - 长度字段偏移量 - 长度字段的字节数
+                0,
                 // 跳过的初始字节数： 跳过0位; (跳过消息头的 0 位长度)
                 0));
 
-        // 编解码
-//        pipeline.addLast("decoder", new ExternalDecoder());
-//        pipeline.addLast("encoder", new ExternalEncoder());
+        // tcp socket 编解码
+        pipeline.addLast("codec", new ExternalCodecSocket());
 
         // 添加其他 handler 到 pipeline 中 (业务编排)
         option.channelHandler(pipeline);
@@ -65,7 +65,6 @@ public class ExternalChannelInitializerCallbackSocket extends ChannelInitializer
         this.option = option;
         return this;
     }
-
 
     @Override
     protected void initChannel(SocketChannel ch) {

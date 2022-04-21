@@ -20,7 +20,6 @@ import com.alipay.remoting.rpc.RpcClient;
 import com.iohao.little.game.action.skeleton.core.BarSkeleton;
 import com.iohao.little.game.net.client.BoltClientServer;
 import com.iohao.little.game.net.client.core.ClientStartup;
-import com.iohao.little.game.net.external.bootstrap.ExternalServerKit;
 
 /**
  * 抽象对外服启动流程

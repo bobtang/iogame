@@ -30,7 +30,7 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 
 /**
- * 模拟游戏客户端
+ * 模拟游戏客户端 websocket
  *
  * @author 洛朱
  * @date 2022-02-24

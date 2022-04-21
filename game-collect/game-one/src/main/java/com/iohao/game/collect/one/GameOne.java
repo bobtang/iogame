@@ -53,7 +53,6 @@ public class GameOne {
                 // 启动 对外服、网关、逻辑服
                 .startup();
 
-        // see : MyWebsocketClient.java (模拟登录启动类)
         // see : TankApp.java  （坦克游戏启动类）
     }
 

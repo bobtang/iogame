@@ -62,7 +62,7 @@ public class SimpleHelper {
     public void run(int externalPort, int gatewayPort, List<ClientStartup> logicList) {
 
         // 对外服
-        ExternalServer externalServer = createExternalServer(externalPort, gatewayPort);
+        ExternalServer externalServer = createExternalServer(ExternalJoinEnum.WEBSOCKET, externalPort, gatewayPort);
 
         // 网关服务器
         ServerStartup gatewayServer = () -> new BoltServer(gatewayPort);
@@ -79,21 +79,30 @@ public class SimpleHelper {
                 .startup();
     }
 
-    private ExternalServer createExternalServer(int externalPort, int gatewayPort) {
-        // 内部逻辑服 连接网关服务器
-        var externalClientStartup = new InternalExternalClientStartup(gatewayPort);
+    /**
+     * 对外服 示例
+     * <pre>
+     *     用于演示
+     * </pre>
+     *
+     * @param externalJoinEnum 连接方式
+     * @param externalPort     游戏对外服端口
+     * @param gatewayPort      游戏网关端口
+     * @return 对外服
+     */
+    public ExternalServer createExternalServer(ExternalJoinEnum externalJoinEnum, int externalPort, int gatewayPort) {
+        // 对外服
+        InternalExternalClientStartup externalClientStartup = new InternalExternalClientStartup(gatewayPort);
 
         // 游戏对外服 - 构建器
         ExternalServerBuilder builder = ExternalServer.newBuilder(externalPort)
-                // websocket 方式连接
-                .externalJoinEnum(ExternalJoinEnum.WEBSOCKET)
+                // 连接方式
+                .externalJoinEnum(externalJoinEnum)
                 // 内部逻辑服 连接网关服务器
                 .externalClientStartup(externalClientStartup);
 
-        // 构建游戏对外服
         return builder.build();
     }
-
 
     private static class InternalExternalClientStartup extends AbstractExternalClientStartup {
         /** 游戏网关端口 */
@@ -111,7 +120,7 @@ public class SimpleHelper {
             // 对外服模块信息
             return new ModuleMessage(moduleKey)
                     .setModuleType(ModuleType.EXTERNAL)
-                    .setName("对外服务器(external)")
+                    .setName("演示用的对外服务器(external)")
                     .setDescription("对接真实的游戏用户");
         }
 
