@@ -1,9 +1,8 @@
-package com.iohao.game.api;
+package com.iohao.little.game.widget.light.api;
 
-import com.iohao.game.domain.entity.UserWallet;
-import org.springframework.stereotype.Component;
+import com.iohao.little.game.widget.light.entity.Consumer;
+import com.iohao.little.game.widget.light.entity.UserWallet;
 
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 
 /**
@@ -13,10 +12,9 @@ import java.math.BigDecimal;
  * @date 2022/3/31
  * 慢慢变好，是给自己最好的礼物
  */
-@Component
+//@Component
 public class SpringMultiThreadDistributeLock {
 
-    @Resource
     private Consumer consumer;
 
     /**

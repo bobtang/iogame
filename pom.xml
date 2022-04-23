@@ -30,7 +30,8 @@
         <module>widget/light-profile</module>
         <!-- 小部件 : jprotobuf 增强 -->
         <module>widget/light-jprotobuf</module>
-
+        <!-- 小部件 ： 基于redis实现的分布式锁-->
+        <module>widget/light-redis-lock</module>
         <module>widget/light-all</module>
 
         <!-- 游戏部件 : 进一步减少开发实践过程中的工作量 -->

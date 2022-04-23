@@ -1,10 +1,8 @@
-package com.iohao.game.domain.config;
+package com.iohao.little.game.widget.light;
 
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -16,25 +14,13 @@ import java.util.Objects;
  * @Date 2022/3/28
  * @Slogan  慢慢变好，是给自己最好的礼物
  */
-@Configuration
 public class RedissonConfig {
 
-    private volatile static RedissonClient redissonClient;
-
     public static RedissonClient me() {
-        if (Objects.isNull(redissonClient)) {
-            return getRedissonClientFromConfig();
-        }
-        return redissonClient;
+        return Holder.me;
     }
-
-    @Bean(destroyMethod="shutdown")
-    public RedissonClient redissonClient() throws IOException {
-        //1、创建配置
-        Config config = new Config();
-        config.useSingleServer()
-                .setAddress("redis://localhost:6379");
-        return Redisson.create(config);
+    public static class Holder{
+        static RedissonClient me = getRedissonClientFromConfig();
     }
 
     public static RedissonClient getRedissonClientFromConfig() {
@@ -52,4 +38,6 @@ public class RedissonConfig {
         RedissonClient redisson = Redisson.create(config);
         return redisson;
     }
+
+
 }
