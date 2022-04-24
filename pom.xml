@@ -44,6 +44,8 @@
         <module>example/example-interaction</module>
         <module>example/example-for-tcp-socket</module>
         <module>example/example-redisson-lock</module>
+        <module>example/example-redisson-lock-spring-boot-starter</module>
+        <module>example/example-for-redisson-lock-example</module>
 
         <!-- 实践案例 - 通用部份  -->
         <module>game-collect/game-common-proto</module>
@@ -103,7 +105,7 @@
         <lombok.version>1.18.22</lombok.version>
 
         <!-- redis internal : https://www.oschina.net/p/redisson https://mvnrepository.com/artifact/org.redisson/redisson -->
-        <redisson.version>3.16.8</redisson.version>
+        <redisson.version>3.15.5</redisson.version>
         <!-- json 解析器 : https://mvnrepository.com/artifact/com.alibaba/fastjson -->
         <fastjson.version>1.2.79</fastjson.version>
         <!-- 对象池 :  https://mvnrepository.com/artifact/org.apache.commons/commons-pool2 -->
@@ -144,7 +146,6 @@
         <java-websocket.version>1.5.2</java-websocket.version>
 
     </properties>
-
 
     <dependencies>
         <!-- lombok 简化 java 代码 -->

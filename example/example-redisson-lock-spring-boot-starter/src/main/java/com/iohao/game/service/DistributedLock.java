@@ -1,4 +1,7 @@
-package com.iohao.little.game.widget.light;
+package com.iohao.game.service;
+
+import com.iohao.game.domain.common.lock.ReturnHandle;
+import com.iohao.game.domain.common.lock.VoidHandle;
 
 import java.util.concurrent.TimeUnit;
 
@@ -67,10 +70,5 @@ public interface DistributedLock{
      */
     void lockAndExecute(String key, long leaseTime, TimeUnit unit, VoidHandle action);
 
-    /**
-     * 解锁
-     *
-     * @param key   锁的键值
-     */
     boolean unlock(String key);
 }
