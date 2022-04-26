@@ -1,7 +1,5 @@
 package com.iohao.game;
 
-import cn.hutool.extra.spring.SpringUtil;
-import com.iohao.game.api.SpringMultiThreadDistributeLock;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -18,7 +16,7 @@ public class RedissonExampleApplication {
 //        executorsDistributeLock.testRlock();
 
         //使用Spring默认线程池，即@EnableAsync模拟的多线程环境竞争锁
-        SpringMultiThreadDistributeLock springMultiThreadDistributeLock = SpringUtil.getBean(SpringMultiThreadDistributeLock.class);
+//        SpringMultiThreadDistributeLock springMultiThreadDistributeLock = SpringUtil.getBean(SpringMultiThreadDistributeLock.class);
 
         //模拟多线程消费
 //        springMultiThreadDistributeLock.testRlock();
@@ -27,7 +25,7 @@ public class RedissonExampleApplication {
 //        springMultiThreadDistributeLock.testTryLock();
 
         //模拟多线程lock
-        springMultiThreadDistributeLock.testLock();
+//        springMultiThreadDistributeLock.testLock();
 
     }
 }

@@ -3,10 +3,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
-  <groupId>com.iohao.game</groupId>
-  <artifactId>example-for-redisson-lock-example</artifactId>
-
   <parent>
     <artifactId>iogame</artifactId>
     <groupId>com.iohao.game</groupId>
@@ -14,28 +10,28 @@
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <name>example-for-redisson-lock-example</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <artifactId>example-for-redisson-lock-example</artifactId>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <hutool.version>5.7.22</hutool.version>
   </properties>
-
   <dependencies>
-    <!-- 示例代码 parent -->
-    <dependency>
-      <groupId>com.iohao.game</groupId>
-      <artifactId>example-parent</artifactId>
-      <version>${project-revision.version}</version>
-    </dependency>
-
     <dependency>
       <groupId>com.iohao.game</groupId>
       <artifactId>example-redisson-lock-spring-boot-starter</artifactId>
-      <scope>compile</scope>
+      <version>2.6.3</version>
+    </dependency>
+    <dependency>
+      <groupId>cn.hutool</groupId>
+      <artifactId>hutool-core</artifactId>
+      <version>${hutool.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>cn.hutool</groupId>
+      <artifactId>hutool-extra</artifactId>
+      <version>${hutool.version}</version>
     </dependency>
   </dependencies>
 </project>

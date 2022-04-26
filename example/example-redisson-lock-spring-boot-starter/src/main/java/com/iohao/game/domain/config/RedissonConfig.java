@@ -1,5 +1,6 @@
 package com.iohao.game.domain.config;
 
+import cn.hutool.core.util.StrUtil;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
@@ -7,7 +8,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * redisson的基本配置
@@ -19,13 +22,27 @@ import java.io.IOException;
 @Configuration
 public class RedissonConfig {
 
+    @Resource
+    private DistibutedLockProperties distibutedLockProperties;
+
     @Bean(destroyMethod="shutdown")
     @ConditionalOnMissingBean
-    public RedissonClient redissonClient() throws IOException {
-        //1、创建配置
-        Config config = new Config();
-        config.useSingleServer()
-                .setAddress("redis://localhost:6379");
+    public RedissonClient redissonClient() throws Exception {
+        Config config = null;
+        try {
+            String redissonConfigName = distibutedLockProperties.getRedissonConfigName();
+            if (StrUtil.isBlankIfStr(redissonConfigName)) {
+                throw new Exception("没有可用的redisson配置源");
+            }
+
+            config = Config.fromYAML(RedissonConfig.class.getClassLoader().getResource(redissonConfigName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (Objects.isNull(config)) {
+            throw new Exception("没有可用的redisson配置源");
+        }
         return Redisson.create(config);
     }
 }

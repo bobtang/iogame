@@ -1,4 +1,4 @@
-package com.iohao.game.domain.entity;
+package com.iohao.game;
 
 import lombok.AccessLevel;
 import lombok.Data;
