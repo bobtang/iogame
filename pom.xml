@@ -32,6 +32,7 @@
         <module>widget/light-jprotobuf</module>
         <!-- 小部件 ： 基于redis实现的分布式锁-->
         <module>widget/light-redis-lock</module>
+        <module>widget/light-redis-lock-spring-boot-starter</module>
         <module>widget/light-all</module>
 
         <!-- 游戏部件 : 进一步减少开发实践过程中的工作量 -->
@@ -105,7 +106,7 @@
         <lombok.version>1.18.22</lombok.version>
 
         <!-- redis internal : https://www.oschina.net/p/redisson https://mvnrepository.com/artifact/org.redisson/redisson -->
-        <redisson.version>3.15.5</redisson.version>
+        <redisson.version>3.16.8</redisson.version>
         <!-- json 解析器 : https://mvnrepository.com/artifact/com.alibaba/fastjson -->
         <fastjson.version>1.2.79</fastjson.version>
         <!-- 对象池 :  https://mvnrepository.com/artifact/org.apache.commons/commons-pool2 -->

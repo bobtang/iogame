@@ -1,4 +1,4 @@
-package com.iohao.little.game.widget.light;
+package com.iohao.little.game.widget.light.spring.lock;
 
 /**
  * 带返回值的执行接口

@@ -13,7 +13,7 @@ import java.util.Objects;
  * redisson的基本配置
  *
  * @author shen
- * @Date 2022/3/28
+ * @date 2022/3/28
  * @Slogan  慢慢变好，是给自己最好的礼物
  */
 @Configuration

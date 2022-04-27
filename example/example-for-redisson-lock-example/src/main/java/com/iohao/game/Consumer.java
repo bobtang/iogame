@@ -1,6 +1,6 @@
 package com.iohao.game;
 
-import com.iohao.game.service.DistributedLock;
+import com.iohao.little.game.widget.light.spring.service.DistributedLock;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 

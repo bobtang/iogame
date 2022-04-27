@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * 使用自建线程池模拟多线程环境竞争锁
  *
  * @author shen
- * @Date 2022/3/31
+ * @date 2022/3/31
  * @Slogan 慢慢变好，是给自己最好的礼物
  */
 public class ExecutorsDistributeLock {
