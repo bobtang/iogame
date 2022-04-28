@@ -1,4 +1,4 @@
-package com.iohao.little.game.widget.light;
+package com.iohao.little.game.widget.light.redis.lock;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author shen
  * @date 2022/3/28
- * @Slogan  慢慢变好，是给自己最好的礼物
+ * @Slogan 慢慢变好，是给自己最好的礼物
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -29,12 +29,12 @@ public class DefaultRedissonDistributedLock implements DistributedLock {
         RLock lock = redissonClient.getLock(key);
         try {
             boolean tryLock = lock.tryLock(waitTime, leaseTime, unit);
-            if(tryLock) {
+            if (tryLock) {
                 log.info("{} 获取锁成功", key);
                 return action.execute();
             }
         } finally {
-            if(lock.isHeldByCurrentThread()) {
+            if (lock.isHeldByCurrentThread()) {
                 lock.unlock();
             }
         }
@@ -46,14 +46,14 @@ public class DefaultRedissonDistributedLock implements DistributedLock {
         RLock lock = redissonClient.getLock(key);
         try {
             boolean tryLock = lock.tryLock(waitTime, leaseTime, unit);
-            if(tryLock) {
+            if (tryLock) {
                 log.info("{} 获取锁成功", key);
                 action.execute();
             } else {
                 log.info("{} 获取锁超时", key);
             }
         } finally {
-            if(lock.isHeldByCurrentThread()) {
+            if (lock.isHeldByCurrentThread()) {
                 lock.unlock();
             }
         }
@@ -67,7 +67,7 @@ public class DefaultRedissonDistributedLock implements DistributedLock {
             log.info("{} 获取锁成功", key);
             return action.execute();
         } finally {
-            if(lock.isHeldByCurrentThread()) {
+            if (lock.isHeldByCurrentThread()) {
                 lock.unlock();
             }
         }
@@ -81,7 +81,7 @@ public class DefaultRedissonDistributedLock implements DistributedLock {
             log.info("{} 获取锁成功", key);
             action.execute();
         } finally {
-            if(lock.isHeldByCurrentThread()) {
+            if (lock.isHeldByCurrentThread()) {
                 lock.unlock();
             }
         }

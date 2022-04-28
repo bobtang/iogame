@@ -1,4 +1,8 @@
-package com.iohao.little.game.widget.light;
+package com.iohao.little.game.widget.light.redis.lock.spring.service;
+
+
+import com.iohao.little.game.widget.light.redis.lock.spring.lock.ReturnHandle;
+import com.iohao.little.game.widget.light.redis.lock.spring.lock.VoidHandle;
 
 import java.util.concurrent.TimeUnit;
 
@@ -7,7 +11,6 @@ import java.util.concurrent.TimeUnit;
  *
  * @author shen
  * @date 2022/3/28
- * @Slogan  慢慢变好，是给自己最好的礼物
  */
 public interface DistributedLock{
 
@@ -68,9 +71,9 @@ public interface DistributedLock{
     void lockAndExecute(String key, long leaseTime, TimeUnit unit, VoidHandle action);
 
     /**
-     * 解锁
-     *
-     * @param key   锁的键值
+     * 显示解锁
+     * @param key   redis健
+     * @return  解锁结果
      */
     boolean unlock(String key);
 }

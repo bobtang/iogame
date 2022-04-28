@@ -1,4 +1,4 @@
-package com.iohao.little.game.widget.light;
+package com.iohao.little.game.widget.light.redis.lock;
 
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;

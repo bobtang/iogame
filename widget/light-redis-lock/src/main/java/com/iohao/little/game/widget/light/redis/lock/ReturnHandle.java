@@ -1,4 +1,4 @@
-package com.iohao.little.game.widget.light.spring.lock;
+package com.iohao.little.game.widget.light.redis.lock;
 
 /**
  * 带返回值的执行接口
@@ -8,8 +8,13 @@ package com.iohao.little.game.widget.light.spring.lock;
  *
  * @author shen
  * @date 2022/3/28
- * @Slogan  慢慢变好，是给自己最好的礼物
+ * @Slogan 慢慢变好，是给自己最好的礼物
  */
 public interface ReturnHandle<T> {
+    /**
+     * 执行
+     *
+     * @return 返回值
+     */
     T execute();
 }

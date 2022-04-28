@@ -1,4 +1,4 @@
-package com.iohao.little.game.widget.light.spring.config;
+package com.iohao.little.game.widget.light.redis.lock.spring.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
