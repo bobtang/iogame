@@ -17,7 +17,6 @@ import java.util.Objects;
  *
  * @author shen
  * @date 2022/3/28
- * @Slogan  慢慢变好，是给自己最好的礼物
  */
 @Configuration
 public class RedissonConfig {

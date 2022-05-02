@@ -1,5 +1,6 @@
 package com.iohao.little.game.widget.light.redis.lock.spring.service;
 
+import com.iohao.little.game.widget.light.redis.lock.DistributedLock;
 import com.iohao.little.game.widget.light.redis.lock.ReturnHandle;
 import com.iohao.little.game.widget.light.redis.lock.VoidHandle;
 import lombok.RequiredArgsConstructor;
