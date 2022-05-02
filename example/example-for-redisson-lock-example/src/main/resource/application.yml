@@ -7,3 +7,7 @@ spring:
       pool:
         max-size: 16
         core-size: 8
+
+# 配置分布式锁redisson基础配置
+iogame:
+  redissonConfigName: redisson-config.yml

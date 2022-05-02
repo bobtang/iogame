@@ -1,7 +1,7 @@
 package com.iohao.little.game.widget.light.redis.lock.spring.service;
 
-import com.iohao.little.game.widget.light.redis.lock.spring.lock.ReturnHandle;
-import com.iohao.little.game.widget.light.redis.lock.spring.lock.VoidHandle;
+import com.iohao.little.game.widget.light.redis.lock.ReturnHandle;
+import com.iohao.little.game.widget.light.redis.lock.VoidHandle;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;

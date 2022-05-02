@@ -1,8 +1,7 @@
 package com.iohao.little.game.widget.light.redis.lock.spring.service;
 
-
-import com.iohao.little.game.widget.light.redis.lock.spring.lock.ReturnHandle;
-import com.iohao.little.game.widget.light.redis.lock.spring.lock.VoidHandle;
+import com.iohao.little.game.widget.light.redis.lock.ReturnHandle;
+import com.iohao.little.game.widget.light.redis.lock.VoidHandle;
 
 import java.util.concurrent.TimeUnit;
 
