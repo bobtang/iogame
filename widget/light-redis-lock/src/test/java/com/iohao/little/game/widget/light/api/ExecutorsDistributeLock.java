@@ -1,10 +1,10 @@
 package com.iohao.little.game.widget.light.api;
 
 
-import com.iohao.little.game.widget.light.DefaultRedissonDistributedLock;
-import com.iohao.little.game.widget.light.DistributedLock;
-import com.iohao.little.game.widget.light.RedissonConfig;
 import com.iohao.little.game.widget.light.entity.UserWallet;
+import com.iohao.little.game.widget.light.redis.lock.DefaultRedissonDistributedLock;
+import com.iohao.little.game.widget.light.redis.lock.DistributedLock;
+import com.iohao.little.game.widget.light.redis.lock.RedissonConfig;
 
 import java.math.BigDecimal;
 import java.util.concurrent.ExecutorService;
@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * 使用自建线程池模拟多线程环境竞争锁
  *
  * @author shen
- * @date 2022/3/31
+ * @date 2022-03-31
  * @Slogan 慢慢变好，是给自己最好的礼物
  */
 public class ExecutorsDistributeLock {
@@ -71,6 +71,7 @@ public class ExecutorsDistributeLock {
 
     /**
      * tryLock方式模拟分布式锁
+     *
      * @param wallet    用户数据
      * @param waitTime  等待时间
      * @param leaseTime 释放时间

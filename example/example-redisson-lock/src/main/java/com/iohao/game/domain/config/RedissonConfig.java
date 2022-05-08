@@ -13,8 +13,8 @@ import java.util.Objects;
  * redisson的基本配置
  *
  * @author shen
- * @date 2022/3/28
- * @Slogan  慢慢变好，是给自己最好的礼物
+ * @date 2022-03-28
+ * @Slogan 慢慢变好，是给自己最好的礼物
  */
 @Configuration
 public class RedissonConfig {
@@ -28,7 +28,7 @@ public class RedissonConfig {
         return redissonClient;
     }
 
-    @Bean(destroyMethod="shutdown")
+    @Bean(destroyMethod = "shutdown")
     public RedissonClient redissonClient() throws IOException {
         //1、创建配置
         Config config = new Config();

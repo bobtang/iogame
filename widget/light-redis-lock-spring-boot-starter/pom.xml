@@ -27,27 +27,24 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.iohao.game</groupId>
+            <artifactId>light-redis-lock</artifactId>
+            <version>${project-revision.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-            <version>${springboot.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
-            <version>${springboot.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson-spring-boot-starter</artifactId>
             <version>${redisson.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <optional>true</optional>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
@@ -62,11 +59,6 @@
             <artifactId>hutool-extra</artifactId>
             <version>${hutool.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.iohao.game</groupId>
-            <artifactId>light-redis-lock</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
+
     </dependencies>
 </project>

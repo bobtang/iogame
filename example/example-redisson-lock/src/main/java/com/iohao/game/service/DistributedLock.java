@@ -9,10 +9,10 @@ import java.util.concurrent.TimeUnit;
  * 分布式锁基础接口
  *
  * @author shen
- * @date 2022/3/28
- * @Slogan  慢慢变好，是给自己最好的礼物
+ * @date 2022-03-28
+ * @Slogan 慢慢变好，是给自己最好的礼物
  */
-public interface DistributedLock{
+public interface DistributedLock {
 
     /**
      * 获取分布式锁，并且执行用户传入的操作

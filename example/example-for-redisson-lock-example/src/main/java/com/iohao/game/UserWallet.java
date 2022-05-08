@@ -13,8 +13,8 @@ import java.math.BigDecimal;
  * 用户钱包
  *
  * @author shen
- * @date 2022/3/28
- * @Slogan  慢慢变好，是给自己最好的礼物
+ * @date 2022-03-28
+ * @Slogan 慢慢变好，是给自己最好的礼物
  */
 @Data
 @EqualsAndHashCode

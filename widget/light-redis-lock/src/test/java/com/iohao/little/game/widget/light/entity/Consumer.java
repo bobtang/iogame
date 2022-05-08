@@ -1,6 +1,6 @@
 package com.iohao.little.game.widget.light.entity;
 
-import com.iohao.little.game.widget.light.DistributedLock;
+import com.iohao.little.game.widget.light.redis.lock.DistributedLock;
 
 import java.math.BigDecimal;
 import java.util.concurrent.TimeUnit;

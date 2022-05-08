@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  * 使用自建线程池模拟多线程环境竞争锁
  *
  * @author shen
- * @date 2022/3/31
+ * @date 2022-03-31
  * 慢慢变好，是给自己最好的礼物
  */
 @Component
