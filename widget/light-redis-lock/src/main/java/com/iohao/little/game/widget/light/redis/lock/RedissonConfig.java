@@ -32,10 +32,11 @@ public class RedissonConfig {
             e.printStackTrace();
         }
 
-        if (Objects.isNull(config)) {
-            config.useSingleServer()
-                    .setAddress("redis://localhost:6379");
-        }
+//        if (Objects.isNull(config)) {
+//            config.useSingleServer()
+//                    .setAddress("redis://localhost:6379");
+//        }
+
         RedissonClient redisson = Redisson.create(config);
         return redisson;
     }

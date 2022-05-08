@@ -30,7 +30,7 @@ public class DefaultRedissonDistributedLock implements DistributedLock {
         try {
             boolean tryLock = lock.tryLock(waitTime, leaseTime, unit);
             if (tryLock) {
-                log.info("{} 获取锁成功", key);
+                log.debug("{} 获取锁成功", key);
                 return action.execute();
             }
         } finally {
