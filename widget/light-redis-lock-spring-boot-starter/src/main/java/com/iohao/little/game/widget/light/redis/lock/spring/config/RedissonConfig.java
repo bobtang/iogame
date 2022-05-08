@@ -16,7 +16,7 @@ import java.util.Objects;
  * redisson的基本配置
  *
  * @author shen
- * @date 2022/3/28
+ * @date 2022-3-28
  */
 @Configuration
 public class RedissonConfig {

@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * 分布式锁 自动装配
  *
  * @author shen
- * @date 2022/3/28
+ * @date 2022-3-28
  */
 @Configuration
 public class DistributedLockAutoConfiguration {
