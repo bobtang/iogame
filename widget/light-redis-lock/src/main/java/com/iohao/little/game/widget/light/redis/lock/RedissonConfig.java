@@ -12,14 +12,15 @@ import java.util.Objects;
  *
  * @author shen
  * @date 2022/3/28
- * @Slogan  慢慢变好，是给自己最好的礼物
+ * @Slogan 慢慢变好，是给自己最好的礼物
  */
 public class RedissonConfig {
 
     public static RedissonClient me() {
         return Holder.me;
     }
-    public static class Holder{
+
+    public static class Holder {
         static RedissonClient me = getRedissonClientFromConfig();
     }
 
@@ -38,6 +39,4 @@ public class RedissonConfig {
         RedissonClient redisson = Redisson.create(config);
         return redisson;
     }
-
-
 }
