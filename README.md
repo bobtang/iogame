@@ -514,7 +514,7 @@ public class DemoAction {
 
 ## 源码目录介绍
 
-```css
+```tex
 .
 ├── common
 │   ├── common-core (业务框架)
