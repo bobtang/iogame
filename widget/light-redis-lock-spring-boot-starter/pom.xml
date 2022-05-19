@@ -8,7 +8,7 @@
     <parent>
         <artifactId>iogame</artifactId>
         <groupId>com.iohao.game</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -29,7 +29,7 @@
         <dependency>
             <groupId>com.iohao.game</groupId>
             <artifactId>light-redis-lock</artifactId>
-            <version>${project-revision.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>

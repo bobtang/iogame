@@ -16,23 +16,24 @@
  */
 package com.iohao.game.example.spring.server;
 
-import com.iohao.game.example.common.DemoLogicServerModuleId;
+import com.iohao.game.bolt.broker.core.client.BrokerAddress;
+import com.iohao.game.bolt.broker.core.client.BrokerClient;
+import com.iohao.game.bolt.broker.core.common.BrokerGlobalConfig;
+import com.iohao.game.common.kit.NetworkKit;
 import com.iohao.game.example.spring.action.DemoSpringAction;
-import com.iohao.little.game.action.skeleton.core.BarSkeleton;
-import com.iohao.little.game.action.skeleton.core.BarSkeletonBuilderParamConfig;
-import com.iohao.little.game.action.skeleton.core.flow.interal.DebugInOut;
-import com.iohao.little.game.net.client.core.ClientStartup;
-import com.iohao.little.game.net.client.core.RemoteAddress;
-import com.iohao.little.game.net.message.common.ModuleKeyKit;
-import com.iohao.little.game.net.message.common.ModuleMessage;
+import com.iohao.game.action.skeleton.core.BarSkeleton;
+import com.iohao.game.action.skeleton.core.BarSkeletonBuilderParamConfig;
+import com.iohao.game.action.skeleton.core.flow.interal.DebugInOut;
+import com.iohao.game.bolt.broker.core.client.BrokerClientBuilder;
+import com.iohao.game.bolt.broker.client.AbstractBrokerClientStartup;
 
 /**
  * spring 逻辑服
  *
- * @author 洛朱
+ * @author 渔民小镇
  * @date 2022-03-24
  */
-public record DemoSpringLogicServer(int gatewayPort) implements ClientStartup {
+public class DemoSpringLogicServer extends AbstractBrokerClientStartup {
 
     @Override
     public BarSkeleton createBarSkeleton() {
@@ -40,34 +41,26 @@ public record DemoSpringLogicServer(int gatewayPort) implements ClientStartup {
         var config = new BarSkeletonBuilderParamConfig()
                 // 扫描 DemoSpringAction.class 所在包
                 .addActionController(DemoSpringAction.class);
-
         // 业务框架构建器
         var builder = config.createBuilder();
-
         // 添加控制台输出插件
         builder.addInOut(new DebugInOut());
-
         return builder.build();
     }
 
     @Override
-    public ModuleMessage createModuleMessage() {
-        // 逻辑服的模块id，标记不同的逻辑服模块。
-        // 开发者随意定义，只要确保每个逻辑服的模块 id 不相同就可以
-        int moduleId = DemoLogicServerModuleId.moduleIdDemoSpringLogicServer;
-        var moduleKey = ModuleKeyKit.getModuleKey(moduleId);
-
-        // 子模块 逻辑服的信息描述
-        return new ModuleMessage(moduleKey)
-                .setName("demo spring 游戏逻辑服 ")
-                .setDescription("demo spring集成 业务");
+    public BrokerClientBuilder createBrokerClientBuilder() {
+        BrokerClientBuilder builder = BrokerClient.newBuilder();
+        builder.appName("demo spring 游戏逻辑服");
+        return builder;
     }
 
     @Override
-    public RemoteAddress createRemoteAddress() {
-        // 游戏网关 ip
-        String gatewayIp = "127.0.0.1";
-        // 游戏网关 ip 和 游戏网关端口
-        return new RemoteAddress(gatewayIp, gatewayPort);
+    public BrokerAddress createBrokerAddress() {
+        // 类似 127.0.0.1 ，但这里是本机的 ip
+        String localIp = NetworkKit.LOCAL_IP;
+        // broker （游戏网关）默认端口
+        int brokerPort = BrokerGlobalConfig.brokerPort;
+        return new BrokerAddress(localIp, brokerPort);
     }
 }

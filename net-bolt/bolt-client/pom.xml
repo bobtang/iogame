@@ -5,7 +5,7 @@
     <parent>
         <artifactId>iogame</artifactId>
         <groupId>com.iohao.game</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -20,8 +20,8 @@
     <dependencies>
         <dependency>
             <groupId>com.iohao.game</groupId>
-            <artifactId>bolt-common</artifactId>
-            <version>${project-revision.version}</version>
+            <artifactId>bolt-core</artifactId>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 

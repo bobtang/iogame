@@ -17,15 +17,15 @@
 package com.iohao.game.example.interaction.weather.action;
 
 import com.iohao.game.example.interaction.msg.DemoWeatherMsg;
-import com.iohao.little.game.action.skeleton.annotation.ActionController;
-import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
+import com.iohao.game.action.skeleton.annotation.ActionController;
+import com.iohao.game.action.skeleton.annotation.ActionMethod;
 
 import java.util.Calendar;
 
 /**
  * 天气 action
  *
- * @author 洛朱
+ * @author 渔民小镇
  * @date 2022-03-24
  */
 @ActionController(DemoCmdForWeather.cmd)

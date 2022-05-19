@@ -16,21 +16,20 @@
  */
 package com.iohao.game.example.one.code;
 
-import com.iohao.little.game.action.skeleton.core.exception.MsgExceptionInfo;
+import com.iohao.game.action.skeleton.core.exception.MsgExceptionInfo;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
 /**
- * @author 洛朱
+ * @author 渔民小镇
  * @date 2022-03-22
  */
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public enum DemoCodeEnum implements MsgExceptionInfo {
     /** jsr330 */
-    jackson_error(100, "异常机制测试，name 必需是 jackson !");
-    ;
+    jackson_error(100, "异常机制测试，name 必需是 jackson !");;
     /** 消息码 */
     final int code;
     /** 消息模板 */

@@ -16,17 +16,17 @@
  */
 package com.iohao.game.example.spring.action;
 
+import com.iohao.game.example.common.msg.HelloSpringMsg;
 import com.iohao.game.example.spring.service.DemoSpringService;
-import com.iohao.game.example.spring.msg.HelloSpringMsg;
-import com.iohao.little.game.action.skeleton.annotation.ActionController;
-import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
+import com.iohao.game.action.skeleton.annotation.ActionController;
+import com.iohao.game.action.skeleton.annotation.ActionMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
  * spring demo : 这是一个 spring 管理的 action 层
  *
- * @author 洛朱
+ * @author 渔民小镇
  * @date 2022-03-22
  */
 @Component

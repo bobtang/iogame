@@ -17,8 +17,8 @@
 package com.iohao.game.example.one;
 
 import com.iohao.game.example.one.server.DemoLogicServer;
-import com.iohao.little.game.net.external.config.ExternalOtherConfig;
-import com.iohao.little.game.net.external.simple.SimpleHelper;
+import com.iohao.game.bolt.broker.client.external.config.ExternalGlobalConfig;
+import com.iohao.game.simple.SimpleHelper;
 
 import java.util.List;
 
@@ -27,25 +27,22 @@ import java.util.List;
  * <pre>
  *     启动 对外服、网关服、逻辑服; 并生成游戏业务文档
  * </pre>
- * @author 洛朱
+ * @author 渔民小镇
  * @date 2022-02-24
  */
 public class DemoApplication {
     public static void main(String[] args) {
         // 注意，这个是临时测试用的，设置为 false 表示不用登录就可以访问逻辑服的方法
-        ExternalOtherConfig.verifyIdentity = false;
+        ExternalGlobalConfig.verifyIdentity = false;
 
         // 游戏对外服端口
         int port = 10100;
 
-        // 游戏网关端口
-        int gatewayPort = 10200;
-
         // 逻辑服
-        var demoLogicServer = new DemoLogicServer(gatewayPort);
+        var demoLogicServer = new DemoLogicServer();
 
         // 启动 对外服、网关服、逻辑服; 并生成游戏业务文档
-        SimpleHelper.run(port, gatewayPort, List.of(demoLogicServer));
+        SimpleHelper.run(port, List.of(demoLogicServer));
 
         /*
          * 该示例文档地址

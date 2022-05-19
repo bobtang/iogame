@@ -18,38 +18,35 @@ package com.iohao.game.example.interaction;
 
 import com.iohao.game.example.interaction.fight.DemoFightLogicServer;
 import com.iohao.game.example.interaction.weather.DemoWeatherLogicServer;
-import com.iohao.little.game.net.client.core.ClientStartup;
-import com.iohao.little.game.net.external.config.ExternalOtherConfig;
-import com.iohao.little.game.net.external.simple.SimpleHelper;
+import com.iohao.game.bolt.broker.client.BrokerClientStartup;
+import com.iohao.game.bolt.broker.client.external.config.ExternalGlobalConfig;
+import com.iohao.game.simple.SimpleHelper;
 
 import java.util.List;
 
 /**
- * 逻辑服之间相互掉用的示例启动类
+ * 逻辑服之间相互调用的示例启动类
  *
- * @author 洛朱
+ * @author 渔民小镇
  * @date 2022-03-24
  */
 public class DemoInteractionApplication {
     public static void main(String[] args) {
         // 注意，这个是临时测试用的，设置为 false 表示不用登录就可以访问逻辑服的方法
-        ExternalOtherConfig.verifyIdentity = false;
+        ExternalGlobalConfig.verifyIdentity = false;
+
+        // 逻辑服列表
+        List<BrokerClientStartup> logicList = List.of(
+                // 战斗 - 逻辑服
+                new DemoFightLogicServer(),
+                // 天气预报 - 逻辑服
+                new DemoWeatherLogicServer()
+        );
 
         // 游戏对外服端口
         int port = 10100;
-
-        // 游戏网关端口
-        int gatewayPort = 10200;
-
-        // 战斗 - 逻辑服
-        var demoFightLogicServer = new DemoFightLogicServer(gatewayPort);
-        // 天气预报 - 逻辑服
-        var demoWeatherLogicServer = new DemoWeatherLogicServer(gatewayPort);
-        // 逻辑服列表
-        List<ClientStartup> logicList = List.of(demoFightLogicServer, demoWeatherLogicServer);
-
         // 启动 对外服、网关服、逻辑服; 并生成游戏业务文档
-        SimpleHelper.run(port, gatewayPort, logicList);
+        SimpleHelper.run(port, logicList);
 
         /*
          * 该示例文档地址

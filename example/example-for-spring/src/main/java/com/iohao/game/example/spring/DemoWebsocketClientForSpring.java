@@ -16,11 +16,12 @@
  */
 package com.iohao.game.example.spring;
 
+import com.iohao.game.action.skeleton.core.flow.codec.ProtoDataCodec;
+import com.iohao.game.example.common.msg.HelloSpringMsg;
 import com.iohao.game.example.spring.action.DemoCmdForSpring;
-import com.iohao.game.example.spring.msg.HelloSpringMsg;
-import com.iohao.little.game.common.kit.ProtoKit;
-import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
-import com.iohao.little.game.net.external.bootstrap.message.ExternalMessageCmdCode;
+import com.iohao.game.bolt.broker.client.external.bootstrap.message.ExternalMessage;
+import com.iohao.game.bolt.broker.client.external.bootstrap.message.ExternalMessageCmdCode;
+import com.iohao.game.common.kit.ProtoKit;
 import lombok.extern.slf4j.Slf4j;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft_6455;
@@ -33,7 +34,7 @@ import java.nio.ByteBuffer;
 /**
  * 模拟游戏客户端
  *
- * @author 洛朱
+ * @author 渔民小镇
  * @date 2022-03-24
  */
 @Slf4j
@@ -67,7 +68,9 @@ public class DemoWebsocketClientForSpring {
                 // 路由
                 externalMessage.setCmdMerge(cmd, subCmd);
                 // 业务数据
-                externalMessage.setData(helloReq);
+                byte[] data = ProtoDataCodec.me().encode(helloReq);
+                // 业务数据
+                externalMessage.setData(data);
 
                 // 转为字节
                 byte[] bytes = ProtoKit.toBytes(externalMessage);
@@ -81,7 +84,7 @@ public class DemoWebsocketClientForSpring {
                 byte[] dataContent = byteBuffer.array();
                 ExternalMessage message = ProtoKit.parseProtoByte(dataContent, ExternalMessage.class);
                 log.info("收到消息 ExternalMessage ========== \n{}", message);
-                byte[] data = message.getDataContent();
+                byte[] data = message.getData();
                 if (data != null) {
                     HelloSpringMsg helloReq = ProtoKit.parseProtoByte(data, HelloSpringMsg.class);
                     log.info("helloReq ========== \n{}", helloReq);

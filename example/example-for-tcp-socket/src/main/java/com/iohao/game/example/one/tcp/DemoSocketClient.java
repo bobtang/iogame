@@ -16,11 +16,12 @@
  */
 package com.iohao.game.example.one.tcp;
 
-import com.iohao.game.example.one.msg.HelloReq;
-import com.iohao.little.game.common.kit.ProtoKit;
-import com.iohao.little.game.net.external.bootstrap.handler.codec.ExternalCodecSocket;
-import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
-import com.iohao.little.game.net.external.bootstrap.message.ExternalMessageCmdCode;
+import com.iohao.game.action.skeleton.core.flow.codec.ProtoDataCodec;
+import com.iohao.game.example.common.msg.HelloReq;
+import com.iohao.game.common.kit.ProtoKit;
+import com.iohao.game.bolt.broker.client.external.bootstrap.handler.codec.ExternalCodecSocket;
+import com.iohao.game.bolt.broker.client.external.bootstrap.message.ExternalMessage;
+import com.iohao.game.bolt.broker.client.external.bootstrap.message.ExternalMessageCmdCode;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -32,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * tcp socket 客户端
  *
- * @author 洛朱
+ * @author 渔民小镇
  * @date 2022-04-13
  */
 @Slf4j
@@ -89,7 +90,7 @@ public class DemoSocketClient {
         protected void channelRead0(ChannelHandlerContext ctx, ExternalMessage msg) {
             log.info("connection server {}", msg);
 
-            byte[] dataContent = msg.getDataContent();
+            byte[] dataContent = msg.getData();
 
             HelloReq helloReq = ProtoKit.parseProtoByte(dataContent, HelloReq.class);
 
@@ -110,7 +111,9 @@ public class DemoSocketClient {
         HelloReq helloReq = new HelloReq();
         helloReq.name = "abc12";
 
-        request.setData(helloReq);
+        byte[] data = ProtoDataCodec.me().encode(helloReq);
+        // 业务数据
+        request.setData(data);
 
         return request;
     }

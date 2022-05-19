@@ -16,11 +16,12 @@
  */
 package com.iohao.game.example.one;
 
-import com.iohao.game.example.one.msg.HelloReq;
+import com.iohao.game.action.skeleton.core.flow.codec.ProtoDataCodec;
+import com.iohao.game.example.common.msg.HelloReq;
 import com.iohao.game.example.one.action.DemoCmd;
-import com.iohao.little.game.common.kit.ProtoKit;
-import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
-import com.iohao.little.game.net.external.bootstrap.message.ExternalMessageCmdCode;
+import com.iohao.game.common.kit.ProtoKit;
+import com.iohao.game.bolt.broker.client.external.bootstrap.message.ExternalMessage;
+import com.iohao.game.bolt.broker.client.external.bootstrap.message.ExternalMessageCmdCode;
 import lombok.extern.slf4j.Slf4j;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft_6455;
@@ -32,7 +33,7 @@ import java.nio.ByteBuffer;
 /**
  * 模拟游戏客户端 websocket
  *
- * @author 洛朱
+ * @author 渔民小镇
  * @date 2022-02-24
  */
 @Slf4j
@@ -62,7 +63,9 @@ public class DemoWebsocketClient {
                 // 路由
                 externalMessage.setCmdMerge(cmd, subCmd);
                 // 业务数据
-                externalMessage.setData(helloReq);
+                byte[] data = ProtoDataCodec.me().encode(helloReq);
+                // 业务数据
+                externalMessage.setData(data);
 
                 // 转为字节
                 byte[] bytes = ProtoKit.toBytes(externalMessage);
@@ -76,7 +79,7 @@ public class DemoWebsocketClient {
                 byte[] dataContent = byteBuffer.array();
                 ExternalMessage message = ProtoKit.parseProtoByte(dataContent, ExternalMessage.class);
                 log.info("收到消息 ExternalMessage ========== \n{}", message);
-                byte[] data = message.getDataContent();
+                byte[] data = message.getData();
                 if (data != null) {
                     HelloReq helloReq = ProtoKit.parseProtoByte(data, HelloReq.class);
                     log.info("helloReq ========== \n{}", helloReq);

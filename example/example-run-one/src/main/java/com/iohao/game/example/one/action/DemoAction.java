@@ -17,13 +17,13 @@
 package com.iohao.game.example.one.action;
 
 import com.iohao.game.example.one.code.DemoCodeEnum;
-import com.iohao.game.example.one.msg.HelloReq;
-import com.iohao.little.game.action.skeleton.annotation.ActionController;
-import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
-import com.iohao.little.game.action.skeleton.core.exception.MsgException;
+import com.iohao.game.example.common.msg.HelloReq;
+import com.iohao.game.action.skeleton.annotation.ActionController;
+import com.iohao.game.action.skeleton.annotation.ActionMethod;
+import com.iohao.game.action.skeleton.core.exception.MsgException;
 
 /**
- * @author 洛朱
+ * @author 渔民小镇
  * @date 2022-02-24
  */
 @ActionController(DemoCmd.cmd)

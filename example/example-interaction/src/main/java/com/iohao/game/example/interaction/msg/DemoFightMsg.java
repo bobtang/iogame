@@ -25,7 +25,7 @@ import lombok.experimental.FieldDefaults;
 
 /**
  * 战斗 pb
- * @author 洛朱
+ * @author 渔民小镇
  * @date 2022-03-24
  */
 @Setter

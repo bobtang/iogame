@@ -22,7 +22,7 @@ package com.iohao.game.example.common;
  *     逻辑服的模块 id 放在一个文件管理，可以使得逻辑服的模块更加的清晰
  * </pre>
  *
- * @author 洛朱
+ * @author 渔民小镇
  * @date 2022-03-24
  */
 public interface DemoLogicServerModuleId {

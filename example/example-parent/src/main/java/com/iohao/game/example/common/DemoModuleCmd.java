@@ -22,7 +22,7 @@ package com.iohao.game.example.common;
  *     主 cmd 放在一个文件管理，可以使得模块的主 cmd 更加的清晰
  * </pre>
  *
- * @author 洛朱
+ * @author 渔民小镇
  * @date 2022-03-23
  */
 public interface DemoModuleCmd {
@@ -37,4 +37,12 @@ public interface DemoModuleCmd {
 
     /** 逻辑服 示例 cmd 模块4 (天气预报服 相关模块) */
     int demoModule_4_weather_cmd = 4;
+
+    int demoModule_5_boot_cmd = 5;
+
+    /** 逻辑服 示例 cmd 模块6 */
+    int demoModule_6_cmd = 6;
+
+    /** 逻辑服 示例 cmd 模块7 - 广播示例 */
+    int demoModule_7_cmd = 7;
 }

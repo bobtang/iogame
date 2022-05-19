@@ -1,6 +1,42 @@
+2022-05-20
+
+异步化、事件驱动的架构设计；网关集群无中心节点、负载均衡
+每个逻辑服都可以独立进程部署
+
+新增 Broker 概念与 BrokerClient 概念
+    Broker 相当于之前的游戏网关，BrokerClient相当于之前的逻辑服
+    BrokerClient 负责与 Broker 建立连接
+
+Broker 集群，集群使用 gossip 协议
+简化游戏逻辑服的创建
+
+业务框架新增
+    DataCodec 开发者可以自定义业务参数的编解码
+
+新增广播（推送日志）与相关示例
+
+包名变更
+此次的架构更新很大，相关的文档也进行了更新
+支持逻辑服（BrokerClient）与游戏网关（Broker）的数量扩展，并能很好的进行负载均衡。
+
+在结构上进行了明确
+    1 业务框架目录 common
+    2 网络通信框架目录 net-bolt
+    3 内置模块目录
+    4 游戏实战目录
+    5 示例目录
+
+game-collect --> example-game-collect
+    明确这个目录是一个示例目录
+
+后续计划
+    日志传输、Metrics采集、染色日志、链路追踪。
+
+Issues (#I57QAZ、#I510AK)
 
 2022-05-08
 新增 分布式锁-基于Redisson的简单实现 (#I53XW3)
+参考： https://www.yuque.com/iohao/game/wz7af5
 
 2022-04-13
 新增 u3d、cocos 连接示例 和 tcp socket 的连接示例
@@ -275,7 +311,7 @@ FlowContext 的动态属性由 AttrDynamic 改为 AttrOptionDynamic
 业务框架:
 BarMessage 增加 rpcCommandType 字段:
     特性如下：
-        在 bolt 中， 掉用方使用
+        在 bolt 中， 调用方使用
         （com.alipay.remoting.rpc.RpcServer.oneway
         或 com.alipay.remoting.rpc.RpcClient.oneway）的 oneway 方法
 
@@ -287,12 +323,12 @@ BarMessage 增加 rpcCommandType 字段:
 
         如果 rpcCommandType != RpcCommandType.REQUEST_ONEWAY ,
         就使用 com.alipay.remoting.AsyncContext.sendResponse 来发送响应
-        具体发送逻辑可读 com.iohao.little.game.action.skeleton.core.flow.interal.DefaultActionAfter 源码
+        具体发送逻辑可读 DefaultActionAfter 源码
 
 2022-01-18
-优化业务框架: 新增 action void 特性， 定义为 void 的业务方法，不在给掉用端响应（除非有业务异常码）
+优化业务框架: 新增 action void 特性， 定义为 void 的业务方法，不在给调用端响应（除非有业务异常码）
 优化业务框架: DebugInOut 日志可以支持 JSR 303、JSR 349、JSR 380 验证规范 的日志
-优化业务框架: Flow 流程，在开启业务参数验证规范功能时，业务参数如果验证不通过,则直接响应带有错误码的消息给掉用端
+优化业务框架: Flow 流程，在开启业务参数验证规范功能时，业务参数如果验证不通过,则直接响应带有错误码的消息给调用端
 
 2022-01-17
 业务框架支持 JSR 303、JSR 349、JSR 380 验证规范

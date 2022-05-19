@@ -6,22 +6,23 @@
 
     <groupId>com.iohao.game</groupId>
     <artifactId>iogame</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>iogame</name>
-    <description>the little game sum</description>
+    <version>1.0</version>
+    <name>ioGame</name>
+    <description>ioGame网络游戏服务器框架</description>
 
     <modules>
-        <!-- 网络游戏框架 - 通用部份  -->
+        <!-- 网络游戏框架 - 业务框架 -->
         <module>common/common-kit</module>
         <module>common/common-core</module>
-        <!-- 网络游戏框架：服务器、客户端 部份-->
-        <module>net-bolt/bolt-message</module>
-        <module>net-bolt/bolt-common</module>
+        <!-- 网络游戏框架 - 网络通信 -->
+        <module>net-bolt/bolt-core</module>
+        <module>net-bolt/bolt-broker-server</module>
         <module>net-bolt/bolt-client</module>
-        <module>net-bolt/bolt-server</module>
         <!-- 网络游戏框架 : 对外的服务器 （面向真实用户） -->
-        <module>common/common-net-external</module>
+        <module>net-bolt/bolt-external</module>
+        <module>net-bolt/bolt-run-one</module>
 
+        <module>widget/light-all</module>
         <!-- 小部件 : 任务延时器 -->
         <module>widget/light-timer-task</module>
         <!-- 小部件 : 领域事件 -->
@@ -32,8 +33,8 @@
         <module>widget/light-jprotobuf</module>
         <!-- 小部件 ： 基于redis实现的分布式锁-->
         <module>widget/light-redis-lock</module>
+        <!-- 小部件 ： 基于redis实现的分布式锁 for springBootStarter -->
         <module>widget/light-redis-lock-spring-boot-starter</module>
-        <module>widget/light-all</module>
 
         <!-- 游戏部件 : 进一步减少开发实践过程中的工作量 -->
         <module>widget-game/light-game-room</module>
@@ -44,36 +45,31 @@
         <module>example/example-for-spring</module>
         <module>example/example-interaction</module>
         <module>example/example-for-tcp-socket</module>
-        <module>example/example-redisson-lock</module>
         <module>example/example-redisson-lock-spring-boot-starter</module>
-        <module>example/example-for-redisson-lock-example</module>
+        <module>example/example-redisson-lock</module>
+        <module>example/example-cluster-run-one</module>
+        <module>example/example-broadcast</module>
 
         <!-- 实践案例 - 通用部份  -->
-        <module>game-collect/game-common-proto</module>
-        <module>game-collect/game-common</module>
-
-        <!-- 网关服 -->
-        <module>game-collect/game-gateway</module>
+        <module>example-game-collect/game-common-proto</module>
+        <module>example-game-collect/game-common</module>
         <!-- 对外服 -->
-        <module>game-collect/game-external</module>
-
+        <module>example-game-collect/game-external</module>
         <!-- 逻辑服 - 大厅 -->
-        <module>game-collect/game-logic-hall</module>
+        <module>example-game-collect/game-logic-hall</module>
         <!-- 逻辑服 - 坦克 -->
-        <module>game-collect/game-logic-tank</module>
-
+        <module>example-game-collect/game-logic-tank</module>
         <!-- 启动 对外服、网关、逻辑服 -->
-        <module>game-collect/game-one</module>
-
+        <module>example-game-collect/game-one</module>
         <!-- java 坦克游戏 fxgl -->
-        <module>game-collect/fxgl-tank</module>
+        <module>example-game-collect/fxgl-tank</module>
 
     </modules>
 
     <!--统一管理版本 的一个父 pom-->
     <properties>
         <!-- 项目版本 -->
-        <project-revision.version>0.0.1-SNAPSHOT</project-revision.version>
+        <project-revision.version>1.0</project-revision.version>
         <!-- jdk 版本 -->
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
@@ -84,39 +80,37 @@
         <encoding>UTF-8</encoding>
 
         <!-- 网络库 : https://mvnrepository.com/artifact/io.netty/netty-all -->
-        <netty.version>4.1.75.Final</netty.version>
+        <netty.version>4.1.77.Final</netty.version>
         <!--  bolt https://mvnrepository.com/artifact/com.alipay.sofa/bolt  -->
-        <bolt.version>1.6.4</bolt.version>
-        <!-- pb 数据描述语言 : https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
-        <protobuf-java.version>3.19.4</protobuf-java.version>
+        <bolt.version>1.6.5</bolt.version>
         <!-- hessian 格式化 https://mvnrepository.com/artifact/com.caucho/hessian -->
-        <hessian.version>4.0.65</hessian.version>
+        <hessian.version>4.0.66</hessian.version>
         <!--  Jansi 控制台输出彩色文字 https://www.oschina.net/p/jansi https://mvnrepository.com/artifact/org.fusesource.jansi/jansi  -->
         <jansi.version>2.4.0</jansi.version>
         <!-- Java文档解析器 https://mvnrepository.com/artifact/com.thoughtworks.qdox/qdox -->
         <qdox.version>2.0.1</qdox.version>
 
         <!-- Hutool是一个Java工具包 see https://www.hutool.cn/ https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
-        <hutool.version>5.7.22</hutool.version>
+        <hutool.version>5.8.1</hutool.version>
         <!-- JCTools 是一款对jdk并发数据结构进行增强的并发工具 see http://jctools.github.io/JCTools/ https://mvnrepository.com/artifact/org.jctools/jctools-core -->
         <jctools-core.version>3.3.0</jctools-core.version>
         <!-- 新一代 Java 模板引擎 see https://www.kancloud.cn/xiandafu/beetl3_guide/1992542 https://mvnrepository.com/artifact/com.ibeetl/beetl -->
         <beetl.version>3.10.0.RELEASE</beetl.version>
         <!-- lombok 消除冗长的 Java 代码 https://www.oschina.net/p/lombok https://mvnrepository.com/artifact/org.projectlombok/lombok -->
-        <lombok.version>1.18.22</lombok.version>
+        <lombok.version>1.18.24</lombok.version>
 
         <!-- redis internal : https://www.oschina.net/p/redisson https://mvnrepository.com/artifact/org.redisson/redisson -->
-        <redisson.version>3.16.8</redisson.version>
-        <!-- json 解析器 : https://mvnrepository.com/artifact/com.alibaba/fastjson -->
-        <fastjson.version>1.2.79</fastjson.version>
+        <redisson.version>3.17.1</redisson.version>
+        <!-- json 解析器 : https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2 -->
+        <fastjson.version>2.0.3</fastjson.version>
         <!-- 对象池 :  https://mvnrepository.com/artifact/org.apache.commons/commons-pool2 -->
         <commons-pool.version>2.11.1</commons-pool.version>
         <!--  JSR-107 高性能缓存库 https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine -->
-        <caffeine.version>3.0.5</caffeine.version>
+        <caffeine.version>3.1.0</caffeine.version>
         <!--  reflectasm 高性能的反射处理 https://www.oschina.net/p/reflectasm https://mvnrepository.com/artifact/com.esotericsoftware/reflectasm  -->
         <reflectasm.version>1.11.9</reflectasm.version>
         <!-- jprotobuf是针对Java程序开发一套简易类库，目的是简化java语言对protobuf类库的使用 https://github.com/jhunters/jprotobuf/ https://mvnrepository.com/artifact/com.baidu/jprotobuf -->
-        <jprotobuf.version>2.4.14</jprotobuf.version>
+        <jprotobuf.version>2.4.15</jprotobuf.version>
         <!-- ==============轻量小部件============== -->
         <!--  cache2k https://mvnrepository.com/artifact/org.cache2k -->
         <!--        <cache2k.version>2.4.1.Final</cache2k.version>-->
@@ -125,27 +119,35 @@
         <disruptor.version>3.4.4</disruptor.version>
 
         <!-- JSR-303、JSR 349 bean 验证框架 https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
-        <hibernate-validator.version>7.0.2.Final</hibernate-validator.version>
+        <hibernate-validator.version>7.0.4.Final</hibernate-validator.version>
         <!-- JSR-303、JSR 349 https://mvnrepository.com/artifact/jakarta.validation/jakarta.validation-api -->
         <jakarta.validation-api.version>3.0.1</jakarta.validation-api.version>
         <!-- JSR-303、JSR 349 https://mvnrepository.com/artifact/org.glassfish/jakarta.el -->
         <jakarta.el.version>4.0.2</jakarta.el.version>
 
         <!-- Hazelcast提供弹性可扩展的分布式内存计算 https://mvnrepository.com/artifact/com.hazelcast/hazelcast -->
-        <hazelcast.version>5.0.2</hazelcast.version>
+        <hazelcast.version>5.1.1</hazelcast.version>
 
         <!-- Java 实体映射工具 https://mvnrepository.com/artifact/org.mapstruct/mapstruct https://mapstruct.org/documentation/reference-guide/ -->
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 
         <!-- temp spring boot https://mvnrepository.com/artifact/org.springframework/spring-core -->
-        <spring.version>5.3.17</spring.version>
+        <spring.version>5.3.20</spring.version>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter -->
-        <springboot.version>2.6.4</springboot.version>
+        <springboot.version>2.6.7</springboot.version>
         <!--  junit https://mvnrepository.com/artifact/junit/junit  -->
         <junit.version>4.13.2</junit.version>
         <!-- 模拟客户端 https://mvnrepository.com/artifact/org.java-websocket/Java-WebSocket -->
-        <java-websocket.version>1.5.2</java-websocket.version>
+        <java-websocket.version>1.5.3</java-websocket.version>
+        <!-- 演示用的假数据 https://mvnrepository.com/artifact/com.github.javafaker/javafaker -->
+        <javafaker.version>1.0.2</javafaker.version>
 
+        <!-- slf4j https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <slf4j-api.version>1.7.36</slf4j-api.version>
+        <!-- slf4j https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
+        <logback.version>1.2.11</logback.version>
+
+        <reactor-bom.version>2020.0.17</reactor-bom.version>
     </properties>
 
     <dependencies>
@@ -168,13 +170,12 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.32</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.8</version>
+            <version>${logback.version}</version>
             <scope>compile</scope>
         </dependency>
 
@@ -199,6 +200,42 @@
         </dependency>
 
     </dependencies>
+
+    <!--dependencyManagement 标签用于控制子模块的依赖版本等信息，该标签只用来控制版本，不能将依赖引入 -->
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${springboot.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+
+            <dependency>
+                <groupId>io.projectreactor</groupId>
+                <artifactId>reactor-bom</artifactId>
+                <version>${reactor-bom.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j-api.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
@@ -276,6 +313,48 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--
+                重复依赖检测，并解决冲突jar
+                mvnd enforcer:display-info
+                https://maven.apache.org/enforcer/maven-enforcer-plugin/index.html
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <bannedPlugins>
+                                    <!-- will only display a warning but does not fail the build. -->
+                                    <level>WARN</level>
+                                    <excludes>
+                                        <exclude>org.apache.maven.plugins:maven-verifier-plugin</exclude>
+                                    </excludes>
+                                    <message>Please consider using the maven-invoker-plugin
+                                        (http://maven.apache.org/plugins/maven-invoker-plugin/)!
+                                    </message>
+                                </bannedPlugins>
+                                <requireMavenVersion>
+                                    <version>2.0.6</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>1.5</version>
+                                </requireJavaVersion>
+                                <requireOS>
+                                    <family>unix</family>
+                                </requireOS>
+                            </rules>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

@@ -21,7 +21,7 @@ import com.iohao.game.example.common.DemoModuleCmd;
 /**
  * spring 演示相关
  *
- * @author 洛朱
+ * @author 渔民小镇
  * @date 2022-03-23
  */
 public interface DemoCmdForSpring {

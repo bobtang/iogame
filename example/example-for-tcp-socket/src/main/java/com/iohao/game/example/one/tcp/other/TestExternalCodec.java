@@ -16,10 +16,11 @@
  */
 package com.iohao.game.example.one.tcp.other;
 
-import com.iohao.game.example.one.msg.HelloReq;
-import com.iohao.little.game.net.external.bootstrap.handler.codec.ExternalCodecSocket;
-import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
-import com.iohao.little.game.net.external.bootstrap.message.ExternalMessageCmdCode;
+import com.iohao.game.action.skeleton.core.flow.codec.ProtoDataCodec;
+import com.iohao.game.example.common.msg.HelloReq;
+import com.iohao.game.bolt.broker.client.external.bootstrap.handler.codec.ExternalCodecSocket;
+import com.iohao.game.bolt.broker.client.external.bootstrap.message.ExternalMessage;
+import com.iohao.game.bolt.broker.client.external.bootstrap.message.ExternalMessageCmdCode;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.embedded.EmbeddedChannel;
 import io.netty.handler.logging.LogLevel;
@@ -29,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * 编解码示例
  *
- * @author 洛朱
+ * @author 渔民小镇
  * @date 2022-04-13
  */
 @Slf4j
@@ -61,7 +62,9 @@ public class TestExternalCodec {
         HelloReq helloReq = new HelloReq();
         helloReq.name = "abc1";
 
-        request.setData(helloReq);
+        byte[] data = ProtoDataCodec.me().encode(helloReq);
+        // 业务数据
+        request.setData(data);
 
         log.info("{}", request);
         return request;

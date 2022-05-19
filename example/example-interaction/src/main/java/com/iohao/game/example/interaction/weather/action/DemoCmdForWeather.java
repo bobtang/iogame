@@ -21,7 +21,7 @@ import com.iohao.game.example.common.DemoModuleCmd;
 /**
  * 天气预报服的 cmd
  *
- * @author 洛朱
+ * @author 渔民小镇
  * @date 2022-03-24
  */
 public interface DemoCmdForWeather {

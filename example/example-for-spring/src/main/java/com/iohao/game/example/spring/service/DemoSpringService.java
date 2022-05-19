@@ -16,13 +16,13 @@
  */
 package com.iohao.game.example.spring.service;
 
-import com.iohao.game.example.spring.msg.HelloSpringMsg;
+import com.iohao.game.example.common.msg.HelloSpringMsg;
 import org.springframework.stereotype.Component;
 
 /**
  * 这是一个 spring 管理的 service 层
  *
- * @author 洛朱
+ * @author 渔民小镇
  * @date 2022-03-22
  */
 @Component

@@ -19,15 +19,15 @@ package com.iohao.game.example.interaction.fight.action;
 import com.iohao.game.example.interaction.msg.DemoFightMsg;
 import com.iohao.game.example.interaction.msg.DemoWeatherMsg;
 import com.iohao.game.example.interaction.weather.action.DemoCmdForWeather;
-import com.iohao.little.game.action.skeleton.annotation.ActionController;
-import com.iohao.little.game.action.skeleton.annotation.ActionMethod;
-import com.iohao.little.game.action.skeleton.core.CmdInfo;
-import com.iohao.little.game.action.skeleton.core.flow.FlowContext;
+import com.iohao.game.action.skeleton.annotation.ActionController;
+import com.iohao.game.action.skeleton.annotation.ActionMethod;
+import com.iohao.game.action.skeleton.core.CmdInfo;
+import com.iohao.game.action.skeleton.core.flow.FlowContext;
 
 /**
  * 战斗 action
  *
- * @author 洛朱
+ * @author 渔民小镇
  * @date 2022-03-24
  */
 @ActionController(DemoCmdForFight.cmd)

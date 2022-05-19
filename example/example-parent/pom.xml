@@ -5,7 +5,7 @@
     <parent>
         <artifactId>iogame</artifactId>
         <groupId>com.iohao.game</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -18,11 +18,17 @@
     </properties>
     <dependencies>
 
-        <!-- 对外服 -->
+        <!-- 单体应用启动 -->
         <dependency>
             <groupId>com.iohao.game</groupId>
-            <artifactId>common-net-external</artifactId>
-            <version>${project-revision.version}</version>
+            <artifactId>bolt-run-one</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.iohao.game</groupId>
+            <artifactId>light-jprotobuf</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <!-- 模拟客户端 https://mvnrepository.com/artifact/org.java-websocket/Java-WebSocket -->

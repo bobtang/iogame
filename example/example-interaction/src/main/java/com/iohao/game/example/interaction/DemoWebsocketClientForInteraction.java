@@ -18,9 +18,9 @@ package com.iohao.game.example.interaction;
 
 import com.iohao.game.example.interaction.msg.DemoFightMsg;
 import com.iohao.game.example.interaction.fight.action.DemoCmdForFight;
-import com.iohao.little.game.common.kit.ProtoKit;
-import com.iohao.little.game.net.external.bootstrap.message.ExternalMessage;
-import com.iohao.little.game.net.external.bootstrap.message.ExternalMessageCmdCode;
+import com.iohao.game.common.kit.ProtoKit;
+import com.iohao.game.bolt.broker.client.external.bootstrap.message.ExternalMessage;
+import com.iohao.game.bolt.broker.client.external.bootstrap.message.ExternalMessageCmdCode;
 import lombok.extern.slf4j.Slf4j;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft_6455;
@@ -33,7 +33,7 @@ import java.nio.ByteBuffer;
 /**
  * 模拟游戏客户端
  *
- * @author 洛朱
+ * @author 渔民小镇
  * @date 2022-03-24
  */
 @Slf4j
@@ -76,7 +76,7 @@ public class DemoWebsocketClientForInteraction {
                 byte[] dataContent = byteBuffer.array();
                 ExternalMessage message = ProtoKit.parseProtoByte(dataContent, ExternalMessage.class);
                 log.info("收到消息 ExternalMessage ========== \n{}", message);
-                byte[] data = message.getDataContent();
+                byte[] data = message.getData();
                 if (data != null) {
                     DemoFightMsg demoFightMsg = ProtoKit.parseProtoByte(data, DemoFightMsg.class);
                     log.info("DemoFightRes ========== \n{}", demoFightMsg);
