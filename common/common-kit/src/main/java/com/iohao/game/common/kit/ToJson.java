@@ -17,8 +17,6 @@
 package com.iohao.game.common.kit;
 
 
-import com.alibaba.fastjson2.JSON;
-
 /**
  * 对象 json 相关
  *
@@ -32,11 +30,11 @@ public interface ToJson {
      * @return json String
      */
     default String toJson() {
-        return JSON.toJSONString(this);
+        return JsonKit.toJson(this);
     }
 
     /**
-     * 将对象转换成 json 格式
+     * 将对象转换成 json Pretty 格式
      *
      * @return json
      */

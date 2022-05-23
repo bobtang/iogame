@@ -20,6 +20,7 @@ import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.exception.RemotingException;
 import com.iohao.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.game.action.skeleton.protocol.ResponseMessage;
+import com.iohao.game.action.skeleton.protocol.collect.ResponseCollectMessage;
 
 /**
  * 当前服务器上下文
@@ -46,6 +47,21 @@ public interface BrokerClientContext extends AsyncContext {
      * @return ResponseMessage
      */
     ResponseMessage invokeModuleMessage(RequestMessage requestMessage);
+
+    /**
+     * 模块之间的访问，访问【同类型】的多个逻辑服
+     * <pre>
+     *     模块A 访问 模块B 的某个方法，因为只有模块B持有这些数据，这里的模块指的是逻辑服。
+     *     假设启动了多个模块B，分别是：模块B-1、模块B-2、模块B-3、模块B-4 等。框架支持访问【同类型】的多个逻辑服，并把多个相同逻辑服结果收集到一起。
+     *
+     *     具体的意思可以参考文档中的说明
+     *     https://www.yuque.com/iohao/game/rf9rb9
+     * </pre>
+     *
+     * @param requestMessage requestMessage
+     * @return ResponseAggregationMessage
+     */
+    ResponseCollectMessage invokeModuleCollectMessage(RequestMessage requestMessage);
 
     /**
      * 发送消息到游戏网关

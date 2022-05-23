@@ -16,9 +16,9 @@
  */
 package com.iohao.game.example.one.tcp;
 
-import com.iohao.game.example.one.server.DemoLogicServer;
-import com.iohao.game.bolt.broker.client.BrokerClientStartup;
+import com.iohao.game.bolt.broker.client.AbstractBrokerClientStartup;
 import com.iohao.game.bolt.broker.client.external.config.ExternalGlobalConfig;
+import com.iohao.game.example.one.server.DemoLogicServer;
 import com.iohao.game.simple.SimpleHelper;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public class DemoTcpSocketApplication {
         int port = 10100;
 
         // 逻辑服列表
-        List<BrokerClientStartup> logicList = List.of(
+        List<AbstractBrokerClientStartup> logicList = List.of(
                 new DemoLogicServer()
         );
 

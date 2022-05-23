@@ -35,7 +35,7 @@ import java.util.Objects;
  * @date 2021-12-20
  */
 @Slf4j
-public class DefaultActionAfter implements ActionAfter {
+public final class DefaultActionAfter implements ActionAfter {
     @Override
     public void execute(final FlowContext flowContext) {
         final ResponseMessage response = flowContext.getResponse();
@@ -68,10 +68,10 @@ public class DefaultActionAfter implements ActionAfter {
 
         byte rpcCommandType = headMetadata.getRpcCommandType();
 
-        if (rpcCommandType != RpcCommandType.REQUEST_ONEWAY) {
-            return flowContext.option(FlowAttr.asyncContext);
-        } else {
+        if (rpcCommandType == RpcCommandType.REQUEST_ONEWAY) {
             return flowContext.option(FlowAttr.brokerClientContext);
+        } else {
+            return flowContext.option(FlowAttr.asyncContext);
         }
     }
 }

@@ -16,7 +16,7 @@
  */
 package com.iohao.game.bolt.broker.client.external;
 
-import com.iohao.game.bolt.broker.client.BrokerClientService;
+import com.iohao.game.bolt.broker.client.BrokerClientApplication;
 import com.iohao.game.bolt.broker.client.external.simple.ExternalBrokerClientStartup;
 import com.iohao.game.bolt.broker.core.client.BrokerAddress;
 import com.iohao.game.bolt.broker.core.common.BrokerGlobalConfig;
@@ -73,15 +73,16 @@ public final class ExternalServer {
     }
 
     private void startupExternalBoltBrokerClient() {
+
         // 保存与 broker 通信的 client
-        var brokerClientBuilder = externalBoltBrokerClientStartup.initConfig();
+        var brokerClientBuilder = BrokerClientApplication.initConfig(this.externalBoltBrokerClientStartup);
 
         // 重新设置 broker 的连接地址，以对外服的为准
         if (Objects.nonNull(this.brokerAddress)) {
             brokerClientBuilder.brokerAddress(this.brokerAddress);
         }
 
-        ExternalHelper.me().brokerClient = BrokerClientService.me().start(brokerClientBuilder);
+        ExternalHelper.me().brokerClient = BrokerClientApplication.start(brokerClientBuilder);
     }
 
     /**

@@ -256,6 +256,9 @@ public class BrokerServerBuilder {
 
         // 处理 - 内部模块消息的转发
         Supplier<UserProcessor<?>> innerModuleMessageSupplier = InnerModuleMessageBrokerProcessor::new;
+        // 处理 - 模块之间的访问，访问同类型的多个逻辑服
+        Supplier<UserProcessor<?>> innerModuleRequestCollectMessageSupplier = InnerModuleRequestCollectMessageBrokerProcessor::new;
+
 
         // 处理 - 广播
         Supplier<UserProcessor<?>> broadcastMessageSupplier = BroadcastMessageBrokerProcessor::new;
@@ -268,6 +271,7 @@ public class BrokerServerBuilder {
                 .registerUserProcessor(changeUserIdMessageSupplier)
                 .registerUserProcessor(responseMessageSupplier)
                 .registerUserProcessor(innerModuleMessageSupplier)
+                .registerUserProcessor(innerModuleRequestCollectMessageSupplier)
                 .registerUserProcessor(broadcastMessageSupplier)
                 .registerUserProcessor(brokerClientItemConnectMessageSupplier)
         ;

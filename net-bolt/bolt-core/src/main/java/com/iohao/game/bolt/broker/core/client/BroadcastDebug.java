@@ -26,7 +26,6 @@ import com.iohao.game.common.kit.JsonKit;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
@@ -42,19 +41,6 @@ import java.util.Map;
 class BroadcastDebug {
 
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
-
-    public static void main(String[] args) {
-        Instant now = Instant.now();
-        System.out.println("秒数:" + now.getEpochSecond());
-        System.out.println("毫秒数:" + now.toEpochMilli());
-
-
-        LocalDateTime datetime = LocalDateTime.now();
-        String format = dateTimeFormatter.format(datetime);
-        log.info("format : {}", format);
-
-
-    }
 
     void print(BroadcastMessage broadcastMessage) {
         RuntimeException ex = new RuntimeException();

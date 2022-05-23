@@ -23,8 +23,6 @@ import com.iohao.game.action.skeleton.core.flow.attr.FlowAttr;
 import com.iohao.game.action.skeleton.protocol.ResponseMessage;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Objects;
-
 /**
  * 结果包装器
  *
@@ -32,7 +30,7 @@ import java.util.Objects;
  * @date 2022-01-12
  */
 @Slf4j
-public class DefaultActionMethodResultWrap implements ActionMethodResultWrap {
+public final class DefaultActionMethodResultWrap implements ActionMethodResultWrap {
     @Override
     public void wrap(final FlowContext flowContext) {
         final ResponseMessage responseMessage = flowContext.getResponse();
@@ -51,8 +49,8 @@ public class DefaultActionMethodResultWrap implements ActionMethodResultWrap {
             return;
         }
 
-        // action 是 void 或 结果为 null， 不做处理
-        if (Objects.isNull(result) && !flowContext.getActionCommand().getActionMethodReturnInfo().isVoid()) {
+        // （action 返回值是 void 或者结果是 null ）不做处理
+        if (flowContext.getActionCommand().getActionMethodReturnInfo().isVoid() || result == null) {
             return;
         }
 

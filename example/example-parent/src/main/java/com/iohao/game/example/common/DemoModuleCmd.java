@@ -45,4 +45,9 @@ public interface DemoModuleCmd {
 
     /** 逻辑服 示例 cmd 模块7 - 广播示例 */
     int demoModule_7_cmd = 7;
+
+    /** 逻辑服 示例 cmd 模块8 (大厅 相关模块) */
+    int demoModule_8_hall_cmd = 8;
+    /** 逻辑服 示例 cmd 模块9 (房间 相关模块) */
+    int demoModule_9_room_cmd = 9;
 }

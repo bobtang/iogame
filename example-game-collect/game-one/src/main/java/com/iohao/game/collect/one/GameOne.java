@@ -16,7 +16,7 @@
  */
 package com.iohao.game.collect.one;
 
-import com.iohao.game.bolt.broker.client.BrokerClientStartup;
+import com.iohao.game.bolt.broker.client.AbstractBrokerClientStartup;
 import com.iohao.game.collect.external.GameExternalBoot;
 import com.iohao.game.collect.hall.HallClientStartup;
 import com.iohao.game.collect.tank.TankClientStartup;
@@ -34,7 +34,7 @@ public class GameOne {
     public static void main(String[] args) {
 
         // 逻辑服列表
-        List<BrokerClientStartup> logicServer = List.of(
+        List<AbstractBrokerClientStartup> logicServer = List.of(
                 // 大厅
                 new HallClientStartup(),
                 // 坦克游戏

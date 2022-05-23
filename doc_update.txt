@@ -1,3 +1,26 @@
+
+2022-05-23
+模块之间的访问，访问【同类型】的多个逻辑服 (#I58LNI)
+    如： 模块A 访问 模块B 的某个方法，因为只有模块B持有这些数据，这里的模块指的是逻辑服。
+    假设启动了多个模块B，分别是：模块B-1、模块B-2、模块B-3、模块B-4 等。框架支持访问【同类型】的多个逻辑服，并把多个相同逻辑服结果收集到一起
+场景举例：
+    【象棋逻辑服】有 3 台，分别是：《象棋逻辑服-1》、《象棋逻辑服-2》、《象棋逻辑服-3》，这些逻辑服可以在不同有进程中。
+    我们可以在大厅逻辑服中向同类型的多个游戏逻辑服通信请求，意思是大厅发起一个向这 3 台象棋逻辑服的请求，框架会收集这 3 个结果集（假设结果是：当前服务器房间数）。
+    当大厅得到这个结果集，可以统计房间的总数，又或者说根据这些信息做一些其他的业务逻辑；当然实际中不会这么做；这里只是举个例子。    实际当中可以发挥大伙的想象力。
+
+示例文档
+    https://www.yuque.com/iohao/game/rf9rb9
+
+业务框架
+    action 的返回值支持 null
+    debugInout 新增逻辑服id、逻辑服类型的打印信息
+
+SimpleHelper、SimpleRunOne、ClusterSimpleHelper、ClusterSimpleRunOne
+的逻辑服参数改为由 BrokerClientStartup --> AbstractBrokerClientStartup
+
+明确这是一个 BrokerClient 启动器
+BrokerClientService --> BrokerClientApplication
+
 2022-05-20
 
 异步化、事件驱动的架构设计；网关集群无中心节点、负载均衡

@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2021-12-20
  */
 @Slf4j
-public class DefaultActionMethodExceptionProcess implements ActionMethodExceptionProcess {
+public final class DefaultActionMethodExceptionProcess implements ActionMethodExceptionProcess {
     @Override
     public MsgException processException(final Throwable e) {
 

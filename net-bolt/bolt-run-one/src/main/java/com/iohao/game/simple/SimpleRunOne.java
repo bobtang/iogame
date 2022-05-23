@@ -17,7 +17,8 @@
 package com.iohao.game.simple;
 
 import com.iohao.game.action.skeleton.core.doc.BarSkeletonDoc;
-import com.iohao.game.bolt.broker.client.BrokerClientStartup;
+import com.iohao.game.bolt.broker.client.AbstractBrokerClientStartup;
+import com.iohao.game.bolt.broker.client.BrokerClientApplication;
 import com.iohao.game.bolt.broker.client.external.ExternalServer;
 import com.iohao.game.bolt.broker.server.BrokerServer;
 import com.iohao.game.bolt.broker.server.BrokerServerBuilder;
@@ -56,7 +57,7 @@ public class SimpleRunOne {
     /** 对外服 */
     ExternalServer externalServer;
     /** 逻辑服 */
-    List<BrokerClientStartup> logicServerList;
+    List<AbstractBrokerClientStartup> logicServerList;
 
     /** broker 游戏网关 */
     BrokerServer brokerServer;
@@ -105,18 +106,14 @@ public class SimpleRunOne {
         this.executorService.execute(() -> {
             // 启动逻辑服
             if (Objects.nonNull(this.logicServerList)) {
-                this.logicServerList.forEach(BrokerClientStartup::startup);
+                this.logicServerList.forEach(BrokerClientApplication::start);
                 log.info("启动逻辑服 : {}", this.logicServerList);
             }
 
             // 启动游戏对外服
             if (Objects.nonNull(this.externalServer)) {
-                log.info("ok end 1");
                 this.externalServer.startup();
-                log.info("ok end 2");
             }
-
-            log.info("ok end ");
         });
 
         try {

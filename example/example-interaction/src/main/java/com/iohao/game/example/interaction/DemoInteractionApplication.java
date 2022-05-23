@@ -16,10 +16,10 @@
  */
 package com.iohao.game.example.interaction;
 
+import com.iohao.game.bolt.broker.client.AbstractBrokerClientStartup;
+import com.iohao.game.bolt.broker.client.external.config.ExternalGlobalConfig;
 import com.iohao.game.example.interaction.fight.DemoFightLogicServer;
 import com.iohao.game.example.interaction.weather.DemoWeatherLogicServer;
-import com.iohao.game.bolt.broker.client.BrokerClientStartup;
-import com.iohao.game.bolt.broker.client.external.config.ExternalGlobalConfig;
 import com.iohao.game.simple.SimpleHelper;
 
 import java.util.List;
@@ -36,7 +36,7 @@ public class DemoInteractionApplication {
         ExternalGlobalConfig.verifyIdentity = false;
 
         // 逻辑服列表
-        List<BrokerClientStartup> logicList = List.of(
+        List<AbstractBrokerClientStartup> logicList = List.of(
                 // 战斗 - 逻辑服
                 new DemoFightLogicServer(),
                 // 天气预报 - 逻辑服

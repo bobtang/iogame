@@ -29,4 +29,8 @@ public class JsonKit {
     public String toJsonPretty(Object object) {
         return JSON.toJSONString(object, JSONWriter.Feature.PrettyFormat);
     }
+
+    public String toJson(Object object) {
+        return JSON.toJSONString(object);
+    }
 }

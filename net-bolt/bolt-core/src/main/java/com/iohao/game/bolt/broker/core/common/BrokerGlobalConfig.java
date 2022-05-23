@@ -19,6 +19,8 @@ package com.iohao.game.bolt.broker.core.common;
 import lombok.experimental.UtilityClass;
 
 /**
+ * broker 全局默认配置
+ *
  * @author 渔民小镇
  * @date 2022-05-16
  */
@@ -27,13 +29,11 @@ public class BrokerGlobalConfig {
     /** broker （游戏网关）默认端口 */
     public int brokerPort = 10200;
     /** bolt 消息发送超时时间 */
-    public int timeoutMillis = 1000;
+    public int timeoutMillis = 3000;
     /** 集群默认监听端口 Gossip listen port */
     public int gossipListenPort = 30056;
     /** true 开启日志 */
     public boolean openLog = true;
     /** true 开启请求响应相关日志 */
     public boolean requestResponseLog = false;
-
-    
 }

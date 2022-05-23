@@ -20,6 +20,7 @@ import com.iohao.game.action.skeleton.core.doc.ActionSendDocs;
 import com.iohao.game.action.skeleton.core.doc.ErrorCodeDocs;
 import com.iohao.game.action.skeleton.core.flow.*;
 import com.iohao.game.action.skeleton.core.flow.attr.FlowAttr;
+import com.iohao.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.game.action.skeleton.core.flow.codec.DataCodec;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -94,12 +95,22 @@ public class BarSkeleton {
      *
      * @param flowContext flowContext
      */
-    public void handle(FlowContext flowContext) {
+    public void handle(final FlowContext flowContext) {
+
         flowContext.setBarSkeleton(this);
         flowContext.option(FlowAttr.dataCodec, this.dataCodec);
 
-        if (this.handlers.length == 1) {
-            this.handlers[0].handler(flowContext);
+        /*
+         * 多次访问的变量，保存到局部变量，可以提升性能。
+         * 把成员变量的访问变为局部变量的访问 。 通过栈帧访问（线程栈），不用每次从堆中得到成员变量
+         *
+         * 因为这段代码访问频繁，才这样做。常规下不需要这么做
+         * 可以参考 HashMap 的 putVal 方法相关
+         */
+        var handlers = this.handlers;
+
+        if (handlers.length == 1) {
+            handlers[0].handler(flowContext);
             return;
         }
 

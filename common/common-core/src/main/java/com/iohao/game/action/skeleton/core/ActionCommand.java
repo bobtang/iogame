@@ -67,7 +67,7 @@ public final class ActionCommand {
     final Object actionController;
     /** 方法所在 class */
     final Class<?> actionControllerClazz;
-    /** 默认tcp对象是single. 如果设置为false, 每次创建新的tcp对象. 默认:true */
+    /** 默认:true ，action 对象是 single. 如果设置为 false, 每次创建新的 action 对象. */
     final boolean createSingleActionCommandController;
 
     /** 方法对象 */

@@ -26,7 +26,7 @@ import com.iohao.game.action.skeleton.core.flow.FlowContext;
  * @author 渔民小镇
  * @date 2021-12-20
  */
-public class DefaultActionMethodInvoke implements ActionMethodInvoke {
+public final class DefaultActionMethodInvoke implements ActionMethodInvoke {
 
     @Override
     public Object invoke(final FlowContext flowContext) {

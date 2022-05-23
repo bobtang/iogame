@@ -19,6 +19,7 @@ package com.iohao.game.bolt.broker.core.message;
 import com.iohao.game.action.skeleton.protocol.RequestMessage;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -32,5 +33,7 @@ import java.io.Serializable;
  */
 @Data
 public class InnerModuleMessage implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -5352732154154036339L;
     RequestMessage requestMessage;
 }

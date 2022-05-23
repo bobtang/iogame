@@ -34,6 +34,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
@@ -50,7 +51,16 @@ public abstract non-sealed class AbstractBrokerClientStartup implements BrokerCl
     BrokerAddress brokerAddress;
     /** 业务框架 */
     BarSkeleton barSkeleton;
-    /** BoltBrokerClient 构建器 */
+    /**
+     * BoltBrokerClient 构建器
+     * <pre>
+     *     如果字段赋值了
+     *          就不会使用 {@link BrokerClientStartup#createBrokerClientBuilder()} 接口的值
+     *
+     *     如果字段没有赋值
+     *          就会使用 {@link BrokerClientStartup#createBrokerClientBuilder()} 接口的值
+     * </pre>
+     */
     BrokerClientBuilder brokerClientBuilder;
 
     @Override
@@ -91,13 +101,17 @@ public abstract non-sealed class AbstractBrokerClientStartup implements BrokerCl
      *
      * @return BoltBrokerClientBuilder
      */
-    public BrokerClientBuilder initConfig() {
+    BrokerClientBuilder initConfig() {
         // 业务框架
         this.barSkeleton = this.createBarSkeleton();
         // 连接到游戏网关的地址
         this.brokerAddress = this.createBrokerAddress();
         // 构建器
-        this.brokerClientBuilder = this.createBrokerClientBuilder();
+        if (Objects.isNull(this.brokerClientBuilder)) {
+            this.brokerClientBuilder = this.createBrokerClientBuilder();
+        }
+
+        Objects.requireNonNull(this.brokerClientBuilder, "brokerClient 构建器必须要有");
 
         // 设置 config 配置信息到 BoltBrokerClientBuilder 中
         this.brokerClientBuilder

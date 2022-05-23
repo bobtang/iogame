@@ -46,6 +46,15 @@ public class RequestMessageClientProcessor extends AsyncUserProcessor<RequestMes
 
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, RequestMessage request) {
+        /*
+         * 多次访问的变量，保存到局部变量，可以提升性能。
+         * 把成员变量的访问变为局部变量的访问 。 通过栈帧访问（线程栈），不用每次从堆中得到成员变量
+         *
+         * 因为这段代码访问频繁，才这样做。常规下不需要这么做
+         * 可以参考 HashMap 的 putVal 方法相关
+         */
+        final BrokerClient brokerClient = this.brokerClient;
+
         if (BrokerGlobalConfig.requestResponseLog) {
             log.info("逻辑服处理请求 --- {} - {}", brokerClient.getAppName(), brokerClient.getId());
         }
@@ -56,6 +65,8 @@ public class RequestMessageClientProcessor extends AsyncUserProcessor<RequestMes
 
         flowContext.option(FlowAttr.asyncContext, asyncCtx);
         flowContext.option(FlowAttr.brokerClientContext, brokerClient);
+        flowContext.option(FlowAttr.logicServerId, brokerClient.getId());
+        flowContext.option(FlowAttr.logicServerTag, brokerClient.getTag());
 
         // 得到逻辑服对应的业务框架
         BarSkeleton barSkeleton = brokerClient.getBarSkeleton();

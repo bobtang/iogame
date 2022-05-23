@@ -33,6 +33,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * broker 连接 event
+ * <pre>
+ *     see RequestBrokerClientModuleMessageClientProcessor.java
+ * </pre>
  *
  * @author 渔民小镇
  * @date 2022-05-14

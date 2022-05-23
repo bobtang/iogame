@@ -6,7 +6,7 @@
 
     <groupId>com.iohao.game</groupId>
     <artifactId>iogame</artifactId>
-    <version>1.0</version>
+    <version>1.1.0</version>
     <name>ioGame</name>
     <description>ioGame网络游戏服务器框架</description>
 
@@ -63,6 +63,7 @@
         <module>example-game-collect/game-one</module>
         <!-- java 坦克游戏 fxgl -->
         <module>example-game-collect/fxgl-tank</module>
+        <module>example/example-interaction-same</module>
 
     </modules>
 

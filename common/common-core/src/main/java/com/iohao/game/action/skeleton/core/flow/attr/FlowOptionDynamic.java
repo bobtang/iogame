@@ -20,6 +20,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
+ * 动态属性接口
+ *
  * @author 渔民小镇
  * @date 2022-03-15
  */

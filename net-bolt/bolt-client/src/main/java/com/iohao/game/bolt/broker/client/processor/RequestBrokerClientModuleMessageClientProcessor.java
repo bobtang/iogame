@@ -30,6 +30,9 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * 收到网关请求模块信息
+ * <pre>
+ *     see ConnectionEventBrokerProcessor.java
+ * </pre>
  *
  * @author 渔民小镇
  * @date 2022-05-16

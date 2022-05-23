@@ -19,6 +19,7 @@ package com.iohao.game.collect.tank;
 import com.iohao.game.action.skeleton.core.BarSkeleton;
 import com.iohao.game.action.skeleton.core.BarSkeletonBuilder;
 import com.iohao.game.action.skeleton.core.BarSkeletonBuilderParamConfig;
+import com.iohao.game.bolt.broker.client.BrokerClientApplication;
 import com.iohao.game.bolt.broker.core.client.BrokerAddress;
 import com.iohao.game.bolt.broker.core.common.BrokerGlobalConfig;
 import com.iohao.game.collect.common.GameBarSkeletonConfig;
@@ -38,7 +39,7 @@ import com.iohao.game.common.kit.NetworkKit;
 public class TankClientStartup extends AbstractBrokerClientStartup {
 
     public static void main(String[] args) {
-        new TankClientStartup().startup();
+        BrokerClientApplication.start(new TankClientStartup());
     }
 
     @Override

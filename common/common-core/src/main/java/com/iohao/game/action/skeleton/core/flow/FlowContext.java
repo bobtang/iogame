@@ -25,12 +25,14 @@ import com.iohao.game.action.skeleton.core.flow.codec.DataCodec;
 import com.iohao.game.action.skeleton.protocol.HeadMetadata;
 import com.iohao.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.game.action.skeleton.protocol.ResponseMessage;
+import com.iohao.game.action.skeleton.protocol.collect.ResponseCollectMessage;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 import org.jctools.maps.NonBlockingHashMap;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.Objects;
@@ -40,7 +42,7 @@ import java.util.Objects;
  * <pre>
  *     生命周期存在于这一次的 flow 过程
  *
- *     实现了类型明确的动态属性接口 （FlowOptionDynamic），实现类只需要实现 getOptions 方法就能具有动态属性的功能。
+ *     实现了类型明确的动态属性接口 {@link FlowOptionDynamic} ，实现类只需要实现 getOptions 方法就能具有动态属性的功能。
  *     动态属性可以更方便的为 FlowContext 实现属性的扩展，以方便开发者。
  * </pre>
  *
@@ -51,7 +53,7 @@ import java.util.Objects;
 @Getter
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class FlowContext implements FlowOptionDynamic {
+public final class FlowContext implements FlowOptionDynamic {
     /** 动态属性 */
     final Map<FlowOption<?>, Object> options = new NonBlockingHashMap<>();
 
@@ -87,6 +89,10 @@ public class FlowContext implements FlowOptionDynamic {
 
     /**
      * 根据路由信息来请求其他子服务器（其他逻辑服）的数据
+     * <pre>
+     *     相关文档
+     *     https://www.yuque.com/iohao/game/anguu6
+     * </pre>
      *
      * @param cmdInfo 路由信息
      * @param data    请求参数
@@ -106,6 +112,10 @@ public class FlowContext implements FlowOptionDynamic {
 
     /**
      * 根据路由信息来请求其他子服务器（其他逻辑服）的数据
+     * <pre>
+     *     相关文档
+     *     https://www.yuque.com/iohao/game/anguu6
+     * </pre>
      *
      * @param cmdInfo 路由信息
      * @param clazz   pb class
@@ -118,6 +128,10 @@ public class FlowContext implements FlowOptionDynamic {
 
     /**
      * 根据路由信息来请求其他子服务器（其他逻辑服）的数据
+     * <pre>
+     *     相关文档
+     *     https://www.yuque.com/iohao/game/anguu6
+     * </pre>
      *
      * @param cmdInfo cmdInfo
      * @param data    请求参数
@@ -125,25 +139,69 @@ public class FlowContext implements FlowOptionDynamic {
      */
     public ResponseMessage invokeModuleMessage(CmdInfo cmdInfo, Object data) {
 
-        HeadMetadata headMetadata = new HeadMetadata()
-                .setUserId(this.getUserId())
-                .setCmdInfo(cmdInfo);
-
-        RequestMessage requestMessage = new RequestMessage();
-        requestMessage
-                .setHeadMetadata(headMetadata)
-        ;
-
-        if (Objects.nonNull(data)) {
-            requestMessage.setData(data);
-        }
+        RequestMessage requestMessage = getRequestMessage(cmdInfo, data);
 
         // 当前项目启动的服务上下文
         BrokerClientContext brokerClientContext = this.option(FlowAttr.brokerClientContext);
         return brokerClientContext.invokeModuleMessage(requestMessage);
     }
 
+    /**
+     * 模块之间的访问，访问【同类型】的多个逻辑服
+     * <pre>
+     *     模块A 访问 模块B 的某个方法，因为只有模块B持有这些数据，这里的模块指的是逻辑服。
+     *     假设启动了多个模块B，分别是：模块B-1、模块B-2、模块B-3、模块B-4 等。框架支持访问【同类型】的多个逻辑服，并把多个相同逻辑服结果收集到一起。
+     *
+     *     具体的意思可以参考文档中的说明
+     *     https://www.yuque.com/iohao/game/rf9rb9
+     * </pre>
+     *
+     * @param cmdInfo 路由信息
+     * @param data    业务数据
+     * @return ResponseCollectMessage
+     */
+    public ResponseCollectMessage invokeModuleCollectMessage(CmdInfo cmdInfo, Object data) {
+        RequestMessage requestMessage = getRequestMessage(cmdInfo, data);
+
+        // 当前项目启动的服务上下文
+        BrokerClientContext brokerClientContext = this.option(FlowAttr.brokerClientContext);
+        return brokerClientContext.invokeModuleCollectMessage(requestMessage);
+    }
+
+    /**
+     * 模块之间的访问，访问【同类型】的多个逻辑服
+     * <pre>
+     *     模块A 访问 模块B 的某个方法，因为只有模块B持有这些数据，这里的模块指的是逻辑服。
+     *     假设启动了多个模块B，分别是：模块B-1、模块B-2、模块B-3、模块B-4 等。框架支持访问【同类型】的多个逻辑服，并把多个相同逻辑服结果收集到一起。
+     *
+     *     具体的意思可以参考文档中的说明
+     *     https://www.yuque.com/iohao/game/rf9rb9
+     * </pre>
+     *
+     * @param cmdInfo 路由信息
+     * @return ResponseCollectMessage
+     */
+    public ResponseCollectMessage invokeModuleCollectMessage(CmdInfo cmdInfo) {
+        return invokeModuleCollectMessage(cmdInfo, null);
+    }
+
     private <T> T invokeModuleMessageData(CmdInfoRoute cmdInfoRoute, Object data, Class<T> clazz) {
         return this.invokeModuleMessageData(cmdInfoRoute.getCmdInfo(), data, clazz);
+    }
+
+    @NotNull
+    private RequestMessage getRequestMessage(CmdInfo cmdInfo, Object data) {
+        HeadMetadata headMetadata = new HeadMetadata()
+                .setUserId(this.getUserId())
+                .setCmdInfo(cmdInfo);
+
+        RequestMessage requestMessage = new RequestMessage();
+        requestMessage.setHeadMetadata(headMetadata);
+
+        if (Objects.nonNull(data)) {
+            requestMessage.setData(data);
+        }
+
+        return requestMessage;
     }
 }

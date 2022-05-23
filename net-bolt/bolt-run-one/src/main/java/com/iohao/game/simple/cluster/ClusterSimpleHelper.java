@@ -16,7 +16,7 @@
  */
 package com.iohao.game.simple.cluster;
 
-import com.iohao.game.bolt.broker.client.BrokerClientStartup;
+import com.iohao.game.bolt.broker.client.AbstractBrokerClientStartup;
 import com.iohao.game.bolt.broker.client.external.ExternalServer;
 import com.iohao.game.bolt.broker.client.external.bootstrap.ExternalJoinEnum;
 import com.iohao.game.bolt.broker.cluster.BrokerCluster;
@@ -29,10 +29,10 @@ import lombok.experimental.UtilityClass;
 import java.util.List;
 
 /**
- * 简单的快速启动工具： 对外服、游戏网关、游戏逻辑服
+ * 简单的快速启动工具： 对外服、游戏网关集群(3个节点)、游戏逻辑服
  * <pre>
  *     注意：
- *          这个工具只适合单机的开发或本地一体化的开发, 对于分步式不适合。
+ *          这个工具只适合单机的开发或本地一体化的开发，对于生产不适合。
  * </pre>
  *
  * @author 渔民小镇
@@ -47,7 +47,7 @@ public class ClusterSimpleHelper {
      * <pre>
      *     快速启动:
      *          对外服 tcp 方式连接
-     *          网关服 默认端口 10200
+     *          游戏网关集群
      *          逻辑服
      *
      *      包括游戏业务文档的生成
@@ -56,7 +56,7 @@ public class ClusterSimpleHelper {
      * @param externalPort 游戏对外服端口
      * @param logicList    逻辑服列表
      */
-    public void runTcp(int externalPort, List<BrokerClientStartup> logicList) {
+    public void runTcp(int externalPort, List<AbstractBrokerClientStartup> logicList) {
         runInternal(externalPort, logicList, ExternalJoinEnum.TCP);
     }
 
@@ -65,7 +65,7 @@ public class ClusterSimpleHelper {
      * <pre>
      *     快速启动:
      *          对外服 websocket 方式连接
-     *          网关服 默认端口 10200
+     *          游戏网关集群
      *          逻辑服
      *
      *      包括游戏业务文档的生成
@@ -74,11 +74,11 @@ public class ClusterSimpleHelper {
      * @param externalPort 游戏对外服端口
      * @param logicList    逻辑服列表
      */
-    public void run(int externalPort, List<BrokerClientStartup> logicList) {
+    public void run(int externalPort, List<AbstractBrokerClientStartup> logicList) {
         runInternal(externalPort, logicList, ExternalJoinEnum.WEBSOCKET);
     }
 
-    private void runInternal(int externalPort, List<BrokerClientStartup> logicList, ExternalJoinEnum externalJoinEnum) {
+    private void runInternal(int externalPort, List<AbstractBrokerClientStartup> logicList, ExternalJoinEnum externalJoinEnum) {
         // 对外服
         ExternalServer externalServer = SimpleHelper.createExternalServer(externalJoinEnum, externalPort);
 

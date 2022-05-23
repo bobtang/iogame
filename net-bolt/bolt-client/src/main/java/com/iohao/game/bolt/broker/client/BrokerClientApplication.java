@@ -16,11 +16,9 @@
  */
 package com.iohao.game.bolt.broker.client;
 
-import com.iohao.game.action.skeleton.core.BarSkeleton;
-import com.iohao.game.bolt.broker.core.client.BrokerAddress;
 import com.iohao.game.bolt.broker.core.client.BrokerClient;
 import com.iohao.game.bolt.broker.core.client.BrokerClientBuilder;
-import lombok.extern.slf4j.Slf4j;
+import lombok.experimental.UtilityClass;
 
 /**
  * BoltBrokerClient 构建与启动
@@ -28,30 +26,20 @@ import lombok.extern.slf4j.Slf4j;
  * @author 渔民小镇
  * @date 2022-05-14
  */
-@Slf4j
-public class BrokerClientService {
+@UtilityClass
+public class BrokerClientApplication {
 
     /**
      * 构建并启动 BoltBrokerClient
      *
-     * @param config config
+     * @param brokerClientStartup brokerClientStartup
      * @return BoltBrokerClient
      */
-    public BrokerClient start(BrokerClientStartup config) {
+    public BrokerClient start(AbstractBrokerClientStartup brokerClientStartup) {
 
-        BarSkeleton barSkeleton = config.createBarSkeleton();
+        BrokerClientBuilder brokerClientBuilder = brokerClientStartup.initConfig();
 
-        BrokerAddress brokerAddress = config.createBrokerAddress();
-
-        BrokerClientBuilder builder = config
-                .createBrokerClientBuilder()
-                .barSkeleton(barSkeleton)
-                .brokerAddress(brokerAddress);
-
-        config.connectionEventProcessor(builder);
-        config.registerUserProcessor(builder);
-
-        return start(builder);
+        return start(brokerClientBuilder);
     }
 
     public BrokerClient start(BrokerClientBuilder builder) {
@@ -60,16 +48,7 @@ public class BrokerClientService {
         return brokerClient;
     }
 
-    private BrokerClientService() {
-
-    }
-
-    public static BrokerClientService me() {
-        return Holder.ME;
-    }
-
-    /** 通过 JVM 的类加载机制, 保证只加载一次 (singleton) */
-    private static class Holder {
-        static final BrokerClientService ME = new BrokerClientService();
+    public BrokerClientBuilder initConfig(AbstractBrokerClientStartup brokerClientStartup) {
+        return brokerClientStartup.initConfig();
     }
 }

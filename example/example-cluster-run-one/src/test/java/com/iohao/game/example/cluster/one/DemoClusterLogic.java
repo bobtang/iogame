@@ -1,7 +1,7 @@
 package com.iohao.game.example.cluster.one;
 
+import com.iohao.game.bolt.broker.client.AbstractBrokerClientStartup;
 import com.iohao.game.example.cluster.one.server.DemoClusterLogicServer;
-import com.iohao.game.bolt.broker.client.BrokerClientStartup;
 import com.iohao.game.simple.cluster.ClusterSimpleRunOne;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public class DemoClusterLogic {
 
         // 逻辑服
         var demoLogicServer = new DemoClusterLogicServer();
-        List<BrokerClientStartup> logicList = List.of(demoLogicServer);
+        List<AbstractBrokerClientStartup> logicList = List.of(demoLogicServer);
 
         // 简单的启动器
         new ClusterSimpleRunOne()

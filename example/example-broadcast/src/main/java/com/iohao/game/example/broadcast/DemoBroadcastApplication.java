@@ -30,6 +30,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.LongAdder;
 
 /**
+ * 广播示例
+ *
  * @author 渔民小镇
  * @date 2022-05-18
  */
@@ -52,6 +54,7 @@ public class DemoBroadcastApplication {
 
         /*
          * 该示例文档地址
+         * https://www.yuque.com/iohao/game/qv4qfo
          */
     }
 

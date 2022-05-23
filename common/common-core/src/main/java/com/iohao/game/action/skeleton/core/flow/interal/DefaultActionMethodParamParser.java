@@ -31,7 +31,7 @@ import java.util.Objects;
  * @author 渔民小镇
  * @date 2022-01-12
  */
-public class DefaultActionMethodParamParser implements ActionMethodParamParser {
+public final class DefaultActionMethodParamParser implements ActionMethodParamParser {
 
     @Override
     public Object[] listParam(final FlowContext flowContext) {

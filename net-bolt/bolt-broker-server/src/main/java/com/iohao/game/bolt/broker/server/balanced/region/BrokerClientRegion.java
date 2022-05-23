@@ -18,7 +18,6 @@ package com.iohao.game.bolt.broker.server.balanced.region;
 
 import com.iohao.game.action.skeleton.protocol.HeadMetadata;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
@@ -74,7 +73,11 @@ public interface BrokerClientRegion {
      * @return 逻辑服列表
      */
     default Collection<BrokerClientProxy> listBrokerClientInfo() {
-        return new ArrayList<>(getBoltClientInfoMap().values());
+        /*
+         * NonBlockingHashMap 迭代器是一个“弱一致性”迭代器，
+         * 它永远不会抛出 ConcurrentModificationException
+         */
+        return getBoltClientInfoMap().values();
     }
 
     /**

@@ -19,6 +19,7 @@ package com.iohao.game.collect.hall;
 import com.iohao.game.action.skeleton.core.BarSkeleton;
 import com.iohao.game.action.skeleton.core.BarSkeletonBuilder;
 import com.iohao.game.action.skeleton.core.BarSkeletonBuilderParamConfig;
+import com.iohao.game.bolt.broker.client.BrokerClientApplication;
 import com.iohao.game.bolt.broker.core.client.BrokerClient;
 import com.iohao.game.collect.common.GameBarSkeletonConfig;
 import com.iohao.game.collect.hall.action.LoginAction;
@@ -32,7 +33,7 @@ import com.iohao.game.bolt.broker.core.client.BrokerClientBuilder;
 public class HallClientStartup extends AbstractBrokerClientStartup {
 
     public static void main(String[] args) {
-        new HallClientStartup().startup();
+        BrokerClientApplication.start(new HallClientStartup());
     }
 
     @Override

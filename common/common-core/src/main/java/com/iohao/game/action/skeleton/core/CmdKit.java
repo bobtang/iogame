@@ -17,6 +17,7 @@
 package com.iohao.game.action.skeleton.core;
 
 import cn.hutool.core.util.StrUtil;
+import lombok.experimental.UtilityClass;
 
 /**
  * Cmd 工具
@@ -24,6 +25,7 @@ import cn.hutool.core.util.StrUtil;
  * @author 渔民小镇
  * @date 2021-12-20
  */
+@UtilityClass
 public class CmdKit {
     /**
      * 从 merge 中获取 [高16位] 的数值
@@ -31,7 +33,7 @@ public class CmdKit {
      * @param merge 结果
      * @return [高16位] 的数值
      */
-    public static int getCmd(int merge) {
+    public int getCmd(int merge) {
         return merge >> 16;
     }
 
@@ -41,7 +43,7 @@ public class CmdKit {
      * @param merge 结果
      * @return [低16位] 的数值
      */
-    public static int getSubCmd(int merge) {
+    public int getSubCmd(int merge) {
         return merge & 0xFFFF;
     }
 
@@ -59,11 +61,11 @@ public class CmdKit {
      * @param subCmd 子 存放于合并结果的低16位, 该参数不得大于 65535
      * @return 合并的结果
      */
-    public static int merge(int cmd, int subCmd) {
+    public int merge(int cmd, int subCmd) {
         return (cmd << 16) + subCmd;
     }
 
-    public static String mergeToString(int cmdMerge) {
+    public String mergeToString(int cmdMerge) {
         int cmd = getCmd(cmdMerge);
         int subCmd = getSubCmd(cmdMerge);
         String template = "[cmd:{} - subCmd:{} - cmdMerge:{}]";

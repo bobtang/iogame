@@ -70,7 +70,7 @@ import java.util.Objects;
  * @author 渔民小镇
  * @date 2021-12-12
  */
-public class DebugInOut implements ActionMethodInOut {
+public final class DebugInOut implements ActionMethodInOut {
 
     final FlowOption<Long> timeKey = FlowOption.valueOf("ExecuteTimeInOutStartTime");
 
@@ -105,6 +105,9 @@ public class DebugInOut implements ActionMethodInOut {
         paramMap.put("paramData", "");
         paramMap.put("returnData", "");
 
+        paramMap.put("logicServerId", flowContext.option(FlowAttr.logicServerId));
+        paramMap.put("logicServerTag", flowContext.option(FlowAttr.logicServerTag));
+
         methodRequestParam(flowContext, paramMap);
 
         ResponseMessage responseMessage = flowContext.getResponse();
@@ -127,7 +130,7 @@ public class DebugInOut implements ActionMethodInOut {
         }
 
         String template = """
-                ┏━━错误━━━ Debug. [({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo}
+                ┏━━错误━━━ Debug. [({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo} ━━━ [逻辑服 {logicServerTag} id:{logicServerId}]
                 ┣ userId: {userId}
                 ┣ 参数: {paramName} : {paramData}
                 ┣ 错误码: {errorCode}
@@ -150,7 +153,7 @@ public class DebugInOut implements ActionMethodInOut {
         }
 
         String template = """
-                ┏━━━━━ Debug. [({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo}
+                ┏━━━━━ Debug. [({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo} ━━━ [逻辑服 {logicServerTag} id:{logicServerId}]
                 ┣ userId: {userId}
                 ┣ 参数: {paramName} : {paramData}
                 ┣ 响应: {returnData}
@@ -161,7 +164,6 @@ public class DebugInOut implements ActionMethodInOut {
         String message = StrUtil.format(template, paramMap);
         System.out.println(message);
     }
-
 
     private void methodResponseData(FlowContext flowContext, Map<String, Object> paramMap) {
         Object data = flowContext.getMethodResult();

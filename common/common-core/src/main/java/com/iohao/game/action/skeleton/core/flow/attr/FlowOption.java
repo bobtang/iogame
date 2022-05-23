@@ -26,7 +26,7 @@ import java.util.Objects;
  */
 public record FlowOption<T>(String name) {
     public static <T> FlowOption<T> valueOf(String name) {
-        return new FlowOption<T>(name);
+        return new FlowOption<>(name);
     }
 
     @Override

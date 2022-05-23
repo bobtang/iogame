@@ -16,11 +16,57 @@
 
 在线文档: [基于 sofa-bolt 的网络游戏框架-在线文档](https://www.yuque.com/iohao/game/wwvg7z)
 
-> 推荐大家看在线文档，排版好一些，README 上看有点乱！
+> **推荐大家看在线文档，排版好一些，README 上看有点乱！**
+
+
 
 ## 愿景
 
 **让网络游戏服务器的编程变得轻松简单！**
+
+
+
+## 网络游戏框架简介
+
+ioGame 是国内首个基于蚂蚁金服 [sofa-bolt](https://www.sofastack.tech/projects/sofa-bolt/overview/) 的网络游戏框架，游戏框架由 [**网络通信框架**] 和 [**业务框架]** 组成。
+
+- **网络通信框架**：负责服务器之间的网络通信
+- **业务框架**：负责业务逻辑的处理方式和编写方式
+
+
+
+​	通过 ioGame 可以快速的搭建一个稳定的、**集群无中心节点、自带负载均衡**、高性能的、分步式的网络游戏服务器。
+
+​	游戏框架借助于蚂蚁金服 [sofa-bolt](https://www.sofastack.tech/projects/sofa-bolt/overview/) 通信框架来提供稳定、高性能。
+
+​	即使之前没有游戏编程的经验，也能参与到游戏编程中。如果你之前具备一些游戏开发或者 web MVC 相关的知识，则会更容易上手游戏服务器的开发。
+
+
+
+>  源码内置了一个坦克射击游戏的示例，可直接运行。
+>  坦克射击游戏是基于FXGL引擎（纯java的游戏引擎）开发的。
+>  通过示例，可以快速的掌握网络游戏编程！
+>
+>  [游戏示例在线文档](https://www.yuque.com/iohao/game/gqossg)
+
+
+
+### 网络通信框架 - SOFABolt
+
+[SOFABolt](https://www.sofastack.tech/projects/sofa-bolt/overview/) 是蚂蚁金融服务集团开发的一套基于 Netty 实现的网络通信框架。
+
+- 为了让 Java 程序员能将更多的精力放在基于网络通信的业务逻辑实现上，而不是过多的纠结于网络底层 NIO 的实现以及处理难以调试的网络问题，Netty 应运而生。
+- 为了让中间件开发者能将更多的精力放在产品功能特性实现上，而不是重复地一遍遍制造通信框架的轮子，SOFABolt 应运而生。
+
+Bolt 名字取自迪士尼动画-闪电狗，是一个**基于 Netty 最佳实践**的轻量、易用、高性能、易扩展的通信框架。
+
+
+
+### 业务框架
+
+​	如果说  [sofa-bolt](https://www.sofastack.tech/projects/sofa-bolt/overview/) 为了让 Java 程序员能**将更多的精力放在**基于网络通信的**业务逻辑实现上**。而业务框架正是**解决**业务逻辑**如何方便的实现**这一问题上。
+
+业务框架是游戏框架的一部份，职责是简化程序员的业务逻辑实现。业务框架使程序员能够快速的开始编写游戏业务。
 
 
 
@@ -45,7 +91,7 @@
 
 ​	broker （游戏网关）可以**集群**的方式部署，集群无中心节点、自带负载均衡。ioGame 本身就包含服务注册，你不需要外接一个服务注册中心，如 Eureka，ZooKeeper 等（变相的节约服务器成本）。
 
-通过 broker （游戏网关） 的介入，之前非常复杂的负载均衡设计，如服务注册、健康度检查（后续版本提供）、到服务端的连接维护等这些问题，在 ioGame 中都不需要了，结构也简单了很多。
+​	通过 broker （游戏网关） 的介入，之前非常复杂的负载均衡设计，如服务注册、健康度检查（后续版本提供）、到服务端的连接维护等这些问题，在 ioGame 中都不需要了，结构也简单了很多。
 
 实际上单台 broker （游戏网关） 性能已经能够满足了，因为游戏网关只做了转发。
 
@@ -53,186 +99,12 @@
 
 **逻辑服**
 
-对外服和游戏逻辑服可以有很多个，逻辑服数量的理论上限是 netty 的连接上限。
+​	对外服和游戏逻辑服可以有很多个，逻辑服数量的理论上限是 netty 的连接上限。
 
 
 参考：[构架简图中：对外服、游戏网关、游戏逻辑服各自的职责](https://www.yuque.com/iohao/game/dqf0he)
 
 
-## ioGame 支持的通信方式
-
-![img](https://gitee.com/iohao/xmindpic/raw/master/game/communication.jpg)
-
-​	
-
-​	ioGame 支持 3 种类型的通讯方式，分别是**单次请求处理、推送、逻辑服间**的相互通信；下面分别对这 3 种类型的通讯方式的使用上举几个例子。
-
-
-
-**1.单次请求处理**
-
-​	**1.1 请求、无响应**
-
-​		当请求端发起请求后，逻辑服不会发送任何响应给请求端。可以用在在网络通讯中，存在着不需要接收方回执确认的调用模型，如数据采集的场景: 打点采集、日志传输、metrics上报等。
-
-
-
-​	**1.2 请求、响应**
-
-​		请求、响应是在游戏开发中常见的通讯模式，也就是通讯的一方发出请求，而远程通讯的对方做出响应，也就是常说的请求/响应模式。比如：装备的升级、人物的升级、玩家的移动、抽奖、游戏前端到某一个场景时需要从游戏服务端获取一些对应的场景配置等；
-
-
-
-**2.推送**
-
-​	**2.1 指定单个或多个用户广播（推送）**
-
-​		向一个或多个指定的用户（玩家）主动发送一些数据。比如：
-
-​		给指定的在线玩家发送一些奖励。
-
-​		给在同一个房间内的玩家广播一些数据，如某一个玩家射击子弹，把这子弹的数据广播给房间内的其他玩家。在比如几个玩家在同一个房间内打牌，某个玩家出牌后，把这张牌的数据广播给房间内的其他玩家。
-
-
-
-​	**2.2 全服广播（推送）**
-
-​		给全服的所有在线玩家广播消息，如广播公告、即将停服维护等。
-
-
-
-详细示例可参考：[广播示例](https://www.yuque.com/iohao/game/qv4qfo)
-
-
-
-**3.逻辑服间的相互通信**
-
-​	**3.1 单个逻辑服与单个逻辑服通信请求（可跨进程）**
-
-​		逻辑服与逻辑服之间的相互请求通信
-
-​		比如：我们有两个游戏逻辑服，分别是：a.天气预报逻辑服、b.战斗逻辑服。现在我们设想一个回合制游戏的战斗场景，需要配合天气，根据天气来增强或者减弱某个英雄的能力。那么在战斗开始前，战斗逻辑服只需要向游戏网关发起一个获取当前天气的请求，就可以得到当前的天气信息了，在根据当前的天气数据来增强或减弱该英雄的能力。
-
-​		又比如：a.大厅逻辑服、b.奖励发放逻辑服。大厅记录着一些数据（房间总数），奖励发放逻辑服根据当前的房间数量，来生成不同奖品，随机发放给在线用户。
-
-
-
-详细示例可参考：[逻辑服与逻辑服之间的交互示例](https://www.yuque.com/iohao/game/anguu6)
-
-
-
-**3.2 单个逻辑服与同类型多个逻辑服通信请求（可跨进程）**
-
-​	比如：象棋逻辑服有 3 台， 每台逻辑服都有一个唯一的 逻辑服 id；我们可以在大厅逻辑服中向**同类型的**多个游戏逻辑服通信请求（可跨进程），意思是大厅发起一个向这 3 台象棋逻辑服的请求，框架会聚合 3个结果集，（假设结果是：当前服务器房间数）当大厅得到这个结果集，我们可以选择房间最少人的象棋逻辑服，假设 《象棋逻辑服-1》 是房间数最少的，我们就可以把逻辑服 id 给到玩家所在的对外服，让玩家在对外服记录下来，之后这个玩家发起的请求就会自动的到 《象棋逻辑服-1》 这台服务器上，不会把请求分配到其他的象棋逻辑服上。
-
-（目前游戏框架还没实现这种，后续版本会提供）
-
-
-
-**最后，发挥你的想象力，把这 3 类通讯方式用活，可以满足很多业务。**
-
-
-
-## 网络游戏框架简介
-
-ioGame 是国内首个基于蚂蚁金服 [sofa-bolt](https://www.sofastack.tech/projects/sofa-bolt/overview/) 的网络游戏框架，游戏框架由 [**网络通信框架**] 和 [**业务框架]** 组成。
-- **网络通信框架**：负责服务器之间的网络通信
-- **业务框架**：负责业务逻辑的处理方式和编写方式
-
-
-
-通过 ioGame 可以快速的搭建一个稳定的、高性能的、分步式的网络游戏服务器。
-
-broker （游戏网关）可以**集群**的方式部署，集群无中心节点、自带负载均衡。
-
-游戏框架借助于蚂蚁金服 [sofa-bolt](https://www.sofastack.tech/projects/sofa-bolt/overview/) 通信框架来提供稳定、高性能。
-
-即使之前没有游戏编程的经验，也能参与到游戏编程中。如果你之前具备一些游戏开发或者 web MVC 相关的知识，则会更容易上手游戏服务器的开发。
-
-
-
->  源码内置了一个坦克射击游戏的示例，可直接运行。
->
->  坦克射击游戏是基于FXGL引擎（纯java的游戏引擎）开发的。
->
->  通过示例，可以快速的掌握网络游戏编程！
->
->  [游戏示例在线文档](https://www.yuque.com/iohao/game/gqossg)
-
-
-
-### 网络通信框架 - SOFABolt
-
-[SOFABolt](https://www.sofastack.tech/projects/sofa-bolt/overview/) 是蚂蚁金融服务集团开发的一套基于 Netty 实现的网络通信框架。
-
-- 为了让 Java 程序员能将更多的精力放在基于网络通信的业务逻辑实现上，而不是过多的纠结于网络底层 NIO 的实现以及处理难以调试的网络问题，Netty 应运而生。
-- 为了让中间件开发者能将更多的精力放在产品功能特性实现上，而不是重复地一遍遍制造通信框架的轮子，SOFABolt 应运而生。
-
-Bolt 名字取自迪士尼动画-闪电狗，是一个**基于 Netty 最佳实践**的轻量、易用、高性能、易扩展的通信框架。
-
-
-
-### 业务框架
-
-​	如果说  [sofa-bolt](https://www.sofastack.tech/projects/sofa-bolt/overview/) 为了让 Java 程序员能将更多的精力放在基于网络通信的业务逻辑实现上。而业务框架正是解决业务逻辑如何方便的实现这一问题上。
-
-业务框架是游戏框架的一部份，职责是简化程序员的业务逻辑实现。业务框架使程序员能够快速的开始编写游戏业务。
-
-
-
-#### 业务框架内置一些功能
-
-**内置多种可选模块，可按需选择，以方便应用开发：**
-
-- [领域事件](https://www.yuque.com/iohao/game/gmfy1k) （[disruptor](https://www.yuque.com/iohao/game/gmfy1k) 实现类似Spring事件驱动模型 ApplicationEvent）
-- [任务延时器](https://www.yuque.com/iohao/game/niflk0) （将来某个时间可对任务进行执行、暂停、取消等操作，并不是类似 Quartz 的任务调度）
-- [多环境切换](https://www.yuque.com/iohao/game/ekx6ve) （不同运行环境下的配置支持）
-- [light-jprotobuf ](https://www.yuque.com/iohao/game/vpe2t6) （补足 jprotobuf 不能让多个对象在单个 .proto 源文件中生成的需求，并简化jprotobuf对源文件的注释）
-- [分步式锁](https://www.yuque.com/iohao/game/wz7af5) (基于Redisson的简单实现)
-
-
-
-**内置的其他功能：**
-
-- [心跳相关](https://www.yuque.com/iohao/game/uueq3i)
-- [用户上线、离线相关的钩子方法](https://www.yuque.com/iohao/game/hv5qqh)
-- [UserSessions](https://www.yuque.com/iohao/game/wg6lk7) （对所有用户UserSession的管理，统计在线用户等）
-- [UserSession](https://www.yuque.com/iohao/game/wg6lk7) (与 channel 是 1:1 的关系，可取到对应的 userId、channel 等信息。)
-- [登录相关](https://www.yuque.com/iohao/game/tywkqv)
-
-
-
-**集成相关：**
-
-- [spring 集成 ](https://www.yuque.com/iohao/game/evkgnz)（业务框架可以方便的与 spring 进行集成，5 行代码）
-
-
-
-**已完成的示例：**
-
-示例代码在源码 **example/** 目录下
-
-- [多服单进程示例](https://www.yuque.com/iohao/game/zm6qg2) - DemoApplication.java
-- [spring集成示例](https://www.yuque.com/iohao/game/evkgnz) - DemoSpringBootApplication
-- [多个逻辑服之间相互调用示例](https://www.yuque.com/iohao/game/anguu6) - DemoInteractionApplication
-
-
-
-**后续计划：**
-
-- 抽象通用的游戏逻辑 （进一步减少开发实践过程中的工作量）
-- 步骤表
-- 帧同步
-- 状态同步
-
-
-
-**后续计划：**
-
-- 抽象通用的游戏逻辑 （进一步减少开发实践过程中的工作量）
-- 步骤表
-- 帧同步
-- 状态同步
 
 
 
@@ -281,7 +153,6 @@ public class HelloReq {
 游戏服务器的编程，游戏服务器接收业务数据后，对业务数据进行处理；
 
 ```java
-
 @ActionController(1)
 public class DemoAction {
     @ActionMethod(0)
@@ -293,17 +164,21 @@ public class DemoAction {
 }
 ```
 
-一个方法在业务框架中表示一个 Action（既一个业务动作）。
+​	一个方法在业务框架中表示一个 Action（既一个业务动作）。
 
-方法声名的参数是用于接收前端传入的业务数据，在方法 return 时，数据就可以被游戏前端接收到。程序员可以不需要关心业务框架的内部细节。
+​	方法声名的参数是用于接收前端传入的业务数据，在方法 return 时，数据就可以被游戏前端接收到。程序员可以不需要关心业务框架的内部细节。
 
-从上面的示例可以看出，**这和普通的 java 类并无区别**。如果只负责编写游戏业务，那么对于业务框架的**学习可以到此为止了**。
+​	从上面的示例可以看出，**这和普通的 java 类并无区别**。如果只负责编写游戏业务，那么对于业务框架的**学习可以到此为止了**。
 
 游戏编程就是如此简单！
 
+
+
 问：我可以开始游戏服务器的编程了吗？
 
-是的，你已经可以开始游戏服务器的编程了。
+​	是的，你已经可以开始游戏服务器的编程了。
+
+
 
 #### 访问示例（控制台）
 
@@ -361,6 +236,53 @@ public class DemoAction {
 
 
 
+## 业务框架内置功能
+
+**内置多种可选模块，可按需选择，以方便应用开发：**
+
+- [领域事件](https://www.yuque.com/iohao/game/gmfy1k) （[disruptor](https://www.yuque.com/iohao/game/gmfy1k) 实现类似Spring事件驱动模型 ApplicationEvent）
+- [任务延时器](https://www.yuque.com/iohao/game/niflk0) （将来某个时间可对任务进行执行、暂停、取消等操作，并不是类似 Quartz 的任务调度）
+- [多环境切换](https://www.yuque.com/iohao/game/ekx6ve) （不同运行环境下的配置支持）
+- [light-jprotobuf ](https://www.yuque.com/iohao/game/vpe2t6) （补足 jprotobuf 不能让多个对象在单个 .proto 源文件中生成的需求，并简化jprotobuf对源文件的注释）
+- [分步式锁](https://www.yuque.com/iohao/game/wz7af5) (基于Redisson的简单实现)
+
+
+
+**内置的其他功能：**
+
+- [心跳相关](https://www.yuque.com/iohao/game/uueq3i)
+- [用户上线、离线相关的钩子方法](https://www.yuque.com/iohao/game/hv5qqh)
+- [UserSessions](https://www.yuque.com/iohao/game/wg6lk7) （对所有用户UserSession的管理，统计在线用户等）
+- [UserSession](https://www.yuque.com/iohao/game/wg6lk7) (与 channel 是 1:1 的关系，可取到对应的 userId、channel 等信息。)
+- [登录相关](https://www.yuque.com/iohao/game/tywkqv)
+
+
+
+**集成相关：**
+
+- [spring 集成 ](https://www.yuque.com/iohao/game/evkgnz)（业务框架可以方便的与 spring 进行集成，5 行代码）
+
+
+
+**已完成的示例：**
+
+示例代码在源码 **example/** 目录下
+
+- [多服单进程示例](https://www.yuque.com/iohao/game/zm6qg2) - DemoApplication.java
+- [spring集成示例](https://www.yuque.com/iohao/game/evkgnz) - DemoSpringBootApplication
+- [多个逻辑服之间相互调用示例](https://www.yuque.com/iohao/game/anguu6) - DemoInteractionApplication
+
+
+
+**后续计划：**
+
+- 抽象通用的游戏逻辑 （进一步减少开发实践过程中的工作量）
+- 步骤表
+- 帧同步
+- 状态同步
+
+
+
 ## ioGame 关注的多个方面
 
 ​	当然每个框架都会给自身打上高性能，使用简单、易学易用、可扩展等各种有调调的标签。这里将从这么几个方面给出一些相关的解释，如：性能方面、对接方面、通讯方式方面、开发方面（开发体验方面、参数方面、参数的数据验证方面、异常机制方面、调试方面）。
@@ -397,29 +319,19 @@ ioGame游戏框架由 [**网络通信框架**] 和 [业务框架] 组成。所�
 
 **1.单次请求处理**
 
-a. 请求、无响应
-
-b. 请求、响应
-
-
+​	a. 请求、无响应、b. 请求、响应
 
 **2.推送**
 
-a. 指定单个或多个用户广播（推送）
-
-b. 全服广播（推送）
-
-
+​	a. 指定单个或多个用户广播（推送）、b. 全服广播（推送）
 
 **3.逻辑服间的相互通信**
 
-a. 单个逻辑服与单个逻辑服通信请求（可跨进程）
-
-b. 单个逻辑服与同类型多个逻辑服通信请求（可跨进程）(后续版本提供)
+​	a. 单个逻辑服与单个逻辑服通信请求（**可跨进程**）、b. 单个逻辑服与同类型多个逻辑服通信请求（**可跨进程**）(后续版本提供)
 
 
 
-[逻辑服与逻辑服之间的交互示例](https://www.yuque.com/iohao/game/anguu6)
+[3类通讯方式文档](https://www.yuque.com/iohao/game/nelwuz)
 
 
 
@@ -556,15 +468,14 @@ public class DemoAction {
 
 ## 快速从零编写服务器完整示例
 
-如果觉得 ioGame 适合你，可以看一下 [快速从零编写服务器完整示例](https://www.yuque.com/iohao/game/zm6qg2) 。在这个示例中，你可以**用很少的代码**
+​	如果觉得 ioGame 适合你，可以看一下 [快速从零编写服务器完整示例](https://www.yuque.com/iohao/game/zm6qg2) 。在这个示例中，你可以**用很少的代码**
 实现一个完整的、可运行的、高性能的、稳定的服务器。
 
 
 
 ## 坦克游戏示例
 
-ioGame 内提供了一个基于 [FXGL](https://www.oschina.net/p/fxgl) 游戏引擎的游戏示例
-（[坦克射击](https://www.yuque.com/iohao/game/gqossg)启动文档），FXGL 是纯 java 开发的一个游戏引擎，可以在项目中直接运行。
+​	ioGame 内提供了一个基于 [FXGL](https://www.oschina.net/p/fxgl) 游戏引擎的游戏示例（[坦克射击](https://www.yuque.com/iohao/game/gqossg)启动文档），FXGL 是纯 java 开发的一个游戏引擎，可以在项目中直接运行。
 
 运行 TankApp.java 文件就可以启动游戏了。
 

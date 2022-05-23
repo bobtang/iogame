@@ -16,7 +16,7 @@
  */
 package com.iohao.game.simple;
 
-import com.iohao.game.bolt.broker.client.BrokerClientStartup;
+import com.iohao.game.bolt.broker.client.AbstractBrokerClientStartup;
 import com.iohao.game.bolt.broker.client.external.ExternalServer;
 import com.iohao.game.bolt.broker.client.external.ExternalServerBuilder;
 import com.iohao.game.bolt.broker.client.external.bootstrap.ExternalJoinEnum;
@@ -53,7 +53,7 @@ public class SimpleHelper {
      * @param externalPort 游戏对外服端口
      * @param logicList    逻辑服列表
      */
-    public void run(int externalPort, List<BrokerClientStartup> logicList) {
+    public void run(int externalPort, List<AbstractBrokerClientStartup> logicList) {
         runInternal(externalPort, logicList, ExternalJoinEnum.WEBSOCKET);
     }
 
@@ -71,7 +71,7 @@ public class SimpleHelper {
      * @param externalPort 游戏对外服端口
      * @param logicList    逻辑服列表
      */
-    public void runTcp(int externalPort, List<BrokerClientStartup> logicList) {
+    public void runTcp(int externalPort, List<AbstractBrokerClientStartup> logicList) {
         runInternal(externalPort, logicList, ExternalJoinEnum.TCP);
     }
 
@@ -95,7 +95,7 @@ public class SimpleHelper {
         return builder.build();
     }
 
-    private void runInternal(int externalPort, List<BrokerClientStartup> logicList, ExternalJoinEnum externalJoinEnum) {
+    private void runInternal(int externalPort, List<AbstractBrokerClientStartup> logicList, ExternalJoinEnum externalJoinEnum) {
         // 对外服 tcp 方法的连接
         ExternalServer externalServer = createExternalServer(externalJoinEnum, externalPort);
 

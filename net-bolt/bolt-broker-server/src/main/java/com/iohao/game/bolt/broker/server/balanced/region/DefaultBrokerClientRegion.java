@@ -22,6 +22,7 @@ import com.iohao.game.bolt.broker.core.loadbalance.RandomElementSelector;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.jctools.maps.NonBlockingHashMap;
 
 import java.util.*;
@@ -35,6 +36,7 @@ import java.util.*;
  * @author 渔民小镇
  * @date 2022-05-16
  */
+@Slf4j
 @FieldDefaults(level = AccessLevel.PROTECTED)
 public class DefaultBrokerClientRegion implements BrokerClientRegion {
     @Getter

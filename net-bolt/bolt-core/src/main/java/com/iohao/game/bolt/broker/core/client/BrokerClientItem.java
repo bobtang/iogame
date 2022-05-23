@@ -27,6 +27,8 @@ import com.iohao.game.action.skeleton.core.BarSkeleton;
 import com.iohao.game.action.skeleton.core.commumication.BroadcastContext;
 import com.iohao.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.game.action.skeleton.protocol.ResponseMessage;
+import com.iohao.game.action.skeleton.protocol.collect.RequestCollectMessage;
+import com.iohao.game.action.skeleton.protocol.collect.ResponseCollectMessage;
 import com.iohao.game.bolt.broker.core.aware.BrokerClientAware;
 import com.iohao.game.bolt.broker.core.aware.BrokerClientItemAware;
 import com.iohao.game.bolt.broker.core.common.BrokerGlobalConfig;
@@ -41,7 +43,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -69,7 +70,6 @@ public class BrokerClientItem implements BroadcastContext {
     final RpcClient rpcClient;
     /** 广播 */
     final Broadcast broadcast = new Broadcast(this);
-    String id = UUID.randomUUID().toString();
 
     /** 与 broker 通信的连接 */
     Connection connection;
@@ -137,6 +137,19 @@ public class BrokerClientItem implements BroadcastContext {
         return o;
     }
 
+    public ResponseCollectMessage invokeModuleCollectMessage(RequestMessage requestMessage) {
+        RequestCollectMessage requestCollectMessage = new RequestCollectMessage()
+                .setRequestMessage(requestMessage);
+
+        try {
+            return (ResponseCollectMessage) this.invokeSync(requestCollectMessage);
+        } catch (RemotingException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public void sendResponse(Object responseObject) {
         try {
             rpcClient.oneway(connection, responseObject);
@@ -179,7 +192,6 @@ public class BrokerClientItem implements BroadcastContext {
         BrokerClientModuleMessage brokerClientModuleMessage = this.brokerClient.getBrokerClientModuleMessage();
 
         if (BrokerGlobalConfig.openLog) {
-            log.info("id: {}", this.id);
             log.info("逻辑服发模块信息给 broker （游戏网关） : {}", brokerClientModuleMessage.toJsonPretty());
         }
 

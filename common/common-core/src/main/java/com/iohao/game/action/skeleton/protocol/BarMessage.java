@@ -68,6 +68,7 @@ public abstract sealed class BarMessage implements Serializable, ToJson permits 
     public BarMessage setData(Object data) {
         // 保存一下业务数据的 class
         this.dataClass = data.getClass();
+
         byte[] bytes = DataCodecKit.encode(data);
         return this.setData(bytes);
     }
@@ -88,8 +89,7 @@ public abstract sealed class BarMessage implements Serializable, ToJson permits 
     }
 
     public BarMessage setError(MsgExceptionInfo msgExceptionInfo) {
-        int code = msgExceptionInfo.getCode();
-        this.responseStatus = code;
+        this.responseStatus = msgExceptionInfo.getCode();
         this.validatorMsg = msgExceptionInfo.getMsg();
         return this;
     }

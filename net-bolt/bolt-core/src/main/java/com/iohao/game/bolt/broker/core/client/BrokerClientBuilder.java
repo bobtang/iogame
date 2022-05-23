@@ -36,6 +36,9 @@ import java.util.function.Supplier;
 
 /**
  * Bolt Broker Client 构建器
+ * <pre>
+ *     see {@link BrokerClient#newBuilder()} 创建构建器
+ * </pre>
  *
  * @author 渔民小镇
  * @date 2022-05-14

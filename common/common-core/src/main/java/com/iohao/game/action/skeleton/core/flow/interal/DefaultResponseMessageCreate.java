@@ -25,7 +25,7 @@ import com.iohao.game.action.skeleton.core.flow.ResponseMessageCreate;
  * @author 渔民小镇
  * @date 2022-01-16
  */
-public class DefaultResponseMessageCreate implements ResponseMessageCreate {
+public final class DefaultResponseMessageCreate implements ResponseMessageCreate {
     @Override
     public ResponseMessage createResponseMessage() {
         return new ResponseMessage();

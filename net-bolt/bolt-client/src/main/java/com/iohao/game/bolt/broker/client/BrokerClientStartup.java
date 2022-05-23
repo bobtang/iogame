@@ -40,6 +40,8 @@ public sealed interface BrokerClientStartup permits AbstractBrokerClientStartup 
      *
      * <pre>
      *     see {@link BrokerClient#newBuilder()}
+     *
+     *     see {@link AbstractBrokerClientStartup#setBrokerClientBuilder(BrokerClientBuilder)}
      * </pre>
      *
      * @return 构建器
@@ -104,14 +106,4 @@ public sealed interface BrokerClientStartup permits AbstractBrokerClientStartup 
         // 对于 brokerClient 的引用使用，建议用 BrokerClientHolder
         BrokerClients.me().put(this.getClass(), brokerClient);
     }
-
-    /**
-     * 启动
-     *
-     * @return BoltBrokerClient
-     */
-    default BrokerClient startup() {
-        return BrokerClientService.me().start(this);
-    }
-
 }

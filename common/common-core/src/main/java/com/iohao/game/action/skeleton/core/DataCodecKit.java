@@ -54,7 +54,7 @@ public class DataCodecKit {
      * @param <T>        t
      * @return 业务参数
      */
-    public <T> T decode(byte[] data, Class<?> paramClazz) {
+    public <T> T decode(byte[] data, Class<T> paramClazz) {
         return dataCodec.decode(data, paramClazz);
     }
 

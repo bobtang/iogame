@@ -36,6 +36,4 @@ import java.io.Serializable;
 public class RequestBrokerClientModuleMessage implements Serializable {
     @Serial
     private static final long serialVersionUID = -8701320309480192037L;
-
-
 }

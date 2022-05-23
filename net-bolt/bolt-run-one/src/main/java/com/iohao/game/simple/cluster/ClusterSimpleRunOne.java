@@ -17,7 +17,8 @@
 package com.iohao.game.simple.cluster;
 
 import com.iohao.game.action.skeleton.core.doc.BarSkeletonDoc;
-import com.iohao.game.bolt.broker.client.BrokerClientStartup;
+import com.iohao.game.bolt.broker.client.AbstractBrokerClientStartup;
+import com.iohao.game.bolt.broker.client.BrokerClientApplication;
 import com.iohao.game.bolt.broker.client.external.ExternalServer;
 import com.iohao.game.bolt.broker.core.common.BrokerGlobalConfig;
 import com.iohao.game.bolt.broker.server.BrokerServer;
@@ -75,7 +76,7 @@ public class ClusterSimpleRunOne {
     /** 对外服 */
     ExternalServer externalServer;
     /** 逻辑服 */
-    List<BrokerClientStartup> logicServerList;
+    List<AbstractBrokerClientStartup> logicServerList;
     /** true 在本地启动 broker （游戏网关）集群 */
     boolean runBrokerServerCluster = true;
 
@@ -84,7 +85,7 @@ public class ClusterSimpleRunOne {
      * <pre>
      *     快速启动:
      *          对外服
-     *          网关服
+     *          游戏网关集群
      *          逻辑服
      *
      *      注意1：
@@ -97,7 +98,7 @@ public class ClusterSimpleRunOne {
      */
     public void startup() {
 
-        // 启动网关集群
+        // 启动网关集群（3个节点）
         if (this.runBrokerServerCluster) {
             this.clusterBrokerServer();
         }
@@ -133,7 +134,7 @@ public class ClusterSimpleRunOne {
         executorService.execute(() -> {
             // 启动逻辑服
             if (Objects.nonNull(this.logicServerList)) {
-                logicServerList.forEach(BrokerClientStartup::startup);
+                logicServerList.forEach(BrokerClientApplication::start);
                 log.info("启动逻辑服 : {}", this.logicServerList);
             }
 

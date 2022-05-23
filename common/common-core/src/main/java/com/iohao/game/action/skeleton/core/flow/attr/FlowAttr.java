@@ -44,4 +44,8 @@ public interface FlowAttr {
      * </pre>
      */
     FlowOption<DataCodec> dataCodec = FlowOption.valueOf("dataCodec");
+    /** 逻辑服 id */
+    FlowOption<String> logicServerId = FlowOption.valueOf("logicServerId");
+    /** 逻辑服 tag 类型 */
+    FlowOption<String> logicServerTag = FlowOption.valueOf("logicServerTag");
 }
