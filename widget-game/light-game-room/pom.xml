@@ -26,7 +26,25 @@
 
         <dependency>
             <groupId>com.iohao.game</groupId>
-            <artifactId>light-all</artifactId>
+            <artifactId>light-profile</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.iohao.game</groupId>
+            <artifactId>light-timer-task</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.iohao.game</groupId>
+            <artifactId>light-domain-event</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.iohao.game</groupId>
+            <artifactId>light-jprotobuf</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
