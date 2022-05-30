@@ -16,8 +16,11 @@
  */
 package com.iohao.game.bolt.broker.client.external.bootstrap;
 
-import cn.hutool.core.util.IdUtil;
+import com.alipay.remoting.exception.RemotingException;
 import com.alipay.remoting.rpc.RpcCommandType;
+import com.iohao.game.action.skeleton.core.CmdKit;
+import com.iohao.game.action.skeleton.core.DataCodecKit;
+import com.iohao.game.action.skeleton.core.commumication.BrokerClientContext;
 import com.iohao.game.action.skeleton.protocol.HeadMetadata;
 import com.iohao.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.game.action.skeleton.protocol.ResponseMessage;
@@ -29,6 +32,7 @@ import com.iohao.game.bolt.broker.client.external.session.UserSessions;
 import com.iohao.game.bolt.broker.core.client.BrokerClient;
 import com.iohao.game.bolt.broker.core.message.BrokerClientModuleMessage;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -39,23 +43,65 @@ import lombok.experimental.UtilityClass;
 public class ExternalKit {
     public RequestMessage convertRequestMessage(ExternalMessage message) {
 
+        int cmdMerge = message.getCmdMerge();
+        byte[] data = message.getData();
+
+        return createRequestMessage(cmdMerge, data);
+    }
+
+    /**
+     * 创建请求消息
+     *
+     * @param cmdMerge 路由 {@link CmdKit#merge(int, int)}
+     * @param data     业务数据
+     * @return 请求消息
+     */
+    public RequestMessage createRequestMessage(int cmdMerge, Object data) {
+        byte[] bytes = null;
+
+        if (data != null) {
+            bytes = DataCodecKit.encode(data);
+        }
+
+        return createRequestMessage(cmdMerge, bytes);
+    }
+
+    /**
+     * 创建请求消息
+     *
+     * @param cmdMerge 路由 {@link CmdKit#merge(int, int)}
+     * @return 请求消息
+     */
+    public RequestMessage createRequestMessage(int cmdMerge) {
+        return createRequestMessage(cmdMerge, null);
+    }
+
+    /**
+     * 创建请求消息
+     *
+     * @param cmdMerge 路由 {@link CmdKit#merge(int, int)}
+     * @param data     业务数据 byte[]
+     * @return 请求消息
+     */
+    public RequestMessage createRequestMessage(int cmdMerge, byte[] data) {
+
         BrokerClient brokerClient = (BrokerClient) ExternalHelper.me().getBrokerClient();
 
         BrokerClientModuleMessage brokerClientModuleMessage = brokerClient.getBrokerClientModuleMessage();
 
-        String id = brokerClientModuleMessage.getId();
+        int idHash = brokerClientModuleMessage.getIdHash();
 
         // 元信息
         HeadMetadata headMetadata = new HeadMetadata()
-                .setCmdMerge(message.getCmdMerge())
+                .setCmdMerge(cmdMerge)
                 .setRpcCommandType(RpcCommandType.REQUEST_ONEWAY)
-                .setSourceClientId(id);
+                .setSourceClientId(idHash);
 
         // 请求
         RequestMessage requestMessage = new RequestMessage();
-        requestMessage
-                .setData(message.getData())
-                .setHeadMetadata(headMetadata);
+        requestMessage.setHeadMetadata(headMetadata);
+
+        requestMessage.setData(data);
 
         return requestMessage;
     }
@@ -85,8 +131,25 @@ public class ExternalKit {
         channel.writeAndFlush(message);
     }
 
-    public long newId() {
-        return IdUtil.getSnowflake().nextId();
+    /**
+     * 请求游戏网关
+     *
+     * @param ctx            ctx
+     * @param requestMessage 请求消息
+     * @throws RemotingException e
+     */
+
+    public void requestGateway(ChannelHandlerContext ctx, RequestMessage requestMessage) throws RemotingException {
+        UserSession userSession = UserSessions.me().getUserSession(ctx);
+        requestGateway(userSession, requestMessage);
     }
 
+    public void requestGateway(UserSession userSession, RequestMessage requestMessage) throws RemotingException {
+        // 给请求消息加上一些 user 自身的数据
+        userSession.employ(requestMessage);
+
+        // 由内部逻辑服转发用户请求到游戏网关，在由网关转到具体的业务逻辑服
+        BrokerClientContext brokerClient = ExternalHelper.me().getBrokerClient();
+        brokerClient.oneway(requestMessage);
+    }
 }

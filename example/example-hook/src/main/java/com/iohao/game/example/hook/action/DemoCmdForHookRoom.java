@@ -14,20 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.iohao.game.example.interaction.same.msg;
+package com.iohao.game.example.hook.action;
 
-import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
-import lombok.AccessLevel;
-import lombok.ToString;
-import lombok.experimental.FieldDefaults;
+import com.iohao.game.example.common.DemoModuleCmd;
 
 /**
+ * 战斗服的 cmd
+ *
  * @author 渔民小镇
- * @date 2022-05-22
+ * @date 2022-05-28
  */
-@ProtobufClass
-@ToString
-@FieldDefaults(level = AccessLevel.PUBLIC)
-public class RoomNumMsg {
-    int roomCount;
+public interface DemoCmdForHookRoom {
+    /** 模块 - 主 cmd : 10 */
+    int cmd = DemoModuleCmd.demoModule_12_hook_cmd;
+
+    /** 示例 退出房间 方法 */
+    int quitRoom = 0;
+    /** 登录验证 */
+    int loginVerify = 1;
+
 }

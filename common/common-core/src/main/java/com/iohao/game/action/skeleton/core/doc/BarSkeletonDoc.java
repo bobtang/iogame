@@ -18,11 +18,11 @@ package com.iohao.game.action.skeleton.core.doc;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.system.SystemUtil;
 import com.iohao.game.action.skeleton.core.ActionCommand;
 import com.iohao.game.action.skeleton.core.ActionCommandRegions;
 import com.iohao.game.action.skeleton.core.BarSkeleton;
+import com.iohao.game.common.kit.StrKit;
 import lombok.Setter;
 
 import java.util.*;
@@ -136,7 +136,7 @@ public class BarSkeletonDoc {
         for (ErrorCodeDoc errorCodeDoc : errorCodeDocsRegion.listErrorCodeDoc()) {
             String template = " {} : {} ";
 
-            String format = StrUtil.format(template, errorCodeDoc.getCode(), errorCodeDoc.getMsg());
+            String format = StrKit.format(template, errorCodeDoc.getCode(), errorCodeDoc.getMsg());
             docContentList.add(format);
             docContentList.add(separator);
         }
@@ -162,11 +162,11 @@ public class BarSkeletonDoc {
 
             String template = "路由: {cmd} - {subCmd}  --- 广播推送: {dataClass}";
 
-            if (StrUtil.isNotEmpty(actionSendDoc.getDescription())) {
+            if (StrKit.isNotEmpty(actionSendDoc.getDescription())) {
                 template = "路由: {cmd} - {subCmd}  --- 广播推送: {dataClass} ({description})";
             }
 
-            String format = StrUtil.format(template, stringObjectMap);
+            String format = StrKit.format(template, stringObjectMap);
 
             docContentList.add(format);
             docContentList.add(separator);

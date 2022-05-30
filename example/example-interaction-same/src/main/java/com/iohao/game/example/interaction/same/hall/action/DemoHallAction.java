@@ -24,7 +24,7 @@ import com.iohao.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.game.action.skeleton.protocol.collect.ResponseCollectItemMessage;
 import com.iohao.game.action.skeleton.protocol.collect.ResponseCollectMessage;
-import com.iohao.game.example.interaction.same.msg.RoomNumMsg;
+import com.iohao.game.example.common.msg.RoomNumMsg;
 import com.iohao.game.example.interaction.same.room.action.DemoCmdForRoom;
 import lombok.extern.slf4j.Slf4j;
 

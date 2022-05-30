@@ -16,6 +16,7 @@
  */
 package com.iohao.game.bolt.broker.client.external.session;
 
+import com.iohao.game.action.skeleton.protocol.processor.EndPointLogicServerMessage;
 import io.netty.util.AttributeKey;
 
 /**
@@ -29,4 +30,15 @@ public interface UserSessionAttr {
     AttributeKey<Boolean> verifyIdentity = AttributeKey.valueOf("verifyIdentity");
     /** 用户 session，与channel是 1:1 的关系 */
     AttributeKey<UserSession> userSession = AttributeKey.valueOf("userSession");
+    /**
+     * 给用户绑定逻辑服
+     * <pre>
+     *     之后与该逻辑服有关的请求，都会分配给这个逻辑服来处理。
+     *     意思是无论启动了多少个同类型的逻辑服，都会给到这个逻辑服来处理。
+     *
+     *     see {@link com.iohao.game.common.kit.MurmurHash3#hash32(String)}
+     *     see {@link EndPointLogicServerMessage#getLogicServerId()}
+     * </pre>
+     */
+    AttributeKey<Integer> endPointLogicServerId = AttributeKey.valueOf("endPointLogicServerId");
 }

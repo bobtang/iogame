@@ -16,7 +16,7 @@
  */
 package com.iohao.game.widget.light.protobuf;
 
-import cn.hutool.core.util.StrUtil;
+import com.iohao.game.common.kit.StrKit;
 import com.thoughtworks.qdox.model.JavaClass;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -81,7 +81,7 @@ public class ProtoJava {
                                 
                 """;
 
-        return StrUtil.format(template, messageMap);
+        return StrKit.format(template, messageMap);
     }
 
 }

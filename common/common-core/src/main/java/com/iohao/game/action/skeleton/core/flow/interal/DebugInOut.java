@@ -16,7 +16,6 @@
  */
 package com.iohao.game.action.skeleton.core.flow.interal;
 
-import cn.hutool.core.util.StrUtil;
 import com.iohao.game.action.skeleton.core.ActionCommand;
 import com.iohao.game.action.skeleton.core.CmdInfo;
 import com.iohao.game.action.skeleton.core.doc.ActionCommandDoc;
@@ -25,6 +24,7 @@ import com.iohao.game.action.skeleton.core.flow.FlowContext;
 import com.iohao.game.action.skeleton.core.flow.attr.FlowAttr;
 import com.iohao.game.action.skeleton.core.flow.attr.FlowOption;
 import com.iohao.game.action.skeleton.protocol.ResponseMessage;
+import com.iohao.game.common.kit.StrKit;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -74,8 +74,22 @@ public final class DebugInOut implements ActionMethodInOut {
 
     final FlowOption<Long> timeKey = FlowOption.valueOf("ExecuteTimeInOutStartTime");
 
+    final long time;
+
+    public DebugInOut() {
+        this(0);
+    }
+
+    /**
+     * @param time >= 这个时间才打印
+     */
+    public DebugInOut(long time) {
+        this.time = time;
+    }
+
     @Override
     public void fuckIn(final FlowContext flowContext) {
+        // 记录当前时间
         flowContext.option(timeKey, System.currentTimeMillis());
     }
 
@@ -86,6 +100,10 @@ public final class DebugInOut implements ActionMethodInOut {
         Long time = flowContext.option(timeKey, currentTimeMillis);
 
         long ms = System.currentTimeMillis() - time;
+
+        if (this.time > ms) {
+            return;
+        }
 
         ActionCommand actionCommand = flowContext.getActionCommand();
         ActionCommandDoc actionCommandDoc = actionCommand.getActionCommandDoc();
@@ -125,12 +143,12 @@ public final class DebugInOut implements ActionMethodInOut {
         paramMap.put("errorCode", responseMessage.getResponseStatus());
         paramMap.put("validatorMsg", responseMessage.getValidatorMsg());
 
-        if (StrUtil.isEmpty(responseMessage.getValidatorMsg())) {
+        if (StrKit.isEmpty(responseMessage.getValidatorMsg())) {
             paramMap.put("validatorMsg", flowContext.option(FlowAttr.msgException));
         }
 
         String template = """
-                ┏━━错误━━━ Debug. [({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo} ━━━ [逻辑服 {logicServerTag} id:{logicServerId}]
+                ┏━━错误━━━ Debug. [({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo} ━━━ [逻辑服 [{logicServerTag}] - id:[{logicServerId}]]
                 ┣ userId: {userId}
                 ┣ 参数: {paramName} : {paramData}
                 ┣ 错误码: {errorCode}
@@ -139,7 +157,7 @@ public final class DebugInOut implements ActionMethodInOut {
                 ┗━━━━━ Debug [{className}.java] ━━━
                 """;
 
-        String message = StrUtil.format(template, paramMap);
+        String message = StrKit.format(template, paramMap);
         System.out.println(message);
     }
 
@@ -153,7 +171,7 @@ public final class DebugInOut implements ActionMethodInOut {
         }
 
         String template = """
-                ┏━━━━━ Debug. [({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo} ━━━ [逻辑服 {logicServerTag} id:{logicServerId}]
+                ┏━━━━━ Debug. [({className}.java:{lineNumber}).{actionMethodName}] ━━━ {cmdInfo} ━━━ [逻辑服 [{logicServerTag}] - id:[{logicServerId}]]
                 ┣ userId: {userId}
                 ┣ 参数: {paramName} : {paramData}
                 ┣ 响应: {returnData}
@@ -161,7 +179,7 @@ public final class DebugInOut implements ActionMethodInOut {
                 ┗━━━━━ Debug [{className}.java] ━━━
                 """;
 
-        String message = StrUtil.format(template, paramMap);
+        String message = StrKit.format(template, paramMap);
         System.out.println(message);
     }
 

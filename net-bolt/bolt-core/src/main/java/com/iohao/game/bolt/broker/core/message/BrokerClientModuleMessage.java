@@ -17,6 +17,7 @@
 package com.iohao.game.bolt.broker.core.message;
 
 import com.iohao.game.bolt.broker.core.client.BrokerClientType;
+import com.iohao.game.common.kit.MurmurHash3;
 import com.iohao.game.common.kit.ToJson;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -47,6 +48,8 @@ public class BrokerClientModuleMessage implements Serializable, ToJson {
     private static final long serialVersionUID = -1570849960266785141L;
     /** 服务器唯一标识 */
     String id;
+    /** 服务器唯一标识 hash */
+    int idHash;
     /** 模块名 */
     String name;
     /** 逻辑服地址 */
@@ -66,6 +69,12 @@ public class BrokerClientModuleMessage implements Serializable, ToJson {
      * </pre>
      */
     String tag;
+
+    public BrokerClientModuleMessage setId(String id) {
+        this.id = id;
+        this.idHash = MurmurHash3.hash32(id);
+        return this;
+    }
 
     @Override
     public String toString() {

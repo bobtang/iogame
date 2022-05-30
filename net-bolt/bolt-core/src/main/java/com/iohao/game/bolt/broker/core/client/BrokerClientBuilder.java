@@ -35,7 +35,7 @@ import java.util.*;
 import java.util.function.Supplier;
 
 /**
- * Bolt Broker Client 构建器
+ * Bolt Broker Client （逻辑服）构建器
  * <pre>
  *     see {@link BrokerClient#newBuilder()} 创建构建器
  * </pre>

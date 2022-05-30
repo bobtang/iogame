@@ -76,12 +76,12 @@ public class LogicBrokerClientLoadBalanced implements BrokerClientLoadBalanced {
 
     @Override
     public void remove(BrokerClientProxy brokerClientProxy) {
+
+        int id = brokerClientProxy.getIdHash();
+
         // 相同业务模块（逻辑服）的信息域
         String tag = brokerClientProxy.getTag();
         BrokerClientRegion brokerClientRegion = getBoltClientRegionByTag(tag);
-
-        String id = brokerClientProxy.getId();
-
         brokerClientRegion.remove(id);
     }
 

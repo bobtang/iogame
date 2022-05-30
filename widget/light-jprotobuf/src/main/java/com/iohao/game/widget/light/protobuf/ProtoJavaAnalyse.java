@@ -17,10 +17,10 @@
 package com.iohao.game.widget.light.protobuf;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
 import com.esotericsoftware.reflectasm.FieldAccess;
 import com.iohao.game.common.kit.ClassScanner;
+import com.iohao.game.common.kit.StrKit;
 import com.thoughtworks.qdox.JavaProjectBuilder;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaField;
@@ -180,7 +180,7 @@ public class ProtoJavaAnalyse {
             ProtoJavaRegion protoJavaRegion = this.getProtoJavaRegion(regionKey);
             protoJavaRegion.addOtherProtoFile(protoJavaFieldType);
             // 不在同一个文件中
-            fieldProtoType = StrUtil.format("{}.{}", filePackage, className);
+            fieldProtoType = StrKit.format("{}.{}", filePackage, className);
         }
 
         return fieldProtoType;
@@ -255,7 +255,7 @@ public class ProtoJavaAnalyse {
             map.put("valueStr", valueStr);
         }
 
-        String fieldProtoType = StrUtil.format("map<{keyStr},{valueStr}>", map);
+        String fieldProtoType = StrKit.format("map<{keyStr},{valueStr}>", map);
         protoJavaField.setFieldProtoType(fieldProtoType);
     }
 
@@ -269,7 +269,7 @@ public class ProtoJavaAnalyse {
                     class must import annotation {}
                     """;
 
-            String errorMsg = StrUtil.format(templateErr
+            String errorMsg = StrKit.format(templateErr
                     , protoJavaField.getProtoJavaParent().getClassName()
                     , fieldName
                     , ProtobufClass.class

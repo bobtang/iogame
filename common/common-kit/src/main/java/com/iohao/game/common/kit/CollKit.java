@@ -17,6 +17,9 @@
 package com.iohao.game.common.kit;
 
 
+import lombok.experimental.UtilityClass;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -28,7 +31,8 @@ import java.util.stream.Collectors;
  * @author 渔民小镇
  * @date 2022-01-14
  */
-public class CollectionKit {
+@UtilityClass
+public class CollKit {
     /**
      * 分组统计
      * <pre>
@@ -52,11 +56,15 @@ public class CollectionKit {
      * @param list 元素列表
      * @return map
      */
-    public static Map<Integer, Integer> groupCounting(List<Integer> list) {
+    public Map<Integer, Integer> groupCounting(List<Integer> list) {
         return list.stream().
                 collect(
                         Collectors.groupingBy(Function.identity(), Collectors.summingInt(e -> 1))
                 );
+    }
+
+    public boolean isEmpty(Collection<?> collection) {
+        return collection == null || collection.isEmpty();
     }
 
 

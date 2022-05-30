@@ -50,4 +50,10 @@ public interface DemoModuleCmd {
     int demoModule_8_hall_cmd = 8;
     /** 逻辑服 示例 cmd 模块9 (房间 相关模块) */
     int demoModule_9_room_cmd = 9;
+    /** 逻辑服 示例 cmd 模块10 （动态服务器绑定 - 房间） */
+    int demoModule_10_endpoint_room_cmd = 10;
+    /** 逻辑服 示例 cmd 模块11 (动态服务器绑定 - 匹配) */
+    int demoModule_11_endpoint_match_cmd = 11;
+    /** 逻辑服 示例 cmd 模块12 （钩子使用） */
+    int demoModule_12_hook_cmd = 12;
 }

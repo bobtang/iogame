@@ -93,6 +93,12 @@ public class UserSessions {
         return userSession;
     }
 
+    /**
+     * true 用户存在
+     *
+     * @param userId 用户id
+     * @return true 用户存在
+     */
     public boolean existUserSession(long userId) {
         return this.userIdMap.containsKey(userId);
     }
@@ -117,6 +123,7 @@ public class UserSessions {
         UserSession userSession = this.userChannelIdMap.get(userChannelId);
 
         if (Objects.isNull(userSession)) {
+            // 如果你登录了，但是又报这个异常，一般是将 ExternalGlobalConfig.verifyIdentity = false 了。
             throw new RuntimeException("userSession 不存在");
         }
 
@@ -191,7 +198,6 @@ public class UserSessions {
         UserChannelId userChannelId = userSession.getUserChannelId();
         long userId = userSession.getUserId();
         Channel channel = userSession.getChannel();
-
         this.userIdMap.remove(userId);
         this.userChannelIdMap.remove(userChannelId);
         this.channelGroup.remove(channel);
@@ -200,6 +206,9 @@ public class UserSessions {
             userSession.setState(UserSessionState.DEAD);
             this.userHookQuit(userSession);
         }
+
+        // 关闭用户的连接
+        channel.close();
     }
 
     /**

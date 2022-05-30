@@ -32,7 +32,6 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 import org.jctools.maps.NonBlockingHashMap;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.Objects;
@@ -189,7 +188,6 @@ public final class FlowContext implements FlowOptionDynamic {
         return this.invokeModuleMessageData(cmdInfoRoute.getCmdInfo(), data, clazz);
     }
 
-    @NotNull
     private RequestMessage getRequestMessage(CmdInfo cmdInfo, Object data) {
         HeadMetadata headMetadata = new HeadMetadata()
                 .setUserId(this.getUserId())

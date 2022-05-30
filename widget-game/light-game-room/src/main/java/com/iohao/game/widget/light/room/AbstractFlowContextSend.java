@@ -131,7 +131,6 @@ public abstract class AbstractFlowContextSend implements Topic, Eo, ActionSend {
         // 推送响应 （广播消息）给指定的用户列表
         BroadcastContext broadcastContext = brokerClientContext.getBroadcastContext();
         broadcastContext.broadcast(responseMessage, this.userIds);
-
     }
 
     /**

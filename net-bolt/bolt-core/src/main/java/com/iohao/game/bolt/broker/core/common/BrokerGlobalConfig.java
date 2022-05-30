@@ -36,4 +36,10 @@ public class BrokerGlobalConfig {
     public boolean openLog = true;
     /** true 开启请求响应相关日志 */
     public boolean requestResponseLog = false;
+    /** true 开启对外服相关日志 */
+    public boolean externalLog = false;
+
+    public boolean isExternalLog() {
+        return openLog && externalLog;
+    }
 }

@@ -24,6 +24,7 @@ import com.alipay.remoting.rpc.protocol.UserProcessor;
 import com.iohao.game.action.skeleton.core.BarSkeleton;
 import com.iohao.game.action.skeleton.core.commumication.BroadcastContext;
 import com.iohao.game.action.skeleton.core.commumication.BrokerClientContext;
+import com.iohao.game.action.skeleton.core.commumication.ProcessorContext;
 import com.iohao.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.game.action.skeleton.protocol.collect.ResponseCollectMessage;
@@ -159,6 +160,11 @@ public class BrokerClient implements BrokerClientContext {
 
     @Override
     public BroadcastContext getBroadcastContext() {
+        return next();
+    }
+
+    @Override
+    public ProcessorContext getProcessorContext() {
         return next();
     }
 

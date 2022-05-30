@@ -34,11 +34,26 @@ import com.iohao.game.action.skeleton.protocol.collect.ResponseCollectMessage;
 public interface BrokerClientContext extends AsyncContext {
 
     /**
+     * 发送消息到游戏网关
+     *
+     * @param request 消息
+     * @throws RemotingException e
+     */
+    void oneway(final Object request) throws RemotingException;
+
+    /**
      * 得到广播通讯上下文
      *
      * @return 广播通讯上下文
      */
     BroadcastContext getBroadcastContext();
+
+    /**
+     * 得到 processor 上下文
+     *
+     * @return processor 上下文
+     */
+    ProcessorContext getProcessorContext();
 
     /**
      * 根据路由信息来请求其他子服务器（其他逻辑服）的数据
@@ -62,12 +77,4 @@ public interface BrokerClientContext extends AsyncContext {
      * @return ResponseAggregationMessage
      */
     ResponseCollectMessage invokeModuleCollectMessage(RequestMessage requestMessage);
-
-    /**
-     * 发送消息到游戏网关
-     *
-     * @param request 消息
-     * @throws RemotingException e
-     */
-    void oneway(final Object request) throws RemotingException;
 }

@@ -48,6 +48,7 @@ import java.util.Objects;
 public class BrokerClientProxy implements ToJson {
     /** 逻辑服唯一标识 */
     final String id;
+    final int idHash;
     /** 逻辑服名 */
     final String name;
     /** 逻辑服地址 */
@@ -75,6 +76,7 @@ public class BrokerClientProxy implements ToJson {
 
     public BrokerClientProxy(BrokerClientModuleMessage brokerClientModuleMessage, RpcServer rpcServer) {
         this.id = brokerClientModuleMessage.getId();
+        this.idHash = brokerClientModuleMessage.getIdHash();
         this.name = brokerClientModuleMessage.getName();
         this.address = brokerClientModuleMessage.getAddress();
         this.tag = brokerClientModuleMessage.getTag();

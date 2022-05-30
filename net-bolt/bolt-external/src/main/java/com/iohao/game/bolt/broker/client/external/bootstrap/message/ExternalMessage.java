@@ -20,7 +20,9 @@ import com.baidu.bjf.remoting.protobuf.annotation.EnableZigZap;
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
 import com.iohao.game.action.skeleton.core.CmdKit;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
 /**
  * 对外数据的协议
@@ -29,8 +31,9 @@ import lombok.Data;
  * @date 2022-01-10
  */
 @Data
-@ProtobufClass(description = "对外数据协议")
 @EnableZigZap
+@ProtobufClass(description = "对外数据协议")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ExternalMessage {
     /** 请求命令类型: 0 心跳，1 业务 */
     @Protobuf(description = "请求命令类型: 0 心跳，1 业务")

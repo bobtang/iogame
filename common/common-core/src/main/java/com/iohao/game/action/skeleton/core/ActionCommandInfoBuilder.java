@@ -17,7 +17,6 @@
 package com.iohao.game.action.skeleton.core;
 
 
-import cn.hutool.core.util.StrUtil;
 import com.esotericsoftware.reflectasm.ConstructorAccess;
 import com.esotericsoftware.reflectasm.MethodAccess;
 import com.iohao.game.action.skeleton.annotation.ActionController;
@@ -26,6 +25,7 @@ import com.iohao.game.action.skeleton.core.doc.ActionCommandDoc;
 import com.iohao.game.action.skeleton.core.doc.ActionCommandDocKit;
 import com.iohao.game.action.skeleton.core.doc.JavaClassDocInfo;
 import com.iohao.game.action.skeleton.ext.spring.ActionFactoryBeanForSpring;
+import com.iohao.game.common.kit.StrKit;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
@@ -197,8 +197,14 @@ public final class ActionCommandInfoBuilder {
     }
 
     private void checkExistSubCmd(Class<?> controllerClass, int subCmd, ActionCommandRegion actionCommandRegion) {
+
         if (actionCommandRegion.containsKey(subCmd)) {
-            String message = StrUtil.format("已经存在方法编号:{} : {} .请查看: {}", subCmd, controllerClass);
+
+            String message = StrKit.format("cmd:【{}】下已经存在方法编号 subCmd:【{}】 .请查看: {}",
+                    actionCommandRegion.cmd,
+                    subCmd,
+                    controllerClass);
+
             throw new RuntimeException(message);
         }
     }

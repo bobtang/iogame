@@ -16,7 +16,7 @@
  */
 package com.iohao.game.widget.light.protobuf;
 
-import cn.hutool.core.util.StrUtil;
+import com.iohao.game.common.kit.StrKit;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -64,7 +64,7 @@ public class ProtoJavaRegion {
             StringBuilder fileNameBuilder = new StringBuilder();
 
             for (String filePackage : fileNameSet) {
-                String filePackageString = StrUtil.format(templateFileName, filePackage);
+                String filePackageString = StrKit.format(templateFileName, filePackage);
                 fileNameBuilder.append(filePackageString);
             }
 
@@ -75,7 +75,7 @@ public class ProtoJavaRegion {
                     {}
                     """;
 
-            return StrUtil.format(templateHead, this.filePackage, fileNameBuilder.toString());
+            return StrKit.format(templateHead, this.filePackage, fileNameBuilder.toString());
         }
     }
 

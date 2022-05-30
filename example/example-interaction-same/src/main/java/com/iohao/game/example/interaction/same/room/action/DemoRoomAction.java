@@ -18,7 +18,7 @@ package com.iohao.game.example.interaction.same.room.action;
 
 import com.iohao.game.action.skeleton.annotation.ActionController;
 import com.iohao.game.action.skeleton.annotation.ActionMethod;
-import com.iohao.game.example.interaction.same.msg.RoomNumMsg;
+import com.iohao.game.example.common.msg.RoomNumMsg;
 
 import java.util.concurrent.ThreadLocalRandom;
 

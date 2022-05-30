@@ -51,7 +51,7 @@ public class ResponseMessageBrokerProcessor extends AsyncUserProcessor<ResponseM
         }
 
         HeadMetadata headMetadata = responseMessage.getHeadMetadata();
-        String sourceClientId = headMetadata.getSourceClientId();
+        int sourceClientId = headMetadata.getSourceClientId();
 
         BalancedManager balancedManager = brokerServer.getBalancedManager();
         ExternalBrokerClientLoadBalanced externalLoadBalanced = balancedManager.getExternalLoadBalanced();
@@ -70,6 +70,14 @@ public class ResponseMessageBrokerProcessor extends AsyncUserProcessor<ResponseM
         }
     }
 
+    /**
+     * 指定感兴趣的请求数据类型，该 UserProcessor 只对感兴趣的请求类型的数据进行处理；
+     * 假设 除了需要处理 MyRequest 类型的数据，还要处理 java.lang.String 类型，有两种方式：
+     * 1、再提供一个 UserProcessor 实现类，其 interest() 返回 java.lang.String.class.getName()
+     * 2、使用 MultiInterestUserProcessor 实现类，可以为一个 UserProcessor 指定 List<String> multiInterest()
+     *
+     * @return 自定义处理器
+     */
     @Override
     public String interest() {
         return ResponseMessage.class.getName();

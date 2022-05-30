@@ -16,7 +16,7 @@
  */
 package com.iohao.game.widget.light.protobuf;
 
-import cn.hutool.core.util.StrUtil;
+import com.iohao.game.common.kit.StrKit;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -77,7 +77,7 @@ public class ProtoJavaField {
 
         String templateFiled = getTemplateFiled();
 
-        return StrUtil.format(templateFiled, messageMap);
+        return StrKit.format(templateFiled, messageMap);
     }
 
     private String getTemplateFiled() {

@@ -16,8 +16,8 @@
  */
 package com.iohao.game.action.skeleton.core.doc;
 
-import cn.hutool.core.util.StrUtil;
 import com.iohao.game.action.skeleton.core.ActionCommand;
+import com.iohao.game.common.kit.StrKit;
 import lombok.Getter;
 
 import java.util.*;
@@ -88,7 +88,7 @@ class DocInfo {
         List<String> lineList = new ArrayList<>();
 
         String templateHead = "==================== {} {} ====================";
-        lineList.add(StrUtil.format(templateHead, this.actionSimpleName, this.classComment));
+        lineList.add(StrKit.format(templateHead, this.actionSimpleName, this.classComment));
 
         String subActionCommandTemplate =
                 "路由: {cmd} - {subCmd}  --- 【{methodComment}】 --- 【{actionSimpleName}:{lineNumber}】【{methodName}】";
@@ -100,7 +100,7 @@ class DocInfo {
 
             ActionSendDoc actionSendDoc = this.actionSendDocsRegion.getActionSendDoc(cmd, subCmd);
 
-            String format = StrUtil.format(subActionCommandTemplate, paramMap);
+            String format = StrKit.format(subActionCommandTemplate, paramMap);
             lineList.add(format);
 
             if (paramMap.containsKey("error")) {
@@ -108,21 +108,21 @@ class DocInfo {
             }
 
             // 方法参数
-            if (StrUtil.isNotEmpty(paramMap.get("methodParam"))) {
-                format = StrUtil.format("    方法参数: {methodParam}", paramMap);
+            if (StrKit.isNotEmpty(paramMap.get("methodParam"))) {
+                format = StrKit.format("    方法参数: {methodParam}", paramMap);
                 lineList.add(format);
             }
 
             // 方法返回值
-            if (StrUtil.isNotEmpty(paramMap.get("returnTypeClazz"))) {
-                format = StrUtil.format("    方法返回值: {returnTypeClazz}", paramMap);
+            if (StrKit.isNotEmpty(paramMap.get("returnTypeClazz"))) {
+                format = StrKit.format("    方法返回值: {returnTypeClazz}", paramMap);
                 lineList.add(format);
             }
 
             // 广播推送
             if (Objects.nonNull(actionSendDoc)) {
                 Class<?> dataClass = actionSendDoc.getDataClass();
-                format = StrUtil.format("    广播推送: {}", dataClass.getName());
+                format = StrKit.format("    广播推送: {}", dataClass.getName());
                 lineList.add(format);
             }
 

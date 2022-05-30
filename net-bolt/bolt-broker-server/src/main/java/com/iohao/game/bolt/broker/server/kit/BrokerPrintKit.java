@@ -61,8 +61,7 @@ public class BrokerPrintKit {
         collect.add(JsonKit.toJsonPretty(jsonObject));
 
         int port = brokerServer.getPort();
-        if (BrokerGlobalConfig.openLog) {
-            log.info("当前网关【{}】与逻辑服相关信息: \n{}", port, collect);
-        }
+
+        log.info("当前网关【{}】与逻辑服相关信息: \n{}", port, collect);
     }
 }

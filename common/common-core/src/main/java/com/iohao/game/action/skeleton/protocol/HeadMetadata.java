@@ -46,8 +46,6 @@ public class HeadMetadata implements Serializable {
 
     /** userId */
     long userId;
-    /** 一般指用户的 channelId （来源于对外服的 channel 长连接） */
-    String userChannelId;
     /** 目标路由 */
     int cmd;
     /** 目标子路由 */
@@ -67,30 +65,26 @@ public class HeadMetadata implements Serializable {
      * <pre>
      *     比如是对外服发起的请求，这个来源就是对外服的 clientId
      *     clientId 指的是 服务器的唯一id
+     *
+     *     see {@link com.iohao.game.common.kit.MurmurHash3}
      * </pre>
      */
-    String sourceClientId;
+    int sourceClientId;
 
     /**
-     * 目标逻辑服 client Id
+     * 目标逻辑服 endPointClientId
      * <pre>
      *     用于指定请求由哪个服务器处理
      *
      *     比如两个象棋服（游戏逻辑服） A，B
      *     玩家李雷和韩梅梅在对局时，如果在 象棋服A 玩的，那么之后的请求都要分配给 象棋服A 来处理。
      *
-     *     clientId 指的是 服务器的唯一id
+     *     endPointClientId 指的是 服务器的唯一id
+     *
+     *     see {@link com.iohao.game.common.kit.MurmurHash3}
      * </pre>
      */
-    String targetClientId;
-
-    /**
-     * json 扩展字段
-     * <pre>
-     *     有特殊业务可以通过这个字段来扩展元信息
-     * </pre>
-     */
-    String extJsonField;
+    int endPointClientId;
 
     /**
      * rpc type
@@ -115,6 +109,14 @@ public class HeadMetadata implements Serializable {
      * </pre>
      */
     byte rpcCommandType;
+
+    /**
+     * json 扩展字段
+     * <pre>
+     *     有特殊业务可以通过这个字段来扩展元信息
+     * </pre>
+     */
+    String extJsonField;
 
     public HeadMetadata setCmdInfo(CmdInfo cmdInfo) {
         this.cmd = cmdInfo.getCmd();

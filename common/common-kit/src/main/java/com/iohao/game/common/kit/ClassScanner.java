@@ -39,14 +39,11 @@ import java.util.jar.JarFile;
  */
 @Data
 public class ClassScanner {
-    // 需要扫描的包名
+    /** 需要扫描的包名 */
     final String packagePath;
-    // 存放扫描过的 clazz
+    /** 存放扫描过的 clazz */
     final Set<Class<?>> clazzSet = new ConcurrentHashSet<>();
-
-    /**
-     * true 保留符合条件的class
-     */
+    /** true 保留符合条件的class */
     final Predicate<Class<?>> predicateFilter;
 
     ClassLoader classLoader;

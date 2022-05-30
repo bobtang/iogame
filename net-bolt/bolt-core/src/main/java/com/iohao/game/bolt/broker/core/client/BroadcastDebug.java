@@ -16,13 +16,13 @@
  */
 package com.iohao.game.bolt.broker.core.client;
 
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSONObject;
 import com.iohao.game.action.skeleton.core.DataCodecKit;
 import com.iohao.game.action.skeleton.core.commumication.BroadcastContext;
 import com.iohao.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.game.bolt.broker.core.message.BroadcastMessage;
 import com.iohao.game.common.kit.JsonKit;
+import com.iohao.game.common.kit.StrKit;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
@@ -69,7 +69,7 @@ class BroadcastDebug {
                 ┣ 广播时间: {time}
                 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
                 """;
-        String message = StrUtil.format(template, paramMap);
+        String message = StrKit.format(template, paramMap);
         System.out.println(message);
     }
 

@@ -28,6 +28,7 @@ import com.iohao.game.bolt.broker.client.external.config.ExternalGlobalConfig;
 import com.iohao.game.bolt.broker.client.external.session.UserChannelId;
 import com.iohao.game.bolt.broker.client.external.session.UserSession;
 import com.iohao.game.bolt.broker.client.external.session.UserSessions;
+import com.iohao.game.bolt.broker.core.common.BrokerGlobalConfig;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,7 +48,7 @@ import java.util.Objects;
 public class ResponseMessageExternalProcessor extends AsyncUserProcessor<ResponseMessage> {
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, ResponseMessage responseMessage) {
-        if (log.isDebugEnabled()) {
+        if (BrokerGlobalConfig.isExternalLog()) {
             log.debug("接收来自网关的响应 {}", responseMessage);
         }
 
@@ -63,7 +64,9 @@ public class ResponseMessageExternalProcessor extends AsyncUserProcessor<Respons
                 long userId = headMetadata.getUserId();
                 userSession = UserSessions.me().getUserSession(userId);
             } else {
-                String channelId = headMetadata.getUserChannelId();
+                // 一般指用户的 channelId （来源于对外服的 channel 长连接）
+                // see UserSession#employ
+                String channelId = headMetadata.getExtJsonField();
                 userSession = UserSessions.me().getUserSession(new UserChannelId(channelId));
             }
         } catch (RuntimeException e) {
@@ -86,6 +89,8 @@ public class ResponseMessageExternalProcessor extends AsyncUserProcessor<Respons
      * 假设 除了需要处理 MyRequest 类型的数据，还要处理 java.lang.String 类型，有两种方式：
      * 1、再提供一个 UserProcessor 实现类，其 interest() 返回 java.lang.String.class.getName()
      * 2、使用 MultiInterestUserProcessor 实现类，可以为一个 UserProcessor 指定 List<String> multiInterest()
+     *
+     * @return 自定义处理器
      */
     @Override
     public String interest() {

@@ -1,15 +1,15 @@
 package com.iohao.game.tank.net;
 
 import cn.hutool.core.util.RandomUtil;
-import cn.hutool.core.util.StrUtil;
+import com.iohao.game.action.skeleton.core.CmdKit;
+import com.iohao.game.bolt.broker.client.external.bootstrap.message.ExternalMessage;
 import com.iohao.game.collect.common.GameConfig;
 import com.iohao.game.collect.proto.common.LoginVerify;
+import com.iohao.game.common.kit.ProtoKit;
+import com.iohao.game.common.kit.StrKit;
 import com.iohao.game.tank.net.onmessage.TankEnterRoomOnMessage;
 import com.iohao.game.tank.net.onmessage.TankLoginVerifyOnMessage;
 import com.iohao.game.tank.net.onmessage.TankShootOnMessage;
-import com.iohao.game.action.skeleton.core.CmdKit;
-import com.iohao.game.common.kit.ProtoKit;
-import com.iohao.game.bolt.broker.client.external.bootstrap.message.ExternalMessage;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.java_websocket.client.WebSocketClient;
@@ -70,7 +70,7 @@ public class TankWebsocketClient {
 
         var url = "ws://{}:{}" + GameConfig.websocketPath;
 
-        var wsUrl = StrUtil.format(url, ip, externalPort);
+        var wsUrl = StrKit.format(url, ip, externalPort);
         log.info("ws url : {}", wsUrl);
 
         webSocketClient = new WebSocketClient(new URI(wsUrl), new Draft_6455()) {

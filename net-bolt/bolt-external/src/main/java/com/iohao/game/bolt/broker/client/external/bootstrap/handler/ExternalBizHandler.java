@@ -17,9 +17,7 @@
 package com.iohao.game.bolt.broker.client.external.bootstrap.handler;
 
 import com.alipay.remoting.exception.RemotingException;
-import com.iohao.game.action.skeleton.core.commumication.BrokerClientContext;
 import com.iohao.game.action.skeleton.protocol.RequestMessage;
-import com.iohao.game.bolt.broker.client.external.ExternalHelper;
 import com.iohao.game.bolt.broker.client.external.bootstrap.ExternalKit;
 import com.iohao.game.bolt.broker.client.external.bootstrap.message.ExternalMessage;
 import com.iohao.game.bolt.broker.client.external.session.UserSession;
@@ -47,13 +45,9 @@ public class ExternalBizHandler extends SimpleChannelInboundHandler<ExternalMess
         // 将 message 转换成 RequestMessage
         RequestMessage requestMessage = ExternalKit.convertRequestMessage(message);
 
-        UserSession userSession = UserSessions.me().getUserSession(ctx);
-        userSession.employ(requestMessage);
-
         try {
-            // 由内部逻辑服转发用户请求到网关服，在由网关服转到具体的业务逻辑服
-            BrokerClientContext brokerClient = ExternalHelper.me().getBrokerClient();
-            brokerClient.oneway(requestMessage);
+            // 由内部逻辑服转发用户请求到游戏网关，在由网关转到具体的业务逻辑服
+            ExternalKit.requestGateway(ctx, requestMessage);
         } catch (RemotingException e) {
             log.error(e.getMessage(), e);
         }
@@ -71,6 +65,4 @@ public class ExternalBizHandler extends SimpleChannelInboundHandler<ExternalMess
         // 加入到 session 管理
         UserSessions.me().add(ctx);
     }
-
-
 }

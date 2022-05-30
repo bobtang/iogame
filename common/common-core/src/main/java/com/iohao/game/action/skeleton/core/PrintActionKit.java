@@ -17,8 +17,8 @@
 package com.iohao.game.action.skeleton.core;
 
 import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.StrUtil;
 import com.iohao.game.action.skeleton.core.flow.ActionMethodInOut;
+import com.iohao.game.common.kit.StrKit;
 import lombok.experimental.UtilityClass;
 import org.fusesource.jansi.Ansi;
 
@@ -172,7 +172,7 @@ class PrintActionKit {
                 params.put("paramInfoCell", paramInfoCell);
 
                 String lineTemplate = "{routeCell} {actionCell} {actionNameCell}.{methodNameCell}({paramInfoCell}) {throwCell} --- return {returnValueCell}  ~~~ see.({actionSimpleName}.java:{lineNumber})";
-                String text = StrUtil.format(lineTemplate, params);
+                String text = StrKit.format(lineTemplate, params);
                 System.out.println(Ansi.ansi().eraseScreen().render(text));
 
             }
@@ -225,7 +225,7 @@ class PrintActionKit {
         }
 
         String format(String template, Map<String, Object> params) {
-            String str = StrUtil.format(template, params);
+            String str = StrKit.format(template, params);
             str = wrap(str);
             return str;
         }

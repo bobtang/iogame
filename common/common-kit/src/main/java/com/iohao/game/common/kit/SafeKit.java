@@ -30,7 +30,7 @@ public class SafeKit {
     }
 
     public static int getInt(Integer value, int defaultValue) {
-        return Objects.isNull(value) ? defaultValue : value;
+        return value == null ? defaultValue : value;
     }
 
     public static long getLong(Long value) {

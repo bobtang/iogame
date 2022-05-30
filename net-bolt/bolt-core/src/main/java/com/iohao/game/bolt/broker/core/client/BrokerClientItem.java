@@ -25,6 +25,7 @@ import com.alipay.remoting.rpc.RpcClient;
 import com.alipay.remoting.rpc.protocol.UserProcessor;
 import com.iohao.game.action.skeleton.core.BarSkeleton;
 import com.iohao.game.action.skeleton.core.commumication.BroadcastContext;
+import com.iohao.game.action.skeleton.core.commumication.ProcessorContext;
 import com.iohao.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.game.action.skeleton.protocol.collect.RequestCollectMessage;
@@ -59,7 +60,9 @@ import java.util.concurrent.TimeUnit;
 @Setter
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BrokerClientItem implements BroadcastContext {
+public class BrokerClientItem implements BroadcastContext, ProcessorContext {
+
+
     public enum Status {
         /** 活跃 */
         ACTIVE,
@@ -150,12 +153,9 @@ public class BrokerClientItem implements BroadcastContext {
         return null;
     }
 
-    public void sendResponse(Object responseObject) {
-        try {
-            rpcClient.oneway(connection, responseObject);
-        } catch (RemotingException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public void invokeOneway(Object message) {
+        this.internalOneway(message);
     }
 
     void addConnectionEventProcessor(ConnectionEventType type, ConnectionEventProcessor processor) {
@@ -181,6 +181,14 @@ public class BrokerClientItem implements BroadcastContext {
             aware.setBrokerClient(brokerClient);
         }
 
+    }
+
+    private void internalOneway(Object responseObject) {
+        try {
+            rpcClient.oneway(connection, responseObject);
+        } catch (RemotingException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

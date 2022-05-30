@@ -65,7 +65,7 @@ public interface BrokerClientRegion {
      *
      * @return map
      */
-    Map<String, BrokerClientProxy> getBoltClientInfoMap();
+    Map<Integer, BrokerClientProxy> getBoltClientInfoMap();
 
     /**
      * 域下的所有 逻辑服
@@ -85,5 +85,5 @@ public interface BrokerClientRegion {
      *
      * @param id id
      */
-    void remove(String id);
+    void remove(int id);
 }

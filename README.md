@@ -35,7 +35,11 @@ ioGame 是国内首个基于蚂蚁金服 [sofa-bolt](https://www.sofastack.tech/
 
 
 
-​	通过 ioGame 可以快速的搭建一个稳定的、**集群无中心节点、自带负载均衡**、高性能的、分步式的网络游戏服务器。
+​	 ioGame 是一个由 **java** 语言编写的**网络游戏服务器框架**。支持 websocket、tcp ，适用于**全球同服**、回合制游戏、策略游戏、即时战斗游戏，等游戏服务器的开发。具有高性能、稳定、易用易扩展、超好编程体验等特点。可做为 H5（HTML5）、手游、端游的游戏服务器。
+
+​	在 ioGame 中能让你遗忘 Netty，你几乎没有机会能直接的接触到 Netty 的**复杂**，但却能享受 Netty 带来的**高性能**。对开发者要求低，为开发者节约开发时间。
+
+​	通过 ioGame 可以快速的搭建一个稳定的、**集群无中心节点、自带负载均衡**、高性能的、分步式、避免类爆炸设计的网络游戏服务器。
 
 ​	游戏框架借助于蚂蚁金服 [sofa-bolt](https://www.sofastack.tech/projects/sofa-bolt/overview/) 通信框架来提供稳定、高性能。
 
@@ -66,24 +70,21 @@ Bolt 名字取自迪士尼动画-闪电狗，是一个**基于 Netty 最佳实�
 
 ​	如果说  [sofa-bolt](https://www.sofastack.tech/projects/sofa-bolt/overview/) 为了让 Java 程序员能**将更多的精力放在**基于网络通信的**业务逻辑实现上**。而业务框架正是**解决**业务逻辑**如何方便的实现**这一问题上。
 
-业务框架是游戏框架的一部份，职责是简化程序员的业务逻辑实现。业务框架使程序员能够快速的开始编写游戏业务。
+业务框架是游戏框架的一部份，职责是简化程序员的业务逻辑实现，业务框架使程序员能够快速的开始编写游戏业务。
 
 
 
 ## 架构简图
 
-![img](https://gitee.com/iohao/xmindpic/raw/master/game/ioGame.jpg)
+![img](https://oscimg.oschina.net/oscnet/up-2a383c8fd7b13161b4e5bf210bdf9980771.png)
 
-<p align="center">
+<p align="center" style="color:red">
 通过 ioGame 你可以很容易的搭建出一个集群、分步式的网络游戏服务器！
 </p>
 
 
-​    ioGame 是一个由 **java** 语言编写的**网络游戏服务器框架**。支持 websocket、tcp ，适用于回合制游戏、策略游戏、即时战斗游戏，等游戏服务器的开发。具有高性能、稳定、易用易扩展、超好编程体验等特点。可做为 H5（HTML5）、手游、端游的游戏服务器。
 
-​	在 ioGame 中能让你遗忘 Netty，你几乎没有机会能直接的接触到 Netty 的**复杂**，但却能享受 Netty 带来的**高性能**。对开发者要求低，为开发者节约开发时间。
-
-​	ioGame 可以很方便的与 spring 集成。**支持多服多进程的方式部署，也支持多服单进程的方式部署**。图中的每个**对外服**、每个**游戏逻辑服**、每个 **broker** （**游戏网关**）都可以在**单独的进程中部署**，逻辑服之间**可以跨进程**通信（对外服也是逻辑服的一种）。
+​	ioGame 可以很方便的与 spring 集成。**支持多服多进程的方式部署，也支持多服单进程的方式部署**。图中的每个**对外服**、每个**游戏逻辑服**、每个 **broker** （**游戏网关**）都可以在**单独的进程或机器中部署**，逻辑服之间**可以跨进程**通信（对外服也是逻辑服的一种）。这些进程可以在同一机器上，也可在不同的机器上。
 
 
 
@@ -112,7 +113,7 @@ Bolt 名字取自迪士尼动画-闪电狗，是一个**基于 Netty 最佳实�
 
 ### 业务交互
 
-![img](https://gitee.com/iohao/xmindpic/raw/master/game/interaction.jpeg)
+![img](https://oscimg.oschina.net/oscnet/up-cf1326ae1f3752897a403095218b4660008.jpg)
 
 抽象的说，游戏前端与游戏服务器的的交互由上图组成。游戏前端与游戏服务器可以自由的双向交互，交互的业务数据由 .proto 作为载体。
 
@@ -138,6 +139,8 @@ json、xml或者任意自定义的，因为最后传输时会转换为二进制�
 
 首先我们自定义一个协议文件，这个协议文件作为我们的业务载体描述。这个协议是纯java代码编写的，使用的是 jprotobuf, jprotobuf
 是对 [google protobuf](https://www.oschina.net/p/protocol+buffers) 的简化使用，性能同等。
+
+可以把这理解成DTO、POJO、业务数据载体等，其主要目的是用于业务数据的传输；
 
 ```java
 /** 请求 */
@@ -280,12 +283,24 @@ public class DemoAction {
 - 步骤表
 - 帧同步
 - 状态同步
+- 框架自带监控
 
 
 
 ## ioGame 关注的多个方面
 
-​	当然每个框架都会给自身打上高性能，使用简单、易学易用、可扩展等各种有调调的标签。这里将从这么几个方面给出一些相关的解释，如：性能方面、对接方面、通讯方式方面、开发方面（开发体验方面、参数方面、参数的数据验证方面、异常机制方面、调试方面）。
+​	当然每个框架都会给自身打上高性能，使用简单、易学易用、可扩展等各种有调调的标签。这里将从这么几个方面给出一些相关的解释，如：
+
+- 性能方面
+- 对接方面
+- 通讯方式方面
+- 开发方面
+
+- - 开发体验方面
+  - 参数方面
+  - 参数的数据验证方面
+  - 异常机制方面
+  - 调试方面
 
 
 
@@ -299,7 +314,7 @@ ioGame游戏框架由 [**网络通信框架**] 和 [业务框架] 组成。所�
 
 **2.调用开发者编写的业务代码（action）**
 
-​	业务框架对于每个 action （既业务的处理类） 都是通过 asm、singleton 等结合，对 action 的获取上通过 array 来得到，是一种近原生的方式。
+​	业务框架对于每个 action （既业务的处理类） 都是通过 asm、Singleton、Flyweight 、Command 等结合，对 action 的获取上通过 array 来得到，是一种近原生的方式。
 
 
 
@@ -349,7 +364,7 @@ ioGame游戏框架由 [**网络通信框架**] 和 [业务框架] 组成。所�
 
 ​	3.方法返回值（响应结果）会给到请求端。
 
-可以看到，框架屏蔽了通信细节，从而使得开发变得很简单，可以说是学习零成本（因为这是一个普通的 java 方法）。
+可以看到，框架屏蔽了通信细节，从而使得开发变得很简单，可以说是学习零成本（因为这是一个普通的 java 方法），同时这种设计方式**避免了类爆炸**。
 
 参考：[快速入门样例](https://www.yuque.com/iohao/game/wotnhl)
 
@@ -434,9 +449,12 @@ public class DemoAction {
 ├── example （示例）
 │   ├── example-broadcast （广播示例）
 │   ├── example-cluster-run-one （集群示例）
+│   ├── example-endpoint 示例目录 玩家动态绑定逻辑服节点
 │   ├── example-for-spring （spring集成示例）
 │   ├── example-for-tcp-socket （对外服使用tcp协议示例）
+│   ├── example-hook 示例目录 钩子相关(心跳，用户上线、下线)
 │   ├── example-interaction （逻辑服与逻辑服之间的交互，可跨进程通信）
+│   ├── example-interaction-same 示例目录 逻辑服间的相互通信；请求同类型多个逻辑服的结果集（可跨进程）
 │   ├── example-parent
 │   ├── example-redisson-lock （分步式锁）
 │   ├── example-redisson-lock-spring-boot-starter （分步式锁 for springBootStarter）
@@ -482,7 +500,7 @@ public class DemoAction {
 原计划用 [U3D](https://unity.cn/) 来做游戏示例的，但想到大伙还得安装 [u3d](https://unity.cn/) 的环境，就用  [FXGL](https://www.oschina.net/p/fxgl)
 来做游戏示例了。
 
-![img](https://gitee.com/iohao/xmindpic/raw/master/game/tank.png)
+![img](https://oscimg.oschina.net/oscnet/up-5ae3d9516142c4e3aecd73c62d495104bed.png)
 
 
 **如果您觉得还不错，帮忙给个 start 关注**

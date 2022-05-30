@@ -5,7 +5,7 @@
     <parent>
         <artifactId>iogame</artifactId>
         <groupId>com.iohao.game</groupId>
-        <version>1.1.0</version>
+        <version>1.2.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -51,15 +51,6 @@
             <artifactId>jctools-core</artifactId>
             <version>${jctools-core.version}</version>
         </dependency>
-
-
-        <!-- https://mvnrepository.com/artifact/com.ibeetl/beetl -->
-        <dependency>
-            <groupId>com.ibeetl</groupId>
-            <artifactId>beetl</artifactId>
-            <version>${beetl.version}</version>
-        </dependency>
-
 
     </dependencies>
 </project>

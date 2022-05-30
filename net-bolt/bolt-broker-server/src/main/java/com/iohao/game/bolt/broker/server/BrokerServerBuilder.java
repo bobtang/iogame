@@ -127,7 +127,9 @@ public class BrokerServerBuilder {
 
         // 注册用户处理器 添加到 bolt rpcServer 中
         this.processorList.forEach(processorSupplier -> {
+
             UserProcessor<?> userProcessor = processorSupplier.get();
+
             aware(userProcessor);
 
             rpcServer.registerUserProcessor(userProcessor);
@@ -135,7 +137,9 @@ public class BrokerServerBuilder {
 
         // 注册连接器 添加到 bolt rpcServer 中
         connectionEventProcessorMap.forEach((type, valueSupplier) -> {
+
             var processor = valueSupplier.get();
+
             aware(processor);
 
             rpcServer.addConnectionEventProcessor(type, processor);
@@ -180,6 +184,7 @@ public class BrokerServerBuilder {
      * @return this
      */
     public BrokerServerBuilder brokerClusterManagerBuilder(BrokerClusterManagerBuilder brokerClusterManagerBuilder) {
+
         if (Objects.isNull(brokerClusterManagerBuilder)) {
             return this;
         }
@@ -258,7 +263,8 @@ public class BrokerServerBuilder {
         Supplier<UserProcessor<?>> innerModuleMessageSupplier = InnerModuleMessageBrokerProcessor::new;
         // 处理 - 模块之间的访问，访问同类型的多个逻辑服
         Supplier<UserProcessor<?>> innerModuleRequestCollectMessageSupplier = InnerModuleRequestCollectMessageBrokerProcessor::new;
-
+        // 处理 - 把绑定消息转发到对外服
+        Supplier<UserProcessor<?>> endPointLogicServerMessageSupplier = EndPointLogicServerMessageBrokerProcessor::new;
 
         // 处理 - 广播
         Supplier<UserProcessor<?>> broadcastMessageSupplier = BroadcastMessageBrokerProcessor::new;
@@ -274,6 +280,7 @@ public class BrokerServerBuilder {
                 .registerUserProcessor(innerModuleRequestCollectMessageSupplier)
                 .registerUserProcessor(broadcastMessageSupplier)
                 .registerUserProcessor(brokerClientItemConnectMessageSupplier)
+                .registerUserProcessor(endPointLogicServerMessageSupplier)
         ;
     }
 

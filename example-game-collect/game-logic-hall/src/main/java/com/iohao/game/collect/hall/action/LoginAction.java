@@ -71,6 +71,8 @@ public class LoginAction {
         userInfo.id = newUserId;
         userInfo.name = jwt;
 
+        // 登录的关键代码
+        // 具体可参考 https://www.yuque.com/iohao/game/tywkqv
         boolean success = UserIdSettingKit.settingUserId(flowContext, newUserId);
 
         if (!success) {

@@ -49,7 +49,7 @@ import java.util.Objects;
  * <p>
  * 如果不配置默认如下
  * <ul>
- *     <li>bootstrapOption : 根据当前操作系统自动创建</li>
+ *     <li>serverBootstrapSetting : 根据当前操作系统自动创建</li>
  * </ul>
  *
  * @author 渔民小镇

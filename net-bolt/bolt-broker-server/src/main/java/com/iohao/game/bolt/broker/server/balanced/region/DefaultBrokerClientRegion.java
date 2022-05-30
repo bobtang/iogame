@@ -40,7 +40,7 @@ import java.util.*;
 @FieldDefaults(level = AccessLevel.PROTECTED)
 public class DefaultBrokerClientRegion implements BrokerClientRegion {
     @Getter
-    final Map<String, BrokerClientProxy> boltClientInfoMap = new NonBlockingHashMap<>();
+    final Map<Integer, BrokerClientProxy> boltClientInfoMap = new NonBlockingHashMap<>();
     final String tag;
 
     ElementSelector<BrokerClientProxy> elementSelector;
@@ -51,13 +51,16 @@ public class DefaultBrokerClientRegion implements BrokerClientRegion {
 
     @Override
     public BrokerClientProxy getBoltClientInfo(HeadMetadata headMetadata) {
-        String targetClientId = headMetadata.getTargetClientId();
+        int endPointClientId = headMetadata.getEndPointClientId();
         // 得到指定的逻辑服
-        if (Objects.nonNull(targetClientId)) {
-            BrokerClientProxy brokerClientProxy = boltClientInfoMap.get(targetClientId);
+        if (endPointClientId != 0) {
+            BrokerClientProxy brokerClientProxy = boltClientInfoMap.get(endPointClientId);
             if (Objects.isNull(brokerClientProxy)) {
-                throw new NullPointerException("指定访问的逻辑服不存在: " + targetClientId);
+                log.error("指定访问的逻辑服不存在: " + endPointClientId);
+                return null;
             }
+
+            return brokerClientProxy;
         }
 
         if (Objects.isNull(this.elementSelector)) {
@@ -70,13 +73,13 @@ public class DefaultBrokerClientRegion implements BrokerClientRegion {
 
     @Override
     public void add(BrokerClientProxy brokerClientProxy) {
-        String id = brokerClientProxy.getId();
+        int id = brokerClientProxy.getIdHash();
         boltClientInfoMap.put(id, brokerClientProxy);
         this.resetSelector();
     }
 
     @Override
-    public void remove(String id) {
+    public void remove(int id) {
         this.boltClientInfoMap.remove(id);
         this.resetSelector();
     }

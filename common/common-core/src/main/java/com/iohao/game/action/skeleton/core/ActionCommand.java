@@ -16,11 +16,11 @@
  */
 package com.iohao.game.action.skeleton.core;
 
-import cn.hutool.core.util.StrUtil;
 import com.esotericsoftware.reflectasm.ConstructorAccess;
 import com.esotericsoftware.reflectasm.MethodAccess;
 import com.iohao.game.action.skeleton.core.doc.ActionCommandDoc;
 import com.iohao.game.action.skeleton.core.flow.FlowContext;
+import com.iohao.game.common.kit.StrKit;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -131,7 +131,7 @@ public final class ActionCommand {
 
     private String info() {
         String template = "ActionCommand(parameters={},clazz={}, methodName={}, hasThrowException={}, hasMethodParam={})";
-        return StrUtil.format(template
+        return StrKit.format(template
                 , Arrays.deepToString(paramInfos)
                 , actionControllerClazz
                 , actionMethodName

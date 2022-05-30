@@ -22,16 +22,15 @@ import com.alipay.remoting.exception.RemotingException;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
 import com.iohao.game.action.skeleton.core.exception.ActionErrorEnum;
 import com.iohao.game.action.skeleton.protocol.HeadMetadata;
+import com.iohao.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.game.action.skeleton.protocol.ResponseMessage;
+import com.iohao.game.bolt.broker.core.message.InnerModuleMessage;
 import com.iohao.game.bolt.broker.server.BrokerServer;
 import com.iohao.game.bolt.broker.server.aware.BrokerServerAware;
 import com.iohao.game.bolt.broker.server.balanced.BalancedManager;
 import com.iohao.game.bolt.broker.server.balanced.region.BrokerClientProxy;
 import com.iohao.game.bolt.broker.server.balanced.region.BrokerClientRegion;
-import com.iohao.game.bolt.broker.core.message.InnerModuleMessage;
 import lombok.Setter;
-
-import java.util.Objects;
 
 /**
  * 模块之间的请求处理
@@ -59,16 +58,18 @@ public class InnerModuleMessageBrokerProcessor extends AsyncUserProcessor<InnerM
         var logicBalanced = balancedManager.getLogicBalanced();
         BrokerClientRegion brokerClientRegion = logicBalanced.getBoltClientRegion(cmdMerge);
 
-        if (Objects.isNull(brokerClientRegion)) {
-            ResponseMessage responseMessage = requestMessage.createResponseMessage();
-            responseMessage.setError(ActionErrorEnum.cmdInfoErrorCode);
-            // 将响应数据给回请求方
-            asyncCtx.sendResponse(responseMessage);
+        if (brokerClientRegion == null) {
+            extractedError(asyncCtx, requestMessage);
             return;
         }
 
         // 逻辑服的负载均衡
         BrokerClientProxy brokerClientProxy = brokerClientRegion.getBoltClientInfo(headMetadata);
+
+        if (brokerClientProxy == null) {
+            extractedError(asyncCtx, requestMessage);
+            return;
+        }
 
         try {
             // 请求方请求其它服务器得到的响应数据
@@ -80,12 +81,21 @@ public class InnerModuleMessageBrokerProcessor extends AsyncUserProcessor<InnerM
         }
     }
 
+    private void extractedError(AsyncContext asyncCtx, RequestMessage requestMessage) {
+        ResponseMessage responseMessage = requestMessage.createResponseMessage();
+        responseMessage.setError(ActionErrorEnum.cmdInfoErrorCode);
+        // 将响应数据给回请求方
+        asyncCtx.sendResponse(responseMessage);
+    }
+
 
     /**
      * 指定感兴趣的请求数据类型，该 UserProcessor 只对感兴趣的请求类型的数据进行处理；
      * 假设 除了需要处理 MyRequest 类型的数据，还要处理 java.lang.String 类型，有两种方式：
      * 1、再提供一个 UserProcessor 实现类，其 interest() 返回 java.lang.String.class.getName()
      * 2、使用 MultiInterestUserProcessor 实现类，可以为一个 UserProcessor 指定 List<String> multiInterest()
+     *
+     * @return 自定义处理器
      */
     @Override
     public String interest() {

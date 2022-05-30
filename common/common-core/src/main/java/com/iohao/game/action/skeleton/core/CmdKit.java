@@ -16,7 +16,7 @@
  */
 package com.iohao.game.action.skeleton.core;
 
-import cn.hutool.core.util.StrUtil;
+import com.iohao.game.common.kit.StrKit;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -69,6 +69,6 @@ public class CmdKit {
         int cmd = getCmd(cmdMerge);
         int subCmd = getSubCmd(cmdMerge);
         String template = "[cmd:{} - subCmd:{} - cmdMerge:{}]";
-        return StrUtil.format(template, cmd, subCmd, cmdMerge);
+        return StrKit.format(template, cmd, subCmd, cmdMerge);
     }
 }

@@ -30,6 +30,10 @@ import com.iohao.game.common.kit.NetworkKit;
 public sealed interface BrokerClientStartup permits AbstractBrokerClientStartup {
     /**
      * 初始化 业务框架
+     * <pre>
+     *     如果不需要业务框架的逻辑服，使用下面的示例代码
+     *     {@code return BarSkeleton.newBuilder().build();}
+     * </pre>
      *
      * @return 业务框架
      */

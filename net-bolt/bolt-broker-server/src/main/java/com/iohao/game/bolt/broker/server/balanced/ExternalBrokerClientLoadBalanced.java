@@ -43,14 +43,14 @@ public class ExternalBrokerClientLoadBalanced implements BrokerClientLoadBalance
      *     value : external info
      * </pre>
      */
-    final Map<String, BrokerClientProxy> map = new NonBlockingHashMap<>();
+    final Map<Integer, BrokerClientProxy> map = new NonBlockingHashMap<>();
     /** 对外服 list */
     List<BrokerClientProxy> list = Collections.emptyList();
 
     @Override
     public void register(BrokerClientProxy brokerClientProxy) {
 
-        String externalId = brokerClientProxy.getId();
+        int externalId = brokerClientProxy.getIdHash();
         map.put(externalId, brokerClientProxy);
 
         this.resetSelector();
@@ -59,15 +59,15 @@ public class ExternalBrokerClientLoadBalanced implements BrokerClientLoadBalance
     @Override
     public void remove(BrokerClientProxy brokerClientProxy) {
 
-        String id = brokerClientProxy.getId();
+        int externalId = brokerClientProxy.getIdHash();
 
-        map.remove(id);
+        map.remove(externalId);
 
         this.resetSelector();
     }
 
 
-    public BrokerClientProxy get(String externalId) {
+    public BrokerClientProxy get(int externalId) {
         return this.map.get(externalId);
     }
 

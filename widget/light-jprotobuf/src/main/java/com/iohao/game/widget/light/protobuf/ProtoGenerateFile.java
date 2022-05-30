@@ -17,7 +17,7 @@
 package com.iohao.game.widget.light.protobuf;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.StrUtil;
+import com.iohao.game.common.kit.StrKit;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 
@@ -68,7 +68,7 @@ public class ProtoGenerateFile {
             log.info("-------------{}---------------------", fileName);
             log.info("{}", protoString);
 
-            String protoFilePath = StrUtil.format("{}{}{}"
+            String protoFilePath = StrKit.format("{}{}{}"
                     , this.generateFolder
                     , File.separator
                     , fileName

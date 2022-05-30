@@ -16,13 +16,12 @@
  */
 package com.iohao.game.bolt.broker.core.client;
 
-import com.iohao.game.action.skeleton.core.commumication.BrokerClientContext;
 import com.iohao.game.action.skeleton.core.commumication.BroadcastContext;
+import com.iohao.game.action.skeleton.core.commumication.BrokerClientContext;
+import com.iohao.game.action.skeleton.core.commumication.ProcessorContext;
 import com.iohao.game.common.kit.attr.AttrOptionDynamic;
 import com.iohao.game.common.kit.attr.AttrOptions;
 import lombok.Getter;
-
-import java.util.Objects;
 
 /**
  * 游戏逻辑服 BrokerClient 的引用持有
@@ -46,11 +45,19 @@ public class BrokerClientHelper implements AttrOptionDynamic {
     }
 
     public BroadcastContext getBroadcastContext() {
-        if (Objects.isNull(this.brokerClient)) {
+        if (this.brokerClient == null) {
             return null;
         }
 
         return this.brokerClient.getBroadcastContext();
+    }
+
+    public ProcessorContext getProcessorContext() {
+        if (this.brokerClient == null) {
+            return null;
+        }
+
+        return this.brokerClient.getProcessorContext();
     }
 
     private BrokerClientHelper() {

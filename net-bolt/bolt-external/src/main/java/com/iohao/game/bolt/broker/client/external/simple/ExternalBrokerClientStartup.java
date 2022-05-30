@@ -19,14 +19,15 @@ package com.iohao.game.bolt.broker.client.external.simple;
 import com.alipay.remoting.rpc.protocol.UserProcessor;
 import com.iohao.game.action.skeleton.core.BarSkeleton;
 import com.iohao.game.bolt.broker.client.AbstractBrokerClientStartup;
+import com.iohao.game.bolt.broker.client.external.processor.BroadcastMessageExternalProcessor;
+import com.iohao.game.bolt.broker.client.external.processor.EndPointLogicServerMessageExternalProcessor;
+import com.iohao.game.bolt.broker.client.external.processor.ResponseMessageExternalProcessor;
+import com.iohao.game.bolt.broker.client.external.processor.SettingUserIdMessageExternalProcessor;
+import com.iohao.game.bolt.broker.client.processor.BrokerClusterMessageClientProcessor;
 import com.iohao.game.bolt.broker.client.processor.RequestBrokerClientModuleMessageClientProcessor;
 import com.iohao.game.bolt.broker.core.client.BrokerClient;
 import com.iohao.game.bolt.broker.core.client.BrokerClientBuilder;
 import com.iohao.game.bolt.broker.core.client.BrokerClientType;
-import com.iohao.game.bolt.broker.client.external.processor.BroadcastMessageExternalProcessor;
-import com.iohao.game.bolt.broker.client.external.processor.ResponseMessageExternalProcessor;
-import com.iohao.game.bolt.broker.client.external.processor.SettingUserIdMessageExternalProcessor;
-import com.iohao.game.bolt.broker.client.processor.BrokerClusterMessageClientProcessor;
 
 import java.util.function.Supplier;
 
@@ -51,24 +52,28 @@ public class ExternalBrokerClientStartup extends AbstractBrokerClientStartup {
 
     @Override
     public void registerUserProcessor(BrokerClientBuilder builder) {
+        // 收到网关请求模块信息
+        Supplier<UserProcessor<?>> requestBrokerClientModuleSupplier = RequestBrokerClientModuleMessageClientProcessor::new;
+        // broker （游戏网关）集群处理
+        Supplier<UserProcessor<?>> brokerClusterMessageProcessorSupplier = BrokerClusterMessageClientProcessor::new;
+
         // 注册 广播处理器
         Supplier<UserProcessor<?>> broadcastMessageProcessorSupplier = BroadcastMessageExternalProcessor::new;
         // 注册 用户id变更处理
         Supplier<UserProcessor<?>> settingUserIdMessageProcessorSupplier = SettingUserIdMessageExternalProcessor::new;
         // 注册 接收网关消息处理
         Supplier<UserProcessor<?>> responseMessageProcessorSupplier = ResponseMessageExternalProcessor::new;
-
-        // 收到网关请求模块信息
-        Supplier<UserProcessor<?>> requestBrokerClientModuleSupplier = RequestBrokerClientModuleMessageClientProcessor::new;
-        // broker （游戏网关）集群处理
-        Supplier<UserProcessor<?>> brokerClusterMessageProcessorSupplier = BrokerClusterMessageClientProcessor::new;
+        // 注册 用户绑定逻辑服
+        Supplier<UserProcessor<?>> endPointLogicServerMessageProcessorSupplier = EndPointLogicServerMessageExternalProcessor::new;
 
         builder
+                .registerUserProcessor(requestBrokerClientModuleSupplier)
+                .registerUserProcessor(brokerClusterMessageProcessorSupplier)
                 .registerUserProcessor(broadcastMessageProcessorSupplier)
                 .registerUserProcessor(settingUserIdMessageProcessorSupplier)
                 .registerUserProcessor(responseMessageProcessorSupplier)
-                .registerUserProcessor(requestBrokerClientModuleSupplier)
-                .registerUserProcessor(brokerClusterMessageProcessorSupplier)
+                .registerUserProcessor(endPointLogicServerMessageProcessorSupplier)
+
         ;
     }
 

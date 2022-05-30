@@ -18,13 +18,11 @@ package com.iohao.game.bolt.broker.server.processor;
 
 import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
-import com.alipay.remoting.exception.RemotingException;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
+import com.iohao.game.bolt.broker.core.common.BrokerGlobalConfig;
 import com.iohao.game.bolt.broker.core.message.BroadcastMessage;
 import com.iohao.game.bolt.broker.server.BrokerServer;
 import com.iohao.game.bolt.broker.server.aware.BrokerServerAware;
-import com.iohao.game.bolt.broker.server.balanced.BalancedManager;
-import com.iohao.game.bolt.broker.server.balanced.region.BrokerClientProxy;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,19 +40,11 @@ public class BroadcastMessageBrokerProcessor extends AsyncUserProcessor<Broadcas
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, BroadcastMessage broadcastMessage) {
 
-        log.debug("Broadcast 网关 转发到对外服务器 {}", broadcastMessage);
-
-        BalancedManager balancedManager = brokerServer.getBalancedManager();
-        var externalLoadBalanced = balancedManager.getExternalLoadBalanced();
-
-        try {
-            for (BrokerClientProxy brokerClientProxy : externalLoadBalanced.listBoltClientInfo()) {
-                //  转发到对外服务器
-                brokerClientProxy.oneway(broadcastMessage);
-            }
-        } catch (RemotingException | InterruptedException e) {
-            e.printStackTrace();
+        if (BrokerGlobalConfig.requestResponseLog) {
+            log.debug("Broadcast 网关 转发到对外服务器 {}", broadcastMessage);
         }
+
+        BrokerExternalKit.sendMessageToExternals(this.brokerServer, broadcastMessage);
     }
 
     /**
@@ -62,6 +52,8 @@ public class BroadcastMessageBrokerProcessor extends AsyncUserProcessor<Broadcas
      * 假设 除了需要处理 MyRequest 类型的数据，还要处理 java.lang.String 类型，有两种方式：
      * 1、再提供一个 UserProcessor 实现类，其 interest() 返回 java.lang.String.class.getName()
      * 2、使用 MultiInterestUserProcessor 实现类，可以为一个 UserProcessor 指定 List<String> multiInterest()
+     *
+     * @return 自定义处理器
      */
     @Override
     public String interest() {
