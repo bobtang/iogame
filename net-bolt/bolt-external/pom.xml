@@ -24,11 +24,11 @@
             <version>${project.parent.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.iohao.game</groupId>
-            <artifactId>broker-starter-monitor</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.iohao.game</groupId>-->
+<!--            <artifactId>broker-starter-monitor</artifactId>-->
+<!--            <version>${project.parent.version}</version>-->
+<!--        </dependency>-->
     </dependencies>
 
 </project>
