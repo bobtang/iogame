@@ -24,6 +24,7 @@ import com.iohao.game.bolt.broker.server.BrokerServer;
  *     设置与 broker（游戏网关）server
  *
  *     只要 bolt 处理器（逻辑处理器和连接器）实现了该接口，框架会调用 setBrokerServer 方法并赋值
+ *
  * </pre>
  *
  * @author 渔民小镇

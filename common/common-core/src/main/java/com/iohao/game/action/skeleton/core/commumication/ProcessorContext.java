@@ -19,6 +19,7 @@ package com.iohao.game.action.skeleton.core.commumication;
 import com.alipay.remoting.Url;
 import com.alipay.remoting.rpc.RpcClient;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
+import com.iohao.game.action.skeleton.protocol.processor.ExtRequestMessage;
 
 /**
  * 通讯方式之一 用于各服务器之前的 processor 通信
@@ -37,10 +38,18 @@ import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
  */
 public interface ProcessorContext {
     /**
-     * oneway
-     * 异步调用
+     * oneway 异步调用
      *
      * @param message message
      */
     void invokeOneway(Object message);
+
+    /**
+     * oneway 异步调用
+     *
+     * @param message message
+     */
+    void invokeOneway(ExtRequestMessage message);
+
+
 }

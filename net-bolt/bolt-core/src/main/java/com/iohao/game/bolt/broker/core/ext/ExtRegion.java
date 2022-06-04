@@ -16,15 +16,25 @@
  */
 package com.iohao.game.bolt.broker.core.ext;
 
-import com.iohao.game.bolt.broker.core.message.ExtResponseMessage;
+import com.iohao.game.action.skeleton.protocol.processor.ExtResponseMessage;
 import com.iohao.game.common.kit.MurmurHash3;
+import com.iohao.game.bolt.broker.core.client.BrokerClientBuilder;
 
 /**
+ * 实验性功能
+ *
  * @author 渔民小镇
  * @date 2022-05-30
  */
 public interface ExtRegion {
-
+    /**
+     * 一般对应扩展逻辑服的名字
+     * <pre>
+     *     see {@link BrokerClientBuilder#appName(String)}
+     * </pre>
+     *
+     * @return serverName
+     */
     String getName();
 
     /**

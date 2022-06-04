@@ -73,7 +73,7 @@ public class ExternalRequestMessageBrokerProcessor extends AsyncUserProcessor<Re
         }
 
         // 从逻辑服区域得到一个逻辑服来处理请求
-        BrokerClientProxy brokerClientProxy = brokerClientRegion.getBoltClientInfo(headMetadata);
+        BrokerClientProxy brokerClientProxy = brokerClientRegion.getBoltClientProxy(headMetadata);
         if (brokerClientProxy == null) {
             //  通知对外服， 路由不存在
             extractedNotRoute(bizCtx, request);
@@ -96,8 +96,8 @@ public class ExternalRequestMessageBrokerProcessor extends AsyncUserProcessor<Re
         BalancedManager balancedManager = brokerServer.getBalancedManager();
         ExternalBrokerClientLoadBalanced externalLoadBalanced = balancedManager.getExternalLoadBalanced();
 
-        for (BrokerClientProxy brokerClientProxy : externalLoadBalanced.listBoltClientInfo()) {
-            log.info("brokerClientInfo : {}", brokerClientProxy);
+        for (BrokerClientProxy brokerClientProxy : externalLoadBalanced.listBrokerClientProxy()) {
+            log.info("brokerClientProxy : {}", brokerClientProxy);
         }
     }
 

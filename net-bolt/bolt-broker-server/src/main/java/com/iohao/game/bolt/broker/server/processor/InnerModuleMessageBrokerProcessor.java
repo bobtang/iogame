@@ -64,7 +64,7 @@ public class InnerModuleMessageBrokerProcessor extends AsyncUserProcessor<InnerM
         }
 
         // 逻辑服的负载均衡
-        BrokerClientProxy brokerClientProxy = brokerClientRegion.getBoltClientInfo(headMetadata);
+        BrokerClientProxy brokerClientProxy = brokerClientRegion.getBoltClientProxy(headMetadata);
 
         if (brokerClientProxy == null) {
             extractedError(asyncCtx, requestMessage);

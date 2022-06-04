@@ -30,12 +30,14 @@ import com.iohao.game.action.skeleton.protocol.RequestMessage;
 import com.iohao.game.action.skeleton.protocol.ResponseMessage;
 import com.iohao.game.action.skeleton.protocol.collect.RequestCollectMessage;
 import com.iohao.game.action.skeleton.protocol.collect.ResponseCollectMessage;
+import com.iohao.game.action.skeleton.protocol.processor.ExtRequestMessage;
 import com.iohao.game.bolt.broker.core.aware.BrokerClientAware;
 import com.iohao.game.bolt.broker.core.aware.BrokerClientItemAware;
 import com.iohao.game.bolt.broker.core.common.BrokerGlobalConfig;
 import com.iohao.game.bolt.broker.core.message.BrokerClientItemConnectMessage;
 import com.iohao.game.bolt.broker.core.message.BrokerClientModuleMessage;
 import com.iohao.game.bolt.broker.core.message.InnerModuleMessage;
+import com.iohao.game.common.kit.MurmurHash3;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -155,6 +157,15 @@ public class BrokerClientItem implements BroadcastContext, ProcessorContext {
 
     @Override
     public void invokeOneway(Object message) {
+        this.internalOneway(message);
+    }
+
+    @Override
+    public void invokeOneway(ExtRequestMessage message) {
+        String id = this.brokerClient.getId();
+        int hash32 = MurmurHash3.hash32(id);
+        message.setSourceClientId(hash32);
+
         this.internalOneway(message);
     }
 

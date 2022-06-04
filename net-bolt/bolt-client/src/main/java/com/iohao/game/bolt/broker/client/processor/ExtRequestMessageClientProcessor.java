@@ -18,21 +18,27 @@ package com.iohao.game.bolt.broker.client.processor;
 
 import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
+import com.alipay.remoting.exception.RemotingException;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
+import com.iohao.game.action.skeleton.protocol.processor.ExtRequestMessage;
+import com.iohao.game.action.skeleton.protocol.processor.ExtResponseMessage;
 import com.iohao.game.bolt.broker.core.aware.BrokerClientAware;
 import com.iohao.game.bolt.broker.core.client.BrokerClient;
-import com.iohao.game.bolt.broker.core.client.BrokerClientType;
 import com.iohao.game.bolt.broker.core.ext.ExtRegion;
 import com.iohao.game.bolt.broker.core.ext.ExtRegionContext;
 import com.iohao.game.bolt.broker.core.ext.ExtRegions;
-import com.iohao.game.bolt.broker.core.message.ExtRequestMessage;
-import com.iohao.game.bolt.broker.core.message.ExtResponseMessage;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
 /**
+ * 接收扩展逻辑服的消息
+ * <pre>
+ *     这个消息处理器用于接收所有扩展逻辑服的请求
+ *     所有的逻辑服会接收此消息
+ * </pre>
+ *
  * @author 渔民小镇
  * @date 2022-05-30
  */
@@ -44,18 +50,21 @@ public class ExtRequestMessageClientProcessor extends AsyncUserProcessor<ExtRequ
 
     @Override
     public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, ExtRequestMessage request) {
-        int extHash = request.getExtHash();
-        ExtRegion extRegion = ExtRegions.me().getExtRegion(extHash);
+
+        // 从哪里来的
+        int sourceClientId = request.getSourceClientId();
+
+        ExtRegion extRegion = ExtRegions.me().getExtRegion(sourceClientId);
 
         if (Objects.isNull(extRegion)) {
             log.warn("ExtRegion 不存在 {}", request);
             return;
         }
 
-        BrokerClientType brokerClientType = brokerClient.getBrokerClientType();
-
         ExtRegionContext extRegionContext = new ExtRegionContext();
-
+        extRegionContext
+                .setBrokerClient(this.brokerClient)
+                .setRequest(request);
 
         ExtResponseMessage responseMessage = extRegion.request(extRegionContext);
 
@@ -64,9 +73,16 @@ public class ExtRequestMessageClientProcessor extends AsyncUserProcessor<ExtRequ
         }
 
         // 响应数据给来源端
+        responseMessage
+                .setSourceClientId(sourceClientId)
+        ;
 
-        responseMessage.setBrokerClientType(brokerClientType);
-
+        try {
+            brokerClient.oneway(responseMessage);
+        } catch (RemotingException e) {
+            e.printStackTrace();
+            log.info(e.getMessage(), e);
+        }
 
     }
 

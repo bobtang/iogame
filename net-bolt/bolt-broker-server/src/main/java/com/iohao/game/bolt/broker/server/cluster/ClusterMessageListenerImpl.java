@@ -61,11 +61,11 @@ public class ClusterMessageListenerImpl implements ClusterMessageListener {
                 .listBrokerClientRegion()
                 .stream()
                 // 得到 BrokerClientRegion 下的所有逻辑服
-                .flatMap((Function<BrokerClientRegion, Stream<BrokerClientProxy>>) brokerClientRegion -> brokerClientRegion.listBrokerClientInfo().stream())
+                .flatMap((Function<BrokerClientRegion, Stream<BrokerClientProxy>>) brokerClientRegion -> brokerClientRegion.listBrokerClientProxy().stream())
                 // 给游戏逻辑服发送集群消息
-                .forEach(brokerClientInfo -> {
+                .forEach(brokerClientProxy -> {
                     try {
-                        brokerClientInfo.oneway(brokerClusterMessage);
+                        brokerClientProxy.oneway(brokerClusterMessage);
                     } catch (RemotingException | InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -77,10 +77,10 @@ public class ClusterMessageListenerImpl implements ClusterMessageListener {
         // 对外服列表
         balancedManager
                 .getExternalLoadBalanced()
-                .listBoltClientInfo()
-                .forEach(brokerClientInfo -> {
+                .listBrokerClientProxy()
+                .forEach(brokerClientProxy -> {
                     try {
-                        brokerClientInfo.oneway(brokerClusterMessage);
+                        brokerClientProxy.oneway(brokerClusterMessage);
                     } catch (RemotingException | InterruptedException e) {
                         e.printStackTrace();
                     }

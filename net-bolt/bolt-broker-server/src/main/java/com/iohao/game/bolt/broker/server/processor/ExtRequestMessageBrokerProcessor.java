@@ -18,14 +18,24 @@ package com.iohao.game.bolt.broker.server.processor;
 
 import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
+import com.alipay.remoting.exception.RemotingException;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
-import com.iohao.game.bolt.broker.core.message.ExtRequestMessage;
+import com.iohao.game.action.skeleton.protocol.processor.ExtRequestMessage;
 import com.iohao.game.bolt.broker.server.BrokerServer;
 import com.iohao.game.bolt.broker.server.aware.BrokerServerAware;
+import com.iohao.game.bolt.broker.server.balanced.BalancedManager;
+import com.iohao.game.bolt.broker.server.balanced.region.BrokerClientProxy;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 /**
+ * 处理 - 扩展逻辑服的请求信息
+ * <pre>
+ *     网关接收到这个请求消息后，会把这个请求转发到所有的逻辑服
+ * </pre>
+ *
  * @author 渔民小镇
  * @date 2022-05-30
  */
@@ -35,12 +45,20 @@ public class ExtRequestMessageBrokerProcessor extends AsyncUserProcessor<ExtRequ
     BrokerServer brokerServer;
 
     @Override
-    public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, ExtRequestMessage extRequestMessage) {
+    public void handleRequest(BizContext bizCtx, AsyncContext asyncCtx, ExtRequestMessage message) {
 
-        log.info("ExtMessage {}", extRequestMessage);
+        BalancedManager balancedManager = brokerServer.getBalancedManager();
+        List<BrokerClientProxy> proxyList = balancedManager.listBrokerClientProxy();
 
         // 转发到逻辑服和对外服
-
+        proxyList.forEach(proxy -> {
+            try {
+                // 转发到各逻辑服
+                proxy.oneway(message);
+            } catch (RemotingException | InterruptedException e) {
+                log.error("ExtRequestMessageBrokerProcessor.oneway", e);
+            }
+        });
 
     }
 

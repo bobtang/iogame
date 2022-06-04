@@ -16,16 +16,23 @@
  */
 package com.iohao.game.bolt.broker.core.ext;
 
+import com.iohao.game.action.skeleton.protocol.processor.ExtRequestMessage;
 import com.iohao.game.bolt.broker.core.client.BrokerClient;
-import com.iohao.game.bolt.broker.core.client.BrokerClientType;
 import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
 /**
  * @author 渔民小镇
  * @date 2022-05-30
  */
+@Accessors(chain = true)
+@Getter
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ExtRegionContext {
     BrokerClient brokerClient;
+    ExtRequestMessage request;
 }

@@ -16,15 +16,19 @@
  */
 package com.iohao.game.common.kit.attr;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * 属性项
+ * 动态属性的属性项
+ * <pre>
+ *     see {@link AttrOptionDynamic}
+ * </pre>
  *
  * @author 渔民小镇
  * @date 2022-01-31
  */
-public record AttrOption<T>(String name, T defaultValue) {
+public record AttrOption<T>(String name, T defaultValue) implements Serializable {
 
     public static <T> AttrOption<T> valueOf(String name) {
         return new AttrOption<T>(name, null);

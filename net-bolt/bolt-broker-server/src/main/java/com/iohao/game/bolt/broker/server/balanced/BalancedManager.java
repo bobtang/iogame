@@ -21,12 +21,16 @@ import com.iohao.game.bolt.broker.core.client.BrokerClientType;
 import com.iohao.game.bolt.broker.core.message.BrokerClientModuleMessage;
 import com.iohao.game.bolt.broker.server.BrokerServer;
 import com.iohao.game.bolt.broker.server.balanced.region.BrokerClientProxy;
+import com.iohao.game.bolt.broker.server.balanced.region.BrokerClientRegion;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.jctools.maps.NonBlockingHashMap;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,7 +55,6 @@ public class BalancedManager {
     final Map<String, BrokerClientProxy> refMap = new NonBlockingHashMap<>();
 
     final BrokerServer brokerServer;
-
 
     public BalancedManager(BrokerServer brokerServer) {
         this.brokerServer = brokerServer;
@@ -101,6 +104,30 @@ public class BalancedManager {
         loadBalanced.remove(brokerClientProxy);
 
         return brokerClientProxy;
+    }
+
+    /**
+     * 得到逻辑服和对外服的列表
+     *
+     * @return client list
+     */
+    public List<BrokerClientProxy> listBrokerClientProxy() {
+
+        // 当前网关的所有逻辑服
+        List<BrokerClientProxy> list = new ArrayList<>(16);
+
+        // 游戏对外服
+        var externalProxyList = this.externalLoadBalanced.listBrokerClientProxy();
+        list.addAll(externalProxyList);
+
+        // 游戏逻辑服
+        Collection<BrokerClientRegion> brokerClientRegions = this.logicBalanced.listBrokerClientRegion();
+        for (BrokerClientRegion brokerClientRegion : brokerClientRegions) {
+            var logicProxyList = brokerClientRegion.listBrokerClientProxy();
+            list.addAll(logicProxyList);
+        }
+
+        return list;
     }
 
 }

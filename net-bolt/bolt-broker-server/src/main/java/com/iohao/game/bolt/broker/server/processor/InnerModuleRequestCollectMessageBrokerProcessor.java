@@ -120,7 +120,7 @@ public class InnerModuleRequestCollectMessageBrokerProcessor extends AsyncUserPr
     private List<CompletableFuture<ResponseCollectItemMessage>> listFuture(RequestMessage requestMessage, BrokerClientRegion brokerClientRegion) {
 
         // 逻辑服列表 stream
-        return brokerClientRegion.listBrokerClientInfo().stream().map(brokerClientProxy -> {
+        return brokerClientRegion.listBrokerClientProxy().stream().map(brokerClientProxy -> {
             // 逻辑服 id
             String logicServerId = brokerClientProxy.getId();
 

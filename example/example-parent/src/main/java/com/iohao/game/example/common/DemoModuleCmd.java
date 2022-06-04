@@ -56,4 +56,5 @@ public interface DemoModuleCmd {
     int demoModule_11_endpoint_match_cmd = 11;
     /** 逻辑服 示例 cmd 模块12 （钩子使用） */
     int demoModule_12_hook_cmd = 12;
+    int demoModule_13_ext_cmd = 13;
 }

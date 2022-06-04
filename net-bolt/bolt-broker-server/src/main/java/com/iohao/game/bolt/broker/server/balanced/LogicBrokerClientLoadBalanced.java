@@ -23,7 +23,6 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.jctools.maps.NonBlockingHashMap;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
@@ -55,6 +54,8 @@ public class LogicBrokerClientLoadBalanced implements BrokerClientLoadBalanced {
      */
     final Map<String, BrokerClientRegion> tagBoltClientRegionMap = new NonBlockingHashMap<>();
 
+    final Map<Integer, BrokerClientProxy> serverIdBoltClientProxyMap = new NonBlockingHashMap<>();
+
     @Setter
     BrokerClientRegionFactory brokerClientRegionFactory;
 
@@ -70,8 +71,10 @@ public class LogicBrokerClientLoadBalanced implements BrokerClientLoadBalanced {
         // 路由与逻辑服域的关联
         var cmdMergeList = brokerClientProxy.getCmdMergeList();
         for (Integer cmdMerge : cmdMergeList) {
-            cmdBoltClientRegionMap.put(cmdMerge, brokerClientRegion);
+            this.cmdBoltClientRegionMap.put(cmdMerge, brokerClientRegion);
         }
+
+        this.serverIdBoltClientProxyMap.put(brokerClientProxy.getIdHash(), brokerClientProxy);
     }
 
     @Override
@@ -83,6 +86,8 @@ public class LogicBrokerClientLoadBalanced implements BrokerClientLoadBalanced {
         String tag = brokerClientProxy.getTag();
         BrokerClientRegion brokerClientRegion = getBoltClientRegionByTag(tag);
         brokerClientRegion.remove(id);
+
+        this.serverIdBoltClientProxyMap.remove(brokerClientProxy.getIdHash());
     }
 
     public BrokerClientRegion getBoltClientRegion(int cmdMerge) {
@@ -97,7 +102,11 @@ public class LogicBrokerClientLoadBalanced implements BrokerClientLoadBalanced {
     }
 
     public Collection<BrokerClientRegion> listBrokerClientRegion() {
-        return new ArrayList<>(this.tagBoltClientRegionMap.values());
+        return this.tagBoltClientRegionMap.values();
+    }
+
+    public BrokerClientProxy getBrokerClientProxyByIdHash(int idHash) {
+        return this.serverIdBoltClientProxyMap.get(idHash);
     }
 
     private BrokerClientRegion getBoltClientRegionByTag(String tag) {

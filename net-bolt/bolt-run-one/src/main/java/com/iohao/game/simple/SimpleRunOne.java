@@ -90,9 +90,9 @@ public class SimpleRunOne {
      * 禁用 broker （游戏网关）
      * <pre>
      *     本地不启动游戏网关
-     *     如果公司团队开发中，可以把 broker （游戏网关）单独部署在一台机器上
-     *     而本机启动的逻辑服连接到这台单独部署的游戏网关上，这样就可以共用游戏网关，不用每次在本机启动
-     *     这样调试起来也方便
+     *     团队开发中可以把 broker （游戏网关）单独部署在一台机器上
+     *     而本机启动的逻辑服连接到这台单独部署的游戏网关上，这样就可以共用 broker （游戏网关），
+     *     不用每次在本机启动，这样调试起来也方便
      * </pre>
      *
      * @return this
@@ -107,7 +107,6 @@ public class SimpleRunOne {
             // 启动逻辑服
             if (Objects.nonNull(this.logicServerList)) {
                 this.logicServerList.forEach(BrokerClientApplication::start);
-                log.info("启动逻辑服 : {}", this.logicServerList);
             }
 
             // 启动游戏对外服

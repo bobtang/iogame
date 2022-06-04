@@ -24,6 +24,7 @@ import com.iohao.game.bolt.broker.client.external.processor.EndPointLogicServerM
 import com.iohao.game.bolt.broker.client.external.processor.ResponseMessageExternalProcessor;
 import com.iohao.game.bolt.broker.client.external.processor.SettingUserIdMessageExternalProcessor;
 import com.iohao.game.bolt.broker.client.processor.BrokerClusterMessageClientProcessor;
+import com.iohao.game.bolt.broker.client.processor.ExtRequestMessageClientProcessor;
 import com.iohao.game.bolt.broker.client.processor.RequestBrokerClientModuleMessageClientProcessor;
 import com.iohao.game.bolt.broker.core.client.BrokerClient;
 import com.iohao.game.bolt.broker.core.client.BrokerClientBuilder;
@@ -56,6 +57,8 @@ public class ExternalBrokerClientStartup extends AbstractBrokerClientStartup {
         Supplier<UserProcessor<?>> requestBrokerClientModuleSupplier = RequestBrokerClientModuleMessageClientProcessor::new;
         // broker （游戏网关）集群处理
         Supplier<UserProcessor<?>> brokerClusterMessageProcessorSupplier = BrokerClusterMessageClientProcessor::new;
+        // 注册 接收扩展逻辑服的消息
+        Supplier<UserProcessor<?>> extRequestMessageProcessorSupplier = ExtRequestMessageClientProcessor::new;
 
         // 注册 广播处理器
         Supplier<UserProcessor<?>> broadcastMessageProcessorSupplier = BroadcastMessageExternalProcessor::new;
@@ -69,6 +72,7 @@ public class ExternalBrokerClientStartup extends AbstractBrokerClientStartup {
         builder
                 .registerUserProcessor(requestBrokerClientModuleSupplier)
                 .registerUserProcessor(brokerClusterMessageProcessorSupplier)
+                .registerUserProcessor(extRequestMessageProcessorSupplier)
                 .registerUserProcessor(broadcastMessageProcessorSupplier)
                 .registerUserProcessor(settingUserIdMessageProcessorSupplier)
                 .registerUserProcessor(responseMessageProcessorSupplier)

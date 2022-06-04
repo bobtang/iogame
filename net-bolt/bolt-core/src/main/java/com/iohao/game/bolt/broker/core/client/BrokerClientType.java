@@ -16,13 +16,15 @@
  */
 package com.iohao.game.bolt.broker.core.client;
 
+import java.io.Serializable;
+
 /**
  * 客户端类型
  *
  * @author 渔民小镇
  * @date 2022-05-14
  */
-public enum BrokerClientType {
+public enum BrokerClientType implements Serializable {
     /** 游戏逻辑服 */
     LOGIC,
     /** 游戏对外服 (真实用户连接的服务器) */

@@ -19,6 +19,7 @@ package com.iohao.game.bolt.broker.client.external;
 import com.iohao.game.bolt.broker.client.BrokerClientApplication;
 import com.iohao.game.bolt.broker.client.external.simple.ExternalBrokerClientStartup;
 import com.iohao.game.bolt.broker.core.client.BrokerAddress;
+import com.iohao.game.bolt.broker.core.client.BrokerClient;
 import com.iohao.game.bolt.broker.core.common.BrokerGlobalConfig;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -82,7 +83,10 @@ public final class ExternalServer {
             brokerClientBuilder.brokerAddress(this.brokerAddress);
         }
 
-        ExternalHelper.me().brokerClient = BrokerClientApplication.start(brokerClientBuilder);
+        BrokerClient brokerClient = BrokerClientApplication.start(brokerClientBuilder);
+        ExternalHelper.me().brokerClient = brokerClient;
+
+        this.externalBoltBrokerClientStartup.startupSuccess(brokerClient);
     }
 
     /**

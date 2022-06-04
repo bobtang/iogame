@@ -76,7 +76,7 @@ public class ExternalBrokerClientLoadBalanced implements BrokerClientLoadBalance
      *
      * @return 对外服列表
      */
-    public List<BrokerClientProxy> listBoltClientInfo() {
+    public List<BrokerClientProxy> listBrokerClientProxy() {
         return this.list;
     }
 

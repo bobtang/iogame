@@ -49,6 +49,13 @@ import java.util.function.Supplier;
 @Accessors(fluent = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BrokerClientBuilder {
+    /** 连接处理器 */
+    final Map<ConnectionEventType, Supplier<ConnectionEventProcessor>> connectionEventProcessorMap = new NonBlockingHashMap<>();
+    /** 用户处理器 */
+    final List<Supplier<UserProcessor<?>>> processorList = new ArrayList<>();
+    /** 需要移除的用户处理器 */
+    @Getter(value = AccessLevel.PRIVATE)
+    final List<Class<?>> removeProcessorList = new ArrayList<>();
 
     /**
      * 服务器唯一标识
@@ -89,21 +96,41 @@ public class BrokerClientBuilder {
     /** 消息发送超时时间 */
     int timeoutMillis = BrokerGlobalConfig.timeoutMillis;
 
-    final Map<ConnectionEventType, Supplier<ConnectionEventProcessor>> connectionEventProcessorMap = new NonBlockingHashMap<>();
-
-    /** 用户处理器 */
-    final List<Supplier<UserProcessor<?>>> processorList = new ArrayList<>();
 
     BrokerClientBuilder() {
     }
 
+    /**
+     * 添加连接器
+     *
+     * @param type              type
+     * @param processorSupplier 连接器
+     * @return this
+     */
     public BrokerClientBuilder addConnectionEventProcessor(ConnectionEventType type, Supplier<ConnectionEventProcessor> processorSupplier) {
         this.connectionEventProcessorMap.put(type, processorSupplier);
         return this;
     }
 
+    /**
+     * 注册处理器
+     *
+     * @param processorSupplier 处理器
+     * @return this
+     */
     public BrokerClientBuilder registerUserProcessor(Supplier<UserProcessor<?>> processorSupplier) {
         this.processorList.add(processorSupplier);
+        return this;
+    }
+
+    /**
+     * 移除不需要的处理器
+     *
+     * @param processorClass 处理器
+     * @return this
+     */
+    public BrokerClientBuilder removeUserProcessor(Class<? extends UserProcessor<?>> processorClass) {
+        this.removeProcessorList.add(processorClass);
         return this;
     }
 
@@ -117,21 +144,6 @@ public class BrokerClientBuilder {
     public BrokerClient build(BrokerAddress brokerAddress) {
         this.brokerAddress = brokerAddress;
         return build();
-    }
-
-
-    private void settingDefaultValue() {
-        if (Objects.isNull(this.id)) {
-            this.id = UUID.randomUUID().toString();
-        }
-
-        if (Objects.isNull(this.appName)) {
-            throw new RuntimeException("必须设置 appName");
-        }
-
-        if (Objects.isNull(this.tag)) {
-            this.tag = this.appName;
-        }
     }
 
     public BrokerClient build() {
@@ -162,6 +174,32 @@ public class BrokerClientBuilder {
 
     }
 
+    private void settingDefaultValue() {
+        if (Objects.isNull(this.id)) {
+            this.id = UUID.randomUUID().toString();
+        }
+
+        if (Objects.isNull(this.appName)) {
+            throw new RuntimeException("必须设置 appName");
+        }
+
+        if (Objects.isNull(this.tag)) {
+            this.tag = this.appName;
+        }
+
+        for (Class<?> removeClass : this.removeProcessorList) {
+            Iterator<Supplier<UserProcessor<?>>> iterator = this.processorList.iterator();
+            while (iterator.hasNext()) {
+                Supplier<UserProcessor<?>> next = iterator.next();
+                Class<?> processorClass = next.get().getClass();
+
+                if (Objects.equals(processorClass, removeClass)) {
+                    iterator.remove();
+                    break;
+                }
+            }
+        }
+    }
 
     private List<Integer> listCmdMerge() {
         // 业务框架

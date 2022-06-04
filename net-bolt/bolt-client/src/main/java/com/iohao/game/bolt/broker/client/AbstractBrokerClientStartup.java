@@ -20,7 +20,9 @@ import com.alipay.remoting.ConnectionEventProcessor;
 import com.alipay.remoting.ConnectionEventType;
 import com.alipay.remoting.rpc.protocol.UserProcessor;
 import com.iohao.game.action.skeleton.core.BarSkeleton;
+import com.iohao.game.bolt.broker.boot.monitor.ext.MonitorExtRegion;
 import com.iohao.game.bolt.broker.client.processor.BrokerClusterMessageClientProcessor;
+import com.iohao.game.bolt.broker.client.processor.ExtRequestMessageClientProcessor;
 import com.iohao.game.bolt.broker.client.processor.RequestBrokerClientModuleMessageClientProcessor;
 import com.iohao.game.bolt.broker.client.processor.RequestMessageClientProcessor;
 import com.iohao.game.bolt.broker.client.processor.connection.CloseConnectEventClientProcessor;
@@ -29,6 +31,7 @@ import com.iohao.game.bolt.broker.client.processor.connection.ConnectFailedEvent
 import com.iohao.game.bolt.broker.client.processor.connection.ExceptionConnectEventClientProcessor;
 import com.iohao.game.bolt.broker.core.client.BrokerAddress;
 import com.iohao.game.bolt.broker.core.client.BrokerClientBuilder;
+import com.iohao.game.bolt.broker.core.ext.ExtRegions;
 import lombok.AccessLevel;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -70,26 +73,30 @@ public abstract non-sealed class AbstractBrokerClientStartup implements BrokerCl
         Supplier<ConnectionEventProcessor> connectFailedProcessorSupplier = ConnectFailedEventClientProcessor::new;
         Supplier<ConnectionEventProcessor> exceptionConnectProcessorSupplier = ExceptionConnectEventClientProcessor::new;
 
-        brokerClientBuilder.addConnectionEventProcessor(ConnectionEventType.CONNECT, connectProcessorSupplier);
-        brokerClientBuilder.addConnectionEventProcessor(ConnectionEventType.CLOSE, closeConnectProcessorSupplier);
-        brokerClientBuilder.addConnectionEventProcessor(ConnectionEventType.CONNECT_FAILED, connectFailedProcessorSupplier);
-        brokerClientBuilder.addConnectionEventProcessor(ConnectionEventType.EXCEPTION, exceptionConnectProcessorSupplier);
+        brokerClientBuilder
+                .addConnectionEventProcessor(ConnectionEventType.CONNECT, connectProcessorSupplier)
+                .addConnectionEventProcessor(ConnectionEventType.CLOSE, closeConnectProcessorSupplier)
+                .addConnectionEventProcessor(ConnectionEventType.CONNECT_FAILED, connectFailedProcessorSupplier)
+                .addConnectionEventProcessor(ConnectionEventType.EXCEPTION, exceptionConnectProcessorSupplier);
     }
 
     @Override
     public void registerUserProcessor(BrokerClientBuilder brokerClientBuilder) {
-        // 客户端请求处理器
-        Supplier<UserProcessor<?>> requestMessageClientSupplier = RequestMessageClientProcessor::new;
-
         // 收到网关请求模块信息
         Supplier<UserProcessor<?>> requestBrokerClientModuleSupplier = RequestBrokerClientModuleMessageClientProcessor::new;
         // broker （游戏网关）集群处理
         Supplier<UserProcessor<?>> brokerClusterMessageProcessorSupplier = BrokerClusterMessageClientProcessor::new;
+        // 接收扩展逻辑服的消息
+        Supplier<UserProcessor<?>> extRequestMessageProcessorSupplier = ExtRequestMessageClientProcessor::new;
+
+        // 客户端请求处理器
+        Supplier<UserProcessor<?>> requestMessageClientSupplier = RequestMessageClientProcessor::new;
 
         brokerClientBuilder
-                .registerUserProcessor(requestMessageClientSupplier)
                 .registerUserProcessor(requestBrokerClientModuleSupplier)
                 .registerUserProcessor(brokerClusterMessageProcessorSupplier)
+                .registerUserProcessor(extRequestMessageProcessorSupplier)
+                .registerUserProcessor(requestMessageClientSupplier)
         ;
     }
 
@@ -122,6 +129,9 @@ public abstract non-sealed class AbstractBrokerClientStartup implements BrokerCl
         this.connectionEventProcessor(this.brokerClientBuilder);
         // 注册用户处理器
         this.registerUserProcessor(this.brokerClientBuilder);
+
+        // 实验性功能
+        ExtRegions.me().add(new MonitorExtRegion());
 
         return this.brokerClientBuilder;
     }

@@ -40,7 +40,7 @@ import java.util.*;
 @FieldDefaults(level = AccessLevel.PROTECTED)
 public class DefaultBrokerClientRegion implements BrokerClientRegion {
     @Getter
-    final Map<Integer, BrokerClientProxy> boltClientInfoMap = new NonBlockingHashMap<>();
+    final Map<Integer, BrokerClientProxy> boltClientProxyMap = new NonBlockingHashMap<>();
     final String tag;
 
     ElementSelector<BrokerClientProxy> elementSelector;
@@ -50,11 +50,11 @@ public class DefaultBrokerClientRegion implements BrokerClientRegion {
     }
 
     @Override
-    public BrokerClientProxy getBoltClientInfo(HeadMetadata headMetadata) {
+    public BrokerClientProxy getBoltClientProxy(HeadMetadata headMetadata) {
         int endPointClientId = headMetadata.getEndPointClientId();
         // 得到指定的逻辑服
         if (endPointClientId != 0) {
-            BrokerClientProxy brokerClientProxy = boltClientInfoMap.get(endPointClientId);
+            BrokerClientProxy brokerClientProxy = boltClientProxyMap.get(endPointClientId);
             if (Objects.isNull(brokerClientProxy)) {
                 log.error("指定访问的逻辑服不存在: " + endPointClientId);
                 return null;
@@ -74,13 +74,13 @@ public class DefaultBrokerClientRegion implements BrokerClientRegion {
     @Override
     public void add(BrokerClientProxy brokerClientProxy) {
         int id = brokerClientProxy.getIdHash();
-        boltClientInfoMap.put(id, brokerClientProxy);
+        boltClientProxyMap.put(id, brokerClientProxy);
         this.resetSelector();
     }
 
     @Override
     public void remove(int id) {
-        this.boltClientInfoMap.remove(id);
+        this.boltClientProxyMap.remove(id);
         this.resetSelector();
     }
 
@@ -91,12 +91,12 @@ public class DefaultBrokerClientRegion implements BrokerClientRegion {
 
     @Override
     public int count() {
-        return this.boltClientInfoMap.size();
+        return this.boltClientProxyMap.size();
     }
 
     private void resetSelector() {
         // 随机选择器
-        List<BrokerClientProxy> list = new ArrayList<>(boltClientInfoMap.values());
+        List<BrokerClientProxy> list = new ArrayList<>(boltClientProxyMap.values());
         elementSelector = new RandomElementSelector<>(list);
     }
 }

@@ -33,7 +33,7 @@ class BrokerExternalKit {
         var externalLoadBalanced = balancedManager.getExternalLoadBalanced();
 
         try {
-            for (BrokerClientProxy brokerClientProxy : externalLoadBalanced.listBoltClientInfo()) {
+            for (BrokerClientProxy brokerClientProxy : externalLoadBalanced.listBrokerClientProxy()) {
                 //  转发到对外服务器
                 brokerClientProxy.oneway(message);
             }

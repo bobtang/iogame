@@ -18,16 +18,24 @@ package com.iohao.game.common.kit.attr;
 
 import org.jctools.maps.NonBlockingHashMap;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
 
 /**
- * 选项载体
+ * 动态属性的选项载体
+ * <pre>
+ *     see {@link AttrOptionDynamic}
+ * </pre>
  *
  * @author 渔民小镇
  * @date 2022-01-31
  */
-public class AttrOptions {
+public class AttrOptions implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 9042891580724596100L;
+
     final Map<AttrOption<?>, Object> options = new NonBlockingHashMap<>();
 
     /**

@@ -271,6 +271,11 @@ public class BrokerServerBuilder {
 
         Supplier<UserProcessor<?>> brokerClientItemConnectMessageSupplier = BrokerClientItemConnectMessageBrokerProcessor::new;
 
+        // 处理 - 扩展逻辑服的请求信息
+        Supplier<UserProcessor<?>> extRequestMessageSupplier = ExtRequestMessageBrokerProcessor::new;
+        // 处理 - 响应信息给扩展逻辑服
+        Supplier<UserProcessor<?>> extResponseMessageSupplier = ExtResponseMessageBrokerProcessor::new;
+
         this
                 .registerUserProcessor(registerSupplier)
                 .registerUserProcessor(externalMessageSupplier)
@@ -281,6 +286,8 @@ public class BrokerServerBuilder {
                 .registerUserProcessor(broadcastMessageSupplier)
                 .registerUserProcessor(brokerClientItemConnectMessageSupplier)
                 .registerUserProcessor(endPointLogicServerMessageSupplier)
+                .registerUserProcessor(extRequestMessageSupplier)
+                .registerUserProcessor(extResponseMessageSupplier)
         ;
     }
 

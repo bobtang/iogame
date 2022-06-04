@@ -58,26 +58,26 @@ public interface BrokerClientRegion {
      * @param headMetadata 请求元信息
      * @return 逻辑服信息
      */
-    BrokerClientProxy getBoltClientInfo(HeadMetadata headMetadata);
+    BrokerClientProxy getBoltClientProxy(HeadMetadata headMetadata);
 
     /**
-     * BrokerClientInfo map
+     * BrokerClientProxy map
      *
      * @return map
      */
-    Map<Integer, BrokerClientProxy> getBoltClientInfoMap();
+    Map<Integer, BrokerClientProxy> getBoltClientProxyMap();
 
     /**
      * 域下的所有 逻辑服
      *
      * @return 逻辑服列表
      */
-    default Collection<BrokerClientProxy> listBrokerClientInfo() {
+    default Collection<BrokerClientProxy> listBrokerClientProxy() {
         /*
          * NonBlockingHashMap 迭代器是一个“弱一致性”迭代器，
          * 它永远不会抛出 ConcurrentModificationException
          */
-        return getBoltClientInfoMap().values();
+        return getBoltClientProxyMap().values();
     }
 
     /**

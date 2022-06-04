@@ -16,13 +16,16 @@
         <module>common/common-core</module>
         <!-- 网络游戏框架 - 网络通信 -->
         <module>net-bolt/bolt-core</module>
+        <!-- Broker （游戏网关） -->
         <module>net-bolt/bolt-broker-server</module>
+        <!-- BrokerClient （逻辑服） -->
         <module>net-bolt/bolt-client</module>
         <!-- 网络游戏框架 : 对外的服务器 （面向真实用户） -->
+        <module>net-bolt/bolt-external-core</module>
         <module>net-bolt/bolt-external</module>
+        <!-- 单体启动辅助，一个进程内可以启动 ： 对外服、游戏网关、游戏逻辑服 -->
         <module>net-bolt/bolt-run-one</module>
 
-        <module>widget/light-all</module>
         <!-- 小部件 : 任务延时器 -->
         <module>widget/light-timer-task</module>
         <!-- 小部件 : 领域事件 -->
@@ -52,6 +55,7 @@
         <module>example/example-cluster-run-one</module>
         <module>example/example-broadcast</module>
         <module>example/example-hook</module>
+        <module>example/example-ext-logic-server</module>
 
 
         <!-- 实践案例 - 通用部份  -->
@@ -67,8 +71,10 @@
         <module>example-game-collect/game-one</module>
         <!-- java 坦克游戏 fxgl -->
         <module>example-game-collect/fxgl-tank</module>
-        <module>broker-starter/broker-starter-monitor</module>
-        <module>broker-starter/broker-client-monitor</module>
+
+        <!-- 扩展服 - 监控 -->
+        <module>broker-starter-ext/broker-starter-monitor-logic</module>
+        <module>broker-starter-ext/broker-client-ext-monitor</module>
 
     </modules>
 
@@ -103,16 +109,15 @@
         <lombok.version>1.18.24</lombok.version>
 
         <!-- redis internal : https://www.oschina.net/p/redisson https://mvnrepository.com/artifact/org.redisson/redisson -->
-        <redisson.version>3.17.1</redisson.version>
+        <redisson.version>3.17.3</redisson.version>
         <!-- json 解析器 : https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2 -->
-        <fastjson.version>2.0.4</fastjson.version>
+        <fastjson.version>2.0.5</fastjson.version>
 
         <!--  reflectasm 高性能的反射处理 https://www.oschina.net/p/reflectasm https://mvnrepository.com/artifact/com.esotericsoftware/reflectasm  -->
         <reflectasm.version>1.11.9</reflectasm.version>
 
         <!-- ==============轻量小部件============== -->
         <!--  cache2k https://mvnrepository.com/artifact/org.cache2k -->
-        <!--        <cache2k.version>2.4.1.Final</cache2k.version>-->
         <cache2k.version>1.2.4.Final</cache2k.version>
         <!--  disruptor https://mvnrepository.com/artifact/com.lmax/disruptor -->
         <disruptor.version>3.4.4</disruptor.version>
@@ -130,7 +135,7 @@
         <!-- temp spring boot https://mvnrepository.com/artifact/org.springframework/spring-core -->
         <spring.version>5.3.20</spring.version>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter -->
-        <springboot.version>2.6.7</springboot.version>
+        <springboot.version>2.7.0</springboot.version>
         <!--  junit https://mvnrepository.com/artifact/junit/junit  -->
         <junit.version>4.13.2</junit.version>
         <!-- 模拟客户端 https://mvnrepository.com/artifact/org.java-websocket/Java-WebSocket -->
@@ -152,7 +157,7 @@
         <!-- 新一代 Java 模板引擎 see https://www.kancloud.cn/xiandafu/beetl3_guide/1992542 https://mvnrepository.com/artifact/com.ibeetl/beetl -->
         <beetl.version>3.10.0.RELEASE</beetl.version>
         <!-- Hutool是一个Java工具包 see https://www.hutool.cn/ https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
-        <hutool.version>5.8.1</hutool.version>
+        <hutool.version>5.8.2</hutool.version>
         <!-- 对象池 :  https://mvnrepository.com/artifact/org.apache.commons/commons-pool2 -->
         <commons-pool.version>2.11.1</commons-pool.version>
         <!-- Hazelcast提供弹性可扩展的分布式内存计算 https://mvnrepository.com/artifact/com.hazelcast/hazelcast -->

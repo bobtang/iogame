@@ -39,7 +39,11 @@ public class BrokerClientApplication {
 
         BrokerClientBuilder brokerClientBuilder = brokerClientStartup.initConfig();
 
-        return start(brokerClientBuilder);
+        BrokerClient brokerClient = start(brokerClientBuilder);
+
+        brokerClientStartup.startupSuccess(brokerClient);
+
+        return brokerClient;
     }
 
     public BrokerClient start(BrokerClientBuilder builder) {
