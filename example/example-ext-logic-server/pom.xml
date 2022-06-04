@@ -34,11 +34,6 @@
             <artifactId>broker-starter-monitor-logic</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.iohao.game</groupId>
-            <artifactId>broker-starter-monitor-external</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
+        
     </dependencies>
 </project>
